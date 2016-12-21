@@ -54,8 +54,8 @@ class PlayingScreen(val kodein: Kodein) : Screen(){
         val platformFactory = PlatformFactory(kodein, world)
         val junkFactory = JunkFactory(kodein, world)
 
-        cameraFactory.create(0f, 0f, 10f, 10f)
-        playerFactory.create(0f, 0f, inputManager.getPlayerInput(0))
+        cameraFactory.create(5f, 5f, 20f, 20f)
+        playerFactory.create(5f, 5f, inputManager.getPlayerInput(0))
 
         if(inputManager.playerInputSize > 1){
             playerFactory.create(-3f, 0f, inputManager.getPlayerInput(1))
@@ -63,7 +63,7 @@ class PlayingScreen(val kodein: Kodein) : Screen(){
 
         junkFactory.create(1f, 3f, 0.5f, 0.5f)
 
-        platformFactory.create(0f, -3f, 10f, 1f)
+        //platformFactory.create(0f, -3f, 10f, 1f)
 
         val displayContainer = Container<DisplayBuffer>(display).fill()
         displayContainer.setFillParent(true)

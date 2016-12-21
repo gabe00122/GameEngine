@@ -16,9 +16,13 @@ class TileDefinitions(val kodein: Kodein) {
         return tileTypes[typeId]
     }
 
+    operator fun get(tileReference: TileReference): TileType{
+        return tileTypes[tileReference.typeId]
+    }
+
     init {
-        tileTypes.add(TileType(asstes.findTexture("tiles", "tiles", 0)))
-        tileTypes.add(TileType(asstes.findTexture("tiles", "tiles", 1)))
+        tileTypes.add(TileType(asstes.findTexture("tiles", "tiles", 3), false))
+        tileTypes.add(TileType(asstes.findTexture("tiles", "tiles", 1), true))
     }
 
 }
