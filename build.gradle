@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:$artemisOdbVersion"
+        classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        classpath "com.kotcrab.vis:vis-usl:$uslVersion"
+    }
+}
+
+allprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'idea'
+}
+
+configure(subprojects) {
+    apply plugin: 'kotlin'
+    sourceCompatibility = 1.8
+}
+
+subprojects {
+    version = '0.0.1-SNAPSHOT'
+    ext.appName = 'SpaceMonk2'
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+}
+
+// Clearing Eclipse project data in root folder:
+tasks.eclipse.doLast {
+    delete '.project'
+    delete '.classpath'
+    delete '.settings/'
+}
+
+// Run `gradle pack` task to generate skin.atlas file at assets/ui.
+import com.badlogic.gdx.tools.texturepacker.TexturePacker
+import com.kotcrab.vis.usl.Main
+
+task pack << {
+    // Note that if you need multiple atlases, you can duplicate the
+    // TexturePacker.process invocation and change paths to generate
+    // additional atlases with this task.
+    TexturePacker.process(
+            'raw/ui/x1',        // Raw assets path.
+            'assets/ui',        // Output directory.
+            'skin'              // Name of the generated atlas (without extension).
+    )
+
+    TexturePacker.process(
+            'raw/art/actors',
+            'assets/art',
+            'actors'
+    )
+}
+// Run `gradle compileSkin` task to generate skin.json at assets/ui.
+task compileSkin << {
+    // Convert USL skin file into JSON
+    String[] uslArgs = [
+            projectDir.path + '/raw/ui/skin.usl',     // Input USL file
+            projectDir.path + '/assets/ui/skin.json'  // Output JSON file
+    ]
+    Main.main(uslArgs)
+}
+// Run `gradle packAndCompileSkin` to generate skin atlas and compile USL into JSON
+task packAndCompileSkin(dependsOn: [pack, compileSkin])

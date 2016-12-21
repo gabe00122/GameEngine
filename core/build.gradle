@@ -1,0 +1,38 @@
+apply plugin: "artemis"
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
+
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+
+
+    compile "com.kotcrab.vis:vis-ui:$visUiVersion"
+
+    compile "com.github.czyzby:ktx-math:$ktxVersion"
+    compile "com.github.czyzby:ktx-log:$ktxVersion"
+    compile "com.github.czyzby:ktx-collections:$ktxVersion"
+    compile "com.github.czyzby:ktx-actors:$ktxVersion"
+    compile "com.github.czyzby:ktx-assets:$ktxVersion"
+    compile "com.github.czyzby:ktx-vis:$ktxVersion"
+    compile "com.github.czyzby:ktx-i18n:$ktxVersion"
+
+    compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
+    compile "com.github.salomonbrys.kodein:kodein:$kodeinVersion"
+}
+
+weave {
+    classesDir = sourceSets.main.output.classesDir
+    enableArtemisPlugin = true
+    enablePooledWeaving = true
+    generateLinkMutators = true
+    optimizeEntitySystems = true
+}
+
+classes.finalizedBy weave
