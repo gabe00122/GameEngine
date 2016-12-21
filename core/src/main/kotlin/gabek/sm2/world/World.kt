@@ -30,6 +30,9 @@ fun buildWorld(kodein: Kodein): World{
     config.setSystem(PlayerInputSystem())
     config.setSystem(CharacterControllerSystem())
 
+    //tiles
+    config.setSystem(TileMapSystem(kodein))
+
     //box2d
     config.setSystem(Box2dSystem())
     config.setSystem(CharacterLegsSystem())

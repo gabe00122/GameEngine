@@ -14,6 +14,7 @@ class Assets : Disposable {
 
     init{
         addPack("actors", "art/actors.atlas")
+        addPack("tiles", "art/tiles.atlas")
     }
 
     fun finish(){
@@ -31,8 +32,13 @@ class Assets : Disposable {
         resourceManager.load(fileName, TextureAtlas::class.java)
     }
 
-    fun findTexture(packName: String, regionName: String): TextureRegion
-            = packMap[packName]!!.atlas!!.findRegion(regionName)
+    fun findTexture(packName: String, regionName: String, index: Int = -1): TextureRegion{
+        if(index == -1) {
+            return packMap[packName]!!.atlas!!.findRegion(regionName)
+        } else {
+            return packMap[packName]!!.atlas!!.findRegion(regionName, index)
+        }
+    }
 
     override fun dispose(){
         resourceManager.dispose()

@@ -60,6 +60,12 @@ task pack << {
             'assets/art',
             'actors'
     )
+
+    TexturePacker.process(
+            'raw/art/tiles',
+            'assets/art',
+            'tiles'
+    )
 }
 // Run `gradle compileSkin` task to generate skin.json at assets/ui.
 task compileSkin << {
