@@ -39,6 +39,7 @@ fun buildWorld(kodein: Kodein): World{
 
     //graphics
     config.setSystem(CameraSystem())
+    config.setSystem(CameraTrackingSystem())
     config.setSystem(RenderSystem())
 
 

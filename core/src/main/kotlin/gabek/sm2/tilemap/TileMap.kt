@@ -58,6 +58,12 @@ class TileMap(val kodein: Kodein) {
 
     private fun checkSolid(x: Int, y: Int) = grid.has(x, y) && definitions[grid.get(x, y)].solid
 
+    private fun RFixture.defaultSettings(): RFixture{
+        friction = 1f
+        restitution = 0f
+        return this
+    }
+
     private fun initSolid(x: Int, y: Int) {
         val fixtures = Array<RFixture?>(4, {null})
 
@@ -81,7 +87,7 @@ class TileMap(val kodein: Kodein) {
                 if (e) {
                     edge.setVertex3(x2 + tileSize, y2)
                 }
-                fixtures[0] = RFixture(edge)
+                fixtures[0] = RFixture(edge).defaultSettings()
             }
 
             if (!s) {
@@ -93,7 +99,7 @@ class TileMap(val kodein: Kodein) {
                 if (w) {
                     edge.setVertex3(x1 - tileSize, y1)
                 }
-                fixtures[1] = RFixture(edge)
+                fixtures[1] = RFixture(edge).defaultSettings()
             }
 
             if (!e) {
@@ -105,7 +111,7 @@ class TileMap(val kodein: Kodein) {
                 if (s) {
                     edge.setVertex3(x2, y1 - tileSize)
                 }
-                fixtures[2] = RFixture(edge)
+                fixtures[2] = RFixture(edge).defaultSettings()
             }
 
             if (!w) {
@@ -117,7 +123,7 @@ class TileMap(val kodein: Kodein) {
                 if (n) {
                     edge.setVertex3(x1, y2 + tileSize)
                 }
-                fixtures[3] = RFixture(edge)
+                fixtures[3] = RFixture(edge).defaultSettings()
             }
 
             for(fixture in fixtures){
