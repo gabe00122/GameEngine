@@ -10,8 +10,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
  */
 @PooledWeaver
 class SpriteCom : Component(){
-    @JvmField @Transient var texture: TextureRegion? = null
+    @JvmField var texture: TextureRegion? = null
 
     @JvmField var width = 0f
     @JvmField var height = 0f
+    @JvmField var flipX: Boolean = false
+    @JvmField var flipY: Boolean = false
+    @JvmField var offsetX: Float = 0f
+    @JvmField var offsetY: Float = 0f
 }

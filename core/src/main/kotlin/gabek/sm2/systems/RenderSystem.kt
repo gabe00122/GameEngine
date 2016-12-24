@@ -4,6 +4,8 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Affine2
 import com.badlogic.gdx.math.MathUtils
 import gabek.sm2.components.SpriteCom
 import gabek.sm2.components.TranslationCom
@@ -29,13 +31,20 @@ class RenderSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Translat
             val spriteComp = spriteMapper.get(entity)
             val transComp = translationMapper.get(entity)
 
-            //batch.draw(spriteComp.texture, transComp.lerpX(progress), transComp.lerpY(progress), 1f, 1f)
-            batch.draw(spriteComp.texture,
-                    transComp.lerpX(progress) - spriteComp.width/2,
-                    transComp.lerpY(progress) - spriteComp.height/2,
-                    spriteComp.width/2, spriteComp.height/2,
-                    spriteComp.width, spriteComp.height,
-                    1f, 1f, transComp.rotation)
+            val region = spriteComp.texture
+            if(region != null) {
+                val flipX = spriteComp.flipX
+                val flipY = spriteComp.flipY
+
+                region.flip(flipX, flipY)
+                batch.draw(spriteComp.texture,
+                        transComp.lerpX(progress) - spriteComp.width / 2 + spriteComp.offsetX,
+                        transComp.lerpY(progress) - spriteComp.height / 2 + spriteComp.offsetY,
+                        spriteComp.width / 2, spriteComp.height / 2,
+                        spriteComp.width, spriteComp.height,
+                        1f, 1f, transComp.rotation)
+                region.flip(flipX, flipY)
+            }
         }
     }
 }

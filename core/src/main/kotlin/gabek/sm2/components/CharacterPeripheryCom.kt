@@ -11,7 +11,7 @@ import gabek.sm2.physics.joints.RRevoluteJoint
  */
 //@DelayedComponentRemoval
 @PooledWeaver
-class CharacterLegsCom : Component(){
+class CharacterPeripheryCom : Component(){
     var body = RBody()
     var motor = RRevoluteJoint()
 }

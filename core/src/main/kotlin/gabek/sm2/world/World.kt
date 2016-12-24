@@ -35,11 +35,14 @@ fun buildWorld(kodein: Kodein): World{
 
     //box2d
     config.setSystem(Box2dSystem())
-    config.setSystem(CharacterLegsSystem())
+    config.setSystem(CharacterPeripherySystem())
 
     //graphics
     config.setSystem(CameraSystem())
     config.setSystem(CameraTrackingSystem())
+
+    config.setSystem(CharacterAnimatorSystem())
+    config.setSystem(AnimationSystem())
     config.setSystem(RenderSystem())
 
 

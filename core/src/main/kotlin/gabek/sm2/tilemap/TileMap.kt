@@ -14,13 +14,25 @@ import gabek.sm2.physics.RFixture
 class TileMap(val kodein: Kodein) {
     val tileSize = 1f
     val definitions = TileDefinitions(kodein)
-    val grid: Grid<TileReference> = ArrayGrid(10, 10, {x, y -> TileReference(0)})
+    val grid: Grid<TileReference> = ArrayGrid(50, 20, {x, y -> TileReference(0)})
 
     val body = RBody()
 
     init{
         for(x in 0 until grid.w){
             grid.set(x, 0, TileReference(1))
+        }
+
+        for(x in 3..8){
+            grid.set(x, 3, TileReference(1))
+        }
+
+        for(x in 8..12){
+            grid.set(x, 9, TileReference(1))
+        }
+
+        for(x in 2..11){
+            grid.set(x, 13, TileReference(1))
         }
     }
 

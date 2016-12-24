@@ -23,12 +23,19 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
 
     init {
         playerInputs.add(KeyboardPlayerInput())
+        playerInputs.add(KeyboardPlayerInput())
 
         bindKey(0, Actions.UP, Input.Keys.UP)
         bindKey(0, Actions.DOWN, Input.Keys.DOWN)
         bindKey(0, Actions.LEFT, Input.Keys.LEFT)
         bindKey(0, Actions.RIGHT, Input.Keys.RIGHT)
         bindKey(0, Actions.SELECT, Input.Keys.ENTER)
+
+        bindKey(1, Actions.UP, Input.Keys.W)
+        bindKey(1, Actions.DOWN, Input.Keys.S)
+        bindKey(1, Actions.LEFT, Input.Keys.A)
+        bindKey(1, Actions.RIGHT, Input.Keys.D)
+        bindKey(1, Actions.SELECT, Input.Keys.SPACE)
 
         Controllers.addListener(inputHandler)
         for(controller in Controllers.getControllers()){
