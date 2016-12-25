@@ -91,7 +91,7 @@ class PlayingScreen(val kodein: Kodein) : Screen(){
         renderSystem.draw(batch, updateManager.progress)
         batch.end()
 
-        //box2dDebug.render(box2dSystem.box2dWorld, ortho.combined)
+        box2dDebug.render(box2dSystem.box2dWorld, ortho.combined)
         display.endPrimaryBuffer()
     }
 

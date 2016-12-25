@@ -21,6 +21,10 @@ import gabek.sm2.systems.Box2dSystem
  * @author Gabriel Keith
  */
 class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
+    private val width = .5f
+    private val height = 1f
+    private val bodyHeight = height - width/2f
+
     val arch = ArchetypeBuilder().add(
             TranslationCom::class.java,
             AnimationCom::class.java,
@@ -72,18 +76,18 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         animator.runningAnimation = runningAnimation
         animator.stillAnimation = stillAnimation
 
-        sprite.width = 0.75f
-        sprite.height = 1.5f + 0.25f/2
-        sprite.offsetY = -.1f
+        sprite.width = width
+        sprite.height = height
+        sprite.offsetY = -width/4
 
         //body
-        val fixture = RFixture(RPolygon(0.75f, 1.4f))
-        fixture.friction = 0f
+        val fixture = RFixture(RPolygon(width, bodyHeight))
+        fixture.friction = 1f
         fixture.density = 1f
 
         bodyComp.body.colisionCallback = id
         bodyComp.body.bodyType = BodyDef.BodyType.DynamicBody
-        bodyComp.body.linearDamping = 0.2f
+        //bodyComp.body.linearDamping = 0.2f
         bodyComp.body.isFixedRotation = true
         bodyComp.body.setPosition(x, y)
         bodyComp.body.addFixture(fixture)
@@ -91,22 +95,21 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         //input
         playerInput.playerInput = input
 
-        val wheel = RFixture(RCircle(0.25f))
+        val wheel = RFixture(RCircle(width/2f))
         wheel.friction = 1f
         wheel.restitution = 0.0f
-        wheel.density = 1f
+        wheel.density = 0.5f
 
         legs.body.colisionCallback = id
         legs.body.addFixture(wheel)
         legs.body.bodyType = BodyDef.BodyType.DynamicBody
-        legs.body.setPosition(x, y - 0.75f)
+        legs.body.setPosition(x, y - bodyHeight/2)
 
         legs.motor.bodyA = bodyComp.body
         legs.motor.bodyB = legs.body
         legs.motor.isMoterEnabled = true
-        legs.motor.motorSpeed = 180f
         legs.motor.maxTorque = 5f
-        legs.motor.anchorAY = -0.65f
+        legs.motor.anchorAY = -bodyHeight/2
 
         return id
     }
