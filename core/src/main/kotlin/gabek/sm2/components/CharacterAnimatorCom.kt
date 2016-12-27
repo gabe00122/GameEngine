@@ -9,4 +9,5 @@ import gabek.sm2.graphics.Animation
 class CharacterAnimatorCom : Component() {
     var runningAnimation: Animation? = null
     var stillAnimation: Animation? = null
+    var jumpingAnimation: Animation? = null
 }

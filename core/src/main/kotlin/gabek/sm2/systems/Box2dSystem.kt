@@ -33,14 +33,14 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
                 addSubscriptionListener(object : EntitySubscription.SubscriptionListener {
                     override fun inserted(entities: IntBag) {
                         for (i in 0 until entities.size()) {
-                            val body = bodyMapper[entities[i]].body
+                            val body = bodyMapper[entities[i]].rBody
                             body.initialise(box2dWorld)
                         }
                     }
 
                     override fun removed(entities: IntBag) {
                         for (i in 0 until entities.size()) {
-                            val body = bodyMapper[entities[i]].body
+                            val body = bodyMapper[entities[i]].rBody
                             body.store(box2dWorld)
                         }
                     }
@@ -56,7 +56,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
             val bodyCom = bodyMapper.get(entity)
             val transCom = transMapper.get(entity)
 
-            val body = bodyCom.body
+            val body = bodyCom.rBody
             transCom.x = body.x
             transCom.y = body.y
             transCom.rotation = body.rotation

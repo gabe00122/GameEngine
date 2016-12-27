@@ -173,6 +173,8 @@ class RBody {
                 field = value
         }
 
+    val mass: Float get() = body?.mass ?: -1f
+
     fun applyForceToCenter(forceX: Float, forceY: Float, wakeBody: Boolean = true){
         body?.applyForceToCenter(forceX, forceY, wakeBody)
     }

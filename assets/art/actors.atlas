@@ -4,23 +4,37 @@ size: 128,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-fred_1
+fred_jumping
   rotate: false
   xy: 36, 2
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 0
-fred_1
+fred_jumping
   rotate: false
   xy: 54, 2
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 1
-fred_1
+fred_running
   rotate: false
   xy: 72, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: 0
+fred_running
+  rotate: false
+  xy: 90, 2
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: 1
+fred_running
+  rotate: false
+  xy: 108, 2
   size: 16, 32
   orig: 16, 32
   offset: 0, 0

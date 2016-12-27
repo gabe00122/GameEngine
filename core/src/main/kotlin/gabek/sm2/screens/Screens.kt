@@ -20,6 +20,7 @@ fun buildScreenManager(kodein: Kodein): ScreenManager{
         bind("main"){ MainMenu(kodein) }
         bind("settings"){ SettingsMenu() }
         bind("playing"){ PlayingScreen(kodein) }
+        bind("startGame"){ StartGameScreen(kodein) }
 
         show("main")
     }

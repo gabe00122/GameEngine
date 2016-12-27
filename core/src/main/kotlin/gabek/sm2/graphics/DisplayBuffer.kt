@@ -23,8 +23,13 @@ class DisplayBuffer : Widget(), Disposable {
 
         if(oldBuffer == null || Math.abs(oldBuffer.width - width) > 10.0 || Math.abs(oldBuffer.height - height) > 10.0) {
             primaryBuffer?.dispose()
-            if (width >= 1 && height >= 1) {
-                primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, width.toInt(), height.toInt(), false)
+
+            //TODO replace me
+            val w = (width * 2).toInt()
+            val h = (height * 2).toInt()
+
+            if (w >= 1 && h >= 1) {
+                primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, w, h, false)
                 primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
             }
         }

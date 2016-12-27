@@ -38,8 +38,9 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
             CharacterControllerCom::class.java).build(world)
 
     private val assets: Assets = kodein.instance()
-    private val runningAnimation = Animation(0.1f, true)
-    private val stillAnimation = Animation(-1f, false)
+    private val runningAnimation = Animation(0.2f, true, true)
+    private val stillAnimation = Animation(-1f, false, false)
+    private val jumpingAnimation = Animation(0.15f, false, false)
 
     private val transMapper = world.getMapper(TranslationCom::class.java)
     private val animatorMapper = world.getMapper(CharacterAnimatorCom::class.java)
@@ -49,11 +50,14 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
     private val characterLegsMapper = world.getMapper(CharacterPeripheryCom::class.java)
 
     init{
-        runningAnimation.frames.add(assets.findTexture("actors", "fred_1", 0))
-        runningAnimation.frames.add(assets.findTexture("actors", "fred_1", 1))
-        runningAnimation.frames.add(assets.findTexture("actors", "fred_1", 2))
+        runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 0))
+        runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 1))
+        runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 2))
 
-        stillAnimation.frames.add(assets.findTexture("actors", "fred_1", 1))
+        stillAnimation.frames.add(assets.findTexture("actors", "fred_running", 1))
+
+        jumpingAnimation.frames.add(assets.findTexture("actors", "fred_jumping", 0))
+        jumpingAnimation.frames.add(assets.findTexture("actors", "fred_jumping", 1))
     }
 
     fun create(x: Float, y: Float, input: PlayerInput): Int{
@@ -75,37 +79,31 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         //sprite
         animator.runningAnimation = runningAnimation
         animator.stillAnimation = stillAnimation
+        animator.jumpingAnimation = jumpingAnimation
 
         sprite.width = width
         sprite.height = height
         sprite.offsetY = -width/4
 
-        //body
-        val fixture = RFixture(RPolygon(width, bodyHeight))
-        fixture.friction = 1f
-        fixture.density = 1f
+        //rBody
+        bodyComp.rBody.colisionCallback = id
+        bodyComp.rBody.addFixture(RFixture(RPolygon(width, bodyHeight), density = 1f))
 
-        bodyComp.body.colisionCallback = id
-        bodyComp.body.bodyType = BodyDef.BodyType.DynamicBody
-        //bodyComp.body.linearDamping = 0.2f
-        bodyComp.body.isFixedRotation = true
-        bodyComp.body.setPosition(x, y)
-        bodyComp.body.addFixture(fixture)
+        bodyComp.rBody.bodyType = BodyDef.BodyType.DynamicBody
+        //bodyComp.rBody.linearDamping = 0.2f
+        bodyComp.rBody.isFixedRotation = true
+        bodyComp.rBody.setPosition(x, y)
 
         //input
         playerInput.playerInput = input
 
-        val wheel = RFixture(RCircle(width/2f))
-        wheel.friction = 1f
-        wheel.restitution = 0.0f
-        wheel.density = 0.5f
-
         legs.body.colisionCallback = id
-        legs.body.addFixture(wheel)
+        legs.body.addFixture(RFixture(RCircle(width/2f), density = 0.5f, restitution = 0f, friction = 1f))
+
         legs.body.bodyType = BodyDef.BodyType.DynamicBody
         legs.body.setPosition(x, y - bodyHeight/2)
 
-        legs.motor.bodyA = bodyComp.body
+        legs.motor.bodyA = bodyComp.rBody
         legs.motor.bodyB = legs.body
         legs.motor.isMoterEnabled = true
         legs.motor.maxTorque = 5f

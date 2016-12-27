@@ -36,8 +36,8 @@ class PlatformFactory(kodein: Kodein, private val world: World) : Disposable {
         val fixture = RFixture(RPolygon(w, h))
         fixture.friction = 1f
 
-        body.body.addFixture(fixture)
-        body.body.setPosition(x, y)
+        body.rBody.addFixture(fixture)
+        body.rBody.setPosition(x, y)
 
         return id
     }

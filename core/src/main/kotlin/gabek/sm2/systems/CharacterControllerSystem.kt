@@ -23,41 +23,41 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
     private lateinit var contactMapper: ComponentMapper<ContactCom>
 
+    private val listeners = mutableListOf<Listener>()
+
     override fun processSystem() {
         val entities = entityIds
 
         for (i in 0 until entities.size()) {
-            val id = entities[i]
+            val entity = entities[i]
 
-            val control = characterControllerMapper[id]
-            val legs = characterPeripheryMapper[id]
-            val state = characterStateMapper[id]
+            val control = characterControllerMapper[entity]
+            val periphery = characterPeripheryMapper[entity]
+            val state = characterStateMapper[entity]
 
-            val body = bodyMapper[id]
-            val contact = contactMapper[id]
+            val body = bodyMapper[entity]
+            val contact = contactMapper[entity]
 
             state.onGround = false
             for (c in contact.contacts) {
-                if (c.body === legs.body) {
+                if (c.body === periphery.body) {
                     state.onGround = true
                     break
                 }
             }
 
             if (!state.onGround) {
-                val damp = -body.body.linearVelocityX * 0.2f
-                body.body.applyForceToCenter(damp, 0f, false)
+                val damp = -body.rBody.linearVelocityX * body.rBody.mass * 0.1f
+                body.rBody.applyForceToCenter(damp, 0f, false)
             }
 
-            if (state.jumpTimeOut > 0) {
-                state.jumpTimeOut -= world.delta
+            if (periphery.jumpTimeOut > 0) {
+                periphery.jumpTimeOut -= world.delta
             }
 
             if (control.moveUp) {
-                if (state.onGround && state.jumpTimeOut <= 0f && body.body.linearVelocityY > -0.1) {
-                    state.jumpTimeOut = 0.2f
-
-                    body.body.applyLinearInpulse(0f, 4f, body.body.x, body.body.y)
+                if (state.onGround && periphery.jumpTimeOut <= 0f && body.rBody.linearVelocityY > -0.1) {
+                    jump(entity)
                 }
             }
             if (control.moveLeft) {
@@ -65,25 +65,44 @@ class CharacterControllerSystem : BaseEntitySystem(
                 state.running = true
 
                 if(state.onGround) {
-                    legs.motor.motorSpeed = 360f * 2f
+                    periphery.motor.motorSpeed = 360f * 2f
                 } else {
-                    legs.motor.motorSpeed = 0f
-                    body.body.applyForceToCenter(-200f * world.delta, 0f)
+                    periphery.motor.motorSpeed = 0f
+                    body.rBody.applyForceToCenter(-200f * world.delta, 0f)
                 }
             } else if (control.moveRight) {
                 state.facingRight = true
                 state.running = true
 
                 if(state.onGround) {
-                    legs.motor.motorSpeed = -360f * 2f
+                    periphery.motor.motorSpeed = -360f * 2f
                 } else {
-                    legs.motor.motorSpeed = 0f
-                    body.body.applyForceToCenter(200f * world.delta, 0f)
+                    periphery.motor.motorSpeed = 0f
+                    body.rBody.applyForceToCenter(200f * world.delta, 0f)
                 }
             } else {
                 state.running = false
-                legs.motor.motorSpeed = 0f
+                periphery.motor.motorSpeed = 0f
             }
         }
+    }
+
+    private fun jump(entity: Int){
+        characterPeripheryMapper[entity].jumpTimeOut = 0.2f
+
+        val body = bodyMapper[entity].rBody
+        body.applyLinearInpulse(0f, 4f, body.x, body.y)
+
+        for(l in listeners){
+            l.onJump(entity)
+        }
+    }
+
+    fun addListener(listener: Listener){
+        listeners.add(listener)
+    }
+
+    interface Listener {
+        fun onJump(entity: Int)
     }
 }

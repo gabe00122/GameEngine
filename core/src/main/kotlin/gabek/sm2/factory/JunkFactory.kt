@@ -35,7 +35,7 @@ class JunkFactory(val kodein: Kodein, val world: World) {
         val id = world.create(arch)
         val trans = transMapper[id]
         val sprite = spriteMapper[id]
-        val body = bodyMapper[id].body
+        val body = bodyMapper[id].rBody
 
         trans.x = x
         trans.y = y

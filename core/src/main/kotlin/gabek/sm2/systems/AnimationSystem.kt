@@ -21,7 +21,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
             val sprite = spriteMapper[entity]
             val animation = animationMapper[entity]
 
-            val ref = animation.animation
+            val ref = animation.currentAnimation
 
             if(ref != null && ref.frames.isNotEmpty()) {
                 if (animation.isStart) {
@@ -29,21 +29,34 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
                     animation.isStart = false
                 }
 
-                if (ref.delay > 0) {
+                if (!animation.isFinished) {
                     animation.clock += world.delta
                     if (animation.clock >= ref.delay) {
                         animation.clock -= ref.delay
 
-                        animation.frame += if (animation.isReverse) -1 else 1
-                        if (animation.frame >= ref.frames.size) {
-                            animation.frame = 0
-                        }
-                        if (animation.frame < 0) {
-                            animation.frame = ref.frames.size - 1
+                        //loop back to start
+                        if(!ref.pingpong) {
+                            if (!animation.isReverse && animation.frame >= ref.frames.size - 1) {
+                                animation.frame = -1
+                            }
+                            if (animation.isReverse && animation.frame <= 0) {
+                                animation.frame = ref.frames.size
+                            }
                         }
 
-                        if (ref.pingpong && (animation.frame == ref.frames.size - 1 || animation.frame == 0)) {
-                            animation.isReverse = !animation.isReverse
+                        //increment
+                        if (animation.isReverse) animation.frame-- else animation.frame++
+
+                        if (!animation.isReverse && animation.frame >= ref.frames.size - 1 ||
+                                animation.isReverse && animation.frame <= 0) {
+                            //switch direction
+                            if(ref.pingpong) {
+                                animation.isReverse = !animation.isReverse
+                            }
+                            //finish
+                            if(!ref.repeats){
+                                animation.isFinished = true
+                            }
                         }
 
                         sprite.texture = ref.frames[animation.frame]

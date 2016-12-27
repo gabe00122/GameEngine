@@ -13,12 +13,17 @@ import gabek.sm2.components.SpriteCom
  */
 class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
         AnimationCom::class.java, SpriteCom::class.java, CharacterStateCom::class.java, CharacterAnimatorCom::class.java
-        )){
+        )), CharacterControllerSystem.Listener {
 
     private lateinit var animationMapper: ComponentMapper<AnimationCom>
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
     private lateinit var characterStateMapper: ComponentMapper<CharacterStateCom>
     private lateinit var characterAnimatorMapper: ComponentMapper<CharacterAnimatorCom>
+
+    override fun initialize() {
+        super.initialize()
+        world.getSystem(CharacterControllerSystem::class.java).addListener(this)
+    }
 
     override fun processSystem() {
         val entities = entityIds
@@ -32,17 +37,40 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
 
             sprite.flipX = state.facingRight
 
-            if(state.running && state.onGround){
-                if(animation.animation != animator.runningAnimation) {
-                    animation.animation = animator.runningAnimation
-                    animation.reset()
-                }
-            } else {
-                if(animation.animation != animator.stillAnimation){
-                    animation.animation = animator.stillAnimation
-                    animation.reset()
-                }
+            if(animation.currentAnimation == null){
+                animation.currentAnimation = animator.stillAnimation
+            }
+
+            if(state.onGround && state.running && canSwitchRunning(animation, animator)) {
+                animation.currentAnimation = animator.runningAnimation
+                animation.reset()
+            }
+
+            if(state.onGround && !state.running && canSwitchStill(animation, animator)){
+                animation.currentAnimation = animator.stillAnimation
+                animation.reset()
+            }
+
+            if(!state.onGround && animation.currentAnimation == animator.runningAnimation){
+                animation.currentAnimation = animator.stillAnimation
+                animation.reset()
             }
         }
+    }
+
+    private fun canSwitchRunning(animation: AnimationCom, animator: CharacterAnimatorCom): Boolean {
+        return animation.currentAnimation == animator.stillAnimation ||
+                animation.currentAnimation == animator.jumpingAnimation && animation.isFinished
+    }
+
+    private fun canSwitchStill(animation: AnimationCom, animator: CharacterAnimatorCom): Boolean {
+        return animation.currentAnimation == animator.runningAnimation ||
+                animation.currentAnimation == animator.jumpingAnimation && animation.isFinished
+    }
+
+    override fun onJump(entity: Int) {
+        val animation = animationMapper[entity]
+        animation.currentAnimation = characterAnimatorMapper[entity].jumpingAnimation
+        animation.reset()
     }
 }

@@ -14,4 +14,6 @@ import gabek.sm2.physics.joints.RRevoluteJoint
 class CharacterPeripheryCom : Component(){
     var body = RBody()
     var motor = RRevoluteJoint()
+
+    var jumpTimeOut: Float = 0f
 }

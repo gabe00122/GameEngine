@@ -14,8 +14,11 @@ class RFixture {
 
     constructor()
 
-    constructor(shape: RShape){
+    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f){
         this.shape = shape
+        this.density = density
+        this.friction = friction
+        this.restitution = restitution
     }
 
     var density: Float = 0f
