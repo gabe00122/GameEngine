@@ -23,8 +23,6 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
     private lateinit var contactMapper: ComponentMapper<ContactCom>
 
-    private val listeners = mutableListOf<Listener>()
-
     override fun processSystem() {
         val entities = entityIds
 
@@ -51,12 +49,12 @@ class CharacterControllerSystem : BaseEntitySystem(
                 body.rBody.applyForceToCenter(damp, 0f, false)
             }
 
-            if (periphery.jumpTimeOut > 0) {
-                periphery.jumpTimeOut -= world.delta
+            if(state.jumpTimeOut > 0) {
+                state.jumpTimeOut -= world.delta
             }
 
             if (control.moveUp) {
-                if (state.onGround && periphery.jumpTimeOut <= 0f && body.rBody.linearVelocityY > -0.1) {
+                if (state.onGround && state.jumpTimeOut <= 0f && body.rBody.linearVelocityY > -0.1) {
                     jump(entity)
                 }
             }
@@ -88,21 +86,9 @@ class CharacterControllerSystem : BaseEntitySystem(
     }
 
     private fun jump(entity: Int){
-        characterPeripheryMapper[entity].jumpTimeOut = 0.2f
+        characterStateMapper[entity].jumpTimeOut = 0.2f
 
         val body = bodyMapper[entity].rBody
         body.applyLinearInpulse(0f, 4f, body.x, body.y)
-
-        for(l in listeners){
-            l.onJump(entity)
-        }
-    }
-
-    fun addListener(listener: Listener){
-        listeners.add(listener)
-    }
-
-    interface Listener {
-        fun onJump(entity: Int)
     }
 }

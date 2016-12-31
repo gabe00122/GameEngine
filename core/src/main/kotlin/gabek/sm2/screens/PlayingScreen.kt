@@ -13,7 +13,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisLabel
 import gabek.sm2.Assets
-import gabek.sm2.Screen
+import gabek.sm2.screens.Screen
 import gabek.sm2.components.CameraTargetsCom
 import gabek.sm2.components.ContactCom
 import gabek.sm2.graphics.DisplayBuffer
@@ -56,7 +56,7 @@ class PlayingScreen(val kodein: Kodein) : Screen(){
         val junkFactory = JunkFactory(kodein, world)
 
         val cam = cameraFactory.create(5f, 5f, 10f, 12f)
-        val player = playerFactory.create(6f, 5f, inputManager.getPlayerInput(0))
+        val player = playerFactory.create(6f, 6f, inputManager.getPlayerInput(0))
 
         val targetMapper = world.getMapper(CameraTargetsCom::class.java)
         targetMapper[cam].targets.add(player)

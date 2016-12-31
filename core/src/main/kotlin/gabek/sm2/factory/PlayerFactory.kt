@@ -86,7 +86,6 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         sprite.offsetY = -width/4
 
         //rBody
-        bodyComp.rBody.colisionCallback = id
         bodyComp.rBody.addFixture(RFixture(RPolygon(width, bodyHeight), density = 1f))
 
         bodyComp.rBody.bodyType = BodyDef.BodyType.DynamicBody
@@ -97,7 +96,6 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         //input
         playerInput.playerInput = input
 
-        legs.body.colisionCallback = id
         legs.body.addFixture(RFixture(RCircle(width/2f), density = 0.5f, restitution = 0f, friction = 1f))
 
         legs.body.bodyType = BodyDef.BodyType.DynamicBody

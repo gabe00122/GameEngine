@@ -2,7 +2,7 @@ package gabek.sm2.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.kotcrab.vis.ui.widget.VisTextButton
-import gabek.sm2.Screen
+import gabek.sm2.screens.Screen
 import ktx.actors.onChange
 
 /**

@@ -13,9 +13,9 @@ import java.util.*
 
 class RBody {
     @Transient internal var body: Body? = null
-    @Transient var colisionCallback: Int = -1
     internal val joints = mutableListOf<RJoint>()
-    private val fixutres: MutableList<RFixture> = ArrayList()
+    private val _fixutres: MutableList<RFixture> = ArrayList()
+    val fixutres: List<RFixture> get() = _fixutres
 
     var x: Float = 0f
         get() = body?.position?.x ?: field
@@ -197,7 +197,7 @@ class RBody {
         get() = body != null
 
     fun addFixture(fixture: RFixture){
-        fixutres.add(fixture)
+        _fixutres.add(fixture)
         fixture.body = this
 
         val body = body
@@ -208,7 +208,7 @@ class RBody {
 
     fun initialise(box2dWorld: World){
         val body = box2dWorld.createBody(bodyDef)
-        for(fixture in fixutres){
+        for(fixture in _fixutres){
             fixture.initialise(body)
         }
         this.body = body

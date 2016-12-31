@@ -50,7 +50,6 @@ class JunkFactory(val kodein: Kodein, val world: World) {
         fixture.friction = 0.5f
         fixture.density = 1f
 
-        body.colisionCallback = id
         body.bodyType = BodyDef.BodyType.DynamicBody
         body.setPosition(x, y)
         body.addFixture(fixture)

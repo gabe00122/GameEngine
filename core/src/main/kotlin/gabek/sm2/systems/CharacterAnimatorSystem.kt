@@ -13,17 +13,12 @@ import gabek.sm2.components.SpriteCom
  */
 class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
         AnimationCom::class.java, SpriteCom::class.java, CharacterStateCom::class.java, CharacterAnimatorCom::class.java
-        )), CharacterControllerSystem.Listener {
+        )){
 
     private lateinit var animationMapper: ComponentMapper<AnimationCom>
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
     private lateinit var characterStateMapper: ComponentMapper<CharacterStateCom>
     private lateinit var characterAnimatorMapper: ComponentMapper<CharacterAnimatorCom>
-
-    override fun initialize() {
-        super.initialize()
-        world.getSystem(CharacterControllerSystem::class.java).addListener(this)
-    }
 
     override fun processSystem() {
         val entities = entityIds
@@ -66,11 +61,5 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
     private fun canSwitchStill(animation: AnimationCom, animator: CharacterAnimatorCom): Boolean {
         return animation.currentAnimation == animator.runningAnimation ||
                 animation.currentAnimation == animator.jumpingAnimation && animation.isFinished
-    }
-
-    override fun onJump(entity: Int) {
-        val animation = animationMapper[entity]
-        animation.currentAnimation = characterAnimatorMapper[entity].jumpingAnimation
-        animation.reset()
     }
 }

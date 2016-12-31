@@ -1,4 +1,4 @@
-package gabek.sm2
+package gabek.sm2.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
@@ -15,7 +15,7 @@ import com.kotcrab.vis.ui.widget.VisLabel
 /**
  * @author Gabriel Keith
  */
-class ScreenManager(val kodein: Kodein) : Disposable{
+class ScreenManager(val kodein: Kodein) : Disposable {
     val batch: SpriteBatch
     val stage: Stage
     val inputProcessor: InputProcessor get() = stage

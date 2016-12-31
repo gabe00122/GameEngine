@@ -34,6 +34,10 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
                     override fun inserted(entities: IntBag) {
                         for (i in 0 until entities.size()) {
                             val body = bodyMapper[entities[i]].rBody
+                            for(fixture in body.fixutres){
+                                fixture.colisionCallback = entities[i]
+                            }
+
                             body.initialise(box2dWorld)
                         }
                     }
@@ -70,12 +74,13 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
     override fun beginContact(contact: Contact) {
         val fixtureA = contact.fixtureA.userData as RFixture
         val bodyA = fixtureA.body!!
-        val entityA = bodyA.colisionCallback
+        val entityA = fixtureA.colisionCallback
 
         val fixtureB = contact.fixtureB.userData as RFixture
         val bodyB = fixtureB.body!!
-        val entityB = bodyB.colisionCallback
+        val entityB = fixtureB.colisionCallback
 
+        //println(entityA)
         if (entityA != -1 && contactMapper.has(entityA)) {
             contactMapper[entityA].contacts.add(RContact(bodyA, fixtureA, entityB, bodyB, fixtureB))
         }
@@ -88,11 +93,11 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
     override fun endContact(contact: Contact) {
         val fixtureA = contact.fixtureA.userData as RFixture
         val bodyA = fixtureA.body!!
-        val entityA = bodyA.colisionCallback
+        val entityA = fixtureA.colisionCallback
 
         val fixtureB = contact.fixtureB.userData as RFixture
         val bodyB = fixtureB.body!!
-        val entityB = bodyB.colisionCallback
+        val entityB = fixtureB.colisionCallback
 
         if (entityA != -1 && contactMapper.has(entityA)) {
             val contacts = contactMapper[entityA].contacts

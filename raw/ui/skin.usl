@@ -12,11 +12,11 @@ include <visui-1.2.4>
 
   t-white: {r: 1, g: 1, b: 1, a: 1}
   t-black: {r: 0, g: 0, b: 0, a: 1}
-  t-highlight: {hex: df7126ff}
+  t-highlight: {hex: 76428aff}
   t-highlight-medium: {hex: 8f563bff}
   t-highlight-dark: {hex: 663931ff}
   t-warn: {hex: d95763ff}
-  t-light: {hex: d9a066ff}
+  t-light: {hex: d77bbaff}
   t-medium: {hex: 639bffff}
   t-medium-dark: {hex: 306082ff}
   t-dark: {hex: 222034ff}

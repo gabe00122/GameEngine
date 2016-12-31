@@ -1,4 +1,4 @@
-package gabek.sm2
+package gabek.sm2.screens
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Disposable
  * @author Gabriel Keith
  */
 
-abstract class Screen : Disposable{
+abstract class Screen : Disposable {
     lateinit var manager: ScreenManager
         internal set
     val root: WidgetGroup = WidgetGroup()

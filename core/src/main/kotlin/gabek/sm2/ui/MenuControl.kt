@@ -1,8 +1,9 @@
-package gabek.sm2.input
+package gabek.sm2.ui
 
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.kotcrab.vis.ui.widget.VisTable
+import gabek.sm2.input.PlayerInput
 import gabek.sm2.screens.buttonWidth
 import gabek.sm2.screens.eagePad
 import gabek.sm2.screens.menuPad
@@ -72,6 +73,7 @@ class MenuControl : VisTable {
 
     override fun act(delta: Float) {
         super.act(delta)
+
         val input = playerInput
         if (input != null) {
             input.update(delta)

@@ -13,8 +13,8 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.Screen
-import gabek.sm2.input.MenuControl
+import gabek.sm2.screens.Screen
+import gabek.sm2.ui.MenuControl
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.input.PlayerInputManager
 import ktx.actors.alpha

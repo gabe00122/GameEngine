@@ -11,10 +11,7 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
 import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.screens.MainMenu
-import gabek.sm2.screens.SettingsMenu
-import gabek.sm2.screens.PlayingScreen
-import gabek.sm2.screens.buildScreenManager
+import gabek.sm2.screens.*
 import gabek.sm2.world.buildWorld
 
 /**
