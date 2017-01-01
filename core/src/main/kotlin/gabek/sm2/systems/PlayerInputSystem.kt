@@ -5,6 +5,7 @@ import com.artemis.utils.IntBag
 import com.badlogic.gdx.utils.IntMap
 import gabek.sm2.components.CharacterControllerCom
 import gabek.sm2.components.PlayerInputCom
+import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 
 /**
@@ -24,10 +25,10 @@ class PlayerInputSystem : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java
             if(playerInput != null){
                 playerInput.update(world.delta)
 
-                char.moveUp = playerInput.pollAction(PlayerInput.Actions.UP)
-                char.moveDown = playerInput.pollAction(PlayerInput.Actions.DOWN)
-                char.moveLeft = playerInput.pollAction(PlayerInput.Actions.LEFT)
-                char.moveRight = playerInput.pollAction(PlayerInput.Actions.RIGHT)
+                char.moveUp = playerInput.pollAction(Actions.UP)
+                char.moveDown = playerInput.pollAction(Actions.DOWN)
+                char.moveLeft = playerInput.pollAction(Actions.LEFT)
+                char.moveRight = playerInput.pollAction(Actions.RIGHT)
             }
         }
     }

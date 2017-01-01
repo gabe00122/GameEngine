@@ -66,7 +66,9 @@ class PlayingScreen(val kodein: Kodein) : Screen(){
             targetMapper[cam].targets.add(p)
         }
 
-        junkFactory.create(1f, 3f, 0.5f, 0.5f)
+        for(i in 0 .. 15)
+            for(j in i .. 15)
+                junkFactory.create(11f + i * 1.1f, 1f + j, 0.5f, 0.5f)
 
         //platformFactory.create(0f, -3f, 10f, 1f)
 

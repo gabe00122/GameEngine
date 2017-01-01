@@ -7,10 +7,12 @@ import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.PlayerInfo
+import gabek.sm2.input.Actions
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.screens.Screen
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.input.PlayerInputManager
+import gabek.sm2.ui.CurserControl
 
 /**
  * @author Gabriel Keith
@@ -20,6 +22,8 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
 
     private val table = VisTable()
     private val tableContainer = Container(table)
+
+    private val curserControler = CurserControl(kodein)
 
     private val playerJoinWidgets = Array(6, {i -> PlayerJoinWidget(i)})
     private val playerInputSet = mutableSetOf<PlayerInput>()
@@ -38,15 +42,14 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
         for(i in 3 .. 5){
             table.add(playerJoinWidgets[i]).prefSize(200f).pad(10f)
         }
-    }
 
-    override fun show() {
         root.addActor(tableContainer)
+        root.addActor(curserControler)
     }
 
     override fun update(delta: Float) {
         inputManager.update(delta)
-        val input = inputManager.pollAllInputs(PlayerInput.Actions.SELECT)
+        val input = inputManager.pollAllInputs(Actions.SELECT)
 
         if(input != null && !playerInputSet.contains(input)) {
             join(input)
@@ -56,6 +59,7 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
     private fun join(input: PlayerInput){
         if(joinPool.isEmpty()){
             if(joinIndex < playerJoinWidgets.size){
+                curserControler.join(input, joinIndex)
                 playerJoinWidgets[joinIndex++].join(input)
                 playerInputSet.add(input)
             }
@@ -76,7 +80,7 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
             add("Player ${index + 1}").row()
 
             val control = MenuControl(VisTextButton("Ready", "toggle"), VisTextButton("Leave", "toggle"))
-            control.playerInput = playerInput
+            //control.playerInput = playerInput
             add(control)
         }
 

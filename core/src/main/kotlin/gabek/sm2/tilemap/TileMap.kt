@@ -12,7 +12,7 @@ import gabek.sm2.physics.RFixture
  * @author Gabriel Keith
  */
 class TileMap(val kodein: Kodein) {
-    val tileSize = 1f
+    val tileSize = 0.75f
     val definitions = TileDefinitions(kodein)
     val grid: Grid<TileReference> = ArrayGrid(50, 20, {x, y -> TileReference(0)})
 

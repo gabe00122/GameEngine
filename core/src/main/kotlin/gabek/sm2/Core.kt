@@ -31,13 +31,10 @@ class Core : ApplicationAdapter() {
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton{ buildWorld(this) }
         }
+        kodein.instance<Assets>().finish()
 
         screenManager = kodein.instance()
-
-        val input = InputMultiplexer(kodein.instance<PlayerInputManager>().inputProcessor, screenManager.inputProcessor)
-        Gdx.input.inputProcessor = input
-
-        kodein.instance<Assets>().finish()
+        Gdx.input.inputProcessor = InputMultiplexer(kodein.instance<PlayerInputManager>().inputProcessor, screenManager.inputProcessor)
     }
 
     override fun dispose() {

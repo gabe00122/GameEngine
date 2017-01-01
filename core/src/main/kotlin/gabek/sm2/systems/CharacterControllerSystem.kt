@@ -3,6 +3,7 @@ package gabek.sm2.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
+import com.badlogic.gdx.math.MathUtils
 import gabek.sm2.components.*
 
 /**
@@ -66,7 +67,9 @@ class CharacterControllerSystem : BaseEntitySystem(
                     periphery.motor.motorSpeed = 360f * 2f
                 } else {
                     periphery.motor.motorSpeed = 0f
-                    body.rBody.applyForceToCenter(-200f * world.delta, 0f)
+                    if(body.rBody.linearVelocityX > -4){
+                        body.rBody.applyForceToCenter(-200f * world.delta, 0f)
+                    }
                 }
             } else if (control.moveRight) {
                 state.facingRight = true
@@ -76,7 +79,9 @@ class CharacterControllerSystem : BaseEntitySystem(
                     periphery.motor.motorSpeed = -360f * 2f
                 } else {
                     periphery.motor.motorSpeed = 0f
-                    body.rBody.applyForceToCenter(200f * world.delta, 0f)
+                    if(body.rBody.linearVelocityX < 4) {
+                        body.rBody.applyForceToCenter(200f * world.delta, 0f)
+                    }
                 }
             } else {
                 state.running = false

@@ -15,6 +15,7 @@ class Assets : Disposable {
     init{
         addPack("actors", "art/actors.atlas")
         addPack("tiles", "art/tiles.atlas")
+        addPack("menus", "art/menus.atlas")
     }
 
     fun finish(){
