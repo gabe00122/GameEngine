@@ -5,19 +5,16 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
-import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.PlayerInfo
 import gabek.sm2.input.Actions
-import gabek.sm2.ui.MenuControl
-import gabek.sm2.screens.Screen
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.ui.CurserControl
+import gabek.sm2.ui.MenuControl
 
 /**
  * @author Gabriel Keith
  */
-class GameSetupScreen(val kodein: Kodein) : Screen(){
+class GameSetupScreen(val kodein: Kodein) : Screen() {
     private val inputManager: PlayerInputManager = kodein.instance()
 
     private val table = VisTable()
@@ -25,7 +22,7 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
 
     private val curserControler = CurserControl(kodein)
 
-    private val playerJoinWidgets = Array(6, {i -> PlayerJoinWidget(i)})
+    private val playerJoinWidgets = Array(6, { i -> PlayerJoinWidget(i) })
     private val playerInputSet = mutableSetOf<PlayerInput>()
     private var joinIndex = 0
     private val joinPool = mutableListOf<PlayerJoinWidget>()
@@ -34,12 +31,12 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
         tableContainer.fill()
         tableContainer.setFillParent(true)
 
-        for(i in 0 .. 2){
+        for (i in 0..2) {
             table.add(playerJoinWidgets[i]).prefSize(200f).pad(10f)
         }
         table.row()
 
-        for(i in 3 .. 5){
+        for (i in 3..5) {
             table.add(playerJoinWidgets[i]).prefSize(200f).pad(10f)
         }
 
@@ -51,14 +48,14 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
         inputManager.update(delta)
         val input = inputManager.pollAllInputs(Actions.SELECT)
 
-        if(input != null && !playerInputSet.contains(input)) {
+        if (input != null && !playerInputSet.contains(input)) {
             join(input)
         }
     }
 
-    private fun join(input: PlayerInput){
-        if(joinPool.isEmpty()){
-            if(joinIndex < playerJoinWidgets.size){
+    private fun join(input: PlayerInput) {
+        if (joinPool.isEmpty()) {
+            if (joinIndex < playerJoinWidgets.size) {
                 curserControler.join(input, joinIndex)
                 playerJoinWidgets[joinIndex++].join(input)
                 playerInputSet.add(input)
@@ -69,13 +66,13 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
         }
     }
 
-    private inner class PlayerJoinWidget(val index: Int) : VisTable(){
-        init{
+    private inner class PlayerJoinWidget(val index: Int) : VisTable() {
+        init {
             background("window-bg")
             add("Empty")
         }
 
-        fun join(playerInput: PlayerInput){
+        fun join(playerInput: PlayerInput) {
             clear()
             add("Player ${index + 1}").row()
 
@@ -84,7 +81,7 @@ class GameSetupScreen(val kodein: Kodein) : Screen(){
             add(control)
         }
 
-        fun leave(){
+        fun leave() {
             clear()
             add("Empty")
         }

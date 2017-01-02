@@ -4,7 +4,7 @@ package gabek.sm2.input
 /**
  * @author Gabriel Keith
  */
-class KeyboardPlayerInput : PlayerInput(){
+class KeyboardPlayerInput : PlayerInput() {
     private val size = Actions.SIZE
 
     private val currentState = BooleanArray(size)
@@ -20,12 +20,12 @@ class KeyboardPlayerInput : PlayerInput(){
         return currentState[actionId] || keysDown[actionId]
     }
 
-    fun keyUp(actionId: Int){
+    fun keyUp(actionId: Int) {
         keysUp[actionId] = true
         currentState[actionId] = false
     }
 
-    fun keyDown(actionId: Int){
+    fun keyDown(actionId: Int) {
         keysDown[actionId] = true
         currentState[actionId] = true
     }

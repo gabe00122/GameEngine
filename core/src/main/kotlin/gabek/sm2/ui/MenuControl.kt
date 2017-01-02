@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.kotcrab.vis.ui.Focusable
 import com.kotcrab.vis.ui.widget.VisTable
-import com.kotcrab.vis.ui.widget.VisTextButton
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.screens.buttonWidth
@@ -25,14 +24,14 @@ class MenuControl : VisTable {
 
     var playerInput: PlayerInput? = null
 
-    constructor(): super()
+    constructor() : super()
 
-    constructor(vararg buttons: Button): super(){
+    constructor(vararg buttons: Button) : super() {
         setItems(*buttons)
     }
 
     fun setItems(vararg buttons: Button) {
-        for(i in 0 until buttons.size) {
+        for (i in 0 until buttons.size) {
             val button = buttons[i]
 
             button.setProgrammaticChangeEvents(false)
@@ -77,11 +76,11 @@ class MenuControl : VisTable {
         selectPressed = true
         selected?.isChecked = true
     }
-    
-    fun selectRelease(){
+
+    fun selectRelease() {
         selectPressed = false
         val selected = selected
-        if(selected != null && selected.isChecked){
+        if (selected != null && selected.isChecked) {
             selected.fire(ChangeListener.ChangeEvent())
         }
     }
@@ -108,7 +107,7 @@ class MenuControl : VisTable {
                 }
                 if (input.pollAction(Actions.SELECT)) {
                     selectPress()
-                } else if(selectPressed){
+                } else if (selectPressed) {
                     selectRelease()
                 }
             } else {
@@ -117,10 +116,10 @@ class MenuControl : VisTable {
         }
     }
 
-    private fun clearFocus(){
-        if(index >= 0 && index < items.size){
+    private fun clearFocus() {
+        if (index >= 0 && index < items.size) {
             val btn = items[index]
-            if(btn is Focusable){
+            if (btn is Focusable) {
                 btn.focusLost()
             }
         }
@@ -131,7 +130,7 @@ class MenuControl : VisTable {
 
         selected = items[index]
         val btn = items[index]
-        if(btn is Focusable){
+        if (btn is Focusable) {
             btn.focusGained()
         }
     }

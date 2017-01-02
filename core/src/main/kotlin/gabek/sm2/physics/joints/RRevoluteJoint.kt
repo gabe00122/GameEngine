@@ -8,14 +8,14 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
 /**
  * @author Gabriel Keith
  */
-class RRevoluteJoint : RJoint(){
+class RRevoluteJoint : RJoint() {
     private var revoluteJoint: RevoluteJoint? = null
 
     var isMoterEnabled: Boolean = false
         get() = revoluteJoint?.isMotorEnabled ?: field
         set(value) {
             val joint = revoluteJoint
-            if(joint != null){
+            if (joint != null) {
                 joint.enableMotor(value)
             } else {
                 field = value
@@ -26,7 +26,7 @@ class RRevoluteJoint : RJoint(){
         get() = revoluteJoint?.isLimitEnabled ?: false
         set(value) {
             val joint = revoluteJoint
-            if(joint != null){
+            if (joint != null) {
                 joint.enableLimit(value)
             } else {
                 field = value
@@ -36,7 +36,7 @@ class RRevoluteJoint : RJoint(){
     var angleRad: Float = 0f
         get() = revoluteJoint?.jointAngle ?: field
         set(value) {
-            if(joint == null){
+            if (joint == null) {
                 field = value
             } else {
                 throw IllegalStateException("Can't change angle after joint creation.")
@@ -45,7 +45,7 @@ class RRevoluteJoint : RJoint(){
 
     var angle: Float
         get() = angleRad * MathUtils.radiansToDegrees
-        set(value){
+        set(value) {
             angleRad = value * MathUtils.degreesToRadians
         }
 
@@ -53,7 +53,7 @@ class RRevoluteJoint : RJoint(){
         get() = revoluteJoint?.lowerLimit ?: field
         set(value) {
             val joint = revoluteJoint
-            if(joint != null){
+            if (joint != null) {
                 joint.setLimits(value, joint.upperLimit)
             } else {
                 field = value
@@ -70,7 +70,7 @@ class RRevoluteJoint : RJoint(){
         get() = revoluteJoint?.upperLimit ?: field
         set(value) {
             val joint = revoluteJoint
-            if(joint != null){
+            if (joint != null) {
                 joint.setLimits(joint.lowerLimit, value)
             } else {
                 field = value
@@ -87,7 +87,7 @@ class RRevoluteJoint : RJoint(){
         get() = revoluteJoint?.maxMotorTorque ?: field
         set(value) {
             val joint = revoluteJoint
-            if(joint != null){
+            if (joint != null) {
                 joint.maxMotorTorque = value
             } else {
                 field = value
@@ -98,7 +98,7 @@ class RRevoluteJoint : RJoint(){
         get() = revoluteJoint?.motorSpeed ?: field
         set(value) {
             val joint = revoluteJoint
-            if(joint != null){
+            if (joint != null) {
                 joint.motorSpeed = value
             } else {
                 field = value

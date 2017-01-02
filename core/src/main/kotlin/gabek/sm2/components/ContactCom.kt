@@ -7,6 +7,6 @@ import gabek.sm2.physics.RContact
 /**
  * @author Gabriel Keith
  */
-class ContactCom : Component(){
+class ContactCom : Component() {
     val contacts = Array<RContact>(false, 10)
 }

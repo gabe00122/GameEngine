@@ -10,7 +10,7 @@ abstract class RShape {
         protected set
 
     abstract fun preInit()
-    fun postInit(){
+    fun postInit() {
         shape?.dispose()
         shape = null
     }

@@ -7,7 +7,7 @@ import com.artemis.utils.IntBag
 /**
  * @author Gabriel Keith
  */
-class CameraTargetsCom : Component(){
+class CameraTargetsCom : Component() {
     @EntityId @JvmField
     val targets = IntBag()
 

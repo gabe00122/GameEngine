@@ -31,7 +31,7 @@ class JunkFactory(val kodein: Kodein, val world: World) {
     private val transMapper = world.getMapper(TranslationCom::class.java)
     private val bodyMapper = world.getMapper(BodyCom::class.java)
 
-    fun create(x: Float, y: Float, w: Float, h: Float): Int{
+    fun create(x: Float, y: Float, w: Float, h: Float): Int {
         val id = world.create(arch)
         val trans = transMapper[id]
         val sprite = spriteMapper[id]
@@ -48,7 +48,7 @@ class JunkFactory(val kodein: Kodein, val world: World) {
 
         val fixture = RFixture(RPolygon(w, h))
         fixture.friction = 0.5f
-        fixture.density = 1f
+        fixture.density = 0.2f
 
         body.bodyType = BodyDef.BodyType.DynamicBody
         body.setPosition(x, y)

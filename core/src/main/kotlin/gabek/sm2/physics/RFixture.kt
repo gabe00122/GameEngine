@@ -19,7 +19,7 @@ class RFixture {
 
     constructor()
 
-    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f){
+    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f) {
         this.shape = shape
         this.density = density
         this.friction = friction
@@ -30,7 +30,7 @@ class RFixture {
         get() = fixture?.density ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.density = value
             else
                 field = value
@@ -40,7 +40,7 @@ class RFixture {
         get() = fixture?.friction ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.friction = value
             else
                 field = value
@@ -50,7 +50,7 @@ class RFixture {
         get() = fixture?.restitution ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.restitution = value
             else
                 field = value
@@ -60,7 +60,7 @@ class RFixture {
         get() = fixture?.isSensor ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.isSensor = value
             else
                 field = value
@@ -70,7 +70,7 @@ class RFixture {
         get() = fixture?.filterData?.categoryBits ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.filterData.categoryBits = value
             else
                 field = value
@@ -80,7 +80,7 @@ class RFixture {
         get() = fixture?.filterData?.maskBits ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.filterData.maskBits = value
             else
                 field = value
@@ -90,7 +90,7 @@ class RFixture {
         get() = fixture?.filterData?.groupIndex ?: field
         set(value) {
             val fixture = fixture
-            if(fixture != null)
+            if (fixture != null)
                 fixture.filterData.groupIndex = value
             else
                 field = value
@@ -99,7 +99,7 @@ class RFixture {
     val isInitialised: Boolean
         get() = fixture != null
 
-    internal fun initialise(parent: Body){
+    internal fun initialise(parent: Body) {
         val shape = shape ?: throw IllegalStateException("Shape can't be null.")
 
         shape.preInit()
@@ -114,7 +114,7 @@ class RFixture {
     fun store(body: Body?) {
         val fixture = this.fixture
         this.fixture = null
-        if(fixture != null && body != null){
+        if (fixture != null && body != null) {
             body.destroyFixture(fixture)
         }
     }

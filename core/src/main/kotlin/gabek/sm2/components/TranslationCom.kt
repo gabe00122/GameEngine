@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.MathUtils
  * @author Gabriel Keith
  */
 @PooledWeaver
-class TranslationCom : Component(){
+class TranslationCom : Component() {
     @JvmField var x: Float = 0f
     @JvmField var y: Float = 0f
     @JvmField var rotation: Float = 0f

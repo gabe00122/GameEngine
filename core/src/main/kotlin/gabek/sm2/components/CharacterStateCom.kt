@@ -5,7 +5,7 @@ import com.artemis.Component
 /**
  * @author Gabriel Keith
  */
-class CharacterStateCom : Component(){
+class CharacterStateCom : Component() {
     var facingRight = false
     var running = false
     var onGround = false

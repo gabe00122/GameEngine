@@ -2,9 +2,7 @@ package gabek.sm2.input
 
 import com.badlogic.gdx.controllers.Controller
 import com.badlogic.gdx.controllers.ControllerListener
-import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.controllers.PovDirection
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 
 /**
@@ -19,7 +17,7 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
     private val currentState = BooleanArray(size)
     private val currentAxisState = FloatArray(size)
 
-    init{
+    init {
         //bindButton(12, Actions.UP)
         //bindButton(14, Actions.DOWN)
         //bindButton(15, Actions.LEFT)
@@ -37,18 +35,18 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
 
     override fun update(delta: Float) {}
 
-    fun bindButton(buttonCode: Int, actionId: Int){
-        while(buttonBindings.size - 1 <= buttonCode){
+    fun bindButton(buttonCode: Int, actionId: Int) {
+        while (buttonBindings.size - 1 <= buttonCode) {
             buttonBindings.add(-1)
         }
 
         buttonBindings[buttonCode] = actionId
     }
 
-    fun bindAxis(axisCode: Int, invert: Boolean, threshold: Float, actionId: Int){
-        val newCode = axisCode * 2 + if(invert) 1 else 0
+    fun bindAxis(axisCode: Int, invert: Boolean, threshold: Float, actionId: Int) {
+        val newCode = axisCode * 2 + if (invert) 1 else 0
 
-        while(axisBindings.size - 1 <= newCode){
+        while (axisBindings.size - 1 <= newCode) {
             axisBindings.add(null)
         }
 
@@ -58,16 +56,17 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
     override fun buttonUp(controller: Controller, buttonCode: Int): Boolean {
         val actionId = buttonBindings.getOrNull(buttonCode)
 
-        if(actionId != null && actionId != -1){
+        if (actionId != null && actionId != -1) {
             currentState[actionId] = false
             return true
         }
         return false
     }
+
     override fun buttonDown(controller: Controller, buttonCode: Int): Boolean {
         val actionId = buttonBindings.getOrNull(buttonCode)
 
-        if(actionId != null && actionId != -1){
+        if (actionId != null && actionId != -1) {
             currentState[actionId] = true
             return true
         }
@@ -77,13 +76,13 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
     private class AxisBinding(val threshold: Float, val actionId: Int)
 
     override fun accelerometerMoved(controller: Controller?, accelerometerCode: Int, value: Vector3?): Boolean = false
-    override fun axisMoved(controller: Controller, axisCode: Int, value: Float): Boolean{
-        val newCode = axisCode * 2 + if(value < 0) 1 else 0
+    override fun axisMoved(controller: Controller, axisCode: Int, value: Float): Boolean {
+        val newCode = axisCode * 2 + if (value < 0) 1 else 0
         val newValue = Math.abs(value)
 
         val binding = axisBindings.getOrNull(newCode)
 
-        if(binding != null){
+        if (binding != null) {
             currentAxisState[binding.actionId] = newValue
             currentState[binding.actionId] = newValue >= binding.threshold
             return true
@@ -91,6 +90,7 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
 
         return false
     }
+
     override fun povMoved(controller: Controller?, povCode: Int, value: PovDirection?): Boolean = false
 
     override fun xSliderMoved(controller: Controller?, sliderCode: Int, value: Boolean): Boolean = false

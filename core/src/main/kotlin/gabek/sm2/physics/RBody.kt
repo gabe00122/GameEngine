@@ -21,7 +21,7 @@ class RBody {
         get() = body?.position?.x ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.setTransform(value, body.position.y, body.angle)
             else
                 field = value
@@ -31,7 +31,7 @@ class RBody {
         get() = body?.position?.y ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.setTransform(body.position.x, value, body.angle)
             else
                 field = value
@@ -41,7 +41,7 @@ class RBody {
         get() = body?.angle ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.setTransform(body.position, value)
             else
                 field = value
@@ -57,7 +57,7 @@ class RBody {
         get() = body?.angularDamping ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.angularDamping = value
             else
                 field = value
@@ -67,7 +67,7 @@ class RBody {
         get() = body?.angularVelocity ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.angularVelocity = value
             else
                 field = value
@@ -77,7 +77,7 @@ class RBody {
         get() = body?.linearDamping ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.linearDamping = value
             else
                 field = value
@@ -87,7 +87,7 @@ class RBody {
         get() = body?.linearVelocity?.x ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.setLinearVelocity(value, body.linearVelocity.y)
             else
                 field = value
@@ -97,7 +97,7 @@ class RBody {
         get() = body?.linearVelocity?.y ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.setLinearVelocity(body.linearVelocity.x, value)
             else
                 field = value
@@ -107,7 +107,7 @@ class RBody {
         get() = body?.gravityScale ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.gravityScale = value
             else
                 field = value
@@ -117,7 +117,7 @@ class RBody {
         get() = body?.isActive ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.isActive = value
             else
                 field = value
@@ -127,7 +127,7 @@ class RBody {
         get() = body?.isAwake ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.isAwake = value
             else
                 field = value
@@ -137,7 +137,7 @@ class RBody {
         get() = body?.isSleepingAllowed ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.isSleepingAllowed = value
             else
                 field = value
@@ -147,7 +147,7 @@ class RBody {
         get() = body?.isBullet ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.isBullet = value
             else
                 field = value
@@ -157,7 +157,7 @@ class RBody {
         get() = body?.isFixedRotation ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.isFixedRotation = value
             else
                 field = value
@@ -167,7 +167,7 @@ class RBody {
         get() = body?.type ?: field
         set(value) {
             val body = body
-            if(body != null)
+            if (body != null)
                 body.type = value
             else
                 field = value
@@ -175,17 +175,17 @@ class RBody {
 
     val mass: Float get() = body?.mass ?: -1f
 
-    fun applyForceToCenter(forceX: Float, forceY: Float, wakeBody: Boolean = true){
+    fun applyForceToCenter(forceX: Float, forceY: Float, wakeBody: Boolean = true) {
         body?.applyForceToCenter(forceX, forceY, wakeBody)
     }
 
-    fun applyLinearInpulse(impluseX: Float, impluseY: Float, pointX: Float, pointY: Float, wake: Boolean = true){
+    fun applyLinearInpulse(impluseX: Float, impluseY: Float, pointX: Float, pointY: Float, wake: Boolean = true) {
         body?.applyLinearImpulse(impluseX, impluseY, pointX, pointY, wake)
     }
 
-    fun setPosition(x: Float, y: Float){
+    fun setPosition(x: Float, y: Float) {
         val body = body
-        if(body != null){
+        if (body != null) {
             body.setTransform(x, y, body.angle)
         } else {
             this.x = x
@@ -196,44 +196,44 @@ class RBody {
     val isInitialised: Boolean
         get() = body != null
 
-    fun addFixture(fixture: RFixture){
+    fun addFixture(fixture: RFixture) {
         _fixutres.add(fixture)
         fixture.body = this
 
         val body = body
-        if(body != null){
+        if (body != null) {
             fixture.initialise(body)
         }
     }
 
-    fun initialise(box2dWorld: World){
+    fun initialise(box2dWorld: World) {
         val body = box2dWorld.createBody(bodyDef)
-        for(fixture in _fixutres){
+        for (fixture in _fixutres) {
             fixture.initialise(body)
         }
         this.body = body
 
-        for(joint in joints){
-            if(joint.canInit){
+        for (joint in joints) {
+            if (joint.canInit) {
                 joint.initialise(box2dWorld)
             }
         }
     }
 
     fun store(box2dWorld: World) {
-        for(joint in joints){
-            if(joint.isInitialised) {
+        for (joint in joints) {
+            if (joint.isInitialised) {
                 joint.store(box2dWorld)
             }
         }
 
         val body = body
-        if(body != null){
+        if (body != null) {
             box2dWorld.destroyBody(body)
             this.body = null
         }
 
-        for(fixture in fixutres){
+        for (fixture in fixutres) {
             fixture.store(null)
         }
     }

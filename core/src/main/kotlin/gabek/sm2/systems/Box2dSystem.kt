@@ -34,7 +34,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
                     override fun inserted(entities: IntBag) {
                         for (i in 0 until entities.size()) {
                             val body = bodyMapper[entities[i]].rBody
-                            for(fixture in body.fixutres){
+                            for (fixture in body.fixutres) {
                                 fixture.colisionCallback = entities[i]
                             }
 
@@ -101,10 +101,10 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
 
         if (entityA != -1 && contactMapper.has(entityA)) {
             val contacts = contactMapper[entityA].contacts
-            for(i in 0 until contacts.size){
+            for (i in 0 until contacts.size) {
                 val c = contacts[i]
-                if(c.body === bodyA && c.fixture === fixtureA &&
-                        c.otherId == entityB && c.otherBody === bodyB && c.otherFixture === fixtureB){
+                if (c.body === bodyA && c.fixture === fixtureA &&
+                        c.otherId == entityB && c.otherBody === bodyB && c.otherFixture === fixtureB) {
                     contacts.removeIndex(i)
                     break
                 }
@@ -113,10 +113,10 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
 
         if (entityB != -1 && contactMapper.has(entityB)) {
             val contacts = contactMapper[entityB].contacts
-            for(i in 0 until contacts.size){
+            for (i in 0 until contacts.size) {
                 val c = contacts[i]
-                if(c.body === bodyB && c.fixture === fixtureB &&
-                        c.otherId == entityA && c.otherBody === bodyA && c.otherFixture === fixtureA){
+                if (c.body === bodyB && c.fixture === fixtureB &&
+                        c.otherId == entityA && c.otherBody === bodyA && c.otherFixture === fixtureA) {
                     contacts.removeIndex(i)
                     break
                 }

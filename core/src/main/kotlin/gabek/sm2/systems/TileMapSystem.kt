@@ -7,7 +7,7 @@ import gabek.sm2.tilemap.TileMap
 /**
  * @author Gabriel Keith
  */
-class TileMapSystem(kodein: Kodein) : BaseSystem(){
+class TileMapSystem(kodein: Kodein) : BaseSystem() {
     private lateinit var box2dSystem: Box2dSystem
 
     val tileMap = TileMap(kodein)

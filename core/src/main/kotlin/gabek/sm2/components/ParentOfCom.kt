@@ -8,7 +8,7 @@ import com.artemis.annotations.PooledWeaver
  * @author Gabriel Keith
  */
 @PooledWeaver
-class ParentOfCom : Component(){
+class ParentOfCom : Component() {
     @JvmField
     @EntityId var parent: Int = -1
 }

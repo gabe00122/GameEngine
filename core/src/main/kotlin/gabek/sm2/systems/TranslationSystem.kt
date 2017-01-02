@@ -8,14 +8,14 @@ import gabek.sm2.components.TranslationCom
 /**
  * @author Gabriel Keith
  */
-class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java)){
+class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java)) {
     private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
     override fun processSystem() {
         val entities = entityIds
 
-        for(i in 0 until entities.size()){
-            with(translationMapper.get(entities[i])){
+        for (i in 0 until entities.size()) {
+            with(translationMapper.get(entities[i])) {
                 pX = x
                 pY = y
                 pRotation = rotation

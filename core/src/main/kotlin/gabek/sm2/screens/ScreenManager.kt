@@ -44,30 +44,30 @@ class ScreenManager(val kodein: Kodein) : Disposable {
         stage.root.addActor(fpsContainer)
     }
 
-    fun update(delta: Float){
+    fun update(delta: Float) {
         fpsLabel.setText("FPS: ${Gdx.graphics.framesPerSecond}")
 
         currentScreen?.update(delta)
         stage.act(delta)
     }
 
-    fun render(){
+    fun render() {
         currentScreen?.render(batch)
         stage.draw()
     }
 
-    fun resize(width: Int, height: Int){
+    fun resize(width: Int, height: Int) {
         currentScreen?.resize(width, height)
         stage.viewport.update(width, height, true)
     }
 
-    fun bind(name: String, screen: () -> Screen){
+    fun bind(name: String, screen: () -> Screen) {
         screenBuilderMap[name] = screen
     }
 
-    fun show(screenName: String){
+    fun show(screenName: String) {
         val screenBuilder = screenBuilderMap[screenName]
-        if(screenBuilder != null) {
+        if (screenBuilder != null) {
             val screen = screenBuilder()
             screen.manager = this
 

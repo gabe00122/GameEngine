@@ -11,7 +11,8 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
 import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.screens.*
+import gabek.sm2.screens.ScreenManager
+import gabek.sm2.screens.buildScreenManager
 import gabek.sm2.world.buildWorld
 
 /**
@@ -25,11 +26,11 @@ class Core : ApplicationAdapter() {
         VisUI.load("ui/skin.json")
         Box2D.init()
 
-        val kodein = Kodein{
+        val kodein = Kodein {
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
             bind<Assets>() with singleton { Assets() }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
-            bind<World>() with singleton{ buildWorld(this) }
+            bind<World>() with singleton { buildWorld(this) }
         }
         kodein.instance<Assets>().finish()
 

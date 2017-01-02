@@ -12,36 +12,36 @@ class Assets : Disposable {
     private val resourceManager = AssetManager()
     private val packMap = mutableMapOf<String, TexturePack>()
 
-    init{
+    init {
         addPack("actors", "art/actors.atlas")
         addPack("tiles", "art/tiles.atlas")
         addPack("menus", "art/menus.atlas")
     }
 
-    fun finish(){
+    fun finish() {
         resourceManager.finishLoading()
 
         val packIter = packMap.iterator()
-        while (packIter.hasNext()){
+        while (packIter.hasNext()) {
             val entry = packIter.next()
             entry.value.atlas = resourceManager.get(entry.value.atlasName, TextureAtlas::class.java)
         }
     }
 
-    fun addPack(packName: String, fileName: String){
+    fun addPack(packName: String, fileName: String) {
         packMap[packName] = TexturePack(fileName)
         resourceManager.load(fileName, TextureAtlas::class.java)
     }
 
-    fun findTexture(packName: String, regionName: String, index: Int = -1): TextureRegion{
-        if(index == -1) {
+    fun findTexture(packName: String, regionName: String, index: Int = -1): TextureRegion {
+        if (index == -1) {
             return packMap[packName]!!.atlas!!.findRegion(regionName)
         } else {
             return packMap[packName]!!.atlas!!.findRegion(regionName, index)
         }
     }
 
-    override fun dispose(){
+    override fun dispose() {
         resourceManager.dispose()
     }
 

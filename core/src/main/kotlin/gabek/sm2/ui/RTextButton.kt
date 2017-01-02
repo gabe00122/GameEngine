@@ -5,7 +5,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 /**
  * @author Gabriel Keith
  */
-class RTextButton(text: String): VisTextButton(text, "toggle") {
+class RTextButton(text: String) : VisTextButton(text, "toggle") {
 
 
 }

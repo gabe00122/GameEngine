@@ -13,7 +13,7 @@ import gabek.sm2.components.SpriteCom
  */
 class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
         AnimationCom::class.java, SpriteCom::class.java, CharacterStateCom::class.java, CharacterAnimatorCom::class.java
-        )){
+)) {
 
     private lateinit var animationMapper: ComponentMapper<AnimationCom>
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
@@ -22,7 +22,7 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
 
     override fun processSystem() {
         val entities = entityIds
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
 
             val state = characterStateMapper[entity]
@@ -32,26 +32,26 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
 
             sprite.flipX = state.facingRight
 
-            if(animation.currentAnimation == null){
+            if (animation.currentAnimation == null) {
                 animation.currentAnimation = animator.stillAnimation
             }
 
-            if(state.onGround && state.running && canSwitchRunning(animation, animator, state)) {
+            if (state.onGround && state.running && canSwitchRunning(animation, animator, state)) {
                 animation.currentAnimation = animator.runningAnimation
                 animation.reset()
             }
 
-            if(state.onGround && !state.running && canSwitchStill(animation, animator, state)){
+            if (state.onGround && !state.running && canSwitchStill(animation, animator, state)) {
                 animation.currentAnimation = animator.stillAnimation
                 animation.reset()
             }
 
-            if(!state.onGround && animation.currentAnimation === animator.runningAnimation){
+            if (!state.onGround && animation.currentAnimation === animator.runningAnimation) {
                 animation.currentAnimation = animator.stillAnimation
                 animation.reset()
             }
 
-            if(!state.onGround && state.jumpTimeOut > 0 && animation.currentAnimation !== animator.jumpingAnimation){
+            if (!state.onGround && state.jumpTimeOut > 0 && animation.currentAnimation !== animator.jumpingAnimation) {
                 animation.currentAnimation = animator.jumpingAnimation
                 animation.reset()
             }

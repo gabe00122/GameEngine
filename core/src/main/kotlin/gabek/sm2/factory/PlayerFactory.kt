@@ -3,7 +3,6 @@ package gabek.sm2.factory
 import com.artemis.ArchetypeBuilder
 import com.artemis.World
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.utils.Disposable
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
@@ -11,19 +10,17 @@ import gabek.sm2.Assets
 import gabek.sm2.components.*
 import gabek.sm2.graphics.Animation
 import gabek.sm2.input.PlayerInput
-import gabek.sm2.physics.RBody
 import gabek.sm2.physics.RCircle
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
-import gabek.sm2.systems.Box2dSystem
 
 /**
  * @author Gabriel Keith
  */
-class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
+class PlayerFactory(kodein: Kodein, val world: World) : Disposable {
     private val width = .5f
     private val height = 1f
-    private val bodyHeight = height - width/2f
+    private val bodyHeight = height - width / 2f
 
     val arch = ArchetypeBuilder().add(
             TranslationCom::class.java,
@@ -49,7 +46,7 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
     private val playerInputMapper = world.getMapper(PlayerInputCom::class.java)
     private val characterLegsMapper = world.getMapper(CharacterPeripheryCom::class.java)
 
-    init{
+    init {
         runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 0))
         runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 1))
         runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 2))
@@ -60,7 +57,7 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         jumpingAnimation.frames.add(assets.findTexture("actors", "fred_jumping", 1))
     }
 
-    fun create(x: Float, y: Float, input: PlayerInput): Int{
+    fun create(x: Float, y: Float, input: PlayerInput): Int {
         val id = world.create(arch)
 
         val trans = transMapper[id]
@@ -83,7 +80,7 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
 
         sprite.width = width
         sprite.height = height
-        sprite.offsetY = -width/4
+        sprite.offsetY = -width / 4
 
         //rBody
         bodyComp.rBody.addFixture(RFixture(RPolygon(width, bodyHeight), density = 1f))
@@ -96,16 +93,16 @@ class PlayerFactory(kodein: Kodein, val world: World) : Disposable{
         //input
         playerInput.playerInput = input
 
-        legs.body.addFixture(RFixture(RCircle(width/2f), density = 0.5f, restitution = 0f, friction = 1f))
+        legs.body.addFixture(RFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f))
 
         legs.body.bodyType = BodyDef.BodyType.DynamicBody
-        legs.body.setPosition(x, y - bodyHeight/2)
+        legs.body.setPosition(x, y - bodyHeight / 2)
 
         legs.motor.bodyA = bodyComp.rBody
         legs.motor.bodyB = legs.body
         legs.motor.isMoterEnabled = true
         legs.motor.maxTorque = 5f
-        legs.motor.anchorAY = -bodyHeight/2
+        legs.motor.anchorAY = -bodyHeight / 2
 
         return id
     }

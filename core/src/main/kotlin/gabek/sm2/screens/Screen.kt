@@ -13,14 +13,14 @@ abstract class Screen : Disposable {
         internal set
     val root: WidgetGroup = WidgetGroup()
 
-    init{
+    init {
         root.setFillParent(true)
     }
 
-    open fun update(delta: Float){}
-    open fun render(batch: SpriteBatch){}
-    open fun resize(width: Int, height: Int){}
-    open fun show(){}
-    open fun hide(){}
+    open fun update(delta: Float) {}
+    open fun render(batch: SpriteBatch) {}
+    open fun resize(width: Int, height: Int) {}
+    open fun show() {}
+    open fun hide() {}
     override fun dispose() {}
 }

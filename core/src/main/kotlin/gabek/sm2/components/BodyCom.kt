@@ -8,6 +8,6 @@ import gabek.sm2.physics.RBody
  * @author Gabriel Keith
  */
 @DelayedComponentRemoval
-class BodyCom : Component(){
+class BodyCom : Component() {
     var rBody = RBody()
 }

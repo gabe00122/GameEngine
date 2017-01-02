@@ -8,6 +8,6 @@ import gabek.sm2.input.PlayerInput
  * @author Gabriel Keith
  */
 @PooledWeaver
-class PlayerInputCom : Component(){
+class PlayerInputCom : Component() {
     @JvmField @Transient var playerInput: PlayerInput? = null
 }

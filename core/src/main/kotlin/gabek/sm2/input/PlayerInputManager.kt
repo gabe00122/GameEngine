@@ -1,23 +1,20 @@
 package gabek.sm2.input
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.controllers.*
-import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.ControllerAdapter
+import com.badlogic.gdx.controllers.Controllers
 import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.instance
-import ktx.collections.isNotEmpty
 
 /**
  * @author Gabriel Keith
  */
-class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
+class PlayerInputManager(val kodein: Kodein) : PlayerInput() {
     private val inputHandler = InputHandler()
     val inputProcessor: InputProcessor get() = inputHandler
 
-    private val keyBindings = Array<KeyBinding?>(255, {null})
+    private val keyBindings = Array<KeyBinding?>(255, { null })
 
     private val playerInputs = mutableListOf<PlayerInput>()
 
@@ -38,7 +35,7 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
         bindKey(1, Actions.SELECT, Input.Keys.SPACE)
 
         Controllers.addListener(inputHandler)
-        for(controller in Controllers.getControllers()){
+        for (controller in Controllers.getControllers()) {
             val pi = ControllerPlayerInput()
             controller.addListener(pi)
             playerInputs.add(pi)
@@ -46,7 +43,7 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
     }
 
     override fun update(delta: Float) {
-        for(playerInput in playerInputs){
+        for (playerInput in playerInputs) {
             playerInput.update(delta)
         }
     }
@@ -54,8 +51,8 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
     override fun pollAction(actionId: Int): Boolean = pollAllInputs(actionId) != null
 
     fun pollAllInputs(actionId: Int): PlayerInput? {
-        for (playerInput in playerInputs){
-            if(playerInput.pollAction(actionId)){
+        for (playerInput in playerInputs) {
+            if (playerInput.pollAction(actionId)) {
                 return playerInput
             }
         }
@@ -65,11 +62,11 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
 
     val playerInputSize: Int get() = playerInputs.size
 
-    fun getPlayerInput(playerInputId: Int): PlayerInput{
+    fun getPlayerInput(playerInputId: Int): PlayerInput {
         return playerInputs[playerInputId]
     }
 
-    fun bindKey(playerInputId: Int, actionId: Int, keycode: Int){
+    fun bindKey(playerInputId: Int, actionId: Int, keycode: Int) {
         val playerInput = playerInputs[playerInputId] as KeyboardPlayerInput
 
         keyBindings[keycode] = KeyBinding(playerInput, actionId)
@@ -77,10 +74,10 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
 
     private class KeyBinding(val playerInput: KeyboardPlayerInput, val actionId: Int)
 
-    private inner class InputHandler : ControllerAdapter(), InputProcessor{
+    private inner class InputHandler : ControllerAdapter(), InputProcessor {
         override fun keyUp(keycode: Int): Boolean {
             val binding = keyBindings[keycode]
-            if(binding != null){
+            if (binding != null) {
                 binding.playerInput.keyUp(binding.actionId)
                 return true
             }
@@ -90,7 +87,7 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput(){
 
         override fun keyDown(keycode: Int): Boolean {
             val binding = keyBindings[keycode]
-            if(binding != null){
+            if (binding != null) {
                 binding.playerInput.keyDown(binding.actionId)
                 return true
             }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
 
@@ -18,10 +17,10 @@ class DisplayBuffer : Widget(), Disposable {
         //primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, )
     }
 
-    private fun rebuildBuffers(){
+    private fun rebuildBuffers() {
         val oldBuffer = primaryBuffer
 
-        if(oldBuffer == null || Math.abs(oldBuffer.width - width) > 10.0 || Math.abs(oldBuffer.height - height) > 10.0) {
+        if (oldBuffer == null || Math.abs(oldBuffer.width - width) > 10.0 || Math.abs(oldBuffer.height - height) > 10.0) {
             primaryBuffer?.dispose()
 
             //TODO replace me
@@ -35,17 +34,17 @@ class DisplayBuffer : Widget(), Disposable {
         }
     }
 
-    fun beginPrimaryBuffer(){
+    fun beginPrimaryBuffer() {
         rebuildBuffers()
         primaryBuffer?.begin()
     }
 
-    fun endPrimaryBuffer(){
+    fun endPrimaryBuffer() {
         primaryBuffer?.end()
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        primaryBuffer?.let{
+        primaryBuffer?.let {
             batch.draw(it.colorBufferTexture, x, y, width, height, 0, 0, it.width, it.height, false, true)
         }
     }

@@ -3,7 +3,6 @@ package gabek.sm2.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.math.MathUtils
 import gabek.sm2.components.*
 
 /**
@@ -50,7 +49,7 @@ class CharacterControllerSystem : BaseEntitySystem(
                 body.rBody.applyForceToCenter(damp, 0f, false)
             }
 
-            if(state.jumpTimeOut > 0) {
+            if (state.jumpTimeOut > 0) {
                 state.jumpTimeOut -= world.delta
             }
 
@@ -63,11 +62,11 @@ class CharacterControllerSystem : BaseEntitySystem(
                 state.facingRight = false
                 state.running = true
 
-                if(state.onGround) {
+                if (state.onGround) {
                     periphery.motor.motorSpeed = 360f * 2f
                 } else {
                     periphery.motor.motorSpeed = 0f
-                    if(body.rBody.linearVelocityX > -4){
+                    if (body.rBody.linearVelocityX > -4) {
                         body.rBody.applyForceToCenter(-200f * world.delta, 0f)
                     }
                 }
@@ -75,11 +74,11 @@ class CharacterControllerSystem : BaseEntitySystem(
                 state.facingRight = true
                 state.running = true
 
-                if(state.onGround) {
+                if (state.onGround) {
                     periphery.motor.motorSpeed = -360f * 2f
                 } else {
                     periphery.motor.motorSpeed = 0f
-                    if(body.rBody.linearVelocityX < 4) {
+                    if (body.rBody.linearVelocityX < 4) {
                         body.rBody.applyForceToCenter(200f * world.delta, 0f)
                     }
                 }
@@ -90,7 +89,7 @@ class CharacterControllerSystem : BaseEntitySystem(
         }
     }
 
-    private fun jump(entity: Int){
+    private fun jump(entity: Int) {
         characterStateMapper[entity].jumpTimeOut = 0.2f
 
         val body = bodyMapper[entity].rBody

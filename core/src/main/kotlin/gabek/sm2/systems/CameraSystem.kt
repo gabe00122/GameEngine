@@ -4,22 +4,21 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.MathUtils
 import gabek.sm2.components.CameraCom
 import gabek.sm2.components.TranslationCom
 
 /**
  * @author Gabriel Keith
  */
-class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java, TranslationCom::class.java)){
+class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java, TranslationCom::class.java)) {
     private lateinit var cameraMapper: ComponentMapper<CameraCom>
     private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
     override fun processSystem() {}
 
-    fun updateProjection(ortho: OrthographicCamera, progress: Float, screenWidth: Float, screenHeight: Float){
+    fun updateProjection(ortho: OrthographicCamera, progress: Float, screenWidth: Float, screenHeight: Float) {
         val entities = entityIds
-        if(!entities.isEmpty){
+        if (!entities.isEmpty) {
             val entity = entities[0]
             val camera = cameraMapper.get(entity)
             val trans = translationMapper.get(entity)

@@ -12,11 +12,11 @@ class TileDefinitions(val kodein: Kodein) {
 
     private val tileTypes = mutableListOf<TileType>()
 
-    operator fun get(typeId: Int): TileType{
+    operator fun get(typeId: Int): TileType {
         return tileTypes[typeId]
     }
 
-    operator fun get(tileReference: TileReference): TileType{
+    operator fun get(tileReference: TileReference): TileType {
         return tileTypes[tileReference.typeId]
     }
 

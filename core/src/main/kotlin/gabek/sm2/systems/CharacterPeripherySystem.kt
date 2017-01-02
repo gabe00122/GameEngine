@@ -8,7 +8,7 @@ import gabek.sm2.components.CharacterPeripheryCom
 /**
  * @author Gabriel Keith
  */
-class CharacterPeripherySystem : BaseEntitySystem(Aspect.all(CharacterPeripheryCom::class.java)){
+class CharacterPeripherySystem : BaseEntitySystem(Aspect.all(CharacterPeripheryCom::class.java)) {
     private lateinit var box2d: Box2dSystem
     private lateinit var legMapper: ComponentMapper<CharacterPeripheryCom>
 
@@ -17,7 +17,7 @@ class CharacterPeripherySystem : BaseEntitySystem(Aspect.all(CharacterPeripheryC
     override fun inserted(entityId: Int) {
         val body = legMapper[entityId].body
 
-        for(fixture in body.fixutres){
+        for (fixture in body.fixutres) {
             fixture.colisionCallback = entityId
         }
         body.initialise(box2d.box2dWorld)

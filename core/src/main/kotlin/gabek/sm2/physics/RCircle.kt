@@ -2,7 +2,6 @@ package gabek.sm2.physics
 
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.CircleShape
-import gabek.sm2.physics.RShape
 
 /**
  * @author Gabriel Keith
@@ -12,13 +11,13 @@ class RCircle : RShape {
     var y = 0f
     var radius: Float = 0f
 
-    constructor(): super()
+    constructor() : super()
 
-    constructor(radius: Float){
+    constructor(radius: Float) {
         this.radius = radius
     }
 
-    constructor(x: Float, y: Float, radius: Float){
+    constructor(x: Float, y: Float, radius: Float) {
         this.x = x
         this.y = y
         this.radius = radius

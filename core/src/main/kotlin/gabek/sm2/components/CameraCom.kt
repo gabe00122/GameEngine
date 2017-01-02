@@ -7,7 +7,7 @@ import com.artemis.annotations.PooledWeaver
  * @author Gabriel Keith
  */
 @PooledWeaver
-class CameraCom : Component(){
+class CameraCom : Component() {
     @JvmField var viewportWidth: Float = 0f
     @JvmField var viewportHeight: Float = 0f
 }

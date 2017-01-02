@@ -3,7 +3,7 @@ package gabek.sm2.input
 /**
  * @author Gabriel Keith
  */
-object Actions{
+object Actions {
     val SIZE = 5
 
     val ANY = -1
