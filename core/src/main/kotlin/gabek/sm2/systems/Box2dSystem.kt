@@ -34,11 +34,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
                     override fun inserted(entities: IntBag) {
                         for (i in 0 until entities.size()) {
                             val body = bodyMapper[entities[i]].rBody
-                            for (fixture in body.fixutres) {
-                                fixture.colisionCallback = entities[i]
-                            }
-
-                            body.initialise(box2dWorld)
+                            body.initialise(box2dWorld, entities[i])
                         }
                     }
 

@@ -16,26 +16,24 @@ import com.kotcrab.vis.ui.widget.VisLabel
  * @author Gabriel Keith
  */
 class ScreenManager(val kodein: Kodein) : Disposable {
-    val batch: SpriteBatch
+    val batch: SpriteBatch = SpriteBatch()
     val stage: Stage
     val inputProcessor: InputProcessor get() = stage
 
-    private val screenBuilderMap: MutableMap<String, () -> Screen>
-    private var currentScreen: Screen? = null
+    private val screenBuilderMap = mutableMapOf<String, () -> Screen>()
+    var currentScreen: Screen? = null
+        private set
 
     private val fpsContainer: Container<VisLabel>
-    private val fpsLabel: VisLabel
+    private val fpsLabel: VisLabel = VisLabel("", Color.RED)
 
     init {
-        batch = SpriteBatch()
         val viewport = ScreenViewport()
         viewport.unitsPerPixel = 0.5f
 
         stage = Stage(viewport, batch)
-        screenBuilderMap = mutableMapOf()
 
         //fps tracking
-        fpsLabel = VisLabel("", Color.RED)
 
         fpsContainer = Container(fpsLabel)
         fpsContainer.setFillParent(true)

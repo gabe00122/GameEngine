@@ -31,6 +31,7 @@ class Core : ApplicationAdapter() {
             bind<Assets>() with singleton { Assets() }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton { buildWorld(this) }
+            bind<WorldSetup>() with singleton { WorldSetup() }
         }
         kodein.instance<Assets>().finish()
 

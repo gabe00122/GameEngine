@@ -17,7 +17,7 @@ import gabek.sm2.physics.RPolygon
 /**
  * @author Gabriel Keith
  */
-class PlayerFactory(kodein: Kodein, val world: World) : Disposable {
+class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
     private val width = .5f
     private val height = 1f
     private val bodyHeight = height - width / 2f

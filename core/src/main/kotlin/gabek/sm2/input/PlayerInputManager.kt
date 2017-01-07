@@ -27,6 +27,7 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput() {
         bindKey(0, Actions.LEFT, Input.Keys.LEFT)
         bindKey(0, Actions.RIGHT, Input.Keys.RIGHT)
         bindKey(0, Actions.SELECT, Input.Keys.ENTER)
+        bindKey(0, Actions.ESCAPE, Input.Keys.ESCAPE)
 
         bindKey(1, Actions.UP, Input.Keys.W)
         bindKey(1, Actions.DOWN, Input.Keys.S)

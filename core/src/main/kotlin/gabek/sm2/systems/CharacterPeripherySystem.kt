@@ -17,10 +17,7 @@ class CharacterPeripherySystem : BaseEntitySystem(Aspect.all(CharacterPeripheryC
     override fun inserted(entityId: Int) {
         val body = legMapper[entityId].body
 
-        for (fixture in body.fixutres) {
-            fixture.colisionCallback = entityId
-        }
-        body.initialise(box2d.box2dWorld)
+        body.initialise(box2d.box2dWorld, entityId)
     }
 
     override fun removed(entityId: Int) {

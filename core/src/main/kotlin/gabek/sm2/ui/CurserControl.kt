@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.Assets
@@ -62,18 +63,14 @@ class CurserControl(val kodein: Kodein) : Actor() {
                 x += speed * delta
             }
 
-            val actor = stage.hit(x + size / 2, y + size / 2, true)
-            if (actor is Button) {
-                actor.isChecked = true
-            }
-            if (playerInput.pollAction(Actions.SELECT)) {
 
+            if (playerInput.pollAction(Actions.SELECT)) {
+                select(size / 2, size / 2)
             }
         }
 
         private fun select(offsetX: Float, offsetY: Float) {
-            val actor = stage.hit(x + offsetX, y + offsetY, true)
-
+            stage.hit(x + offsetX, y + offsetY, true)?.fire(ChangeListener.ChangeEvent())
         }
 
         fun draw(batch: Batch) {

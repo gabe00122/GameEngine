@@ -21,7 +21,7 @@ class MainMenu(val kodein: Kodein) : Screen() {
 
         val startBut = VisTextButton("Start", "toggle")
         startBut.onChange { inputEvent, visTextButton ->
-            manager.show("playing")
+            manager.show("startGame")
         }
 
         val settingsBut = VisTextButton("Settings", "toggle")

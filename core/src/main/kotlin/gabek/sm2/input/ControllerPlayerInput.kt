@@ -27,6 +27,9 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
         bindAxis(1, false, 0.5f, Actions.DOWN)
         bindAxis(0, true, 0.5f, Actions.LEFT)
         bindAxis(0, false, 0.5f, Actions.RIGHT)
+
+        bindButton(1, Actions.SELECT)
+        bindButton(9, Actions.ESCAPE)
     }
 
     override fun pollAction(actionId: Int): Boolean {
@@ -64,6 +67,7 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
     }
 
     override fun buttonDown(controller: Controller, buttonCode: Int): Boolean {
+        println(buttonCode)
         val actionId = buttonBindings.getOrNull(buttonCode)
 
         if (actionId != null && actionId != -1) {
@@ -93,12 +97,12 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
 
     override fun povMoved(controller: Controller?, povCode: Int, value: PovDirection?): Boolean = false
 
-    override fun xSliderMoved(controller: Controller?, sliderCode: Int, value: Boolean): Boolean = false
-    override fun ySliderMoved(controller: Controller?, sliderCode: Int, value: Boolean): Boolean = false
+    override fun xSliderMoved(controller: Controller, sliderCode: Int, value: Boolean): Boolean = false
+    override fun ySliderMoved(controller: Controller, sliderCode: Int, value: Boolean): Boolean = false
 
-    override fun connected(controller: Controller?) {
+    override fun connected(controller: Controller) {
     }
 
-    override fun disconnected(controller: Controller?) {
+    override fun disconnected(controller: Controller) {
     }
 }

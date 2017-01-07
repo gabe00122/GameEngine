@@ -220,6 +220,14 @@ class RBody {
         }
     }
 
+    fun initialise(box2dWorld: World, collisionCallback: Int){
+        for (fixture in _fixutres) {
+            fixture.colisionCallback = collisionCallback
+        }
+
+        initialise(box2dWorld)
+    }
+
     fun store(box2dWorld: World) {
         for (joint in joints) {
             if (joint.isInitialised) {
