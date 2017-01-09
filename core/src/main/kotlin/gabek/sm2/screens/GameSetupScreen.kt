@@ -55,7 +55,6 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
     }
 
     override fun update(delta: Float) {
-        inputManager.update(delta)
         val input = inputManager.pollAllInputs(Actions.SELECT)
 
         if (input != null && !playerInputSet.contains(input)) {
@@ -98,9 +97,9 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
                 if(value != null) {
                     add("Player ${index + 1}").row()
 
-                    val control = MenuControl(VisTextButton("Ready", "toggle"), VisTextButton("Leave", "toggle"))
+                    //val control = MenuControl(VisTextButton("Ready", "toggle"), VisTextButton("Leave", "toggle"))
                     //control.playerInput = playerInput
-                    add(control)
+                    //add(control)
                 } else {
                     add("Empty")
                 }

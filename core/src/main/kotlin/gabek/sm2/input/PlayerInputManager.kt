@@ -43,12 +43,6 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput() {
         }
     }
 
-    override fun update(delta: Float) {
-        for (playerInput in playerInputs) {
-            playerInput.update(delta)
-        }
-    }
-
     override fun pollAction(actionId: Int): Boolean = pollAllInputs(actionId) != null
 
     fun pollAllInputs(actionId: Int): PlayerInput? {

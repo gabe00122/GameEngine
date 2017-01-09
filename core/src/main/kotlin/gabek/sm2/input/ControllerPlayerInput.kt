@@ -36,8 +36,6 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
         return currentState[actionId] == true
     }
 
-    override fun update(delta: Float) {}
-
     fun bindButton(buttonCode: Int, actionId: Int) {
         while (buttonBindings.size - 1 <= buttonCode) {
             buttonBindings.add(-1)

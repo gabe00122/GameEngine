@@ -1,6 +1,8 @@
 package gabek.sm2.tilemap
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.World
 import com.github.salomonbrys.kodein.Kodein
 import gabek.sm2.physics.RBody
@@ -36,9 +38,15 @@ class TileMap(val kodein: Kodein) {
     }
 
 
-    fun render(batch: SpriteBatch) {
-        for (y in 0 until grid.h) {
-            for (x in 0 until grid.w) {
+    fun render(batch: SpriteBatch, culling: Rectangle) {
+        val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, grid.w)
+        val x2 = MathUtils.clamp(MathUtils.ceil((culling.x + culling.width) / tileSize), 0, grid.w)
+
+        val y1 = MathUtils.clamp(MathUtils.floor(culling.y / tileSize), 0, grid.h)
+        val y2 = MathUtils.clamp(MathUtils.ceil((culling.y + culling.height) / tileSize), 0 , grid.h)
+
+        for (y in y1 until y2) {
+            for (x in x1 until x2) {
                 val tile = grid.get(x, y)
                 val type = definitions[tile.typeId]
                 batch.draw(type.texture, x * tileSize, y * tileSize, tileSize, tileSize)

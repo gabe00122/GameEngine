@@ -8,10 +8,9 @@ import com.artemis.utils.IntBag
 /**
  * @author Gabriel Keith
  */
-@PooledWeaver
 class CameraTargetsCom : Component() {
     @JvmField @EntityId val targets = IntBag()
 
-    @JvmField var padWidth = 5f
-    @JvmField var padHeight = 5f
+    var padWidth = 5f
+    var padHeight = 5f
 }

@@ -22,8 +22,6 @@ class PlayerInputSystem : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java
             val playerInput = playerInputMapper[id].playerInput
 
             if (playerInput != null) {
-                playerInput.update(world.delta)
-
                 char.moveUp = playerInput.pollAction(Actions.UP)
                 char.moveDown = playerInput.pollAction(Actions.DOWN)
                 char.moveLeft = playerInput.pollAction(Actions.LEFT)

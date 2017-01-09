@@ -18,5 +18,6 @@ fun getDefaultConfig(): Lwjgl3ApplicationConfiguration{
 
     config.setTitle("SpaceMonk2")
     config.setWindowedMode(800, 800)
+
     return config
 }

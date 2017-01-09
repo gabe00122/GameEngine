@@ -60,6 +60,10 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
 
                 trans.x = (x1 + x2) / 2
                 trans.y = (y1 + y2) / 2
+
+                camera.pViewportWidth = camera.viewportWidth
+                camera.pViewportHeight = camera.viewportHeight
+
                 camera.viewportWidth = x2 - x1
                 camera.viewportHeight = y2 - y1
             }

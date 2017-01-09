@@ -38,9 +38,10 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(CameraSystem())
     config.setSystem(CameraTrackingSystem())
 
+    config.setSystem(RenderSystem())
     config.setSystem(CharacterAnimatorSystem())
     config.setSystem(AnimationSystem())
-    config.setSystem(RenderSystem())
+    config.setSystem(SpriteRenderSystem())
 
 
     return World(config)

@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL30
+import com.badlogic.gdx.graphics.profiling.GLProfiler
 import com.badlogic.gdx.physics.box2d.Box2D
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
@@ -48,6 +49,7 @@ class Core : ApplicationAdapter() {
 
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT)
         screenManager.render()
+        GLProfiler.reset()
     }
 
     override fun resize(width: Int, height: Int) {

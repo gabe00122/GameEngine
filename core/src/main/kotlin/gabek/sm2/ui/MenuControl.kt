@@ -95,8 +95,6 @@ class MenuControl : VisTable {
 
         val input = playerInput
         if (input != null) {
-            input.update(delta)
-
             if (!input.pollAction(Actions.UP) && !input.pollAction(Actions.DOWN)) {
                 delay = 0f
             }

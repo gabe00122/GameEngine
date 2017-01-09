@@ -14,9 +14,11 @@ class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java, Translat
     private lateinit var cameraMapper: ComponentMapper<CameraCom>
     private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
+    private val ortho = OrthographicCamera()
+
     override fun processSystem() {}
 
-    fun updateProjection(ortho: OrthographicCamera, progress: Float, screenWidth: Float, screenHeight: Float) {
+    fun updateProjection(progress: Float, screenWidth: Float, screenHeight: Float): OrthographicCamera {
         val entities = entityIds
         if (!entities.isEmpty) {
             val entity = entities[0]
@@ -24,8 +26,8 @@ class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java, Translat
             val trans = translationMapper.get(entity)
 
             ortho.position.set(trans.lerpX(progress), trans.lerpY(progress), 0f)
-            ortho.viewportWidth = camera.viewportWidth
-            ortho.viewportHeight = camera.viewportHeight
+            ortho.viewportWidth = camera.lerpViewportWidth(progress)
+            ortho.viewportHeight = camera.lerpViewportHeight(progress)
 
             //expand viewport.
             val xScale = screenWidth / ortho.viewportWidth
@@ -36,7 +38,8 @@ class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java, Translat
                 ortho.viewportWidth *= (xScale / yScale)
             }
 
-            ortho.update()
+            ortho.update(false)
         }
+        return ortho
     }
 }

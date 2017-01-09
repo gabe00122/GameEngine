@@ -1,47 +1,46 @@
 package gabek.sm2.systems
 
-import com.artemis.Aspect
-import com.artemis.BaseEntitySystem
-import com.artemis.ComponentMapper
+import com.artemis.BaseSystem
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.GL30
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import gabek.sm2.components.SpriteCom
-import gabek.sm2.components.TranslationCom
+import com.badlogic.gdx.math.Rectangle
+import gabek.sm2.graphics.DisplayBuffer
 
 /**
  * @author Gabriel Keith
  */
-class RenderSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, TranslationCom::class.java)) {
+class RenderSystem: BaseSystem(){
+    private lateinit var cameraSystem: CameraSystem
+    private lateinit var spriteRenderSystem: SpriteRenderSystem
     private lateinit var tileMapSystem: TileMapSystem
-    private lateinit var spriteMapper: ComponentMapper<SpriteCom>
-    private lateinit var translationMapper: ComponentMapper<TranslationCom>
+
+    private val culling = Rectangle()
 
     override fun processSystem() {}
 
-    fun draw(batch: SpriteBatch, progress: Float) {
-        //draw tiles
-        tileMapSystem.tileMap.render(batch)
+    fun render(buffer: DisplayBuffer, batch: SpriteBatch, progress: Float){
+        val ortho = cameraSystem.updateProjection(progress, buffer.width, buffer.height)
+        updateCulling(ortho)
 
-        //draw entity
-        val entities = entityIds
-        for (i in 0 until entities.size()) {
-            val entity = entities[i]
-            val spriteComp = spriteMapper.get(entity)
-            val transComp = translationMapper.get(entity)
+        batch.projectionMatrix = ortho.projection
+        batch.transformMatrix = ortho.view
 
-            val region = spriteComp.texture
-            if (region != null) {
-                val flipX = spriteComp.flipX
-                val flipY = spriteComp.flipY
+        buffer.beginPrimaryBuffer()
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
+        batch.begin()
 
-                region.flip(flipX, flipY)
-                batch.draw(spriteComp.texture,
-                        transComp.lerpX(progress) - spriteComp.width / 2 + spriteComp.offsetX,
-                        transComp.lerpY(progress) - spriteComp.height / 2 + spriteComp.offsetY,
-                        spriteComp.width / 2, spriteComp.height / 2,
-                        spriteComp.width, spriteComp.height,
-                        1f, 1f, transComp.rotation)
-                region.flip(flipX, flipY)
-            }
-        }
+        tileMapSystem.tileMap.render(batch, culling)
+        spriteRenderSystem.render(batch, culling, progress)
+
+        batch.end()
+        buffer.endPrimaryBuffer()
+    }
+
+    private fun updateCulling(ortho: OrthographicCamera){
+        culling.set(ortho.position.x - ortho.viewportWidth / 2f,
+                ortho.position.y - ortho.viewportHeight / 2f,
+                ortho.viewportWidth, ortho.viewportHeight)
     }
 }
