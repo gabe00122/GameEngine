@@ -77,6 +77,12 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
         val entityB = fixtureB.colisionCallback
 
         //println(entityA)
+        val manifold = contact.worldManifold
+
+        val contactPoints = arrayOf(Vector2(), Vector2())
+        contactPoints[0].set(manifold.points[0])
+        contactPoints[1].set(manifold.points[1])
+
         if (entityA != -1 && contactMapper.has(entityA)) {
             contactMapper[entityA].contacts.add(RContact(bodyA, fixtureA, entityB, bodyB, fixtureB))
         }
@@ -88,41 +94,51 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
 
     override fun endContact(contact: Contact) {
         val fixtureA = contact.fixtureA.userData as RFixture
-        val bodyA = fixtureA.body!!
         val entityA = fixtureA.colisionCallback
 
         val fixtureB = contact.fixtureB.userData as RFixture
-        val bodyB = fixtureB.body!!
         val entityB = fixtureB.colisionCallback
 
         if (entityA != -1 && contactMapper.has(entityA)) {
             val contacts = contactMapper[entityA].contacts
-            for (i in 0 until contacts.size) {
-                val c = contacts[i]
-                if (c.body === bodyA && c.fixture === fixtureA &&
-                        c.otherId == entityB && c.otherBody === bodyB && c.otherFixture === fixtureB) {
-                    contacts.removeIndex(i)
-                    break
-                }
-            }
+            contacts.removeIndex(findRContactIndex(contacts, fixtureA, fixtureB))
         }
 
         if (entityB != -1 && contactMapper.has(entityB)) {
             val contacts = contactMapper[entityB].contacts
-            for (i in 0 until contacts.size) {
-                val c = contacts[i]
-                if (c.body === bodyB && c.fixture === fixtureB &&
-                        c.otherId == entityA && c.otherBody === bodyA && c.otherFixture === fixtureA) {
-                    contacts.removeIndex(i)
-                    break
-                }
-            }
+            contacts.removeIndex(findRContactIndex(contacts, fixtureB, fixtureA))
         }
     }
 
     override fun preSolve(contact: Contact, oldManifold: Manifold) {
+        val fixtureA = contact.fixtureA.userData as RFixture
+        val entityA = fixtureA.colisionCallback
+
+        val fixtureB = contact.fixtureB.userData as RFixture
+        val entityB = fixtureB.colisionCallback
+
+        if(entityA != -1 && contactMapper.has(entityA)){
+            findRContact(contactMapper[entityA].contacts, fixtureA, fixtureB).update(contact)
+        }
+
+        if(entityB != -1 && contactMapper.has(entityB)){
+            findRContact(contactMapper[entityB].contacts, fixtureB, fixtureA).update(contact)
+        }
     }
 
     override fun postSolve(contact: Contact, impulse: ContactImpulse) {
     }
+
+    fun findRContactIndex(rContacts: com.badlogic.gdx.utils.Array<RContact>, fixtureA: RFixture, fixtureB: RFixture): Int{
+        for (i in 0 until rContacts.size) {
+            val c = rContacts[i]
+            if (c.fixture === fixtureA && c.otherFixture === fixtureB) {
+                return i
+            }
+        }
+        throw IllegalStateException()
+    }
+
+    fun findRContact(rContacts: com.badlogic.gdx.utils.Array<RContact>, fixtureA: RFixture, fixtureB: RFixture): RContact
+            = rContacts[findRContactIndex(rContacts, fixtureA, fixtureB)]
 }

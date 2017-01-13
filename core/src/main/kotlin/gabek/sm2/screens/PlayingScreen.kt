@@ -5,8 +5,10 @@ import com.artemis.World
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Container
+import com.badlogic.gdx.utils.Align
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
+import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.PlayerInfo
@@ -18,6 +20,8 @@ import gabek.sm2.factory.PlayerFactory
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.input.Actions
 import gabek.sm2.systems.Box2dSystem
+import gabek.sm2.systems.CameraSystem
+import gabek.sm2.systems.HealthRenderSystem
 import gabek.sm2.systems.RenderSystem
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.UpdateManager
@@ -28,14 +32,12 @@ import ktx.actors.onChange
  */
 class PlayingScreen(val kodein: Kodein) : Screen() {
     private val display = DisplayBuffer()
-    private val box2dDebug = Box2DDebugRenderer(true, true, false, true, false, false)
 
     private val world: World = kodein.instance()
     private val worldSetup: WorldSetup = kodein.instance()
 
     private val updateManager = UpdateManager(world, 60f)
     private val renderSystem: RenderSystem
-    private val box2dSystem: Box2dSystem
 
     private val pauseWindow: VisWindow = VisWindow("Pause")
     private val pauseContainer = Container(pauseWindow)
@@ -43,7 +45,6 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
 
     init {
         renderSystem = world.getSystem(RenderSystem::class.java)
-        box2dSystem = world.getSystem(Box2dSystem::class.java)
 
         // pause menu
         pauseContainer.setFillParent(true)
@@ -76,6 +77,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
 
         val cam = cameraFactory.create(5f, 5f, 10f, 12f)
 
+        val healthWidgetSystem = world.getSystem(HealthRenderSystem::class.java)
         for (i in 0 until worldSetup.players.size) {
             val playerInfo: PlayerInfo = worldSetup.players[i]
 
@@ -127,6 +129,5 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
 
     override fun dispose() {
         display.dispose()
-        box2dDebug.dispose()
     }
 }

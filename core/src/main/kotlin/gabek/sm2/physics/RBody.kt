@@ -3,6 +3,7 @@ package gabek.sm2.physics
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.World
 import gabek.sm2.physics.joints.RJoint
 import java.util.*
@@ -179,8 +180,8 @@ class RBody {
         body?.applyForceToCenter(forceX, forceY, wakeBody)
     }
 
-    fun applyLinearInpulse(impluseX: Float, impluseY: Float, pointX: Float, pointY: Float, wake: Boolean = true) {
-        body?.applyLinearImpulse(impluseX, impluseY, pointX, pointY, wake)
+    fun applyLinearImpulse(impulseX: Float, impulseY: Float, pointX: Float, pointY: Float, wake: Boolean = true) {
+        body?.applyLinearImpulse(impulseX, impulseY, pointX, pointY, wake)
     }
 
     fun setPosition(x: Float, y: Float) {

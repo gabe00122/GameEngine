@@ -6,42 +6,49 @@ filter: Nearest,Nearest
 repeat: none
 fred_jumping
   rotate: false
-  xy: 36, 2
+  xy: 36, 8
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 0
 fred_jumping
   rotate: false
-  xy: 54, 2
+  xy: 54, 8
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 1
 fred_running
   rotate: false
-  xy: 72, 2
+  xy: 72, 8
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 0
 fred_running
   rotate: false
-  xy: 90, 2
+  xy: 90, 8
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 1
 fred_running
   rotate: false
-  xy: 108, 2
+  xy: 108, 8
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: 2
-smiles
+rect
   rotate: false
   xy: 2, 2
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+smiles
+  rotate: false
+  xy: 2, 8
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

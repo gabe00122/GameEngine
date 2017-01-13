@@ -4,6 +4,8 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.sm2.components.*
+import gabek.sm2.physics.RBody
+import gabek.sm2.physics.RContact
 
 /**
  * @author Gabriel Keith
@@ -32,34 +34,39 @@ class CharacterControllerSystem : BaseEntitySystem(
             val control = characterControllerMapper[entity]
             val periphery = characterPeripheryMapper[entity]
             val state = characterStateMapper[entity]
-
             val body = bodyMapper[entity]
             val contact = contactMapper[entity]
 
             state.onGround = false
+
+            var groundContact: RContact? = null
             for (c in contact.contacts) {
                 if (c.body === periphery.body) {
-                    state.onGround = true
-                    break
+                    val diffX = c.points[0].x - periphery.body.x
+                    if(diffX < 0.24f && diffX > -0.24f) {
+                        state.onGround = true
+                        groundContact = c
+                        break
+                    }
                 }
             }
 
             if (!state.onGround) {
                 val damp = -body.rBody.linearVelocityX * body.rBody.mass * 0.1f
                 body.rBody.applyForceToCenter(damp, 0f, false)
+                state.jumpTimeOut = 0.05f
             }
 
-            if (state.jumpTimeOut > 0) {
+            if (state.jumpTimeOut > 0 && state.onGround) {
                 state.jumpTimeOut -= world.delta
             }
 
-            if (control.moveUp) {
-                if (state.onGround && state.jumpTimeOut <= 0f && body.rBody.linearVelocityY > -0.1) {
-                    jump(entity)
-                }
+            if (control.moveUp && groundContact != null && state.jumpTimeOut <= 0f) {
+                jump(body.rBody, groundContact)
+                state.jumpTimeOut = 0.05f
             }
             if (control.moveLeft) {
-                state.facingRight = false
+                state.direction = CharacterStateCom.Direction.LEFT
                 state.running = true
 
                 if (state.onGround) {
@@ -71,7 +78,7 @@ class CharacterControllerSystem : BaseEntitySystem(
                     }
                 }
             } else if (control.moveRight) {
-                state.facingRight = true
+                state.direction = CharacterStateCom.Direction.RIGHT
                 state.running = true
 
                 if (state.onGround) {
@@ -89,10 +96,8 @@ class CharacterControllerSystem : BaseEntitySystem(
         }
     }
 
-    private fun jump(entity: Int) {
-        characterStateMapper[entity].jumpTimeOut = 0.2f
-
-        val body = bodyMapper[entity].rBody
-        body.applyLinearInpulse(0f, 4f, body.x, body.y)
+    private fun jump(body: RBody, groundContact: RContact) {
+        body.applyLinearImpulse(0f, 4f, body.x, body.y)
+        groundContact.otherBody.applyLinearImpulse(0f, -4f, groundContact.points[0].x, groundContact.points[0].y)
     }
 }

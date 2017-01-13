@@ -24,15 +24,17 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
 
     val arch = ArchetypeBuilder().add(
             TranslationCom::class.java,
-            AnimationCom::class.java,
-            CharacterAnimatorCom::class.java,
             SpriteCom::class.java,
+            AnimationCom::class.java,
             BodyCom::class.java,
             ContactCom::class.java,
             PlayerInputCom::class.java,
             CharacterPeripheryCom::class.java,
             CharacterStateCom::class.java,
-            CharacterControllerCom::class.java).build(world)
+            CharacterControllerCom::class.java,
+            CharacterAnimatorCom::class.java,
+            HealthCom::class.java,
+            HealthDisplayCom::class.java).build(world)
 
     private val assets: Assets = kodein.instance()
     private val runningAnimation = Animation(0.2f, true, true)
@@ -45,6 +47,9 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
     private val bodyMapper = world.getMapper(BodyCom::class.java)
     private val playerInputMapper = world.getMapper(PlayerInputCom::class.java)
     private val characterLegsMapper = world.getMapper(CharacterPeripheryCom::class.java)
+
+    private val healthMapper = world.getMapper(HealthCom::class.java)
+    private val healthDisplayMapper = world.getMapper(HealthDisplayCom::class.java)
 
     init {
         runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 0))
@@ -66,6 +71,8 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
         val bodyComp = bodyMapper[id]
         val playerInput = playerInputMapper[id]
         val legs = characterLegsMapper[id]
+        val health = healthMapper[id]
+        val healthDisplay = healthDisplayMapper[id]
 
         //set position
         trans.x = x
@@ -103,6 +110,10 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
         legs.motor.isMoterEnabled = true
         legs.motor.maxTorque = 5f
         legs.motor.anchorAY = -bodyHeight / 2
+
+        health.maximumHealth = 10
+        health.healthPoints = 10
+        healthDisplay.offsetY = height / 2f
 
         return id
     }

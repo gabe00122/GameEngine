@@ -9,4 +9,8 @@ import gabek.sm2.physics.RContact
  */
 class ContactCom : Component() {
     val contacts = Array<RContact>(false, 10)
+
+    init {
+        contacts.ordered = false
+    }
 }

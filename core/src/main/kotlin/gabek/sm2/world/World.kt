@@ -43,6 +43,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(AnimationSystem())
     config.setSystem(SpriteRenderSystem())
 
+    config.setSystem(HealthRenderSystem(kodein))
 
     return World(config)
 }

@@ -47,8 +47,8 @@ class JunkFactory(val kodein: Kodein, val world: World) {
         sprite.height = h
 
         val fixture = RFixture(RPolygon(w, h))
-        fixture.friction = 0.2f
-        fixture.density = 0.2f
+        fixture.friction = 0.8f
+        fixture.density = 0.5f
 
         body.bodyType = BodyDef.BodyType.DynamicBody
         body.setPosition(x, y)

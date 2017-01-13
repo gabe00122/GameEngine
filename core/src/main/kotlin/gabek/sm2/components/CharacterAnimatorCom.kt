@@ -7,9 +7,8 @@ import gabek.sm2.graphics.Animation
 /**
  * @author Gabriel Keith
  */
-@PooledWeaver
 class CharacterAnimatorCom : Component() {
-    @JvmField var runningAnimation: Animation? = null
-    @JvmField var stillAnimation: Animation? = null
-    @JvmField var jumpingAnimation: Animation? = null
+    var runningAnimation: Animation? = null
+    var stillAnimation: Animation? = null
+    var jumpingAnimation: Animation? = null
 }

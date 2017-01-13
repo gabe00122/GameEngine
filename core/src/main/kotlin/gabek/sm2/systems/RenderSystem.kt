@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL30
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import gabek.sm2.graphics.DisplayBuffer
 
 /**
@@ -16,9 +17,19 @@ class RenderSystem: BaseSystem(){
     private lateinit var spriteRenderSystem: SpriteRenderSystem
     private lateinit var tileMapSystem: TileMapSystem
 
+    private lateinit var healthRenderSystem: HealthRenderSystem
+
+    private lateinit var box2dSystem: Box2dSystem
+    private var box2dDebugRender: Box2DDebugRenderer? = null
+
     private val culling = Rectangle()
 
     override fun processSystem() {}
+
+    override fun initialize() {
+        super.initialize()
+        //box2dDebugRender = Box2DDebugRenderer()
+    }
 
     fun render(buffer: DisplayBuffer, batch: SpriteBatch, progress: Float){
         val ortho = cameraSystem.updateProjection(progress, buffer.width, buffer.height)
@@ -34,7 +45,11 @@ class RenderSystem: BaseSystem(){
         tileMapSystem.tileMap.render(batch, culling)
         spriteRenderSystem.render(batch, culling, progress)
 
+        healthRenderSystem.render(batch, culling, progress)
+
         batch.end()
+        box2dDebugRender?.render(box2dSystem.box2dWorld, ortho.combined)
+
         buffer.endPrimaryBuffer()
     }
 
@@ -42,5 +57,10 @@ class RenderSystem: BaseSystem(){
         culling.set(ortho.position.x - ortho.viewportWidth / 2f,
                 ortho.position.y - ortho.viewportHeight / 2f,
                 ortho.viewportWidth, ortho.viewportHeight)
+    }
+
+    override fun dispose() {
+        super.dispose()
+        box2dDebugRender?.dispose()
     }
 }

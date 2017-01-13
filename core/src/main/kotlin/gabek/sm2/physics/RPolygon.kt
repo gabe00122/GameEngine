@@ -9,7 +9,11 @@ class RPolygon : RShape {
     constructor() : super()
 
     constructor(w: Float, h: Float) : super() {
-        setAsBox(w, h)
+        setAsBox(0f, 0f, w, h)
+    }
+
+    constructor(x: Float, y: Float, w: Float, h: Float) : super() {
+        setAsBox(x, y, w, h)
     }
 
     override fun preInit() {
@@ -18,15 +22,15 @@ class RPolygon : RShape {
         shape = polyShape
     }
 
-    fun setAsBox(w: Float, h: Float) {
+    fun setAsBox(x: Float, y: Float, w: Float, h: Float) {
         val hw = w / 2
         val hh = h / 2
 
         vertices = floatArrayOf(
-                -hw, hh,
-                -hw, -hh,
-                hw, -hh,
-                hw, hh
+                -hw + x, hh + y,
+                -hw + x, -hh + y,
+                hw + x, -hh + y,
+                hw + x, hh + y
         )
     }
 }

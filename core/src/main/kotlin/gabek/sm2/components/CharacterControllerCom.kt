@@ -6,10 +6,9 @@ import com.artemis.annotations.PooledWeaver
 /**
  * @author Gabriel Keith
  */
-@PooledWeaver
 class CharacterControllerCom : Component() {
-    @JvmField var moveUp: Boolean = false
-    @JvmField var moveDown: Boolean = false
-    @JvmField var moveLeft: Boolean = false
-    @JvmField var moveRight: Boolean = false
+    var moveUp: Boolean = false
+    var moveDown: Boolean = false
+    var moveLeft: Boolean = false
+    var moveRight: Boolean = false
 }

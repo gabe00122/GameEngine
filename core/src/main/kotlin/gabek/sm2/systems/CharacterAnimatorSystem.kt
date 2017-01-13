@@ -30,7 +30,7 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
             val animator = characterAnimatorMapper[entity]
             val animation = animationMapper[entity]
 
-            sprite.flipX = state.facingRight
+            sprite.flipX = state.direction == CharacterStateCom.Direction.RIGHT
 
             if (animation.currentAnimation == null) {
                 animation.currentAnimation = animator.stillAnimation
