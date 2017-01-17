@@ -3,10 +3,13 @@ package gabek.sm2.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
-import gabek.sm2.components.*
+import gabek.sm2.components.BodyCom
+import gabek.sm2.components.CharacterControllerCom
+import gabek.sm2.components.CharacterStateCom
 import gabek.sm2.factory.PelletFactory
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.RCollisionCallback
@@ -20,8 +23,7 @@ class CharacterControllerSystem : BaseEntitySystem(
                 CharacterControllerCom::class.java,
                 CharacterStateCom::class.java,
                 BodyCom::class.java
-        )
-) {
+        )) {
     private lateinit var box2dSystem: Box2dSystem
     private lateinit var characterControllerMapper: ComponentMapper<CharacterControllerCom>
     private lateinit var characterStateMapper: ComponentMapper<CharacterStateCom>
@@ -31,9 +33,7 @@ class CharacterControllerSystem : BaseEntitySystem(
 
     override fun initialize() {
         super.initialize()
-
         val factoryManager = world.getSystem(FactoryManager::class.java)
-
         pelletFactory = factoryManager.getFactory(PelletFactory::class.java)
     }
 
@@ -47,70 +47,54 @@ class CharacterControllerSystem : BaseEntitySystem(
             val state = characterStateMapper[entity]
             val body = bodyMapper[entity]
 
-            /*
-            var groundContact: RContact? = null
-            for (c in contact.contacts) {
-                if (c.legsBody === periphery.legsBody) {
-
-                }
-            }
-            */
-
+            //damping
             if (!state.onGround) {
                 val damp = -body.rBody.linearVelocityX * body.rBody.mass * 0.1f
                 body.rBody.applyForceToCenter(damp, 0f, false)
                 state.jumpTimeOut = 0.05f
             }
 
+            //count down timeout
             if (state.jumpTimeOut > 0 && state.onGround) {
                 state.jumpTimeOut -= world.delta
             }
 
-            if (control.moveUp && (state.onGround || state.wasOnGround) && state.jumpTimeOut <= 0f) {
-                jump(body.rBody)
+            val groundFixture = state.groundFixture
+            if (control.moveUp && groundFixture != null && state.jumpTimeOut <= 0f) {
+                jump(body.rBody, groundFixture.body!!, state.groundContactPoint)
                 state.jumpTimeOut = 0.05f
             }
-            if (control.moveLeft) {
-                state.direction = CharacterStateCom.Direction.LEFT
-                state.running = true
 
-                if (state.onGround) {
-                    state.legsMotor.motorSpeed = 360f * 2f
-                } else {
-                    state.legsMotor.motorSpeed = 0f
-                    if (body.rBody.linearVelocityX > -4) {
-                        body.rBody.applyForceToCenter(-200f * world.delta, 0f)
-                    }
+            if (control.moveLeft) {
+                state.running = true
+                state.direction = CharacterStateCom.Direction.LEFT
+                state.legsMotor.motorSpeed = 360f * 2f
+
+                if (!state.onGround && body.rBody.linearVelocityX > -4) {
+                    body.rBody.applyForceToCenter(-200f * world.delta, 0f)
                 }
             } else if (control.moveRight) {
-                state.direction = CharacterStateCom.Direction.RIGHT
                 state.running = true
+                state.direction = CharacterStateCom.Direction.RIGHT
+                state.legsMotor.motorSpeed = -360f * 2f
 
-                if (state.onGround) {
-                    state.legsMotor.motorSpeed = -360f * 2f
-                } else {
-                    state.legsMotor.motorSpeed = 0f
-                    if (body.rBody.linearVelocityX < 4) {
-                        body.rBody.applyForceToCenter(200f * world.delta, 0f)
-                    }
+                if (!state.onGround && body.rBody.linearVelocityX < 4) {
+                    body.rBody.applyForceToCenter(200f * world.delta, 0f)
                 }
             } else {
                 state.running = false
                 state.legsMotor.motorSpeed = 0f
             }
 
-            if(control.primary){
+            if (control.primary) {
                 pelletFactory.create(body.rBody.x, body.rBody.y)
             }
-
-            state.wasOnGround = state.onGround
-            state.onGround = false
         }
     }
 
-    private fun jump(body: RBody) {
+    private fun jump(body: RBody, groundBody: RBody, contactPoint: Vector2) {
         body.applyLinearImpulse(0f, 4f, body.x, body.y)
-        //groundContact.otherBody.applyLinearImpulse(0f, -4f, groundContact.points[0].x, groundContact.points[0].y)
+        groundBody.applyLinearImpulse(0f, -4f, contactPoint.x, contactPoint.y)
     }
 
     override fun inserted(entityId: Int) {
@@ -126,23 +110,35 @@ class CharacterControllerSystem : BaseEntitySystem(
         state.legsBody.store(box2dSystem.box2dWorld)
     }
 
-    private val contactHandler = object: RCollisionCallback {
+    private val contactHandler = object : RCollisionCallback {
         override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
-        override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
 
-        override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
-            val body = ownerRFixture.body!!
+        override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
+            val state = characterStateMapper[ownerRFixture.ownerId]
+            val groundFixture = state.groundFixture
 
-            val diffX = contact.worldManifold.points[0].x - body.x
-            if(diffX < 0.24f && diffX > -0.24f) {
-                characterStateMapper[ownerRFixture.ownerId].onGround = true
-                //groundContact = c
-                //break
+            if(groundFixture === otherRFixture){
+                state.onGround = false
+                state.groundFixture = null
             }
         }
 
-        override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {
+        override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
+            val body = ownerRFixture.body!!
+            val state = characterStateMapper[ownerRFixture.ownerId]
+            val groundFixture = state.groundFixture
 
+            val diffX = contact.worldManifold.points[0].x - body.x
+            if (diffX < 0.24f && diffX > -0.24f) {
+                state.onGround = true
+                state.groundFixture = otherRFixture
+                state.groundContactPoint.set(contact.worldManifold.points[0])
+            } else if (otherRFixture === groundFixture) {
+                state.onGround = false
+                state.groundFixture = null
+            }
         }
+
+        override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {}
     }
 }
