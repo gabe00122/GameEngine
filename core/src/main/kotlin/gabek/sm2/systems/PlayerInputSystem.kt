@@ -26,6 +26,8 @@ class PlayerInputSystem : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java
                 char.moveDown = playerInput.pollAction(Actions.DOWN)
                 char.moveLeft = playerInput.pollAction(Actions.LEFT)
                 char.moveRight = playerInput.pollAction(Actions.RIGHT)
+
+                char.primary = playerInput.pollAction(Actions.SELECT)
             }
         }
     }

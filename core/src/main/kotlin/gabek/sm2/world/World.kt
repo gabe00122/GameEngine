@@ -19,9 +19,11 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(GroupManager())
     //config.setSystem(PlayerManager())
     //config.setSystem(TeamManager())
+    config.setSystem(FactoryManager(kodein))
 
     //needs to be first
     config.setSystem(TranslationSystem())
+    config.setSystem(WorldBoundsSystem())
 
     //movement
     config.setSystem(PlayerInputSystem())
@@ -32,7 +34,6 @@ fun buildWorld(kodein: Kodein): World {
 
     //box2d
     config.setSystem(Box2dSystem())
-    config.setSystem(CharacterPeripherySystem())
 
     //graphics
     config.setSystem(CameraSystem())

@@ -221,9 +221,9 @@ class RBody {
         }
     }
 
-    fun initialise(box2dWorld: World, collisionCallback: Int){
+    fun initialise(box2dWorld: World, ownerId: Int){
         for (fixture in _fixutres) {
-            fixture.colisionCallback = collisionCallback
+            fixture.ownerId = ownerId
         }
 
         initialise(box2dWorld)

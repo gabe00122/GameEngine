@@ -5,6 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.sm2.components.AnimationCom
 import gabek.sm2.components.SpriteCom
+import gabek.sm2.graphics.Animation
 
 /**
  * @author Gabriel Keith
@@ -65,5 +66,4 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
             }
         }
     }
-
 }

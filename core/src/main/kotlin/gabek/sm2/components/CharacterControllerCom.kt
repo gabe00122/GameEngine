@@ -11,4 +11,6 @@ class CharacterControllerCom : Component() {
     var moveDown: Boolean = false
     var moveLeft: Boolean = false
     var moveRight: Boolean = false
+
+    var primary: Boolean = false
 }

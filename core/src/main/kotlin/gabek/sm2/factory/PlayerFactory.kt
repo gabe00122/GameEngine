@@ -17,7 +17,7 @@ import gabek.sm2.physics.RPolygon
 /**
  * @author Gabriel Keith
  */
-class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
+class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
     private val width = .5f
     private val height = 1f
     private val bodyHeight = height - width / 2f
@@ -27,9 +27,7 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
             SpriteCom::class.java,
             AnimationCom::class.java,
             BodyCom::class.java,
-            ContactCom::class.java,
             PlayerInputCom::class.java,
-            CharacterPeripheryCom::class.java,
             CharacterStateCom::class.java,
             CharacterControllerCom::class.java,
             CharacterAnimatorCom::class.java,
@@ -45,8 +43,8 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
     private val animatorMapper = world.getMapper(CharacterAnimatorCom::class.java)
     private val spriteMapper = world.getMapper(SpriteCom::class.java)
     private val bodyMapper = world.getMapper(BodyCom::class.java)
+    private val stateMapper = world.getMapper(CharacterStateCom::class.java)
     private val playerInputMapper = world.getMapper(PlayerInputCom::class.java)
-    private val characterLegsMapper = world.getMapper(CharacterPeripheryCom::class.java)
 
     private val healthMapper = world.getMapper(HealthCom::class.java)
     private val healthDisplayMapper = world.getMapper(HealthDisplayCom::class.java)
@@ -69,16 +67,13 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
         val animator = animatorMapper[id]
         val sprite = spriteMapper[id]
         val bodyComp = bodyMapper[id]
+        val state = stateMapper[id]
         val playerInput = playerInputMapper[id]
-        val legs = characterLegsMapper[id]
         val health = healthMapper[id]
         val healthDisplay = healthDisplayMapper[id]
 
         //set position
-        trans.x = x
-        trans.y = y
-        trans.pX = x
-        trans.pY = y
+        trans.initPos(x, y)
 
         //sprite
         animator.runningAnimation = runningAnimation
@@ -90,26 +85,29 @@ class PlayerFactory(kodein: Kodein, private val world: World) : Disposable {
         sprite.offsetY = -width / 4
 
         //rBody
-        bodyComp.rBody.addFixture(RFixture(RPolygon(width, bodyHeight), density = 1f))
-
-        bodyComp.rBody.bodyType = BodyDef.BodyType.DynamicBody
-        //bodyComp.rBody.linearDamping = 0.2f
-        bodyComp.rBody.isFixedRotation = true
-        bodyComp.rBody.setPosition(x, y)
+        with(bodyComp.rBody) {
+            addFixture(RFixture(RPolygon(width, bodyHeight), density = 1f))
+            bodyType = BodyDef.BodyType.DynamicBody
+            isFixedRotation = true
+            setPosition(x, y)
+        }
 
         //input
         playerInput.playerInput = input
 
-        legs.body.addFixture(RFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f))
+        with(state.legsBody){
+            addFixture(RFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f))
+            bodyType = BodyDef.BodyType.DynamicBody
+            setPosition(x, y - bodyHeight / 2)
+        }
 
-        legs.body.bodyType = BodyDef.BodyType.DynamicBody
-        legs.body.setPosition(x, y - bodyHeight / 2)
-
-        legs.motor.bodyA = bodyComp.rBody
-        legs.motor.bodyB = legs.body
-        legs.motor.isMoterEnabled = true
-        legs.motor.maxTorque = 5f
-        legs.motor.anchorAY = -bodyHeight / 2
+        with(state.legsMotor) {
+            bodyA = bodyComp.rBody
+            bodyB = state.legsBody
+            isMoterEnabled = true
+            maxTorque = 5f
+            anchorAY = -bodyHeight / 2
+        }
 
         health.maximumHealth = 10
         health.healthPoints = 10

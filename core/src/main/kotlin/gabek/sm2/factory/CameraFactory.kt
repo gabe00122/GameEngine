@@ -11,7 +11,7 @@ import gabek.sm2.components.TranslationCom
 /**
  * @author Gabriel Keith
  */
-class CameraFactory(kodein: Kodein, val world: World) : Disposable {
+class CameraFactory(kodein: Kodein, val world: World) : EntityFactory {
     val arch = ArchetypeBuilder().add(TranslationCom::class.java, CameraCom::class.java, CameraTargetsCom::class.java).build(world)
     private val transMapper = world.getMapper(TranslationCom::class.java)
     private val cameraMapper = world.getMapper(CameraCom::class.java)

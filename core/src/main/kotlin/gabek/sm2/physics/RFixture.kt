@@ -12,18 +12,21 @@ class RFixture {
     @Transient internal var body: RBody? = null
     var shape: RShape? = null
 
-    var colisionCallback: Int = -1
-    var tileCallback: Boolean = false
+    var ownerId: Int = -1
+    var isTile: Boolean = false
     var tileX: Int = 0
     var tileY: Int = 0
 
+    var callbackList = mutableListOf<RCollisionCallback>()
+
     constructor()
 
-    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f) {
+    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f, isSensor: Boolean = false) {
         this.shape = shape
         this.density = density
         this.friction = friction
         this.restitution = restitution
+        this.isSensor = isSensor
     }
 
     var density: Float = 0f

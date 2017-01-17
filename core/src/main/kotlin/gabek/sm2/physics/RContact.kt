@@ -6,12 +6,18 @@ import com.badlogic.gdx.physics.box2d.Contact
 /**
  * @author Gabriel Keith
  */
-class RContact(val body: RBody, val fixture: RFixture, val otherId: Int, val otherBody: RBody, val otherFixture: RFixture) {
+class RContact() {
+    var fixture: RFixture? = null
+    var otherFixture: RFixture? = null
+
     var hasManifold: Boolean = false
     var numberOfPoints: Int = 0
     var points: Array<Vector2> = arrayOf(Vector2(), Vector2())
 
-    fun update(contact: Contact){
+    fun update(contact: Contact, fixture: RFixture, otherFixture: RFixture){
+        this.fixture = fixture
+        this.otherFixture = otherFixture
+
         val manifold = contact.worldManifold
 
         hasManifold = !fixture.isSensor && !otherFixture.isSensor

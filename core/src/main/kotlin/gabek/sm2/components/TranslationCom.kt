@@ -16,6 +16,13 @@ class TranslationCom : Component() {
     var pY: Float = 0f
     var pRotation: Float = 0f
 
+    fun initPos(x: Float, y: Float){
+        this.x = x
+        this.pX = x
+        this.y = y
+        this.pY = y
+    }
+
     fun lerpX(progress: Float) = MathUtils.lerp(pX, x, progress)
     fun lerpY(progress: Float) = MathUtils.lerp(pY, y, progress)
     fun lerpRotation(progress: Float) = MathUtils.lerp(pRotation, rotation, progress)

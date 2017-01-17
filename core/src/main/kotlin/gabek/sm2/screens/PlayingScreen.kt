@@ -19,10 +19,7 @@ import gabek.sm2.factory.JunkFactory
 import gabek.sm2.factory.PlayerFactory
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.input.Actions
-import gabek.sm2.systems.Box2dSystem
-import gabek.sm2.systems.CameraSystem
-import gabek.sm2.systems.HealthRenderSystem
-import gabek.sm2.systems.RenderSystem
+import gabek.sm2.systems.*
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.UpdateManager
 import ktx.actors.onChange
@@ -69,20 +66,21 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     }
 
     override fun show() {
-        val cameraFactory = CameraFactory(kodein, world)
-        val playerFactory = PlayerFactory(kodein, world)
+        val factoryManager = world.getSystem(FactoryManager::class.java)
+        val cameraTrackingSystem = world.getSystem(CameraTrackingSystem::class.java)
+
+        val cameraFactory = factoryManager.getFactory(CameraFactory::class.java)
+        val playerFactory = factoryManager.getFactory(PlayerFactory::class.java)
         //val platformFactory = PlatformFactory(kodein, world)
-        val junkFactory = JunkFactory(kodein, world)
-        val targetMapper = world.getMapper(CameraTargetsCom::class.java)
+        val junkFactory = factoryManager.getFactory(JunkFactory::class.java)
 
         val cam = cameraFactory.create(5f, 5f, 10f, 12f)
 
-        val healthWidgetSystem = world.getSystem(HealthRenderSystem::class.java)
         for (i in 0 until worldSetup.players.size) {
             val playerInfo: PlayerInfo = worldSetup.players[i]
 
             val id = playerFactory.create(2f, 2f + i, playerInfo.input)
-            targetMapper[cam].targets.add(id)
+            cameraTrackingSystem.addTarget(cam, id)
         }
 
         for (i in 0..7) {
