@@ -32,7 +32,7 @@ class RenderSystem: BaseSystem(){
     }
 
     fun render(buffer: DisplayBuffer, batch: SpriteBatch, progress: Float){
-        val ortho = cameraSystem.updateProjection(progress, buffer.width, buffer.height)
+        val ortho = cameraSystem.updateProjection(buffer.cameraHandle, progress, buffer.width, buffer.height)
         updateCulling(ortho)
 
         batch.projectionMatrix = ortho.projection

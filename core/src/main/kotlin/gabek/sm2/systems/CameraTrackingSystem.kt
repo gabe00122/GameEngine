@@ -3,6 +3,7 @@ package gabek.sm2.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
+import com.badlogic.gdx.math.MathUtils
 import gabek.sm2.components.CameraCom
 import gabek.sm2.components.CameraTargetsCom
 import gabek.sm2.components.TranslationCom
@@ -11,7 +12,6 @@ import gabek.sm2.components.TranslationCom
  * @author Gabriel Keith
  */
 class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
-        TranslationCom::class.java,
         CameraCom::class.java,
         CameraTargetsCom::class.java)) {
 
@@ -27,9 +27,10 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
 
             val cameraTargets = cameraTargetsMapper[entity]
             if (!cameraTargets.targets.isEmpty) {
-                val trans = transMapper[entity]
                 val camera = cameraMapper[entity]
                 val firstTarget = transMapper[cameraTargets.targets[0]]
+
+                println(cameraTargets.targets[0])
 
                 var x1 = firstTarget.x
                 var y1 = firstTarget.y
@@ -53,19 +54,24 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
                     }
                 }
 
-                x1 -= cameraTargets.padWidth / 2
-                x2 += cameraTargets.padWidth / 2
-                y1 -= cameraTargets.padHeight / 2
-                y2 += cameraTargets.padHeight / 2
+                //cameraTargets.padWidth = (x2 - x1) * 0.25f
+                //cameraTargets.padHeight = (y2 - y1) * 0.25f
 
-                trans.x = (x1 + x2) / 2
-                trans.y = (y1 + y2) / 2
+                x1 -= cameraTargets.padWidth
+                x2 += cameraTargets.padWidth
+                y1 -= cameraTargets.padHeight
+                y2 += cameraTargets.padHeight
 
-                camera.pViewportWidth = camera.viewportWidth
-                camera.pViewportHeight = camera.viewportHeight
+                //trans.x = (x1 + x2) / 2
+                //trans.y = (y1 + y2) / 2
 
-                camera.viewportWidth = x2 - x1
-                camera.viewportHeight = y2 - y1
+                val lagW = cameraTargets.padWidth / 2f
+                val lagH = cameraTargets.padHeight / 2f
+
+                camera.bottomLeft.x = MathUtils.clamp(camera.bottomLeft.x, x1, x1 + lagW)
+                camera.bottomLeft.y = MathUtils.clamp(camera.bottomLeft.y, y1, y1 + lagH)
+                camera.topRight.x = MathUtils.clamp(camera.topRight.x, x2 - lagW, x2)
+                camera.topRight.y = MathUtils.clamp(camera.topRight.y, y2 - lagH, y2)
             }
         }
     }

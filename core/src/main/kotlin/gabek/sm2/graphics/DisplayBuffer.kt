@@ -6,15 +6,23 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
+import gabek.sm2.systems.CameraSystem
 
 /**
  * @author Gabriel Keith
  */
 class DisplayBuffer : Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
+    var cameraHandle: Int = -1
+    var cameraSystem: CameraSystem? = null
 
     init {
         //primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, )
+    }
+
+    override fun layout() {
+        super.layout()
+        rebuildBuffers()
     }
 
     private fun rebuildBuffers() {
@@ -31,11 +39,15 @@ class DisplayBuffer : Widget(), Disposable {
                 primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, w, h, false)
                 primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
             }
+
+            val cameraSystem = cameraSystem
+            if(cameraSystem != null && cameraHandle != -1){
+                cameraSystem.setAspectRatio(cameraHandle, w / h.toFloat())
+            }
         }
     }
 
     fun beginPrimaryBuffer() {
-        rebuildBuffers()
         primaryBuffer?.begin()
     }
 

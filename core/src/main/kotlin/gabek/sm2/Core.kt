@@ -49,7 +49,6 @@ class Core : ApplicationAdapter() {
 
         Gdx.gl30.glClear(GL30.GL_COLOR_BUFFER_BIT)
         screenManager.render()
-        GLProfiler.reset()
     }
 
     override fun resize(width: Int, height: Int) {

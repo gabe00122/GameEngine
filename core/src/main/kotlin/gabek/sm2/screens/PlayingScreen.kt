@@ -2,6 +2,8 @@ package gabek.sm2.screens
 
 import com.artemis.Aspect
 import com.artemis.World
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Container
@@ -74,20 +76,22 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
         //val platformFactory = PlatformFactory(kodein, world)
         val junkFactory = factoryManager.getFactory(JunkFactory::class.java)
 
-        val cam = cameraFactory.create(5f, 5f, 10f, 12f)
+        val cameraHandle = cameraFactory.create()
+        display.cameraHandle = cameraHandle
+        display.cameraSystem = world.getSystem(CameraSystem::class.java)
 
         for (i in 0 until worldSetup.players.size) {
             val playerInfo: PlayerInfo = worldSetup.players[i]
 
             val id = playerFactory.create(2f, 2f + i, playerInfo.input)
-            cameraTrackingSystem.addTarget(cam, id)
+            cameraTrackingSystem.addTarget(cameraHandle, id)
         }
 
-        for (i in 0..7) {
-            for (j in i..15) {
-                junkFactory.create(11f + i * 2f, 1f + j, 1f, 1f)
-            }
-        }
+        //for (i in 0..1) {
+        //    for (j in 0..100) {
+        //        junkFactory.create(11f + i * 2f, 1f + j, 1f, 1f)
+        //    }
+        //}
         //platformFactory.create(0f, -3f, 10f, 1f)
 
         val displayContainer = Container<DisplayBuffer>(display).fill()

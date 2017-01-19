@@ -4,10 +4,12 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.EntitySubscription
+import com.artemis.annotations.Profile
 import com.artemis.utils.IntBag
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Disposable
+import gabek.sm2.Profiler
 import gabek.sm2.components.BodyCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.physics.RContact

@@ -9,11 +9,11 @@ import gabek.sm2.components.TranslationCom
  * @author Gabriel Keith
  */
 class WorldBoundsSystem: BaseEntitySystem(Aspect.all(TranslationCom::class.java)){
-    val minX = -5f
-    val minY = -5
+    val minX = -100f
+    val minY = -100f
 
-    val maxX = 20f
-    val maxY = 20f
+    val maxX = 100f
+    val maxY = 100f
 
     private lateinit var transMapper: ComponentMapper<TranslationCom>
 

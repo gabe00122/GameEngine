@@ -47,11 +47,13 @@ class CharacterControllerSystem : BaseEntitySystem(
             val state = characterStateMapper[entity]
             val body = bodyMapper[entity]
 
+            val jumpTimeOut = 0.1f
+
             //damping
             if (!state.onGround) {
                 val damp = -body.rBody.linearVelocityX * body.rBody.mass * 0.1f
                 body.rBody.applyForceToCenter(damp, 0f, false)
-                state.jumpTimeOut = 0.05f
+                state.jumpTimeOut = jumpTimeOut
             }
 
             //count down timeout
@@ -62,7 +64,7 @@ class CharacterControllerSystem : BaseEntitySystem(
             val groundFixture = state.groundFixture
             if (control.moveUp && groundFixture != null && state.jumpTimeOut <= 0f) {
                 jump(body.rBody, groundFixture.body!!, state.groundContactPoint)
-                state.jumpTimeOut = 0.05f
+                state.jumpTimeOut = jumpTimeOut
             }
 
             if (control.moveLeft) {
@@ -93,8 +95,9 @@ class CharacterControllerSystem : BaseEntitySystem(
     }
 
     private fun jump(body: RBody, groundBody: RBody, contactPoint: Vector2) {
-        body.applyLinearImpulse(0f, 4f, body.x, body.y)
-        groundBody.applyLinearImpulse(0f, -4f, contactPoint.x, contactPoint.y)
+        val power = 3f
+        body.applyLinearImpulse(0f, power, body.x, body.y)
+        groundBody.applyLinearImpulse(0f, -power, contactPoint.x, contactPoint.y)
     }
 
     override fun inserted(entityId: Int) {
@@ -128,8 +131,10 @@ class CharacterControllerSystem : BaseEntitySystem(
             val state = characterStateMapper[ownerRFixture.ownerId]
             val groundFixture = state.groundFixture
 
+            val pad = 0.02f
+
             val diffX = contact.worldManifold.points[0].x - body.x
-            if (diffX < 0.24f && diffX > -0.24f) {
+            if (diffX < 0.25f - pad && diffX > -0.25f + pad) {
                 state.onGround = true
                 state.groundFixture = otherRFixture
                 state.groundContactPoint.set(contact.worldManifold.points[0])
