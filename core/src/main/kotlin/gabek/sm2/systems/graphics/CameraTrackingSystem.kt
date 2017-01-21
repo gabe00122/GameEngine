@@ -1,11 +1,11 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.math.MathUtils
-import gabek.sm2.components.CameraCom
-import gabek.sm2.components.CameraTargetsCom
+import gabek.sm2.components.graphics.CameraCom
+import gabek.sm2.components.graphics.CameraTargetsCom
 import gabek.sm2.components.TranslationCom
 
 /**
@@ -29,8 +29,6 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
             if (!cameraTargets.targets.isEmpty) {
                 val camera = cameraMapper[entity]
                 val firstTarget = transMapper[cameraTargets.targets[0]]
-
-                println(cameraTargets.targets[0])
 
                 var x1 = firstTarget.x
                 var y1 = firstTarget.y

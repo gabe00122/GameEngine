@@ -41,6 +41,13 @@ class Assets : Disposable {
         }
     }
 
+    fun findTextures(packName: String, regionName: String): MutableList<TextureRegion>{
+        val array = packMap[packName]!!.atlas!!.findRegions(regionName)
+        val list = mutableListOf<TextureRegion>()
+        list.addAll(array)
+        return list
+    }
+
     override fun dispose() {
         resourceManager.dispose()
     }

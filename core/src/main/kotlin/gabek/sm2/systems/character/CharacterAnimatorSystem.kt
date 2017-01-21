@@ -1,12 +1,12 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.character
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.AnimationCom
-import gabek.sm2.components.CharacterAnimatorCom
-import gabek.sm2.components.CharacterStateCom
-import gabek.sm2.components.SpriteCom
+import gabek.sm2.components.graphics.AnimationCom
+import gabek.sm2.components.character.CharacterAnimatorCom
+import gabek.sm2.components.character.CharacterStateCom
+import gabek.sm2.components.graphics.SpriteCom
 
 /**
  * @author Gabriel Keith
@@ -36,12 +36,12 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
                 animation.currentAnimation = animator.stillAnimation
             }
 
-            if (state.onGround && state.running && canSwitchRunning(animation, animator, state)) {
+            if (state.onGround && state.lateralMovement && canSwitchRunning(animation, animator, state)) {
                 animation.currentAnimation = animator.runningAnimation
                 animation.reset()
             }
 
-            if (state.onGround && !state.running && canSwitchStill(animation, animator, state)) {
+            if (state.onGround && !state.lateralMovement && canSwitchStill(animation, animator, state)) {
                 animation.currentAnimation = animator.stillAnimation
                 animation.reset()
             }

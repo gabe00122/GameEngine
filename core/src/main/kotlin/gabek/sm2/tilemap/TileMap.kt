@@ -22,6 +22,12 @@ class TileMap(val kodein: Kodein) {
     init {
         for (x in 0 until grid.w) {
             grid.set(x, 0, TileReference(1))
+            grid.set(x, grid.h - 1, TileReference(1))
+        }
+
+        for(y in 0 until grid.h){
+            grid.set(0, y, TileReference(1))
+            grid.set(grid.w - 1, y, TileReference(1))
         }
 
         for (x in 3..8) {
@@ -77,7 +83,7 @@ class TileMap(val kodein: Kodein) {
 
     private fun checkSolid(x: Int, y: Int) = grid.has(x, y) && definitions[grid.get(x, y)].solid
 
-    private fun RFixture.defaultSettings(): RFixture {
+    private fun RFixture.defaultSettings(x: Int, y: Int): RFixture {
         friction = 1f
         restitution = 0f
         return this
@@ -106,7 +112,7 @@ class TileMap(val kodein: Kodein) {
                 if (e) {
                     edge.setVertex3(x2 + tileSize, y2)
                 }
-                fixtures[0] = RFixture(edge).defaultSettings()
+                fixtures[0] = RFixture(edge).defaultSettings(x, y)
             }
 
             if (!s) {
@@ -118,7 +124,7 @@ class TileMap(val kodein: Kodein) {
                 if (w) {
                     edge.setVertex3(x1 - tileSize, y1)
                 }
-                fixtures[1] = RFixture(edge).defaultSettings()
+                fixtures[1] = RFixture(edge).defaultSettings(x, y)
             }
 
             if (!e) {
@@ -130,7 +136,7 @@ class TileMap(val kodein: Kodein) {
                 if (s) {
                     edge.setVertex3(x2, y1 - tileSize)
                 }
-                fixtures[2] = RFixture(edge).defaultSettings()
+                fixtures[2] = RFixture(edge).defaultSettings(x, y)
             }
 
             if (!w) {
@@ -142,7 +148,7 @@ class TileMap(val kodein: Kodein) {
                 if (n) {
                     edge.setVertex3(x1, y2 + tileSize)
                 }
-                fixtures[3] = RFixture(edge).defaultSettings()
+                fixtures[3] = RFixture(edge).defaultSettings(x, y)
             }
 
             for (fixture in fixtures) {

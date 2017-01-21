@@ -4,8 +4,8 @@ import com.artemis.ArchetypeBuilder
 import com.artemis.World
 import com.badlogic.gdx.utils.Disposable
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.components.CameraCom
-import gabek.sm2.components.CameraTargetsCom
+import gabek.sm2.components.graphics.CameraCom
+import gabek.sm2.components.graphics.CameraTargetsCom
 import gabek.sm2.components.TranslationCom
 
 /**

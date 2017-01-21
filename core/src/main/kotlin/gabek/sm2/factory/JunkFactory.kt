@@ -7,7 +7,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.Assets
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.SpriteCom
+import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon

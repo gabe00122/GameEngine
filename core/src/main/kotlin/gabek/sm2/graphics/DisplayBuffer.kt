@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
-import gabek.sm2.systems.CameraSystem
+import gabek.sm2.systems.graphics.CameraSystem
 
 /**
  * @author Gabriel Keith

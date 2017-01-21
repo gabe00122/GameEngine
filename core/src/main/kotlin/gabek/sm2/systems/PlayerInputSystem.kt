@@ -3,7 +3,7 @@ package gabek.sm2.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.CharacterControllerCom
+import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.PlayerInputCom
 import gabek.sm2.input.Actions
 

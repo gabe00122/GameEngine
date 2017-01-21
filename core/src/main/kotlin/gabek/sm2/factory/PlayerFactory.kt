@@ -8,6 +8,13 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.Assets
 import gabek.sm2.components.*
+import gabek.sm2.components.character.CharacterAnimatorCom
+import gabek.sm2.components.character.CharacterControllerCom
+import gabek.sm2.components.character.CharacterMovementCom
+import gabek.sm2.components.character.CharacterStateCom
+import gabek.sm2.components.graphics.AnimationCom
+import gabek.sm2.components.graphics.HealthDisplayCom
+import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.graphics.Animation
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.physics.RCircle
@@ -29,10 +36,14 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
             BodyCom::class.java,
             PlayerInputCom::class.java,
             CharacterStateCom::class.java,
+            CharacterMovementCom::class.java,
             CharacterControllerCom::class.java,
             CharacterAnimatorCom::class.java,
+            AbilityIndexCom::class.java,
             HealthCom::class.java,
             HealthDisplayCom::class.java).build(world)
+
+    val childBodyArch = ArchetypeBuilder().add(BodyCom::class.java, ParentOfCom::class.java).build(world)
 
     private val assets: Assets = kodein.instance()
     private val runningAnimation = Animation(0.2f, true, true)
@@ -49,19 +60,17 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
     private val healthMapper = world.getMapper(HealthCom::class.java)
     private val healthDisplayMapper = world.getMapper(HealthDisplayCom::class.java)
 
+    private val parentOfMapper = world.getMapper(ParentOfCom::class.java)
+
     init {
-        runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 0))
-        runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 1))
-        runningAnimation.frames.add(assets.findTexture("actors", "fred_running", 2))
-
-        stillAnimation.frames.add(assets.findTexture("actors", "fred_running", 1))
-
-        jumpingAnimation.frames.add(assets.findTexture("actors", "fred_jumping", 0))
-        jumpingAnimation.frames.add(assets.findTexture("actors", "fred_jumping", 1))
+        runningAnimation.addFrames(assets, "actors", "fred_running")
+        stillAnimation.addFrame(assets, "actors", "fred_running", 1)
+        jumpingAnimation.addFrames(assets, "actors", "fred_jumping")
     }
 
     fun create(x: Float, y: Float, input: PlayerInput): Int {
         val id = world.create(arch)
+        val legId = world.create(childBodyArch)
 
         val trans = transMapper[id]
         val animator = animatorMapper[id]
@@ -71,6 +80,9 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
         val playerInput = playerInputMapper[id]
         val health = healthMapper[id]
         val healthDisplay = healthDisplayMapper[id]
+
+        val legBody = bodyMapper[legId]
+        val legParent = parentOfMapper[legId]
 
         //set position
         trans.initPos(x, y)
@@ -95,7 +107,11 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
         //input
         playerInput.playerInput = input
 
-        with(state.legsBody){
+        state.legChild = legId
+        legParent.parent = id
+        legParent.diesWithParent = true
+
+        with(legBody.rBody){
             addFixture(RFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f))
             bodyType = BodyDef.BodyType.DynamicBody
             setPosition(x, y - bodyHeight / 2)
@@ -103,7 +119,7 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
 
         with(state.legsMotor) {
             bodyA = bodyComp.rBody
-            bodyB = state.legsBody
+            bodyB = legBody.rBody
             isMoterEnabled = true
             maxTorque = 5f
             anchorAY = -bodyHeight / 2

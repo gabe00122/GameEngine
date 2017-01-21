@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.graphics
 
 import com.artemis.BaseSystem
 import com.badlogic.gdx.Gdx
@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import gabek.sm2.graphics.DisplayBuffer
+import gabek.sm2.systems.Box2dSystem
+import gabek.sm2.systems.TileMapSystem
 
 /**
  * @author Gabriel Keith

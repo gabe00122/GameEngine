@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
-import gabek.sm2.components.SpriteCom
+import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.components.TranslationCom
+import gabek.sm2.systems.TileMapSystem
 
 /**
  * @author Gabriel Keith

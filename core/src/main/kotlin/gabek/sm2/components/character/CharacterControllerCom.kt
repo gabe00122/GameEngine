@@ -1,4 +1,4 @@
-package gabek.sm2.components
+package gabek.sm2.components.character
 
 import com.artemis.Component
 import com.artemis.annotations.PooledWeaver
@@ -12,5 +12,9 @@ class CharacterControllerCom : Component() {
     var moveLeft: Boolean = false
     var moveRight: Boolean = false
 
+    var jump: Boolean = false
+    var justJump: Boolean = false
+
     var primary: Boolean = false
+    var justPrimary: Boolean = false
 }

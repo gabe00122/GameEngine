@@ -1,10 +1,10 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.OrthographicCamera
-import gabek.sm2.components.CameraCom
+import gabek.sm2.components.graphics.CameraCom
 
 /**
  * @author Gabriel Keith

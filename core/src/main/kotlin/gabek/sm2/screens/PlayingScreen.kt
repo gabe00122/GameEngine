@@ -15,13 +15,16 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.PlayerInfo
 import gabek.sm2.WorldSetup
-import gabek.sm2.components.CameraTargetsCom
+import gabek.sm2.components.graphics.CameraTargetsCom
 import gabek.sm2.factory.CameraFactory
 import gabek.sm2.factory.JunkFactory
 import gabek.sm2.factory.PlayerFactory
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.input.Actions
 import gabek.sm2.systems.*
+import gabek.sm2.systems.graphics.CameraSystem
+import gabek.sm2.systems.graphics.CameraTrackingSystem
+import gabek.sm2.systems.graphics.RenderSystem
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.UpdateManager
 import ktx.actors.onChange
@@ -87,11 +90,11 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
             cameraTrackingSystem.addTarget(cameraHandle, id)
         }
 
-        //for (i in 0..1) {
-        //    for (j in 0..100) {
-        //        junkFactory.create(11f + i * 2f, 1f + j, 1f, 1f)
-        //    }
-        //}
+        for (i in 0..1) {
+            for (j in 0..100) {
+                junkFactory.create(11f + i * 2f, 1f + j, 1f, 1f)
+            }
+        }
         //platformFactory.create(0f, -3f, 10f, 1f)
 
         val displayContainer = Container<DisplayBuffer>(display).fill()

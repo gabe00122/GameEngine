@@ -25,6 +25,9 @@ dependencies {
 
     compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
     compile "com.github.salomonbrys.kodein:kodein:$kodeinVersion"
+
+    compile "net.namekdev.entity_tracker:artemis-entity-tracker:0.4.0-SNAPSHOT"
+    compile "net.namekdev.entity_tracker:artemis-entity-tracker-gui:0.4.0-SNAPSHOT"
 }
 
 weave {

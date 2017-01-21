@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.character
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -8,12 +8,14 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.CharacterControllerCom
-import gabek.sm2.components.CharacterStateCom
+import gabek.sm2.components.character.CharacterControllerCom
+import gabek.sm2.components.character.CharacterStateCom
+import gabek.sm2.components.ParentOfCom
 import gabek.sm2.factory.PelletFactory
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
+import gabek.sm2.systems.FactoryManager
 
 /**
  * @author Gabriel Keith
@@ -24,18 +26,10 @@ class CharacterControllerSystem : BaseEntitySystem(
                 CharacterStateCom::class.java,
                 BodyCom::class.java
         )) {
-    private lateinit var box2dSystem: Box2dSystem
+    private lateinit var parentMapper: ComponentMapper<ParentOfCom>
     private lateinit var characterControllerMapper: ComponentMapper<CharacterControllerCom>
     private lateinit var characterStateMapper: ComponentMapper<CharacterStateCom>
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
-
-    private lateinit var pelletFactory: PelletFactory
-
-    override fun initialize() {
-        super.initialize()
-        val factoryManager = world.getSystem(FactoryManager::class.java)
-        pelletFactory = factoryManager.getFactory(PelletFactory::class.java)
-    }
 
     override fun processSystem() {
         val entities = entityIds
@@ -68,7 +62,7 @@ class CharacterControllerSystem : BaseEntitySystem(
             }
 
             if (control.moveLeft) {
-                state.running = true
+                state.lateralMovement = true
                 state.direction = CharacterStateCom.Direction.LEFT
                 state.legsMotor.motorSpeed = 360f * 2f
 
@@ -76,7 +70,7 @@ class CharacterControllerSystem : BaseEntitySystem(
                     body.rBody.applyForceToCenter(-200f * world.delta, 0f)
                 }
             } else if (control.moveRight) {
-                state.running = true
+                state.lateralMovement = true
                 state.direction = CharacterStateCom.Direction.RIGHT
                 state.legsMotor.motorSpeed = -360f * 2f
 
@@ -84,12 +78,8 @@ class CharacterControllerSystem : BaseEntitySystem(
                     body.rBody.applyForceToCenter(200f * world.delta, 0f)
                 }
             } else {
-                state.running = false
+                state.lateralMovement = false
                 state.legsMotor.motorSpeed = 0f
-            }
-
-            if (control.primary) {
-                pelletFactory.create(body.rBody.x, body.rBody.y)
             }
         }
     }
@@ -103,21 +93,14 @@ class CharacterControllerSystem : BaseEntitySystem(
     override fun inserted(entityId: Int) {
         val state = characterStateMapper[entityId]
 
-        state.legsBody.initialise(box2dSystem.box2dWorld, entityId)
-        state.legsBody.fixutres[0].callbackList.add(contactHandler)
-    }
-
-    override fun removed(entityId: Int) {
-        val state = characterStateMapper[entityId]
-
-        state.legsBody.store(box2dSystem.box2dWorld)
+        bodyMapper[state.legChild].rBody.fixutres[0].callbackList.add(contactHandler)
     }
 
     private val contactHandler = object : RCollisionCallback {
         override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
 
         override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
-            val state = characterStateMapper[ownerRFixture.ownerId]
+            val state = characterStateMapper[parentMapper[ownerRFixture.ownerId].parent]
             val groundFixture = state.groundFixture
 
             if(groundFixture === otherRFixture){
@@ -128,7 +111,8 @@ class CharacterControllerSystem : BaseEntitySystem(
 
         override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val body = ownerRFixture.body!!
-            val state = characterStateMapper[ownerRFixture.ownerId]
+
+            val state = characterStateMapper[parentMapper[ownerRFixture.ownerId].parent]
             val groundFixture = state.groundFixture
 
             val pad = 0.02f

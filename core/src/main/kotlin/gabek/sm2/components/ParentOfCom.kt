@@ -9,4 +9,6 @@ import com.artemis.annotations.PooledWeaver
  */
 class ParentOfCom : Component() {
     @JvmField @EntityId var parent: Int = -1
+
+    var diesWithParent: Boolean = false
 }

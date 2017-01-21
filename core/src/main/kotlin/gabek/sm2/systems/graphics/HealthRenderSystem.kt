@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -12,7 +12,7 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisProgressBar
 import gabek.sm2.Assets
 import gabek.sm2.components.HealthCom
-import gabek.sm2.components.HealthDisplayCom
+import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.components.TranslationCom
 
 /**
