@@ -21,12 +21,17 @@ class RFixture {
 
     constructor()
 
-    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f, isSensor: Boolean = false) {
+    constructor(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f, isSensor: Boolean = false,
+                categoryBits: Short = 1, maskBits: Short = -1, groupIndex: Short = 0) {
         this.shape = shape
         this.density = density
         this.friction = friction
         this.restitution = restitution
         this.isSensor = isSensor
+
+        this.categoryBits = categoryBits
+        this.maskBits = maskBits
+        this.groupIndex = groupIndex
     }
 
     var density: Float = 0f
@@ -123,7 +128,7 @@ class RFixture {
     }
 
     private val fixtureDef: FixtureDef get() {
-        val fixtureDef = FixtureDef()
+        val fixtureDef = TEMP_FIXTURE_DEF
 
         fixtureDef.density = density
         fixtureDef.friction = friction

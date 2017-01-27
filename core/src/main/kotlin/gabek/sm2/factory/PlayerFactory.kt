@@ -20,6 +20,8 @@ import gabek.sm2.input.PlayerInput
 import gabek.sm2.physics.RCircle
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
+import gabek.sm2.world.CHARACTER
+import gabek.sm2.world.filter
 
 /**
  * @author Gabriel Keith
@@ -55,6 +57,7 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
     private val spriteMapper = world.getMapper(SpriteCom::class.java)
     private val bodyMapper = world.getMapper(BodyCom::class.java)
     private val stateMapper = world.getMapper(CharacterStateCom::class.java)
+    private val movementMapper = world.getMapper(CharacterMovementCom::class.java)
     private val playerInputMapper = world.getMapper(PlayerInputCom::class.java)
 
     private val healthMapper = world.getMapper(HealthCom::class.java)
@@ -77,6 +80,7 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
         val sprite = spriteMapper[id]
         val bodyComp = bodyMapper[id]
         val state = stateMapper[id]
+        val movement = movementMapper[id]
         val playerInput = playerInputMapper[id]
         val health = healthMapper[id]
         val healthDisplay = healthDisplayMapper[id]
@@ -98,7 +102,7 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
 
         //rBody
         with(bodyComp.rBody) {
-            addFixture(RFixture(RPolygon(width, bodyHeight), density = 1f))
+            addFixture(RPolygon(width, bodyHeight), density = 1f)
             bodyType = BodyDef.BodyType.DynamicBody
             isFixedRotation = true
             setPosition(x, y)
@@ -112,7 +116,7 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
         legParent.diesWithParent = true
 
         with(legBody.rBody){
-            addFixture(RFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f))
+            addFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f)
             bodyType = BodyDef.BodyType.DynamicBody
             setPosition(x, y - bodyHeight / 2)
         }
@@ -125,9 +129,18 @@ class PlayerFactory(kodein: Kodein, private val world: World) : EntityFactory {
             anchorAY = -bodyHeight / 2
         }
 
-        health.maximumHealth = 10
-        health.healthPoints = 10
+        health.maximumHealth = 10f
+        health.healthPoints = 10f
         healthDisplay.offsetY = height / 2f
+
+        with(movement){
+            airSpeed = 200f
+            groundSpeed = 600f
+            airDamping = 0.1f
+
+            jumpCooldown = 0.1f
+            jumpForce = 3.0f
+        }
 
         return id
     }

@@ -7,6 +7,7 @@ import gabek.sm2.components.AbilityIndexCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.character.CharacterStateCom
+import gabek.sm2.factory.BasicPunchFactory
 import gabek.sm2.factory.PelletFactory
 import gabek.sm2.systems.FactoryManager
 
@@ -21,6 +22,7 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
 
     private lateinit var factoryManager: FactoryManager
     private lateinit var pelletFactory: PelletFactory
+    private lateinit var punchFactory: BasicPunchFactory
 
     private lateinit var transMapper: ComponentMapper<TranslationCom>
     private lateinit var abilityIndexMapper: ComponentMapper<AbilityIndexCom>
@@ -31,6 +33,7 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
         super.initialize()
 
         pelletFactory = factoryManager.getFactory(PelletFactory::class.java)
+        punchFactory = factoryManager.getFactory(BasicPunchFactory::class.java)
     }
 
     override fun processSystem() {
@@ -52,10 +55,12 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
                 abilityIndex.moveTimeout += 0.1f
 
                 if(state.direction == CharacterStateCom.Direction.LEFT){
-                    pelletFactory.create(trans.x - 0.5f, trans.y, 180f, 10f, 4f)
+                    //pelletFactory.create(trans.x - 0.5f, trans.y, 180f, 2.5f, 0.1f)
+                    punchFactory.create(entity, -0.5f, 0f, 0.1f)
                 }
                 if(state.direction == CharacterStateCom.Direction.RIGHT){
-                    pelletFactory.create(trans.x + 0.5f, trans.y, 0f, 10f, 4f)
+                    //pelletFactory.create(trans.x + 0.5f, trans.y, 0f, 2.5f, 0.1f)
+                    punchFactory.create(entity, 0.5f, 0f, 0.1f)
                 }
             }
         }

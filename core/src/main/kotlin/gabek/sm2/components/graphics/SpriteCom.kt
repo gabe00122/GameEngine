@@ -16,4 +16,9 @@ class SpriteCom : Component() {
     var flipY: Boolean = false
     var offsetX: Float = 0f
     var offsetY: Float = 0f
+
+    fun setSize(width: Float, height: Float){
+        this.width = width
+        this.height = height
+    }
 }

@@ -36,24 +36,7 @@ class HealthRenderSystem(kodein: Kodein) : BaseEntitySystem(
     private lateinit var healthMapper: ComponentMapper<HealthCom>
     private lateinit var healthDisplayMapper: ComponentMapper<HealthDisplayCom>
 
-    override fun processSystem() {
-        val entities = entityIds
-
-        for(i in 0 until entities.size()){
-            val entity = entities[i]
-
-            //val trans = transMapper[entity]
-            val health = healthMapper[entity]
-            //val healthDisplay = healthDisplayMapper[entity]
-
-            health.healthCooldown -= world.delta
-            if(health.healthCooldown < 0 && health.healthPoints > 0){
-                health.healthCooldown += 1f
-
-                health.healthPoints--
-            }
-        }
-    }
+    override fun processSystem() {}
 
     fun render(batch: SpriteBatch, culling: Rectangle, progress: Float){
         val entities = entityIds

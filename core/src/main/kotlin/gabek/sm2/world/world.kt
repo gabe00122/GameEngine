@@ -11,8 +11,8 @@ import gabek.sm2.systems.character.AbilityIndexSystem
 import gabek.sm2.systems.character.CharacterAnimatorSystem
 import gabek.sm2.systems.character.CharacterControllerSystem
 import gabek.sm2.systems.graphics.*
-import net.namekdev.entity_tracker.EntityTracker
-import net.namekdev.entity_tracker.ui.EntityTrackerMainWindow
+import gabek.sm2.systems.pellet.PelletCollisionSystem
+import gabek.sm2.systems.pellet.PelletLifeSpanSystem
 
 /**
  * @author Gabriel Keith
@@ -20,8 +20,6 @@ import net.namekdev.entity_tracker.ui.EntityTrackerMainWindow
 fun buildWorld(kodein: Kodein): World {
     val config = WorldConfiguration()
     //built in
-
-    //config.setSystem(EntityTracker(EntityTrackerMainWindow()))
 
     config.setSystem(EntityLinkManager())
     config.setSystem(TagManager())
@@ -32,8 +30,13 @@ fun buildWorld(kodein: Kodein): World {
 
     //needs to be first
     config.setSystem(TranslationSystem())
-    config.setSystem(WorldBoundsSystem())
+    //box2d
+    config.setSystem(Box2dSystem())
+    config.setSystem(ParentBodyTackingSystem())
+
+    //config.setSystem(WorldBoundsSystem())
     config.setSystem(PelletLifeSpanSystem())
+    config.setSystem(PelletCollisionSystem())
 
     //movement
     config.setSystem(PlayerInputSystem())
@@ -42,9 +45,6 @@ fun buildWorld(kodein: Kodein): World {
 
     //tiles
     config.setSystem(TileMapSystem(kodein))
-
-    //box2d
-    config.setSystem(Box2dSystem())
 
     //graphics
     config.setSystem(CameraSystem())

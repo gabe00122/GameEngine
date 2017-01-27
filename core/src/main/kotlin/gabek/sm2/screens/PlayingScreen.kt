@@ -91,7 +91,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
         }
 
         for (i in 0..1) {
-            for (j in 0..100) {
+            for (j in 0..25) {
                 junkFactory.create(11f + i * 2f, 1f + j, 1f, 1f)
             }
         }

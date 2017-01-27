@@ -8,6 +8,8 @@ import com.github.salomonbrys.kodein.Kodein
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.REdge
 import gabek.sm2.physics.RFixture
+import gabek.sm2.world.WALL
+import gabek.sm2.world.filter
 
 /**
  * @author Gabriel Keith
@@ -22,7 +24,6 @@ class TileMap(val kodein: Kodein) {
     init {
         for (x in 0 until grid.w) {
             grid.set(x, 0, TileReference(1))
-            grid.set(x, grid.h - 1, TileReference(1))
         }
 
         for(y in 0 until grid.h){
@@ -86,6 +87,7 @@ class TileMap(val kodein: Kodein) {
     private fun RFixture.defaultSettings(x: Int, y: Int): RFixture {
         friction = 1f
         restitution = 0f
+        //categoryBits = filter(WALL)
         return this
     }
 

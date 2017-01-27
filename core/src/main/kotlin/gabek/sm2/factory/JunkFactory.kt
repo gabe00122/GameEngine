@@ -11,6 +11,10 @@ import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
+import gabek.sm2.world.PROP_LARGE
+import gabek.sm2.world.PROP_SMALL
+import gabek.sm2.world.WALL
+import gabek.sm2.world.filter
 
 /**
  * @author Gabriel Keith
@@ -23,7 +27,7 @@ class JunkFactory(val kodein: Kodein, val world: World): EntityFactory{
     ).build(world)
 
     private val assets: Assets = kodein.instance()
-    private val texture = assets.findTexture("actors", "smiles")
+    private val texture = assets.findTexture("actors", "junk")
 
     private val spriteMapper = world.getMapper(SpriteCom::class.java)
     private val transMapper = world.getMapper(TranslationCom::class.java)
@@ -47,6 +51,8 @@ class JunkFactory(val kodein: Kodein, val world: World): EntityFactory{
         val fixture = RFixture(RPolygon(w, h))
         fixture.friction = 0.8f
         fixture.density = 0.5f
+        fixture.categoryBits = filter(PROP_LARGE)
+        fixture.maskBits = filter(PROP_LARGE, PROP_SMALL, WALL)
 
         body.bodyType = BodyDef.BodyType.DynamicBody
         body.setPosition(x, y)

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
 import gabek.sm2.systems.graphics.CameraSystem
+import gabek.sm2.systems.graphics.CameraTrackingSystem
 
 /**
  * @author Gabriel Keith
@@ -64,5 +65,10 @@ class DisplayBuffer : Widget(), Disposable {
     override fun dispose() {
         primaryBuffer?.dispose()
         primaryBuffer = null
+    }
+
+    fun setHandle(cameraHandle: Int, cameraSystem: CameraSystem){
+        this.cameraHandle = cameraHandle
+        this.cameraSystem = cameraSystem
     }
 }

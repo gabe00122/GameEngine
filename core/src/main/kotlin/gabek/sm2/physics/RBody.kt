@@ -1,10 +1,7 @@
 package gabek.sm2.physics
 
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.physics.box2d.Body
-import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.physics.box2d.Contact
-import com.badlogic.gdx.physics.box2d.World
+import com.badlogic.gdx.physics.box2d.*
 import gabek.sm2.physics.joints.RJoint
 import java.util.*
 
@@ -197,6 +194,12 @@ class RBody {
     val isInitialised: Boolean
         get() = body != null
 
+    fun addCallbackToAll(callback: RCollisionCallback){
+        for(fixture in _fixutres){
+            fixture.callbackList.add(callback)
+        }
+    }
+
     fun addFixture(fixture: RFixture) {
         _fixutres.add(fixture)
         fixture.body = this
@@ -205,6 +208,11 @@ class RBody {
         if (body != null) {
             fixture.initialise(body)
         }
+    }
+
+    fun addFixture(shape: RShape, density: Float = 0f, friction: Float = 0f, restitution: Float = 0f, isSensor: Boolean = false,
+                   categoryBits: Short = 1, maskBits: Short = -1, groupIndex: Short = 0){
+        addFixture(RFixture(shape, density, friction, restitution, isSensor, categoryBits, maskBits, groupIndex))
     }
 
     fun initialise(box2dWorld: World) {
@@ -248,7 +256,7 @@ class RBody {
     }
 
     private val bodyDef: BodyDef get() {
-        val def = BodyDef()
+        val def = TEMP_BODY_DEF
 
         def.position.x = x
         def.position.y = y

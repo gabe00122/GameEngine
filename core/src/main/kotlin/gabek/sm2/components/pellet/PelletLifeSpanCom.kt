@@ -1,4 +1,4 @@
-package gabek.sm2.components
+package gabek.sm2.components.pellet
 
 import com.artemis.Component
 

@@ -7,8 +7,8 @@ import com.artemis.Component
  */
 
 class HealthCom: Component() {
-    var maximumHealth: Int = 0
-    var healthPoints: Int = 0
+    var maximumHealth: Float = 0f
+    var healthPoints: Float = 0f
 
     var healthCooldown: Float = 0f
 }

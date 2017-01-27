@@ -21,8 +21,8 @@ class TileDefinitions(val kodein: Kodein) {
     }
 
     init {
-        tileTypes.add(TileType(asstes.findTexture("tiles", "tiles", 3), false))
-        tileTypes.add(TileType(asstes.findTexture("tiles", "tiles", 1), true))
+        tileTypes.add(TileType(asstes.findTexture("tiles", "back"), false))
+        tileTypes.add(TileType(asstes.findTexture("tiles", "wall"), true))
     }
 
 }

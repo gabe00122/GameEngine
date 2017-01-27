@@ -9,9 +9,10 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.Assets
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.PelletLifeSpanCom
+import gabek.sm2.components.pellet.PelletLifeSpanCom
 import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.pellet.PelletCollisionCom
 import gabek.sm2.physics.RCircle
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
@@ -24,7 +25,8 @@ class PelletFactory(kodein: Kodein, val world: World): EntityFactory{
             TranslationCom::class.java,
             SpriteCom::class.java,
             BodyCom::class.java,
-            PelletLifeSpanCom::class.java
+            PelletLifeSpanCom::class.java,
+            PelletCollisionCom::class.java
     ).build(world)
     
     private val assets: Assets = kodein.instance()
@@ -35,6 +37,7 @@ class PelletFactory(kodein: Kodein, val world: World): EntityFactory{
     private val spriteMapper = world.getMapper(SpriteCom::class.java)
     private val bodyMapper = world.getMapper(BodyCom::class.java)
     private val lifeSpanMapper = world.getMapper(PelletLifeSpanCom::class.java)
+    private val collisionEffectMapper = world.getMapper(PelletCollisionCom::class.java)
 
     fun create(x: Float, y: Float, direction: Float, speed: Float, lifeSpan: Float): Int{
         val id = world.create(arch)
@@ -43,6 +46,7 @@ class PelletFactory(kodein: Kodein, val world: World): EntityFactory{
         val sprite = spriteMapper[id]
         val body = bodyMapper[id]
         val pelletLifeSpan = lifeSpanMapper[id]
+        val effect = collisionEffectMapper[id]
 
         trans.initPos(x, y)
         
@@ -51,14 +55,16 @@ class PelletFactory(kodein: Kodein, val world: World): EntityFactory{
         sprite.height = 0.2f
 
         pelletLifeSpan.lifeSpan = lifeSpan
+        effect.damage = 1f
+        effect.diesOnCollision = true
 
         val fixture = RFixture()
-        //fixture.isSensor = true
+        fixture.isSensor = true
         fixture.shape = RPolygon(0.2f, 0.2f)
         fixture.density = 10f
         fixture.restitution = 0.2f
 
-        body.rBody.bodyType = BodyDef.BodyType.DynamicBody
+        body.rBody.bodyType = BodyDef.BodyType.KinematicBody
         body.rBody.isBullet = true
         body.rBody.x = x
         body.rBody.y = y

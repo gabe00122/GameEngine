@@ -1,9 +1,9 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.pellet
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.PelletLifeSpanCom
+import gabek.sm2.components.pellet.PelletLifeSpanCom
 
 /**
  * @author Gabriel Keith
