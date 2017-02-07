@@ -6,7 +6,7 @@ import gabek.sm2.Assets
 /**
  * @author Gabriel Keith
  */
-class Animation(val delay: Float, val pingpong: Boolean, val repeats: Boolean) {
+class AnimationDef(val delay: Float, val pingpong: Boolean, val repeats: Boolean) {
     val frames = mutableListOf<TextureRegion>()
 
     fun addFrames(vararg textures: TextureRegion) {

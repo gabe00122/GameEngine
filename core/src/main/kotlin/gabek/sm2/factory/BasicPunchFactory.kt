@@ -18,7 +18,9 @@ import gabek.sm2.physics.RPolygon
 /**
  * @author Gabriel Keith
  */
-class BasicPunchFactory(val kodein: Kodein, val world: World): EntityFactory{
+
+/*
+class BasicPunchFactory(val kodein: Kodein, val world: World){
     val arch = ArchetypeBuilder().add(
             PelletLifeSpanCom::class.java,
             PelletCollisionCom::class.java,
@@ -45,7 +47,7 @@ class BasicPunchFactory(val kodein: Kodein, val world: World): EntityFactory{
         val parent = parentMapper[entity]
         val offset = offsetMapper[entity]
         val trans = transMapper[entity]
-        val body = bodyMapper[entity].rBody
+        val body = bodyMapper[entity].body
         val sprite = spriteMapper[entity]
 
         lifeSpan.lifeSpan = 0.25f
@@ -66,14 +68,12 @@ class BasicPunchFactory(val kodein: Kodein, val world: World): EntityFactory{
         sprite.setSize(0.25f, 0.25f)
 
         if(parentId != -1 && bodyMapper.has(parentId)){
-            val parentBody = bodyMapper[parentId].rBody
+            val parentBody = bodyMapper[parentId].body
             trans.initPos(parentBody.x + offset.x, parentBody.y + offset.y)
             body.setPosition(trans.x, trans.y)
         }
 
         return entity
     }
-
-
-    override fun dispose() {}
 }
+*/

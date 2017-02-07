@@ -20,7 +20,9 @@ import gabek.sm2.physics.RPolygon
 /**
  * @author Gabriel Keith
  */
-class PelletFactory(kodein: Kodein, val world: World): EntityFactory{
+
+/*
+class PelletFactory(kodein: Kodein, val world: World){
     val arch = ArchetypeBuilder().add(
             TranslationCom::class.java,
             SpriteCom::class.java,
@@ -64,20 +66,17 @@ class PelletFactory(kodein: Kodein, val world: World): EntityFactory{
         fixture.density = 10f
         fixture.restitution = 0.2f
 
-        body.rBody.bodyType = BodyDef.BodyType.KinematicBody
-        body.rBody.isBullet = true
-        body.rBody.x = x
-        body.rBody.y = y
+        body.body.bodyType = BodyDef.BodyType.KinematicBody
+        body.body.isBullet = true
+        body.body.x = x
+        body.body.y = y
 
-        body.rBody.linearVelocityX = MathUtils.cosDeg(direction) * speed
-        body.rBody.linearVelocityY = MathUtils.sinDeg(direction) * speed
-        body.rBody.gravityScale = 0f
-        body.rBody.addFixture(fixture)
+        body.body.linearVelocityX = MathUtils.cosDeg(direction) * speed
+        body.body.linearVelocityY = MathUtils.sinDeg(direction) * speed
+        body.body.gravityScale = 0f
+        body.body.addFixture(fixture)
 
         return id
     }
-    
-    override fun dispose() {
-
-    }
 }
+        */

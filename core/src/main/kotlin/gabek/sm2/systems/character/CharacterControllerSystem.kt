@@ -8,15 +8,13 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.character.CharacterControllerCom
-import gabek.sm2.components.character.CharacterStateCom
 import gabek.sm2.components.ParentOfCom
+import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.character.CharacterMovementCom
-import gabek.sm2.factory.PelletFactory
+import gabek.sm2.components.character.CharacterStateCom
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.FactoryManager
 
 /**
  * @author Gabriel Keith
@@ -49,8 +47,8 @@ class CharacterControllerSystem : BaseEntitySystem(
 
             //damping
             if (!state.onGround) {
-                val damp = -body.rBody.linearVelocityX * body.rBody.mass * movement.airDamping
-                body.rBody.applyForceToCenter(damp, 0f, false)
+                val damp = -body.body.linearVelocityX * body.body.mass * movement.airDamping
+                body.body.applyForceToCenter(damp, 0f, false)
                 state.jumpTimeOut = movement.jumpCooldown
             }
 
@@ -61,7 +59,7 @@ class CharacterControllerSystem : BaseEntitySystem(
 
             val groundFixture = state.groundFixture
             if (control.moveUp && groundFixture != null && state.jumpTimeOut <= 0f) {
-                jump(body.rBody, groundFixture.body!!, state.groundContactPoint, movement.jumpForce)
+                jump(body.body, groundFixture.body!!, state.groundContactPoint, movement.jumpForce)
                 state.jumpTimeOut = movement.jumpCooldown
             }
 
@@ -70,16 +68,16 @@ class CharacterControllerSystem : BaseEntitySystem(
                 state.direction = CharacterStateCom.Direction.LEFT
                 state.legsMotor.motorSpeed = movement.groundSpeed
 
-                if (!state.onGround && body.rBody.linearVelocityX > -4) {
-                    body.rBody.applyForceToCenter(-movement.airSpeed * world.delta, 0f)
+                if (!state.onGround && body.body.linearVelocityX > -4) {
+                    body.body.applyForceToCenter(-movement.airSpeed * world.delta, 0f)
                 }
             } else if (control.moveRight) {
                 state.lateralMovement = true
                 state.direction = CharacterStateCom.Direction.RIGHT
                 state.legsMotor.motorSpeed = -movement.groundSpeed
 
-                if (!state.onGround && body.rBody.linearVelocityX < 4) {
-                    body.rBody.applyForceToCenter(movement.airSpeed * world.delta, 0f)
+                if (!state.onGround && body.body.linearVelocityX < 4) {
+                    body.body.applyForceToCenter(movement.airSpeed * world.delta, 0f)
                 }
             } else {
                 state.lateralMovement = false
@@ -96,7 +94,7 @@ class CharacterControllerSystem : BaseEntitySystem(
     override fun inserted(entityId: Int) {
         val state = characterStateMapper[entityId]
 
-        bodyMapper[state.legChild].rBody.fixutres[0].callbackList.add(contactHandler)
+        bodyMapper[state.legChild].body.fixutres[0].callbackList.add(contactHandler)
     }
 
     private val contactHandler = object : RCollisionCallback {

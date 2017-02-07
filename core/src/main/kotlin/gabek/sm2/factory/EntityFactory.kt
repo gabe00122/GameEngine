@@ -1,8 +1,101 @@
 package gabek.sm2.factory
 
+import com.artemis.*
 import com.badlogic.gdx.utils.Disposable
+import com.github.salomonbrys.kodein.Kodein
+import gabek.sm2.scopes.GeneralMapper
+import gabek.sm2.systems.FactoryManager
+import gabek.sm2.systems.TranslationSystem
+import gabek.sm2.world.getSystem
+import kotlin.reflect.KClass
 
 /**
  * @author Gabriel Keith
  */
-interface EntityFactory: Disposable
+class EntityFactory: Disposable{
+    private val kodein: Kodein
+    private val world: World
+
+    private val compBuilders: List<CompBuilder<Component>>
+    private val onCreate: List<EntityFactory.(entity: Int) -> Unit>
+
+    private val archetype: Archetype
+
+    private lateinit var transSystem: TranslationSystem
+    lateinit var generalMapper: GeneralMapper
+        private set
+
+    private constructor(builder: Builder,
+                        kodein: Kodein,
+                        world: World){
+        this.kodein = kodein
+        this.world = world
+        world.inject(this)
+
+        compBuilders = builder.compBuilders
+        onCreate = builder.onCreateList
+
+        compBuilders.forEach { it.mapper = world.getMapper(it.clazz) }
+        archetype = compBuilders.fold(ArchetypeBuilder()){ builder, comp ->
+            builder.add(comp.clazz); builder
+        }.build(world)
+    }
+
+    fun create(): Int{
+        val entity = world.create(archetype)
+
+        compBuilders.forEach { comp ->
+            comp.body?.invoke(comp.mapper.get(entity))
+        }
+        
+        onCreate.forEach { it.invoke(this, entity) }
+        
+        return entity
+    }
+
+    fun create(x: Float, y: Float, rotation: Float): Int{
+        val id = create()
+        transSystem.teleport(id, x, y, rotation)
+        return id
+    }
+
+    fun create(x: Float, y: Float): Int{
+        val id = create()
+        transSystem.teleport(id, x, y, 0f)
+        return id
+    }
+
+    override fun dispose() {}
+
+    class Builder(val define: Builder.(kodein: Kodein, world: World) -> Unit){
+        internal val compBuilders = mutableListOf<CompBuilder<Component>>()
+        internal var onCreateList = mutableListOf<EntityFactory.(entity: Int) -> Unit>()
+
+        @Suppress("UNCHECKED_CAST")
+        fun <T: Component> com(clazz: Class<T>, body: (T.() -> Unit)? = null){
+            compBuilders.add(CompBuilder(clazz, body) as CompBuilder<Component>)
+        }
+
+        inline fun <reified T: Component> com(noinline body: (T.() -> Unit)? = null){
+            com(T::class.java, body)
+        }
+
+        fun onCreate(body: EntityFactory.(entity: Int) -> Unit){
+            onCreateList.add(body)
+        }
+
+        fun build(kodein: Kodein, world: World): EntityFactory{
+            define(kodein, world)
+            return EntityFactory(this, kodein, world)
+        }
+    }
+
+    internal class CompBuilder<T: Component>(val clazz: Class<T>, val body: (T.() -> Unit)?){
+        lateinit var mapper: ComponentMapper<T>
+    }
+}
+
+fun factory(define: EntityFactory.Builder.(kodein: Kodein, world: World) -> Unit): 
+        EntityFactory.Builder{
+    return EntityFactory.Builder(define)
+}

@@ -13,6 +13,8 @@ class FactoryManager(val kodein: Kodein): BaseSystem(){
 
     override fun processSystem() {}
 
+    inline fun <reified T: EntityFactory> getFactory() = getFactory(T::class.java)
+
     @Suppress("UNCHECKED_CAST")
     fun <T: EntityFactory> getFactory(clazz: Class<T>): T = factoryMap.getOrPut(clazz) { create(clazz) } as T
 

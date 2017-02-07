@@ -11,19 +11,15 @@ import gabek.sm2.components.TranslationCom
 /**
  * @author Gabriel Keith
  */
-class CameraFactory(kodein: Kodein, val world: World) : EntityFactory {
-    val arch = ArchetypeBuilder().add(CameraCom::class.java, CameraTargetsCom::class.java).build(world)
-    private val cameraTargetMapper = world.getMapper(CameraTargetsCom::class.java)
 
-    fun create(): Int {
-        val id = world.create(arch)
-        val targets = cameraTargetMapper.get(id)
 
-        targets.padWidth = 5f
-        targets.padHeight = 5f
+val cameraFactory = factory { kodein, world ->
+    val width = 5f
+    val height = 5f
 
-        return id
+    com<CameraCom>()
+    com<CameraTargetsCom> {
+        padWidth = width
+        padHeight = height
     }
-
-    override fun dispose() {}
 }

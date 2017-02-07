@@ -1,9 +1,6 @@
 buildscript {
     repositories {
-        mavenLocal()
-        mavenCentral()
         jcenter()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -27,10 +24,7 @@ subprojects {
     version = '0.0.1-SNAPSHOT'
     ext.appName = 'SpaceMonk2'
     repositories {
-        mavenLocal()
-        mavenCentral()
         jcenter()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
 }
 

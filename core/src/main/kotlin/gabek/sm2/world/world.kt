@@ -1,11 +1,11 @@
 package gabek.sm2.world
 
-import com.artemis.World
-import com.artemis.WorldConfiguration
+import com.artemis.*
 import com.artemis.link.EntityLinkManager
 import com.artemis.managers.GroupManager
 import com.artemis.managers.TagManager
 import com.github.salomonbrys.kodein.Kodein
+import gabek.sm2.scopes.GeneralMapper
 import gabek.sm2.systems.*
 import gabek.sm2.systems.character.AbilityIndexSystem
 import gabek.sm2.systems.character.CharacterAnimatorSystem
@@ -13,6 +13,7 @@ import gabek.sm2.systems.character.CharacterControllerSystem
 import gabek.sm2.systems.graphics.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem
+import kotlin.reflect.KClass
 
 /**
  * @author Gabriel Keith
@@ -27,6 +28,7 @@ fun buildWorld(kodein: Kodein): World {
     //config.setSystem(PlayerManager())
     //config.setSystem(TeamManager())
     config.setSystem(FactoryManager(kodein))
+    config.setSystem(GeneralMapper())
 
     //needs to be first
     config.setSystem(TranslationSystem())

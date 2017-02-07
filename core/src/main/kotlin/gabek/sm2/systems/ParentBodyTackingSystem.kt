@@ -12,11 +12,12 @@ import gabek.sm2.components.TranslationCom
  * @author Gabriel Keith
  */
 class ParentBodyTackingSystem : BaseEntitySystem(Aspect.all(
-        ParentOfCom::class.java, ParentOffsetCom::class.java, BodyCom::class.java)){
+        TranslationCom::class.java, ParentOfCom::class.java, ParentOffsetCom::class.java)){
 
+    private lateinit var transSystem: TranslationSystem
+    private lateinit var transMapper: ComponentMapper<TranslationCom>
     private lateinit var parentMapper: ComponentMapper<ParentOfCom>
     private lateinit var offsetMapper: ComponentMapper<ParentOffsetCom>
-    private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
     override fun processSystem() {
         val entities = entityIds
@@ -24,13 +25,16 @@ class ParentBodyTackingSystem : BaseEntitySystem(Aspect.all(
         for(i in 0 until entities.size()){
             val entity = entities[i]
 
+            val trans = transMapper[entity]
             val parent = parentMapper[entity].parent
             val offset = offsetMapper[entity]
-            val body = bodyMapper[entity].rBody
 
-            if(parent != -1 && bodyMapper.has(parent)) {
-                val pBody = bodyMapper[parent].rBody
-                body.setPosition(pBody.x + offset.x, pBody.y + offset.y)
+            if(transMapper.has(parent)) {
+                val parentTrans = transMapper[parent]
+                transSystem.teleport(entity,
+                        parentTrans.x + offset.x,
+                        parentTrans.y + offset.y,
+                        trans.rotation, smooth = true)
             }
         }
     }

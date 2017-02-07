@@ -38,7 +38,7 @@ class PelletCollisionSystem: BaseEntitySystem(Aspect.all(PelletCollisionCom::cla
 
 
     override fun inserted(entityId: Int) {
-        bodyMapper[entityId].rBody.addCallbackToAll(collisionCallback)
+        bodyMapper[entityId].body.addCallbackToAll(collisionCallback)
     }
 
     private val collisionCallback = object: RCollisionCallback{

@@ -9,5 +9,5 @@ import gabek.sm2.physics.RBody
  */
 @DelayedComponentRemoval
 class BodyCom : Component() {
-    var rBody = RBody()
+    var body = RBody()
 }

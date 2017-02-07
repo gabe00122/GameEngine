@@ -16,17 +16,17 @@ import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.PlayerInfo
 import gabek.sm2.WorldSetup
 import gabek.sm2.components.graphics.CameraTargetsCom
-import gabek.sm2.factory.CameraFactory
-import gabek.sm2.factory.JunkFactory
-import gabek.sm2.factory.PlayerFactory
+import gabek.sm2.factory.*
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.input.Actions
+import gabek.sm2.scopes.GeneralMapper
 import gabek.sm2.systems.*
 import gabek.sm2.systems.graphics.CameraSystem
 import gabek.sm2.systems.graphics.CameraTrackingSystem
 import gabek.sm2.systems.graphics.RenderSystem
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.UpdateManager
+import gabek.sm2.world.getSystem
 import ktx.actors.onChange
 
 /**
@@ -36,6 +36,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     private val display = DisplayBuffer()
 
     private val world: World = kodein.instance()
+    private val generalMapper: GeneralMapper = world.getSystem()
     private val worldSetup: WorldSetup = kodein.instance()
 
     private val updateManager = UpdateManager(world, 60f)
@@ -46,7 +47,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     private val pauseMenuControl: MenuControl
 
     init {
-        renderSystem = world.getSystem(RenderSystem::class.java)
+        renderSystem = world.getSystem()
 
         // pause menu
         pauseContainer.setFillParent(true)
@@ -71,28 +72,38 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     }
 
     override fun show() {
-        val factoryManager = world.getSystem(FactoryManager::class.java)
-        val cameraTrackingSystem = world.getSystem(CameraTrackingSystem::class.java)
+        val factoryManager: FactoryManager = world.getSystem()
+        val cameraTrackingSystem: CameraTrackingSystem = world.getSystem()
 
-        val cameraFactory = factoryManager.getFactory(CameraFactory::class.java)
-        val playerFactory = factoryManager.getFactory(PlayerFactory::class.java)
+        val cameraFactory = cameraFactory.build(kodein, world)
+        val playerFactory = playerFactory.build(kodein, world)
         //val platformFactory = PlatformFactory(kodein, world)
-        val junkFactory = factoryManager.getFactory(JunkFactory::class.java)
+        val junkFactory = junkFactory.build(kodein, world)
 
-        val cameraHandle = cameraFactory.create()
-        display.cameraHandle = cameraHandle
-        display.cameraSystem = world.getSystem(CameraSystem::class.java)
+        with(generalMapper) {
+            val cameraHandle = cameraFactory.create()
+            display.cameraHandle = cameraHandle
+            display.cameraSystem = world.getSystem()
 
-        for (i in 0 until worldSetup.players.size) {
-            val playerInfo: PlayerInfo = worldSetup.players[i]
+            //val point = world.create()
+            //transMapper.create(point).initPos(5f, 5f)
+            //cameraTrackingSystem.addTarget(cameraHandle, point)
 
-            val id = playerFactory.create(2f, 2f + i, playerInfo.input)
-            cameraTrackingSystem.addTarget(cameraHandle, id)
-        }
+            for (i in 0 until worldSetup.players.size) {
+                val playerInfo: PlayerInfo = worldSetup.players[i]
 
-        for (i in 0..1) {
-            for (j in 0..25) {
-                junkFactory.create(11f + i * 2f, 1f + j, 1f, 1f)
+                val id = playerFactory.create(2f, 3f + i * 2)
+
+                bodyMapper[characterStateMapper[id].legChild].body.setPosition(2f, 3f + i * 2)
+                playerInputMapper[id].playerInput = playerInfo.input
+
+                cameraTargetsMapper[cameraHandle].targets.add(id)
+            }
+
+            for (i in 0..1) {
+                for (j in 0..25) {
+                    junkFactory.create(11f + i * 2f, 1f + j)
+                }
             }
         }
         //platformFactory.create(0f, -3f, 10f, 1f)

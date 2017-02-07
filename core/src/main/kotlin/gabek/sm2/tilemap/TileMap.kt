@@ -87,7 +87,7 @@ class TileMap(val kodein: Kodein) {
     private fun RFixture.defaultSettings(x: Int, y: Int): RFixture {
         friction = 1f
         restitution = 0f
-        //categoryBits = filter(WALL)
+        categoryBits = filter(WALL)
         return this
     }
 

@@ -5,7 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.sm2.components.graphics.AnimationCom
 import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.graphics.Animation
+import gabek.sm2.graphics.AnimationDef
 
 /**
  * @author Gabriel Keith
@@ -22,7 +22,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
             val sprite = spriteMapper[entity]
             val animation = animationMapper[entity]
 
-            val ref = animation.currentAnimation
+            val ref = animation.currentAnimationDef
 
             if (ref != null && ref.frames.isNotEmpty()) {
                 if (animation.isStart) {

@@ -32,39 +32,39 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
 
             sprite.flipX = state.direction == CharacterStateCom.Direction.RIGHT
 
-            if (animation.currentAnimation == null) {
-                animation.currentAnimation = animator.stillAnimation
+            if (animation.currentAnimationDef == null) {
+                animation.currentAnimationDef = animator.stillAnimationDef
             }
 
             if (state.onGround && state.lateralMovement && canSwitchRunning(animation, animator, state)) {
-                animation.currentAnimation = animator.runningAnimation
+                animation.currentAnimationDef = animator.runningAnimationDef
                 animation.reset()
             }
 
             if (state.onGround && !state.lateralMovement && canSwitchStill(animation, animator, state)) {
-                animation.currentAnimation = animator.stillAnimation
+                animation.currentAnimationDef = animator.stillAnimationDef
                 animation.reset()
             }
 
-            if (!state.onGround && animation.currentAnimation === animator.runningAnimation) {
-                animation.currentAnimation = animator.stillAnimation
+            if (!state.onGround && animation.currentAnimationDef === animator.runningAnimationDef) {
+                animation.currentAnimationDef = animator.stillAnimationDef
                 animation.reset()
             }
 
-            if (!state.onGround && state.jumpTimeOut > 0 && animation.currentAnimation !== animator.jumpingAnimation) {
-                animation.currentAnimation = animator.jumpingAnimation
+            if (!state.onGround && state.jumpTimeOut > 0 && animation.currentAnimationDef !== animator.jumpingAnimationDef) {
+                animation.currentAnimationDef = animator.jumpingAnimationDef
                 animation.reset()
             }
         }
     }
 
     private fun canSwitchRunning(animation: AnimationCom, animator: CharacterAnimatorCom, state: CharacterStateCom): Boolean {
-        return animation.currentAnimation === animator.stillAnimation ||
-                animation.currentAnimation === animator.jumpingAnimation && state.jumpTimeOut <= 0
+        return animation.currentAnimationDef === animator.stillAnimationDef ||
+                animation.currentAnimationDef === animator.jumpingAnimationDef && state.jumpTimeOut <= 0
     }
 
     private fun canSwitchStill(animation: AnimationCom, animator: CharacterAnimatorCom, state: CharacterStateCom): Boolean {
-        return animation.currentAnimation === animator.runningAnimation ||
-                animation.currentAnimation === animator.jumpingAnimation && state.jumpTimeOut <= 0
+        return animation.currentAnimationDef === animator.runningAnimationDef ||
+                animation.currentAnimationDef === animator.jumpingAnimationDef && state.jumpTimeOut <= 0
     }
 }

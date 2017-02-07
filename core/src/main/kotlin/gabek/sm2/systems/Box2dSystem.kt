@@ -14,11 +14,15 @@ import gabek.sm2.components.BodyCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.physics.RContact
 import gabek.sm2.physics.RFixture
+import gabek.sm2.scopes.GeneralMapper
 
 /**
  * @author Gabriel Keith
  */
 class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationCom::class.java)), Disposable{
+    private lateinit var generalMapper: GeneralMapper
+
+    private lateinit var transSystem: TranslationSystem
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
     private lateinit var transMapper: ComponentMapper<TranslationCom>
 
@@ -30,6 +34,8 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
 
         world.aspectSubscriptionManager.get(Aspect.all(BodyCom::class.java)).
                 addSubscriptionListener(bodyInitHandler)
+
+        transSystem.addTeleportListener(teleportHandler)
     }
 
     override fun processSystem() {
@@ -41,7 +47,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
             val bodyCom = bodyMapper.get(entity)
             val transCom = transMapper.get(entity)
 
-            val body = bodyCom.rBody
+            val body = bodyCom.body
             transCom.x = body.x
             transCom.y = body.y
             transCom.rotation = body.rotation
@@ -55,21 +61,29 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
     private val bodyInitHandler = object: EntitySubscription.SubscriptionListener {
         override fun inserted(entities: IntBag) {
             for (i in 0 until entities.size()) {
-                val body = bodyMapper[entities[i]].rBody
-                body.initialise(box2dWorld, entities[i])
+                val entity = entities[i]
+                val body = bodyMapper[entity].body
+
+                body.initialise(box2dWorld, entity)
             }
         }
 
         override fun removed(entities: IntBag) {
             for (i in 0 until entities.size()) {
-                val body = bodyMapper[entities[i]].rBody
+                val body = bodyMapper[entities[i]].body
                 body.store(box2dWorld)
             }
         }
     }
 
-    private val bodyDestructionHandler = object: DestructionListener {
-
+    private val teleportHandler = object: TranslationSystem.TeleportListener {
+        override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float) {
+            if(bodyMapper.has(id)){
+                val body = bodyMapper[id].body
+                body.setPosition(x, y)
+                body.rotation = rotation
+            }
+        }
     }
 
     private val contactHandler = object : ContactListener {
