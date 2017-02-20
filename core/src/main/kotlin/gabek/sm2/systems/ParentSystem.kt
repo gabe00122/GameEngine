@@ -1,6 +1,7 @@
 package gabek.sm2.systems
 
 import com.artemis.BaseSystem
+import com.artemis.Component
 import com.artemis.ComponentMapper
 import com.artemis.link.EntityLinkManager
 import com.artemis.link.LinkAdapter
@@ -26,4 +27,18 @@ class ParentSystem: BaseSystem(){
     }
 
     override fun processSystem() {}
+
+    fun getParent(entity: Int): Int{
+        return parentOfMapper[entity].parent
+    }
+
+    fun <T: Component> recursiveGet(mapper: ComponentMapper<T>, entity: Int): T? {
+        if(mapper.has(entity)){
+            return mapper[entity]
+        } else if(parentOfMapper.has(entity)){
+            return recursiveGet(mapper, parentOfMapper[entity].parent)
+        } else {
+            return null
+        }
+    }
 }

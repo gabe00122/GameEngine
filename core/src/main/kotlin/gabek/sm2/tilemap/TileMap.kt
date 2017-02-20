@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.World
 import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.instance
+import gabek.sm2.Assets
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.REdge
 import gabek.sm2.physics.RFixture
@@ -15,6 +17,8 @@ import gabek.sm2.world.filter
  * @author Gabriel Keith
  */
 class TileMap(val kodein: Kodein) {
+    val assets: Assets = kodein.instance()
+
     val tileSize = 0.75f
     val definitions = TileDefinitions(kodein)
     val grid: Grid<TileReference> = ArrayGrid(50, 20, { x, y -> TileReference(0) })
@@ -56,7 +60,7 @@ class TileMap(val kodein: Kodein) {
             for (x in x1 until x2) {
                 val tile = grid.get(x, y)
                 val type = definitions[tile.typeId]
-                batch.draw(type.texture, x * tileSize, y * tileSize, tileSize, tileSize)
+                batch.draw(assets.retrieveRegion(type.texture), x * tileSize, y * tileSize, tileSize, tileSize)
             }
         }
     }

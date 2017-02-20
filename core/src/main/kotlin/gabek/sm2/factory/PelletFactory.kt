@@ -32,7 +32,7 @@ class PelletFactory(kodein: Kodein, val world: World){
     ).build(world)
     
     private val assets: Assets = kodein.instance()
-    private val texture: TextureRegion = assets.findTexture("actors", "rect")
+    private val textureRef: TextureRegion = assets.findTexture("actors", "rect")
     
     
     private val transMapper = world.getMapper(TranslationCom::class.java)
@@ -52,7 +52,7 @@ class PelletFactory(kodein: Kodein, val world: World){
 
         trans.initPos(x, y)
         
-        sprite.texture = texture
+        sprite.textureRef = textureRef
         sprite.width = 0.2f
         sprite.height = 0.2f
 

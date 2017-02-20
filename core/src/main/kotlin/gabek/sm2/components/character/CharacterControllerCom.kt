@@ -13,8 +13,6 @@ class CharacterControllerCom : Component() {
     var moveRight: Boolean = false
 
     var jump: Boolean = false
-    var justJump: Boolean = false
 
     var primary: Boolean = false
-    var justPrimary: Boolean = false
 }

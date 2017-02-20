@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper
 import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.PlayerInputCom
 import gabek.sm2.input.Actions
+import gabek.sm2.input.PlayerInput
 
 /**
  * @author Gabriel Keith
@@ -30,5 +31,9 @@ class PlayerInputSystem : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java
                 char.primary = playerInput.pollAction(Actions.SELECT)
             }
         }
+    }
+
+    fun setInput(entity: Int, playerInput: PlayerInput){
+        playerInputMapper[entity].playerInput = playerInput
     }
 }

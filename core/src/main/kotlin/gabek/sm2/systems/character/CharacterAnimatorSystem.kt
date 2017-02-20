@@ -3,68 +3,65 @@ package gabek.sm2.systems.character
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
+import com.artemis.utils.BitVector
+import com.badlogic.gdx.Gdx
 import gabek.sm2.components.graphics.AnimationCom
 import gabek.sm2.components.character.CharacterAnimatorCom
-import gabek.sm2.components.character.CharacterStateCom
+import gabek.sm2.components.character.CharacterMovementStateCom
+import gabek.sm2.components.character.CharacterMovementStateCom.State
+import gabek.sm2.components.character.CharacterMovementStateCom.State.*
 import gabek.sm2.components.graphics.SpriteCom
+import gabek.sm2.systems.graphics.AnimationSystem
 
 /**
  * @author Gabriel Keith
  */
 class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
-        AnimationCom::class.java, SpriteCom::class.java, CharacterStateCom::class.java, CharacterAnimatorCom::class.java
+        AnimationCom::class.java, CharacterAnimatorCom::class.java
 )) {
 
     private lateinit var animationMapper: ComponentMapper<AnimationCom>
-    private lateinit var spriteMapper: ComponentMapper<SpriteCom>
-    private lateinit var characterStateMapper: ComponentMapper<CharacterStateCom>
     private lateinit var characterAnimatorMapper: ComponentMapper<CharacterAnimatorCom>
 
-    override fun processSystem() {
-        val entities = entityIds
-        for (i in 0 until entities.size()) {
-            val entity = entities[i]
+    private lateinit var animationSystem: AnimationSystem
+    private lateinit var characterControllerSystem: CharacterControllerSystem
 
-            val state = characterStateMapper[entity]
-            val sprite = spriteMapper[entity]
-            val animator = characterAnimatorMapper[entity]
-            val animation = animationMapper[entity]
+    override fun initialize() {
+        super.initialize()
 
-            sprite.flipX = state.direction == CharacterStateCom.Direction.RIGHT
-
-            if (animation.currentAnimationDef == null) {
-                animation.currentAnimationDef = animator.stillAnimationDef
-            }
-
-            if (state.onGround && state.lateralMovement && canSwitchRunning(animation, animator, state)) {
-                animation.currentAnimationDef = animator.runningAnimationDef
-                animation.reset()
-            }
-
-            if (state.onGround && !state.lateralMovement && canSwitchStill(animation, animator, state)) {
-                animation.currentAnimationDef = animator.stillAnimationDef
-                animation.reset()
-            }
-
-            if (!state.onGround && animation.currentAnimationDef === animator.runningAnimationDef) {
-                animation.currentAnimationDef = animator.stillAnimationDef
-                animation.reset()
-            }
-
-            if (!state.onGround && state.jumpTimeOut > 0 && animation.currentAnimationDef !== animator.jumpingAnimationDef) {
-                animation.currentAnimationDef = animator.jumpingAnimationDef
-                animation.reset()
+        val table = characterControllerSystem.transitionTable
+        table.addListenerEntering(RUNNING){ entity, from, to ->
+            if(isInterested(entity)) {
+                val running = characterAnimatorMapper[entity].runningAnimationDef!!
+                animationSystem.setAnimationDef(entity, running)
             }
         }
+
+        table.addListenerEntering(STANDING){ entity, from, to ->
+            if(isInterested(entity)) {
+                val still = characterAnimatorMapper[entity].stillAnimationDef!!
+                animationSystem.setAnimationDef(entity, still)
+            }
+        }
+
+        table.addListenerEntering(JUMPING){ entity, from, to ->
+            if(isInterested(entity)) {
+                val jumping = characterAnimatorMapper[entity].jumpingAnimationDef!!
+                animationSystem.setAnimationDef(entity, jumping)
+            }
+        }
+
+
     }
 
-    private fun canSwitchRunning(animation: AnimationCom, animator: CharacterAnimatorCom, state: CharacterStateCom): Boolean {
-        return animation.currentAnimationDef === animator.stillAnimationDef ||
-                animation.currentAnimationDef === animator.jumpingAnimationDef && state.jumpTimeOut <= 0
+    fun isInterested(entity: Int): Boolean{
+        return subscription.aspect.isInterested(world.getEntity(entity))
     }
 
-    private fun canSwitchStill(animation: AnimationCom, animator: CharacterAnimatorCom, state: CharacterStateCom): Boolean {
-        return animation.currentAnimationDef === animator.runningAnimationDef ||
-                animation.currentAnimationDef === animator.jumpingAnimationDef && state.jumpTimeOut <= 0
+    override fun processSystem() {}
+
+    override fun inserted(entityId: Int) {
+        super.inserted(entityId)
+        animationMapper[entityId].currentAnimationDef = characterAnimatorMapper[entityId].stillAnimationDef
     }
 }

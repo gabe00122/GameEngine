@@ -1,6 +1,7 @@
 package gabek.sm2.world
 
 import com.artemis.*
+import gabek.sm2.components.ParentOfCom
 import kotlin.reflect.KClass
 
 /**
@@ -19,3 +20,11 @@ fun <T: Component> Aspect.Builder.all(vararg clazz: KClass<T>){
     all(clazz.map { it.java })
 }
 
+fun World.clear(){
+    val bag = aspectSubscriptionManager.get(Aspect.all()).entities.data
+    for (i in bag) {
+        delete(i)
+    }
+    process()
+    entityManager.reset()
+}

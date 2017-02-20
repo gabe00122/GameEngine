@@ -5,15 +5,14 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import com.kotcrab.vis.ui.widget.VisProgressBar
 import gabek.sm2.Assets
 import gabek.sm2.components.HealthCom
-import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.graphics.HealthDisplayCom
+import gabek.sm2.world.RenderManager
 
 /**
  * @author Gabriel Keith
@@ -23,9 +22,10 @@ class HealthRenderSystem(kodein: Kodein) : BaseEntitySystem(
                 HealthCom::class.java,
                 HealthDisplayCom::class.java,
                 TranslationCom::class.java)
-){
+), RenderManager.BatchSystem{
     private val assets: Assets = kodein.instance()
-    private val rect = assets.findTexture("actors", "rect")
+
+    private val rect = assets.retrieveRegion("actors:rect")
 
     private val background = Color(89/255f, 86/255f, 82/255f, 1f)
     private val foreground = Color(106/255f, 190/255f, 48/255f, 1f)
@@ -37,8 +37,7 @@ class HealthRenderSystem(kodein: Kodein) : BaseEntitySystem(
     private lateinit var healthDisplayMapper: ComponentMapper<HealthDisplayCom>
 
     override fun processSystem() {}
-
-    fun render(batch: SpriteBatch, culling: Rectangle, progress: Float){
+    override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float){
         val entities = entityIds
 
         for(i in 0 until entities.size()){

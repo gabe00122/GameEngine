@@ -4,6 +4,7 @@ apply plugin: "artemis"
 eclipse.project.name = appName + '-core'
 
 
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
@@ -24,6 +25,9 @@ dependencies {
     compile "com.github.czyzby:ktx-i18n:$ktxVersion"
 
     compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
+
+    compile "com.esotericsoftware:kryo:$kryoVersion"
+
     compile "com.github.salomonbrys.kodein:kodein:$kodeinVersion"
 }
 

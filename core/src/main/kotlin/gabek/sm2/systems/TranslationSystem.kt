@@ -25,34 +25,45 @@ class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java
         }
     }
 
-    fun addTeleportListener(teleportListener: TeleportListener){
+    fun addTeleportListener(teleportListener: TeleportListener) {
         teleportListeners.add(teleportListener)
     }
 
     /**
      * Moves entities translation somewhere as well as any other components dependent on location
      */
-    fun teleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false){
-        if(translationMapper.has(id)){
-            val trans = translationMapper[id]
-
-            trans.x = x
-            trans.y = y
-            trans.rotation = rotation
-
-            if(!smooth){
-                trans.pX = x
-                trans.pY = y
-                trans.pRotation = rotation
-            }
+    fun teleport(entity: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false) {
+        assert(translationMapper.has(entity))
+        for (listener in teleportListeners) {
+            listener.onTeleport(entity, x, y, rotation, smooth)
         }
 
-        for(listener in teleportListeners){
-            listener.onTeleport(id, x, y, rotation)
+
+        val trans = translationMapper[entity]
+        trans.x = x
+        trans.y = y
+        trans.rotation = rotation
+
+        if (!smooth) {
+            trans.pX = x
+            trans.pY = y
+            trans.pRotation = rotation
         }
     }
 
-    interface TeleportListener{
-        fun onTeleport(id: Int, x: Float, y: Float, rotation: Float)
+    fun teleportRelative(entity: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false){
+        val trans = translationMapper[entity]
+        teleport(entity, x + trans.x, y + trans.y, rotation + trans.rotation, smooth)
+    }
+
+    fun teleportChild(parent: Int, child: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false){
+        if(child != -1) {
+            val trans = translationMapper[parent]
+            teleportRelative(child, x - trans.x, y - trans.y, rotation - trans.rotation, smooth)
+        }
+    }
+
+    interface TeleportListener {
+        fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean)
     }
 }

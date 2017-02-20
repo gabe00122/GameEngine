@@ -73,4 +73,8 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
             }
         }
     }
+
+    fun addTarget(entity: Int, target: Int){
+        cameraTargetsMapper[entity].targets.add(target)
+    }
 }

@@ -38,13 +38,13 @@ class BasicPunchFactory(val kodein: Kodein, val world: World){
     private val bodyMapper = world.getMapper(BodyCom::class.java)
     private val spriteMapper = world.getMapper(SpriteCom::class.java)
 
-    private val texture = kodein.instance<Assets>().findTexture("actors", "rect")
+    private val textureRef = kodein.instance<Assets>().findTexture("actors", "rect")
 
     fun create(parentId: Int, offsetX: Float, offsetY: Float, damage: Float): Int{
         val entity = world.create(arch)
         val lifeSpan = lifeSpanMapper[entity]
         val collision = collisionMapper[entity]
-        val parent = parentMapper[entity]
+        val general = parentMapper[entity]
         val offset = offsetMapper[entity]
         val trans = transMapper[entity]
         val body = bodyMapper[entity].body
@@ -55,8 +55,8 @@ class BasicPunchFactory(val kodein: Kodein, val world: World){
         collision.damage = damage
         collision.diesOnAttack = true
 
-        parent.parent = parentId
-        parent.diesWithParent = true
+        general.general = parentId
+        general.diesWithParent = true
 
         offset.x = offsetX
         offset.y = offsetY
@@ -64,7 +64,7 @@ class BasicPunchFactory(val kodein: Kodein, val world: World){
         body.bodyType = BodyDef.BodyType.KinematicBody
         body.addFixture(RPolygon(0.25f, 0.25f), isSensor = true)
 
-        sprite.texture = texture
+        sprite.textureRef = textureRef
         sprite.setSize(0.25f, 0.25f)
 
         if(parentId != -1 && bodyMapper.has(parentId)){

@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL30
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.profiling.GLProfiler
 import com.badlogic.gdx.physics.box2d.Box2D
 import com.github.salomonbrys.kodein.Kodein
@@ -14,6 +15,8 @@ import com.kotcrab.vis.ui.VisUI
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
+import gabek.sm2.world.RenderManager
+import gabek.sm2.world.buildRenderManager
 import gabek.sm2.world.buildWorld
 
 /**
@@ -33,6 +36,8 @@ class Core : ApplicationAdapter() {
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton { buildWorld(this) }
             bind<WorldSetup>() with singleton { WorldSetup() }
+
+            bind<RenderManager>() with singleton { buildRenderManager(this) }
         }
         kodein.instance<Assets>().finish()
 

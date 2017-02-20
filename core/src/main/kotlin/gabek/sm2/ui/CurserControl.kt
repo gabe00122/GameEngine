@@ -21,7 +21,7 @@ class CurserControl(val kodein: Kodein) : Actor() {
     init {
         val assets: Assets = kodein.instance()
 
-        (0..5).mapTo(curserTextures) { assets.findTexture("menus", "curser", it) }
+        (0..5).mapTo(curserTextures) { assets.retrieveRegion("menus:curser:$it") }
     }
 
     fun join(playerInput: PlayerInput, index: Int) {

@@ -1,31 +1,28 @@
 package gabek.sm2.screens
 
-import com.artemis.Aspect
 import com.artemis.World
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.utils.Align
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
+import gabek.sm2.Assets
 import gabek.sm2.PlayerInfo
 import gabek.sm2.WorldSetup
-import gabek.sm2.components.graphics.CameraTargetsCom
-import gabek.sm2.factory.*
+import gabek.sm2.factory.cameraFactory
+import gabek.sm2.factory.junkFactory
+import gabek.sm2.factory.playerFactory
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.input.Actions
-import gabek.sm2.scopes.GeneralMapper
-import gabek.sm2.systems.*
-import gabek.sm2.systems.graphics.CameraSystem
+import gabek.sm2.systems.FactoryManager
+import gabek.sm2.systems.PlayerInputSystem
 import gabek.sm2.systems.graphics.CameraTrackingSystem
-import gabek.sm2.systems.graphics.RenderSystem
 import gabek.sm2.ui.MenuControl
+import gabek.sm2.world.RenderManager
 import gabek.sm2.world.UpdateManager
+import gabek.sm2.world.clear
 import gabek.sm2.world.getSystem
 import ktx.actors.onChange
 
@@ -36,19 +33,16 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     private val display = DisplayBuffer()
 
     private val world: World = kodein.instance()
-    private val generalMapper: GeneralMapper = world.getSystem()
     private val worldSetup: WorldSetup = kodein.instance()
 
     private val updateManager = UpdateManager(world, 60f)
-    private val renderSystem: RenderSystem
+    private val renderManager: RenderManager = kodein.instance()
 
     private val pauseWindow: VisWindow = VisWindow("Pause")
     private val pauseContainer = Container(pauseWindow)
     private val pauseMenuControl: MenuControl
 
     init {
-        renderSystem = world.getSystem()
-
         // pause menu
         pauseContainer.setFillParent(true)
         pauseWindow.isMovable = false
@@ -57,12 +51,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
 
         val quitBut = VisTextButton("Quit", "toggle")
         quitBut.onChange { changeEvent, visTextButton ->
-            val bag = world.aspectSubscriptionManager.get(Aspect.all()).entities.data
-            for (i in bag) {
-                world.delete(i)
-            }
-            world.process()
-            world.entityManager.reset()
+            world.clear()
 
             manager.show("main")
         }
@@ -74,13 +63,14 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     override fun show() {
         val factoryManager: FactoryManager = world.getSystem()
         val cameraTrackingSystem: CameraTrackingSystem = world.getSystem()
+        val playerInputSystem: PlayerInputSystem = world.getSystem()
 
         val cameraFactory = cameraFactory.build(kodein, world)
         val playerFactory = playerFactory.build(kodein, world)
         //val platformFactory = PlatformFactory(kodein, world)
         val junkFactory = junkFactory.build(kodein, world)
 
-        with(generalMapper) {
+
             val cameraHandle = cameraFactory.create()
             display.cameraHandle = cameraHandle
             display.cameraSystem = world.getSystem()
@@ -93,11 +83,9 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
                 val playerInfo: PlayerInfo = worldSetup.players[i]
 
                 val id = playerFactory.create(2f, 3f + i * 2)
+                playerInputSystem.setInput(id, playerInfo.input)
 
-                bodyMapper[characterStateMapper[id].legChild].body.setPosition(2f, 3f + i * 2)
-                playerInputMapper[id].playerInput = playerInfo.input
-
-                cameraTargetsMapper[cameraHandle].targets.add(id)
+                cameraTrackingSystem.addTarget(cameraHandle, id)
             }
 
             for (i in 0..1) {
@@ -105,7 +93,6 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
                     junkFactory.create(11f + i * 2f, 1f + j)
                 }
             }
-        }
         //platformFactory.create(0f, -3f, 10f, 1f)
 
         val displayContainer = Container<DisplayBuffer>(display).fill()
@@ -139,7 +126,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
 
     override fun render(batch: SpriteBatch) {
         if (!isPaused) {
-            renderSystem.render(display, batch, updateManager.progress)
+            renderManager.render(display, batch, updateManager.progress)
         }
     }
 

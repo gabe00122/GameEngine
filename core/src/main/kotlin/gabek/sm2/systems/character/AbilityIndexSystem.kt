@@ -6,16 +6,17 @@ import com.artemis.ComponentMapper
 import gabek.sm2.components.AbilityIndexCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.character.CharacterControllerCom
-import gabek.sm2.components.character.CharacterStateCom
+import gabek.sm2.components.character.CharacterMovementStateCom
 import gabek.sm2.systems.FactoryManager
 
 /**
  * @author Gabriel Keith
  */
+
 class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
         TranslationCom::class.java,
         AbilityIndexCom::class.java,
-        CharacterStateCom::class.java,
+        CharacterMovementStateCom::class.java,
         CharacterControllerCom::class.java)){
 
     private lateinit var factoryManager: FactoryManager
@@ -24,7 +25,7 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
 
     private lateinit var transMapper: ComponentMapper<TranslationCom>
     private lateinit var abilityIndexMapper: ComponentMapper<AbilityIndexCom>
-    private lateinit var characterStateMapper: ComponentMapper<CharacterStateCom>
+    private lateinit var characterMovementStateMapper: ComponentMapper<CharacterMovementStateCom>
     private lateinit var controlMapper: ComponentMapper<CharacterControllerCom>
 
     override fun initialize() {
@@ -42,7 +43,7 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
 
             val trans = transMapper[entity]
             val abilityIndex = abilityIndexMapper[entity]
-            val state = characterStateMapper[entity]
+            val state = characterMovementStateMapper[entity]
             val control = controlMapper[entity]
 
             if(abilityIndex.moveTimeout > 0) {
@@ -52,14 +53,7 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
             if(control.primary && abilityIndex.moveTimeout <= 0f){
                 abilityIndex.moveTimeout += 0.1f
 
-                if(state.direction == CharacterStateCom.Direction.LEFT){
-                    //pelletFactory.create(trans.x - 0.5f, trans.y, 180f, 2.5f, 0.1f)
-                    //punchFactory.create(entity, -0.5f, 0f, 0.1f)
-                }
-                if(state.direction == CharacterStateCom.Direction.RIGHT){
-                    //pelletFactory.create(trans.x + 0.5f, trans.y, 0f, 2.5f, 0.1f)
-                    //punchFactory.create(entity, 0.5f, 0f, 0.1f)
-                }
+
             }
         }
     }

@@ -27,7 +27,7 @@ class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java)) {
         }
     }
 
-    fun updateProjection(cameraHandle: Int, progress: Float, screenWidth: Float, screenHeight: Float): OrthographicCamera {
+    fun updateProjection(cameraHandle: Int, progress: Float): OrthographicCamera {
         val camera = cameraMapper.get(cameraHandle)
 
         val x1 = camera.bottomLeft.lerpX(progress)

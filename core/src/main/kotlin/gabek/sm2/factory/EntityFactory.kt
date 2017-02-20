@@ -3,11 +3,7 @@ package gabek.sm2.factory
 import com.artemis.*
 import com.badlogic.gdx.utils.Disposable
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.scopes.GeneralMapper
-import gabek.sm2.systems.FactoryManager
 import gabek.sm2.systems.TranslationSystem
-import gabek.sm2.world.getSystem
-import kotlin.reflect.KClass
 
 /**
  * @author Gabriel Keith
@@ -22,8 +18,6 @@ class EntityFactory: Disposable{
     private val archetype: Archetype
 
     private lateinit var transSystem: TranslationSystem
-    lateinit var generalMapper: GeneralMapper
-        private set
 
     private constructor(builder: Builder,
                         kodein: Kodein,
@@ -45,7 +39,7 @@ class EntityFactory: Disposable{
         val entity = world.create(archetype)
 
         compBuilders.forEach { comp ->
-            comp.body?.invoke(comp.mapper.get(entity))
+            comp.body?.invoke(comp.mapper.get(entity), entity)
         }
         
         onCreate.forEach { it.invoke(this, entity) }
@@ -72,11 +66,11 @@ class EntityFactory: Disposable{
         internal var onCreateList = mutableListOf<EntityFactory.(entity: Int) -> Unit>()
 
         @Suppress("UNCHECKED_CAST")
-        fun <T: Component> com(clazz: Class<T>, body: (T.() -> Unit)? = null){
+        fun <T: Component> com(clazz: Class<T>, body: (T.(entity: Int) -> Unit)? = null){
             compBuilders.add(CompBuilder(clazz, body) as CompBuilder<Component>)
         }
 
-        inline fun <reified T: Component> com(noinline body: (T.() -> Unit)? = null){
+        inline fun <reified T: Component> com(noinline body: (T.(entity: Int) -> Unit)? = null){
             com(T::class.java, body)
         }
 
@@ -90,7 +84,7 @@ class EntityFactory: Disposable{
         }
     }
 
-    internal class CompBuilder<T: Component>(val clazz: Class<T>, val body: (T.() -> Unit)?){
+    internal class CompBuilder<T: Component>(val clazz: Class<T>, val body: (T.(entity: Int) -> Unit)?){
         lateinit var mapper: ComponentMapper<T>
     }
 }

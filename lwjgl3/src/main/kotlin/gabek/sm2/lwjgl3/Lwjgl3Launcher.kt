@@ -9,8 +9,14 @@ import gabek.sm2.Core
  */
 
 fun main(args: Array<String>){
+    //val config = LwjglApplicationConfiguration()
+    //config.width = 800
+    //config.height = 800
+
+    //LwjglApplication(Core(), config)
     Lwjgl3Application(Core(), getDefaultConfig())
 }
+
 
 fun getDefaultConfig(): Lwjgl3ApplicationConfiguration{
     val config = Lwjgl3ApplicationConfiguration()
@@ -18,6 +24,11 @@ fun getDefaultConfig(): Lwjgl3ApplicationConfiguration{
 
     config.setTitle("SpaceMonk2")
     config.setWindowedMode(800, 800)
+    //config.useVsync(false)
+    //config.setIdleFPS()
+
+    config.setBackBufferConfig(8, 8, 8, 8, 0, 0, 0)
+    //config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode())
 
     return config
 }

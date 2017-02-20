@@ -4,23 +4,18 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.EntitySubscription
-import com.artemis.annotations.Profile
 import com.artemis.utils.IntBag
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Disposable
-import gabek.sm2.Profiler
 import gabek.sm2.components.BodyCom
 import gabek.sm2.components.TranslationCom
-import gabek.sm2.physics.RContact
 import gabek.sm2.physics.RFixture
-import gabek.sm2.scopes.GeneralMapper
 
 /**
  * @author Gabriel Keith
  */
 class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationCom::class.java)), Disposable{
-    private lateinit var generalMapper: GeneralMapper
 
     private lateinit var transSystem: TranslationSystem
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
@@ -77,7 +72,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
     }
 
     private val teleportHandler = object: TranslationSystem.TeleportListener {
-        override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float) {
+        override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean) {
             if(bodyMapper.has(id)){
                 val body = bodyMapper[id].body
                 body.setPosition(x, y)

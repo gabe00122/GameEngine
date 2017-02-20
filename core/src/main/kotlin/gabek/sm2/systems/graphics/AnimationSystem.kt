@@ -15,6 +15,8 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
     private lateinit var animationMapper: ComponentMapper<AnimationCom>
 
     override fun processSystem() {
+        //TODO replace me, sooo ugly
+
         val entities = entityIds
         for (i in 0 until entities.size()) {
             val entity = entities[i]
@@ -26,7 +28,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
 
             if (ref != null && ref.frames.isNotEmpty()) {
                 if (animation.isStart) {
-                    sprite.texture = ref.frames[animation.frame]
+                    sprite.textureRef = ref.frames[animation.frame]
                     animation.isStart = false
                 }
 
@@ -36,7 +38,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
                         animation.clock -= ref.delay
 
                         //loop back to start
-                        if (!ref.pingpong) {
+                        if (ref.strategy != AnimationDef.Strategy.PINGPONG) {
                             if (!animation.isReverse && animation.frame >= ref.frames.size - 1) {
                                 animation.frame = -1
                             }
@@ -51,19 +53,30 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
                         if (!animation.isReverse && animation.frame >= ref.frames.size - 1 ||
                                 animation.isReverse && animation.frame <= 0) {
                             //switch direction
-                            if (ref.pingpong) {
+                            if (ref.strategy == AnimationDef.Strategy.PINGPONG) {
                                 animation.isReverse = !animation.isReverse
                             }
                             //finish
-                            if (!ref.repeats) {
+                            if (ref.strategy != AnimationDef.Strategy.PINGPONG) {
                                 animation.isFinished = true
                             }
                         }
 
-                        sprite.texture = ref.frames[animation.frame]
+                        sprite.textureRef = ref.frames[animation.frame]
                     }
                 }
             }
         }
+    }
+
+    fun setAnimationDef(entity: Int, animationDef: AnimationDef){
+        val def = animationMapper[entity]
+        def.currentAnimationDef = animationDef
+
+        def.clock = 0f
+        def.frame = 0
+        def.isReverse = false
+        def.isStart = true
+        def.isFinished = false
     }
 }

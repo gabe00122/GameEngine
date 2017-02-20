@@ -13,12 +13,4 @@ class AnimationCom : Component() {
     var isReverse = false
     var isStart = true
     var isFinished = false
-
-    fun reset() {
-        clock = 0f
-        frame = 0
-        isReverse = false
-        isStart = true
-        isFinished = false
-    }
 }

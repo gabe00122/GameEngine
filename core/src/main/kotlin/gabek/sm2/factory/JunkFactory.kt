@@ -14,15 +14,14 @@ import gabek.sm2.world.*
  */
 
 val junkFactory = factory { kodein, world ->
-    val assets: Assets = kodein.instance()
-    val texture = assets.findTexture("actors", "junk")
+    val texture = kodein.instance<Assets>().findTexture("actors:junk")
 
     val width = 1f
     val height = 1f
 
     com<TranslationCom>()
     com<SpriteCom>{
-        this.texture = texture
+        this.textureRef = texture
         this.width = width
         this.height = height
     }

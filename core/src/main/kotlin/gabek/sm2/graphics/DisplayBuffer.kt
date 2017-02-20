@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
 import gabek.sm2.systems.graphics.CameraSystem
@@ -12,7 +13,7 @@ import gabek.sm2.systems.graphics.CameraTrackingSystem
 /**
  * @author Gabriel Keith
  */
-class DisplayBuffer : Widget(), Disposable {
+class DisplayBuffer() : Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
     var cameraHandle: Int = -1
     var cameraSystem: CameraSystem? = null
