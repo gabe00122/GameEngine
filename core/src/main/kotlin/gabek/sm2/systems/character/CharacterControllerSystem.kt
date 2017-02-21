@@ -3,7 +3,6 @@ package gabek.sm2.systems.character
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
@@ -13,11 +12,8 @@ import gabek.sm2.components.character.*
 import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
 import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
 import gabek.sm2.components.character.CharacterMovementStateCom.State.*
-import gabek.sm2.physics.RBody
 import gabek.sm2.physics.RCollisionCallback
-import gabek.sm2.physics.RContact
 import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.BiDirectionSystem
 import gabek.sm2.systems.ParentSystem
 import gabek.sm2.systems.TimeManager
 import gabek.sm2.systems.TranslationSystem
@@ -35,7 +31,6 @@ class CharacterControllerSystem : BaseEntitySystem(
                 MovementPhysicsCom::class.java,
                 BodyCom::class.java
         )) {
-    private lateinit var parentMapper: ComponentMapper<ParentOfCom>
     private lateinit var controllerMapper: ComponentMapper<CharacterControllerCom>
     private lateinit var biDirectionMapper: ComponentMapper<BiDirectionCom>
     private lateinit var movementStateMapper: ComponentMapper<CharacterMovementStateCom>
@@ -48,23 +43,34 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var transSystem: TranslationSystem
     private lateinit var biDirectionSystem: BiDirectionSystem
 
-    val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class)
-    { entity, state ->
-        val movState = movementStateMapper[entity]
-        movState.state = state
-        movState.timeInState = timeManager.currentFrame
+    val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
+        println("${movementStateMapper[entity].state}, $state")
+
+        movementStateMapper[entity].state = state
         checkTransitions(entity)
     }
 
     init {
+        transitionTable.addListenerEntering(LANDING) {entity, from, to ->
+            movementStateMapper[entity].timeOnGround = timeManager.currentFrame
+        }
+
         transitionTable.addListenerLeavening(RUNNING) { entity, from, to ->
             movementPhysicsMapper[entity].motor.motorSpeed = 0f
+        }
+
+        transitionTable.addListener(arrayOf(RUNNING, STANDING), arrayOf(JUMPING, IN_AIR)) { entity, from, to ->
+            movementStateMapper[entity].timeInAir = timeManager.currentFrame
         }
 
         transitionTable.addListenerEntering(JUMPING) { entity, from, to ->
             val body = bodyMapper[entity].body
             val movPhys = movementPhysicsMapper[entity]
             val movDef = movementDefinitionMapper[entity]
+
+            println()
+            println(movPhys.groundFixture)
+            println(movPhys.groundFixture?.body)
 
             val force = movDef.jumpForce
             val groundBody = movPhys.groundFixture!!.body!!
@@ -120,9 +126,9 @@ class CharacterControllerSystem : BaseEntitySystem(
             //physics
             when (movState.state) {
                 RUNNING -> {
-                    if (control.moveLeft) {
+                    if (biDirection.direction == LEFT) {
                         movPhysics.motor.motorSpeed = moveDef.groundSpeed
-                    } else if (control.moveRight) {
+                    } else if (biDirection.direction == RIGHT) {
                         movPhysics.motor.motorSpeed = -moveDef.groundSpeed
                     }
                 }
@@ -151,11 +157,12 @@ class CharacterControllerSystem : BaseEntitySystem(
         val movState = movementStateMapper[entity]
         val movPhysics = movementPhysicsMapper[entity]
 
-        val timeInState = timeManager.getElapsedTime(movState.timeInState)
+        val timeOnGround = timeManager.getElapsedTime(movState.timeOnGround)
+        val timeInAir = timeManager.getElapsedTime(movState.timeInAir)
 
         when (movState.state) {
             LANDING -> {
-                if(control.moveLeft || control.moveRight){
+                if (control.moveLeft || control.moveRight) {
                     transitionTable.transition(entity, LANDING, RUNNING)
                 } else {
                     transitionTable.transition(entity, LANDING, STANDING)
@@ -163,27 +170,36 @@ class CharacterControllerSystem : BaseEntitySystem(
             }
 
             STANDING -> {
-                if (control.moveLeft || control.moveRight) {
-                    transitionTable.transition(entity, STANDING, RUNNING)
+                if(movPhysics.groundFixture == null){
+                    transitionTable.transition(entity, STANDING, IN_AIR)
                 }
-                if (control.moveUp && timeInState > 0.2f) {
+                else if (control.moveUp && timeOnGround > 0.1f) {
                     transitionTable.transition(entity, STANDING, JUMPING)
+                }
+                else if (control.moveLeft || control.moveRight) {
+                    transitionTable.transition(entity, STANDING, RUNNING)
                 }
             }
             RUNNING -> {
-                if (!control.moveLeft && !control.moveRight) {
+                if(movPhysics.groundFixture == null){
+                    transitionTable.transition(entity, RUNNING, IN_AIR)
+                }
+                else if (control.moveUp && timeOnGround > 0.1f) {
+                    transitionTable.transition(entity, RUNNING, JUMPING)
+                }
+                else if (!control.moveLeft && !control.moveRight) {
                     transitionTable.transition(entity, RUNNING, STANDING)
                 }
-                if (control.moveUp && timeInState > 0.2f) {
-                    transitionTable.transition(entity, RUNNING, JUMPING)
+            }
+            IN_AIR -> {
+                if(movPhysics.groundFixture != null && timeInAir > 0.1f){
+                    transitionTable.transition(entity, IN_AIR, LANDING)
                 }
             }
             JUMPING -> {
-                if (movPhysics.groundFixture != null && timeInState > 0.2f) {
+                if(movPhysics.groundFixture != null && timeInAir > 0.1f){
                     transitionTable.transition(entity, JUMPING, LANDING)
                 }
-            }
-            else -> {
             }
         }
     }
@@ -217,7 +233,7 @@ class CharacterControllerSystem : BaseEntitySystem(
             val point = contact.worldManifold.points[0]
             val diffX = point.x - ownerRFixture.body!!.x
 
-            if(diffX < hWidth - movDef.pad && diffX > -hWidth + movDef.pad) {
+            if (diffX < hWidth - movDef.pad && diffX > -hWidth + movDef.pad) {
                 movPhysics.groundFixture = otherRFixture
                 movPhysics.groundPoint.set(point)
             } else {

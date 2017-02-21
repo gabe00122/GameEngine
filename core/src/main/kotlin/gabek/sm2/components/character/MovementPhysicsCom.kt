@@ -1,5 +1,6 @@
 package gabek.sm2.components.character
 
+import com.artemis.Component
 import com.artemis.PooledComponent
 import com.artemis.annotations.EntityId
 import com.badlogic.gdx.math.Vector2
@@ -11,7 +12,7 @@ import gabek.sm2.physics.joints.RRevoluteJoint
 /**
  * @author Gabriel Keith
  */
-class MovementPhysicsCom: PooledComponent(){
+class MovementPhysicsCom: Component(){
     @JvmField
     @EntityId var wheelRef = -1
 
@@ -20,10 +21,10 @@ class MovementPhysicsCom: PooledComponent(){
     val groundPoint = Vector2()
     var groundFixture: RFixture? = null
 
-    override fun reset() {
-        wheelRef = -1
-        motor = RRevoluteJoint()
-        groundPoint.setZero()
-        groundFixture = null
-    }
+    //override fun reset() {
+    //    wheelRef = -1
+    //    motor = RRevoluteJoint()
+    //    groundPoint.setZero()
+    //    groundFixture = null
+    //}
 }

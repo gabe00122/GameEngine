@@ -12,10 +12,12 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
+import gabek.sm2.assets.Assets
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
 import gabek.sm2.world.RenderManager
+import gabek.sm2.world.WorldSetup
 import gabek.sm2.world.buildRenderManager
 import gabek.sm2.world.buildWorld
 
@@ -32,7 +34,7 @@ class Core : ApplicationAdapter() {
 
         val kodein = Kodein {
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
-            bind<Assets>() with singleton { Assets() }
+            bind<Assets>() with singleton { Assets("manifest.json") }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton { buildWorld(this) }
             bind<WorldSetup>() with singleton { WorldSetup() }

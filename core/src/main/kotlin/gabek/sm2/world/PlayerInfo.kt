@@ -1,4 +1,4 @@
-package gabek.sm2
+package gabek.sm2.world
 
 import gabek.sm2.input.PlayerInput
 

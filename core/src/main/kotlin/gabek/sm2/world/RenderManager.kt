@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.systems.graphics.CameraSystem
 

@@ -5,8 +5,8 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
-import gabek.sm2.PlayerInfo
-import gabek.sm2.WorldSetup
+import gabek.sm2.world.PlayerInfo
+import gabek.sm2.world.WorldSetup
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.input.PlayerInputManager

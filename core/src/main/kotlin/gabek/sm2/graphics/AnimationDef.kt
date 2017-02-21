@@ -1,7 +1,7 @@
 package gabek.sm2.graphics
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 
 /**
  * @author Gabriel Keith

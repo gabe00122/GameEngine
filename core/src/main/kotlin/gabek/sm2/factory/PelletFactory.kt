@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 import gabek.sm2.components.BodyCom
 import gabek.sm2.components.pellet.PelletLifeSpanCom
 import gabek.sm2.components.graphics.SpriteCom

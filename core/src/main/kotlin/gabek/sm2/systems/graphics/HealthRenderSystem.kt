@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
-import gabek.sm2.components.HealthCom
+import gabek.sm2.assets.Assets
+import gabek.sm2.components.character.HealthCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.world.RenderManager

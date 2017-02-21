@@ -1,4 +1,4 @@
-package gabek.sm2
+package gabek.sm2.world
 
 import com.artemis.BaseSystem
 import com.artemis.World
@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx
 /**
  * @author Gabriel Keith
  */
-class Profiler: ArtemisProfiler{
+class Profiler: ArtemisProfiler {
     private var startTime: Long = 0
 
     private var sumTime: Long = 0

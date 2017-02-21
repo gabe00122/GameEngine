@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.World
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.REdge
 import gabek.sm2.physics.RFixture

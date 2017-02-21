@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.sm2.systems.character
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem

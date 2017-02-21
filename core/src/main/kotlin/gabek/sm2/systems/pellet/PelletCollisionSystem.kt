@@ -8,12 +8,12 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.HealthCom
+import gabek.sm2.components.character.HealthCom
 import gabek.sm2.components.ParentOfCom
 import gabek.sm2.components.pellet.PelletCollisionCom
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.DamageSystem
+import gabek.sm2.systems.character.DamageSystem
 import gabek.sm2.systems.ParentSystem
 
 /**

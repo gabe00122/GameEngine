@@ -2,7 +2,7 @@ package gabek.sm2.factory
 
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 import gabek.sm2.components.*
 import gabek.sm2.components.character.*
 import gabek.sm2.components.graphics.AnimationCom
@@ -90,11 +90,11 @@ val playerFactory = factory { kodein, world ->
         airDamping = 0.1f
 
         jumpCooldown = 0.1f
-        jumpForce = 3.0f
+        jumpForce = 3.5f
 
         this.width = width
         this.height = height
-        pad = width / 10
+        pad = 0.02f
     }
 
     com<CharacterAnimatorCom> {

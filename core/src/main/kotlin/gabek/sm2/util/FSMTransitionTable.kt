@@ -41,9 +41,9 @@ class FSMTransitionTable<T: Enum<T>>(clazz: KClass<T>,
     }
 
     fun transition(entity: Int, from: T, to: T){
-        saveState(entity, to)
         for(listener in matrix[from.ordinal][to.ordinal]){
             listener(entity, from, to)
         }
+        saveState(entity, to)
     }
 }

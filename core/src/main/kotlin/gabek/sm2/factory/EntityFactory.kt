@@ -13,7 +13,6 @@ class EntityFactory: Disposable{
     private val world: World
 
     private val compBuilders: List<CompBuilder<Component>>
-    private val onCreate: List<EntityFactory.(entity: Int) -> Unit>
 
     private val archetype: Archetype
 
@@ -27,7 +26,7 @@ class EntityFactory: Disposable{
         world.inject(this)
 
         compBuilders = builder.compBuilders
-        onCreate = builder.onCreateList
+
 
         compBuilders.forEach { it.mapper = world.getMapper(it.clazz) }
         archetype = compBuilders.fold(ArchetypeBuilder()){ builder, comp ->
@@ -39,10 +38,8 @@ class EntityFactory: Disposable{
         val entity = world.create(archetype)
 
         compBuilders.forEach { comp ->
-            comp.body?.invoke(comp.mapper.get(entity), entity)
+            comp.body?.invoke(comp.mapper!!.get(entity), entity)
         }
-        
-        onCreate.forEach { it.invoke(this, entity) }
         
         return entity
     }
@@ -62,11 +59,16 @@ class EntityFactory: Disposable{
     override fun dispose() {}
 
     class Builder(val define: Builder.(kodein: Kodein, world: World) -> Unit){
-        internal val compBuilders = mutableListOf<CompBuilder<Component>>()
-        internal var onCreateList = mutableListOf<EntityFactory.(entity: Int) -> Unit>()
+        private var dirty = false
+        internal var compBuilders = mutableListOf<CompBuilder<Component>>()
 
         @Suppress("UNCHECKED_CAST")
         fun <T: Component> com(clazz: Class<T>, body: (T.(entity: Int) -> Unit)? = null){
+            if(dirty){
+                dirty = false
+                compBuilders = mutableListOf<CompBuilder<Component>>()
+            }
+
             compBuilders.add(CompBuilder(clazz, body) as CompBuilder<Component>)
         }
 
@@ -74,19 +76,14 @@ class EntityFactory: Disposable{
             com(T::class.java, body)
         }
 
-        fun onCreate(body: EntityFactory.(entity: Int) -> Unit){
-            onCreateList.add(body)
-        }
-
         fun build(kodein: Kodein, world: World): EntityFactory{
             define(kodein, world)
+            dirty = true
             return EntityFactory(this, kodein, world)
         }
     }
 
-    internal class CompBuilder<T: Component>(val clazz: Class<T>, val body: (T.(entity: Int) -> Unit)?){
-        lateinit var mapper: ComponentMapper<T>
-    }
+    internal data class CompBuilder<T: Component>(val clazz: Class<T>, val body: (T.(entity: Int) -> Unit)?, var mapper: ComponentMapper<T>? = null)
 }
 
 fun factory(define: EntityFactory.Builder.(kodein: Kodein, world: World) -> Unit): 

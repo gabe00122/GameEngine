@@ -6,7 +6,7 @@ import com.artemis.PooledComponent
 /**
  * @author Gabriel Keith
  */
-class MovementDefinitionCom : PooledComponent() {
+class MovementDefinitionCom : Component() {
     var groundSpeed: Float = 0f
     var airSpeed: Float = 0f
     var airDamping: Float = 0f
@@ -18,16 +18,16 @@ class MovementDefinitionCom : PooledComponent() {
     var width = 0f
     var height = 0f
 
-    override fun reset() {
-        groundSpeed = 0f
-        airSpeed = 0f
-        airDamping = 0f
+    //override fun reset() {
+    //    groundSpeed = 0f
+    //    airSpeed = 0f
+    //    airDamping = 0f
 
-        jumpCooldown = 0f
-        jumpForce = 0f
+    //    jumpCooldown = 0f
+    //    jumpForce = 0f
 
-        pad = 0f
-        width = 0f
-        height = 0f
-    }
+    //    pad = 0f
+    //    width = 0f
+    //    height = 0f
+    //}
 }

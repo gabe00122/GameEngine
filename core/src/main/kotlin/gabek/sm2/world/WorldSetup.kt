@@ -1,4 +1,4 @@
-package gabek.sm2
+package gabek.sm2.world
 
 /**
  * @author Gabriel Keith

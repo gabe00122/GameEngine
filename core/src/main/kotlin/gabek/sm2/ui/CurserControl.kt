@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 

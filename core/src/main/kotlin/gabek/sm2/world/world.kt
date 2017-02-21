@@ -8,8 +8,10 @@ import com.artemis.managers.TagManager
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.systems.*
+import gabek.sm2.systems.character.BiDirectionSystem
 import gabek.sm2.systems.character.CharacterAnimatorSystem
 import gabek.sm2.systems.character.CharacterControllerSystem
+import gabek.sm2.systems.character.DamageSystem
 import gabek.sm2.systems.graphics.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem

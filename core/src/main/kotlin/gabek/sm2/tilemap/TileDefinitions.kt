@@ -2,7 +2,7 @@ package gabek.sm2.tilemap
 
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.Assets
+import gabek.sm2.assets.Assets
 
 /**
  * @author Gabriel Keith

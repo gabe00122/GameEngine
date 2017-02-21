@@ -1,0 +1,13 @@
+{
+  "texturePacks": {
+    "actors": "art/actors.atlas",
+    "menus": "art/menus.atlas",
+    "tiles": "art/tiles.atlas"
+  },
+  "shaders": {
+    "hexel": {
+      "vert": "shaders/hex.vert",
+      "frag": "shaders/hex.frag"
+    }
+  }
+}

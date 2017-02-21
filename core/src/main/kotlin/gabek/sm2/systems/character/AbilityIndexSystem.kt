@@ -3,7 +3,7 @@ package gabek.sm2.systems.character
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.AbilityIndexCom
+import gabek.sm2.components.character.AbilityIndexCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.character.CharacterMovementStateCom
