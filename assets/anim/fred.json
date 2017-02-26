@@ -1,0 +1,16 @@
+{
+  "running": {
+    "strategy": "PINGPONG",
+    "delay": 0.2,
+    "frames": "actors:fred_running:*"
+  },
+  "still": {
+    "strategy": "SINGLE",
+    "frames": "actors:fred_running:1"
+  },
+  "jumping": {
+    "strategy": "SINGLE",
+    "delay": 0.15,
+    "frames": "actors:fred_jumping:*"
+  }
+}

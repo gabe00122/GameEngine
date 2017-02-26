@@ -34,8 +34,13 @@ class CharacterAnimatorSystem : BaseEntitySystem(Aspect.all(
         setAnimationFor(LANDING) {stillAnimationDef}
         setAnimationFor(STANDING) {stillAnimationDef}
         setAnimationFor(RUNNING) {runningAnimationDef}
-
         setAnimationFor(JUMPING) {jumpingAnimationDef}
+
+        characterControllerSystem.transitionTable.addListener(RUNNING, IN_AIR){ entity, to, from ->
+            if(isInterested(entity)) {
+                animationSystem.setAnimationDef(entity, characterAnimatorMapper[entity].stillAnimationDef!!)
+            }
+        }
     }
 
     private inline fun setAnimationFor(entering: State, crossinline animationDef: CharacterAnimatorCom.() -> AnimationDef?){

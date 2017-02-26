@@ -15,6 +15,8 @@ class JsonAssetLoader(val handle: FileHandle){
         private const val SHADER_LABEL = "shaders"
         private const val SHADER_VERT_LABEL = "vert"
         private const val SHADER_FRAG_LABEL = "frag"
+
+        private const val ANIMATION_LABEL = "animations"
     }
 
     private val jsonReader = JsonReader()
@@ -24,6 +26,7 @@ class JsonAssetLoader(val handle: FileHandle){
 
         configTexturePacks(assets, json)
         configShaders(assets, json)
+        configAnimations(assets, json)
     }
 
     private fun configTexturePacks(assets: Assets, json: JsonValue){
@@ -48,6 +51,14 @@ class JsonAssetLoader(val handle: FileHandle){
             val frag = shader.get(SHADER_FRAG_LABEL).asString()
 
             assets.addShader(shader.name, vert, frag)
+        }
+    }
+
+    private fun configAnimations(assets: Assets, json: JsonValue){
+        val root = json.get(ANIMATION_LABEL)
+
+        for(animFile in root.JsonIterator()){
+            assets.addAnimationPack(animFile.name, animFile.asString())
         }
     }
 }

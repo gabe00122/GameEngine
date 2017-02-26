@@ -16,13 +16,11 @@ import gabek.sm2.systems.graphics.CameraSystem
  * @author Gabriel Keith
  */
 class RenderManager(val kodein: Kodein,
-        val cameraSystem: CameraSystem,
-                    val batchSystems: List<BatchSystem>){
+                    val cameraSystem: CameraSystem,
+                    val batchSystems: List<BatchSystem>,
+                    val orthoSystems: List<OrthoRenderSystem> = listOf()){
 
     //private val shader = kodein.instance<Assets>().resourceManager.get("shaders/hex.vert", ShaderProgram::class.java)
-
-    private val orthoSystems = mutableListOf<OrthoRenderSystem>()
-
     private val culling = Rectangle()
 
     fun render(buffer: DisplayBuffer, batch: SpriteBatch, progress: Float){

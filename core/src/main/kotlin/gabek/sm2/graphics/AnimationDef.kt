@@ -24,9 +24,20 @@ private constructor(
     }
     
     class Builder(val assets: Assets){
+        private var dirty = false
 
         var delay = 0f
+            set(value) {
+                if(dirty) reset()
+                field = value
+            }
+
         var strategy: Strategy = Strategy.SINGLE
+            set(value) {
+                if(dirty) reset()
+                field = value
+            }
+
         private var frames: MutableList<TextureRef> = mutableListOf()
 
         fun setDelay(delay: Float): Builder{
@@ -40,16 +51,35 @@ private constructor(
         }
 
         fun addFrame(lookup: String): Builder{
-            frames.add(assets.findTexture(lookup))
+            if(dirty) reset()
+
+            if(lookup.endsWith(":*")){
+                frames.addAll(assets.findTextures(lookup))
+            } else {
+                frames.add(assets.findTexture(lookup))
+            }
             return this
         }
 
         fun addFrames(lookup: String, range: IntRange): Builder{
+            if(dirty) reset()
+
             frames.addAll(assets.findTextures(lookup, range))
             return this
         }
 
-        fun build(): AnimationDef = AnimationDef(delay, strategy, frames)
+        private fun reset(){
+            dirty = false
+
+            delay = 0f
+            strategy = Strategy.SINGLE
+            frames = mutableListOf()
+        }
+
+        fun build(): AnimationDef{
+            dirty = true
+            return AnimationDef(delay, strategy, frames)
+        }
     }
     
     enum class Strategy {

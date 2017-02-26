@@ -5,6 +5,7 @@ import com.artemis.WorldConfiguration
 import com.artemis.link.EntityLinkManager
 import com.artemis.managers.GroupManager
 import com.artemis.managers.TagManager
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.systems.*
@@ -63,6 +64,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(SpriteRenderSystem(kodein))
     config.setSystem(HealthRenderSystem(kodein))
 
+    //config.setSystem(Box2dDebugSystem())
 
     return World(config)
 }
@@ -76,6 +78,9 @@ fun buildRenderManager(kodein: Kodein): RenderManager{
                         getSystem<TileRenderSystem>(),
                         getSystem<SpriteRenderSystem>(),
                         getSystem<HealthRenderSystem>()
+                ),
+                orthoSystems = listOf(
+                        //getSystem<Box2dDebugSystem>()
                 )
                 )
     }

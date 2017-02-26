@@ -9,5 +9,8 @@
       "vert": "shaders/hex.vert",
       "frag": "shaders/hex.frag"
     }
+  },
+  "animations": {
+    "fred": "anim/fred.json"
   }
 }

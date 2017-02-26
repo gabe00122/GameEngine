@@ -30,20 +30,9 @@ val playerFactory = factory { kodein, world ->
     val height = 1f
     val bodyHeight = height - width / 2f
 
-    val runningAnim = AnimationDef.builder(assets)
-            .setDelay(0.2f)
-            .setStrategy(AnimationDef.Strategy.PINGPONG)
-            .addFrames("actors:fred_running", 0..2)
-            .build()
-
-    val stillAnim = AnimationDef.builder(assets)
-            .addFrame("actors:fred_running:1")
-            .build()
-
-    val jumpingAnim = AnimationDef.builder(assets)
-            .setDelay(0.15f)
-            .addFrames("actors:fred_jumping", 0..1)
-            .build()
+    val runningAnim = assets.retrieveAnimationDef("fred:running")
+    val stillAnim = assets.retrieveAnimationDef("fred:still")
+    val jumpingAnim = assets.retrieveAnimationDef("fred:jumping")
 
     val legFactory = factory { kodein, world ->
         com<ParentOfCom> { diesWithParent = true }
@@ -94,7 +83,7 @@ val playerFactory = factory { kodein, world ->
 
         this.width = width
         this.height = height
-        pad = 0.02f
+        pad = 0.01f
     }
 
     com<CharacterAnimatorCom> {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Logger
+import gabek.sm2.graphics.AnimationDef
 import gabek.sm2.graphics.TextureRef
 
 /**
@@ -21,8 +22,11 @@ class Assets() : Disposable {
     private val textureList = mutableListOf<TextureRegion>()
 
     private val shaderMap = mutableMapOf<String, ShaderProgram>()
+    private val animationMap = mutableMapOf<String, AnimationDef>()
 
     constructor(jsonFile: String, configOnly: Boolean = true) : this() {
+        initLoaders()
+
         configureFromFile(jsonFile)
         if(!configOnly){
             finish()
@@ -32,6 +36,10 @@ class Assets() : Disposable {
     fun finish() {
         resourceManager.logger.level = Logger.INFO
         resourceManager.finishLoading()
+    }
+
+    private fun initLoaders(){
+        resourceManager.setLoader(AnimationMap::class.java, AnimationLoader(this, resourceManager.fileHandleResolver))
     }
 
     fun configureFromFile(jsonFile: String){
@@ -66,12 +74,48 @@ class Assets() : Disposable {
         resourceManager.load(shaderName, ShaderProgram::class.java, parameter)
     }
 
+    fun addAnimationPack(packName: String, file: String){
+        val param = AnimationLoader.Parameters()
+
+        param.loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
+            val aMap = assetManager.get(file, AnimationMap::class.java)
+            for(anim in aMap){
+                animationMap.put("$packName:${anim.key}", anim.value)
+            }
+        }
+
+        resourceManager.load(file, AnimationMap::class.java, param)
+    }
+
     fun findTexture(lookup: String): TextureRef {
         return TextureRef(textureIdMap[defaultIndex(lookup)]!!)
     }
 
     fun findTextures(lookup: String, range: IntRange): List<TextureRef>{
         return range.map { findTexture("$lookup:$it") }
+    }
+
+    fun findTextures(lookup: String): List<TextureRef>{
+        val base = lookup.replace(":*", "")
+        val out = mutableListOf<TextureRef>()
+
+        var index = 0
+        var current = textureIdMap["$base:${index++}"]
+
+        while(current != null){
+            out.add(TextureRef(current))
+            current = textureIdMap["$base:${index++}"]
+        }
+
+        return out
+    }
+
+    private fun defaultIndex(lookup: String): String{
+        if(lookup.count { it == ':' } < 2){
+            return "$lookup:-1"
+        } else {
+            return lookup
+        }
     }
 
     fun retrieveRegion(ref: TextureRef): TextureRegion {
@@ -82,12 +126,8 @@ class Assets() : Disposable {
         return textureList[textureIdMap[defaultIndex(lookup)]!!]
     }
 
-    private fun defaultIndex(lookup: String): String{
-        if(lookup.count { it == ':' } == 2){
-            return lookup
-        } else {
-            return "$lookup:-1"
-        }
+    fun retrieveAnimationDef(lookup: String): AnimationDef{
+        return animationMap[lookup]!!
     }
 
     override fun dispose() {

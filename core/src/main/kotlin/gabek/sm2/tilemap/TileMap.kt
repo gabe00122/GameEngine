@@ -21,44 +21,45 @@ class TileMap(val kodein: Kodein) {
 
     val tileSize = 0.75f
     val definitions = TileDefinitions(kodein)
-    val grid: Grid<TileReference> = ArrayGrid(50, 20, { x, y -> TileReference(0) })
+    val background: Grid<TileReference> = ArrayGrid(50, 20, { x, y -> TileReference(0) })
+    val foreground: Grid<TileReference> = ArrayGrid(50, 20, { x, y -> TileReference(0) })
 
     val body = RBody()
 
     init {
-        for (x in 0 until grid.w) {
-            grid.set(x, 0, TileReference(1))
+        for (x in 0 until background.w) {
+            background.set(x, 0, TileReference(1))
         }
 
-        for(y in 0 until grid.h){
-            grid.set(0, y, TileReference(1))
-            grid.set(grid.w - 1, y, TileReference(1))
+        for(y in 0 until background.h){
+            background.set(0, y, TileReference(1))
+            background.set(background.w - 1, y, TileReference(1))
         }
 
         for (x in 3..8) {
-            grid.set(x, 3, TileReference(1))
+            background.set(x, 3, TileReference(1))
         }
 
         for (x in 8..12) {
-            grid.set(x, 9, TileReference(1))
+            background.set(x, 9, TileReference(1))
         }
 
         for (x in 2..11) {
-            grid.set(x, 13, TileReference(1))
+            background.set(x, 13, TileReference(1))
         }
     }
 
 
     fun render(batch: SpriteBatch, culling: Rectangle) {
-        val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, grid.w)
-        val x2 = MathUtils.clamp(MathUtils.ceil((culling.x + culling.width) / tileSize), 0, grid.w)
+        val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, background.w)
+        val x2 = MathUtils.clamp(MathUtils.ceil((culling.x + culling.width) / tileSize), 0, background.w)
 
-        val y1 = MathUtils.clamp(MathUtils.floor(culling.y / tileSize), 0, grid.h)
-        val y2 = MathUtils.clamp(MathUtils.ceil((culling.y + culling.height) / tileSize), 0 , grid.h)
+        val y1 = MathUtils.clamp(MathUtils.floor(culling.y / tileSize), 0, background.h)
+        val y2 = MathUtils.clamp(MathUtils.ceil((culling.y + culling.height) / tileSize), 0 , background.h)
 
         for (y in y1 until y2) {
             for (x in x1 until x2) {
-                val tile = grid.get(x, y)
+                val tile = background.get(x, y)
                 val type = definitions[tile.typeId]
                 batch.draw(assets.retrieveRegion(type.texture), x * tileSize, y * tileSize, tileSize, tileSize)
             }
@@ -66,9 +67,9 @@ class TileMap(val kodein: Kodein) {
     }
 
     fun initPhysics(box2dWorld: World) {
-        for (y in 0 until grid.h) {
-            for (x in 0 until grid.w) {
-                if (definitions[grid.get(x, y)].solid) {
+        for (y in 0 until background.h) {
+            for (x in 0 until background.w) {
+                if (definitions[background.get(x, y)].solid) {
                     initSolid(x, y)
                 }
             }
@@ -79,14 +80,14 @@ class TileMap(val kodein: Kodein) {
 
     fun store(box2dWorld: World) {
         body.store(box2dWorld)
-        for (y in 0 until grid.h) {
-            for (x in 0 until grid.w) {
-                grid.get(x, y).fixtures = null
+        for (y in 0 until background.h) {
+            for (x in 0 until background.w) {
+                background.get(x, y).fixtures = null
             }
         }
     }
 
-    private fun checkSolid(x: Int, y: Int) = grid.has(x, y) && definitions[grid.get(x, y)].solid
+    private fun checkSolid(x: Int, y: Int) = background.has(x, y) && definitions[background.get(x, y)].solid
 
     private fun RFixture.defaultSettings(x: Int, y: Int): RFixture {
         friction = 1f
@@ -162,7 +163,7 @@ class TileMap(val kodein: Kodein) {
                     body.addFixture(fixture)
                 }
             }
-            grid.get(x, y).fixtures = fixtures
+            background.get(x, y).fixtures = fixtures
         }
     }
 }
