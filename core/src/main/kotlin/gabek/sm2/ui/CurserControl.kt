@@ -3,7 +3,6 @@ package gabek.sm2.ui
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance

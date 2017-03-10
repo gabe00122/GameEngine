@@ -69,7 +69,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
         }
     }
 
-    fun setAnimationDef(entity: Int, animationDef: AnimationDef){
+    fun setAnimationDef(entity: Int, animationDef: AnimationDef) {
         val def = animationMapper[entity]
         def.currentAnimationDef = animationDef
 

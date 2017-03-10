@@ -8,7 +8,7 @@ import gabek.sm2.components.TranslationCom
 /**
  * @author Gabriel Keith
  */
-class WorldBoundsSystem: BaseEntitySystem(Aspect.all(TranslationCom::class.java)){
+class WorldBoundsSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java)) {
     val minX = -100f
     val minY = -100f
 
@@ -20,11 +20,11 @@ class WorldBoundsSystem: BaseEntitySystem(Aspect.all(TranslationCom::class.java)
     override fun processSystem() {
         val entities = entityIds
 
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
 
             val trans = transMapper[entity]
-            if(trans.x < minX || trans.y < minY || trans.x > maxX || trans.y > maxY){
+            if (trans.x < minX || trans.y < minY || trans.x > maxX || trans.y > maxY) {
                 world.delete(entity)
             }
         }

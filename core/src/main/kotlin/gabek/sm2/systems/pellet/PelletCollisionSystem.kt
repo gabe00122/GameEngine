@@ -5,22 +5,18 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
-import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.character.HealthCom
-import gabek.sm2.components.ParentOfCom
 import gabek.sm2.components.pellet.PelletCollisionCom
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
 import gabek.sm2.systems.character.DamageSystem
-import gabek.sm2.systems.ParentSystem
 
 /**
  * @author Gabriel Keith
  */
 
-class PelletCollisionSystem: BaseEntitySystem(Aspect.all(PelletCollisionCom::class.java, BodyCom::class.java)){
+class PelletCollisionSystem : BaseEntitySystem(Aspect.all(PelletCollisionCom::class.java, BodyCom::class.java)) {
     private lateinit var pelletCollisionMapper: ComponentMapper<PelletCollisionCom>
     private lateinit var damageSystem: DamageSystem
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
@@ -32,7 +28,7 @@ class PelletCollisionSystem: BaseEntitySystem(Aspect.all(PelletCollisionCom::cla
         bodyMapper[entityId].body.addCallbackToAll(collisionCallback)
     }
 
-    private val collisionCallback = object: RCollisionCallback{
+    private val collisionCallback = object : RCollisionCallback {
         override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val owner = ownerRFixture.ownerId
             val other = otherRFixture.ownerId
@@ -40,12 +36,12 @@ class PelletCollisionSystem: BaseEntitySystem(Aspect.all(PelletCollisionCom::cla
             val effect = pelletCollisionMapper[owner]
 
             var success = false
-            if(other != -1){
+            if (other != -1) {
                 success = damageSystem.damage(other, effect.damage)
             }
 
 
-            if((success && effect.diesOnAttack) || effect.diesOnCollision){
+            if ((success && effect.diesOnAttack) || effect.diesOnCollision) {
                 world.delete(owner)
             }
         }

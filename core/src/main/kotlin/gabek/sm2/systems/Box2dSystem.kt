@@ -5,7 +5,6 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.EntitySubscription
 import com.artemis.utils.IntBag
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Disposable
@@ -16,7 +15,7 @@ import gabek.sm2.physics.RFixture
 /**
  * @author Gabriel Keith
  */
-class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationCom::class.java)), Disposable{
+class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationCom::class.java)), Disposable {
 
     private lateinit var transSystem: TranslationSystem
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
@@ -54,7 +53,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
         box2dWorld.dispose()
     }
 
-    private val bodyInitHandler = object: EntitySubscription.SubscriptionListener {
+    private val bodyInitHandler = object : EntitySubscription.SubscriptionListener {
         override fun inserted(entities: IntBag) {
             for (i in 0 until entities.size()) {
                 val entity = entities[i]
@@ -72,9 +71,9 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
         }
     }
 
-    private val teleportHandler = object: TranslationSystem.TeleportListener {
+    private val teleportHandler = object : TranslationSystem.TeleportListener {
         override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean) {
-            if(bodyMapper.has(id)){
+            if (bodyMapper.has(id)) {
                 val body = bodyMapper[id].body
                 body.setPosition(x, y)
                 body.rotation = rotation
@@ -87,11 +86,11 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
             val fixtureA = contact.fixtureA.userData as RFixture
             val fixtureB = contact.fixtureB.userData as RFixture
 
-            for(callback in fixtureA.callbackList){
+            for (callback in fixtureA.callbackList) {
                 callback.begin(contact, fixtureA, fixtureB)
             }
 
-            for(callback in fixtureB.callbackList){
+            for (callback in fixtureB.callbackList) {
                 callback.begin(contact, fixtureB, fixtureA)
             }
         }
@@ -100,11 +99,11 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
             val fixtureA = contact.fixtureA.userData as RFixture
             val fixtureB = contact.fixtureB.userData as RFixture
 
-            for(callback in fixtureA.callbackList){
+            for (callback in fixtureA.callbackList) {
                 callback.end(contact, fixtureA, fixtureB)
             }
 
-            for(callback in fixtureB.callbackList){
+            for (callback in fixtureB.callbackList) {
                 callback.end(contact, fixtureB, fixtureA)
             }
         }
@@ -112,12 +111,13 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
         override fun preSolve(contact: Contact, oldManifold: Manifold) {
             val fixtureA = contact.fixtureA.userData as RFixture
             val fixtureB = contact.fixtureB.userData as RFixture
+            contact.tangentSpeed = 0f
 
-            for(callback in fixtureA.callbackList){
+            for (callback in fixtureA.callbackList) {
                 callback.preSolve(contact, oldManifold, fixtureA, fixtureB)
             }
 
-            for(callback in fixtureB.callbackList){
+            for (callback in fixtureB.callbackList) {
                 callback.preSolve(contact, oldManifold, fixtureB, fixtureA)
             }
         }
@@ -126,11 +126,11 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
             val fixtureA = contact.fixtureA.userData as RFixture
             val fixtureB = contact.fixtureB.userData as RFixture
 
-            for(callback in fixtureA.callbackList){
+            for (callback in fixtureA.callbackList) {
                 callback.postSolve(contact, impulse, fixtureA, fixtureB)
             }
 
-            for(callback in fixtureB.callbackList){
+            for (callback in fixtureB.callbackList) {
                 callback.postSolve(contact, impulse, fixtureB, fixtureA)
             }
         }

@@ -1,7 +1,6 @@
 package gabek.sm2.components.character
 
 import com.artemis.Component
-import com.artemis.annotations.PooledWeaver
 import gabek.sm2.graphics.AnimationDef
 
 /**

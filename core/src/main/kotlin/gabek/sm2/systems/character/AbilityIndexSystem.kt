@@ -3,8 +3,8 @@ package gabek.sm2.systems.character
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.character.AbilityIndexCom
 import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.character.AbilityIndexCom
 import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.character.CharacterMovementStateCom
 import gabek.sm2.systems.FactoryManager
@@ -13,11 +13,11 @@ import gabek.sm2.systems.FactoryManager
  * @author Gabriel Keith
  */
 
-class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
+class AbilityIndexSystem : BaseEntitySystem(Aspect.all(
         TranslationCom::class.java,
         AbilityIndexCom::class.java,
         CharacterMovementStateCom::class.java,
-        CharacterControllerCom::class.java)){
+        CharacterControllerCom::class.java)) {
 
     private lateinit var factoryManager: FactoryManager
     //private lateinit var pelletFactory: PelletFactory
@@ -38,7 +38,7 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
     override fun processSystem() {
         val entities = entityIds
 
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
 
             val trans = transMapper[entity]
@@ -46,11 +46,11 @@ class AbilityIndexSystem: BaseEntitySystem(Aspect.all(
             val state = characterMovementStateMapper[entity]
             val control = controlMapper[entity]
 
-            if(abilityIndex.moveTimeout > 0) {
+            if (abilityIndex.moveTimeout > 0) {
                 abilityIndex.moveTimeout -= world.delta
             }
 
-            if(control.primary && abilityIndex.moveTimeout <= 0f){
+            if (control.primary && abilityIndex.moveTimeout <= 0f) {
                 abilityIndex.moveTimeout += 0.1f
 
 

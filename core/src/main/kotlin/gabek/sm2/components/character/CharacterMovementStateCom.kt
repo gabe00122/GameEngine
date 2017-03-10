@@ -1,17 +1,16 @@
 package gabek.sm2.components.character
 
 import com.artemis.Component
-import com.artemis.PooledComponent
 import java.util.*
 
 /**
  * @author Gabriel Keith
  */
 class CharacterMovementStateCom : Component() {
-    companion object{
+    companion object {
         val DEFAULT_STATE = State.STANDING
 
-        val GROUND_STATES = EnumSet.of(State.LANDING, State.STANDING, State.RUNNING)
+        val GROUND_STATES: EnumSet<State> = EnumSet.of(State.LANDING, State.STANDING, State.RUNNING)
     }
 
     var state: State = DEFAULT_STATE

@@ -12,9 +12,5 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
 
     val tileMap = TileMap(kodein)
 
-    override fun initialize() {
-        tileMap.initPhysics(box2dSystem.box2dWorld)
-    }
-
     override fun processSystem() {}
 }

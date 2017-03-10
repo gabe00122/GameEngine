@@ -12,7 +12,7 @@ import gabek.sm2.world.getSystem
 /**
  * @author Gabriel Keith
  */
-class Box2dDebugSystem: BaseSystem(), RenderManager.OrthoRenderSystem {
+class Box2dDebugSystem : BaseSystem(), RenderManager.OrthoRenderSystem {
     private lateinit var render: Box2DDebugRenderer
     private lateinit var b2dWorld: World
 

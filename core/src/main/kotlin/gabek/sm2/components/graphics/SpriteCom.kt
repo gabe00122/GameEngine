@@ -1,9 +1,7 @@
 package gabek.sm2.components.graphics
 
 import com.artemis.Component
-import com.artemis.annotations.PooledWeaver
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import gabek.sm2.graphics.TextureRef
 
 /**
@@ -22,7 +20,7 @@ class SpriteCom : Component() {
 
     var tint: Color = Color.WHITE
 
-    fun setSize(width: Float, height: Float){
+    fun setSize(width: Float, height: Float) {
         this.width = width
         this.height = height
     }

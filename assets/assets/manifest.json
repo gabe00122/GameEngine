@@ -11,6 +11,7 @@
     }
   },
   "animations": {
-    "fred": "anim/fred.json"
+    "fred": "anim/fred.json",
+    "baby_snail": "anim/baby_snail.json"
   }
 }

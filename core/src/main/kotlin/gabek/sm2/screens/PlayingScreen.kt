@@ -1,29 +1,28 @@
 package gabek.sm2.screens
 
+import com.artemis.Aspect
 import com.artemis.World
+import com.badlogic.gdx.Files
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.scenes.scene2d.ui.Container
+import com.badlogic.gdx.utils.JsonReader
+import com.badlogic.gdx.utils.JsonValue
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.assets.Assets
-import gabek.sm2.world.PlayerInfo
-import gabek.sm2.world.WorldSetup
-import gabek.sm2.factory.cameraFactory
-import gabek.sm2.factory.junkFactory
-import gabek.sm2.factory.playerFactory
+import gabek.sm2.components.PlayerInputCom
 import gabek.sm2.graphics.DisplayBuffer
 import gabek.sm2.input.Actions
+import gabek.sm2.leveltemplete.ActorTemplate
+import gabek.sm2.leveltemplete.LevelTemplate
 import gabek.sm2.systems.FactoryManager
+import gabek.sm2.systems.LevelTemplateLoader
 import gabek.sm2.systems.PlayerInputSystem
 import gabek.sm2.systems.graphics.CameraTrackingSystem
 import gabek.sm2.ui.MenuControl
-import gabek.sm2.world.RenderManager
-import gabek.sm2.world.UpdateManager
-import gabek.sm2.world.clear
-import gabek.sm2.world.getSystem
+import gabek.sm2.world.*
 import ktx.actors.onChange
 
 /**
@@ -33,7 +32,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     private val display = DisplayBuffer()
 
     private val world: World = kodein.instance()
-    private val worldSetup: WorldSetup = kodein.instance()
+    private val worldConfig: WorldConfig = kodein.instance()
 
     private val updateManager = UpdateManager(world, 60f)
     private val renderManager: RenderManager = kodein.instance()
@@ -65,35 +64,20 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
         val cameraTrackingSystem: CameraTrackingSystem = world.getSystem()
         val playerInputSystem: PlayerInputSystem = world.getSystem()
 
-        val cameraFactory = cameraFactory.build(kodein, world)
-        val playerFactory = playerFactory.build(kodein, world)
-        //val platformFactory = PlatformFactory(kodein, world)
-        val junkFactory = junkFactory.build(kodein, world)
+        val levelTemplate = LevelTemplate()
+        val worldConfig = kodein.instance<WorldConfig>()
 
+        val json = JsonReader().parse(Gdx.files.getFileHandle("assets/level_templetes/primer.json", Files.FileType.Internal))
+        world.getSystem(LevelTemplateLoader::class.java).loadLevel(json, worldConfig)
 
-            val cameraHandle = cameraFactory.create()
-            display.cameraHandle = cameraHandle
-            display.cameraSystem = world.getSystem()
+        val player = world.aspectSubscriptionManager.get(Aspect.all(PlayerInputCom::class.java)).entities[0]
+        playerInputSystem.setInput(player, worldConfig.players[0].input)
 
-            //val point = world.create()
-            //transMapper.create(point).initPos(5f, 5f)
-            //cameraTrackingSystem.addTarget(cameraHandle, point)
+        val cameraHandle = factoryManager.create("camera")
+        cameraTrackingSystem.addTarget(cameraHandle, player)
 
-            for (i in 0 until worldSetup.players.size) {
-                val playerInfo: PlayerInfo = worldSetup.players[i]
-
-                val id = playerFactory.create(2f, 3f + i * 2)
-                playerInputSystem.setInput(id, playerInfo.input)
-
-                cameraTrackingSystem.addTarget(cameraHandle, id)
-            }
-
-            for (i in 0..1) {
-                for (j in 0..25) {
-                    junkFactory.create(11f + i * 2f, 1f + j)
-                }
-            }
-        //platformFactory.create(0f, -3f, 10f, 1f)
+        display.cameraHandle = cameraHandle
+        display.cameraSystem = world.getSystem()
 
         val displayContainer = Container<DisplayBuffer>(display).fill()
         displayContainer.setFillParent(true)
@@ -115,7 +99,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
         if (!isPaused) {
             updateManager.update(delta)
 
-            for (playerInfo in worldSetup.players) {
+            for (playerInfo in worldConfig.players) {
                 if (playerInfo.input.pollAction(Actions.ESCAPE)) {
                     pauseMenuControl.playerInput = playerInfo.input
                     isPaused = true

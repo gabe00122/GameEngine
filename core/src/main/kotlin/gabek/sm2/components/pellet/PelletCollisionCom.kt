@@ -5,7 +5,7 @@ import com.artemis.Component
 /**
  * @author Gabriel Keith
  */
-class PelletCollisionCom : Component(){
+class PelletCollisionCom : Component() {
     var damage: Float = 0f
     var kickback: Float = 0f
 

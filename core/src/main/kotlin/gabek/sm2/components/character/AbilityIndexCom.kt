@@ -5,6 +5,6 @@ import com.artemis.Component
 /**
  * @author Gabriel Keith
  */
-class AbilityIndexCom : Component(){
+class AbilityIndexCom : Component() {
     var moveTimeout = 0f
 }

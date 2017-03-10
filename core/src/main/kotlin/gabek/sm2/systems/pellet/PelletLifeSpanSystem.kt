@@ -8,18 +8,18 @@ import gabek.sm2.components.pellet.PelletLifeSpanCom
 /**
  * @author Gabriel Keith
  */
-class PelletLifeSpanSystem: BaseEntitySystem(Aspect.all(PelletLifeSpanCom::class.java)){
+class PelletLifeSpanSystem : BaseEntitySystem(Aspect.all(PelletLifeSpanCom::class.java)) {
     private lateinit var lifeSpanMapper: ComponentMapper<PelletLifeSpanCom>
 
     override fun processSystem() {
         val entities = entityIds
 
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
 
             val lifespan = lifeSpanMapper[entity]
             lifespan.lifeSpan -= world.delta
-            if(lifespan.lifeSpan <= 0f){
+            if (lifespan.lifeSpan <= 0f) {
                 world.delete(entity)
             }
         }

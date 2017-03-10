@@ -8,15 +8,15 @@ import gabek.sm2.systems.ParentSystem
 /**
  * @author Gabriel Keith
  */
-class DamageSystem: BaseSystem(){
+class DamageSystem : BaseSystem() {
     private lateinit var parentSystem: ParentSystem
     private lateinit var healthMapper: ComponentMapper<HealthCom>
 
     override fun processSystem() {}
 
-    fun damage(entity: Int, amount: Float): Boolean{
+    fun damage(entity: Int, amount: Float): Boolean {
         val health = parentSystem.recursiveGet(healthMapper, entity)
-        if(health != null){
+        if (health != null) {
             health.healthPoints -= amount
             return true
         } else {

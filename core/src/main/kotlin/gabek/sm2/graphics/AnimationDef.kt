@@ -1,6 +1,5 @@
 package gabek.sm2.graphics
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import gabek.sm2.assets.Assets
 
 /**
@@ -13,47 +12,47 @@ private constructor(
         val frames: List<TextureRef>
 ) {
 
-    companion object{
+    companion object {
         fun builder(assets: Assets): Builder = Builder(assets)
 
-        fun build(assets: Assets, buildFun: Builder.() -> Unit): AnimationDef{
+        fun build(assets: Assets, buildFun: Builder.() -> Unit): AnimationDef {
             val builder = Builder(assets)
             builder.buildFun()
             return builder.build()
         }
     }
-    
-    class Builder(val assets: Assets){
+
+    class Builder(val assets: Assets) {
         private var dirty = false
 
         var delay = 0f
             set(value) {
-                if(dirty) reset()
+                if (dirty) reset()
                 field = value
             }
 
         var strategy: Strategy = Strategy.SINGLE
             set(value) {
-                if(dirty) reset()
+                if (dirty) reset()
                 field = value
             }
 
         private var frames: MutableList<TextureRef> = mutableListOf()
 
-        fun setDelay(delay: Float): Builder{
+        fun setDelay(delay: Float): Builder {
             this.delay = delay
             return this
         }
 
-        fun setStrategy(strategy: Strategy): Builder{
+        fun setStrategy(strategy: Strategy): Builder {
             this.strategy = strategy
             return this
         }
 
-        fun addFrame(lookup: String): Builder{
-            if(dirty) reset()
+        fun addFrame(lookup: String): Builder {
+            if (dirty) reset()
 
-            if(lookup.endsWith(":*")){
+            if (lookup.endsWith(":*")) {
                 frames.addAll(assets.findTextures(lookup))
             } else {
                 frames.add(assets.findTexture(lookup))
@@ -61,14 +60,14 @@ private constructor(
             return this
         }
 
-        fun addFrames(lookup: String, range: IntRange): Builder{
-            if(dirty) reset()
+        fun addFrames(lookup: String, range: IntRange): Builder {
+            if (dirty) reset()
 
             frames.addAll(assets.findTextures(lookup, range))
             return this
         }
 
-        private fun reset(){
+        private fun reset() {
             dirty = false
 
             delay = 0f
@@ -76,12 +75,12 @@ private constructor(
             frames = mutableListOf()
         }
 
-        fun build(): AnimationDef{
+        fun build(): AnimationDef {
             dirty = true
             return AnimationDef(delay, strategy, frames)
         }
     }
-    
+
     enum class Strategy {
         SINGLE, REPEAT, PINGPONG
     }

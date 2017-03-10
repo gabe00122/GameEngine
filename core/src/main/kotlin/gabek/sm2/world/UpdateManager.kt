@@ -5,7 +5,7 @@ import com.artemis.World
 /**
  * @author Gabriel Keith
  */
-class UpdateManager(val world: World, val frequency: Float) {
+class UpdateManager(val world: World, frequency: Float) {
     val step: Float = 1 / frequency
     var accumulator: Float = 0f
     val progress: Float

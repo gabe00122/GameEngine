@@ -8,12 +8,8 @@ class RPolygon : RShape {
 
     constructor() : super()
 
-    constructor(w: Float, h: Float) : super() {
-        setAsBox(0f, 0f, w, h)
-    }
-
-    constructor(x: Float, y: Float, w: Float, h: Float) : super() {
-        setAsBox(x, y, w, h)
+    constructor(w: Float, h: Float, x: Float = 0f, y: Float = 0f) : super() {
+        setAsBox(w, h, x, y)
     }
 
     override fun preInit() {
@@ -22,7 +18,7 @@ class RPolygon : RShape {
         shape = polyShape
     }
 
-    fun setAsBox(x: Float, y: Float, w: Float, h: Float) {
+    fun setAsBox(w: Float, h: Float, x: Float, y: Float) {
         val hw = w / 2
         val hh = h / 2
 
@@ -31,6 +27,18 @@ class RPolygon : RShape {
                 -hw + x, -hh + y,
                 hw + x, -hh + y,
                 hw + x, hh + y
+        )
+    }
+
+    fun withClippedCorners(w: Float, h: Float, x: Float, y: Float, clip: Float) {
+        val hw = w / 2
+        val hh = h / 2
+
+        vertices = floatArrayOf(
+                -hw + x + clip / 4f, hh + y,
+                -hw + x + clip, -hh + y,
+                hw + x - clip, -hh + y,
+                hw + x - clip / 4f, hh + y
         )
     }
 }

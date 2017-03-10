@@ -1,9 +1,7 @@
 package gabek.sm2.components
 
 import com.artemis.Component
-import com.artemis.Entity
 import com.artemis.annotations.EntityId
-import com.artemis.annotations.PooledWeaver
 
 /**
  * @author Gabriel Keith

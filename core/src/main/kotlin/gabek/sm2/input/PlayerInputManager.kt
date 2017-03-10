@@ -46,13 +46,8 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput() {
     override fun pollAction(actionId: Int): Boolean = pollAllInputs(actionId) != null
 
     fun pollAllInputs(actionId: Int): PlayerInput? {
-        for (playerInput in playerInputs) {
-            if (playerInput.pollAction(actionId)) {
-                return playerInput
-            }
-        }
 
-        return null
+        return playerInputs.firstOrNull { it.pollAction(actionId) }
     }
 
     val playerInputSize: Int get() = playerInputs.size

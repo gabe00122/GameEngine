@@ -5,10 +5,14 @@ import com.artemis.WorldConfiguration
 import com.artemis.link.EntityLinkManager
 import com.artemis.managers.GroupManager
 import com.artemis.managers.TagManager
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
+import gabek.sm2.factory.babySnailFactory
+import gabek.sm2.factory.cameraFactory
+import gabek.sm2.factory.junkFactory
+import gabek.sm2.factory.playerFactory
 import gabek.sm2.systems.*
+import gabek.sm2.systems.brains.WanderingBrainSystem
 import gabek.sm2.systems.character.BiDirectionSystem
 import gabek.sm2.systems.character.CharacterAnimatorSystem
 import gabek.sm2.systems.character.CharacterControllerSystem
@@ -29,7 +33,8 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(GroupManager())
     //config.setSystem(PlayerManager())
     //config.setSystem(TeamManager())
-    config.setSystem(FactoryManager(kodein))
+    config.setSystem(FactoryManager(kodein, factoryBindings()))
+    config.setSystem(LevelTemplateLoader())
     config.setSystem(TimeManager())
 
     //needs to be first
@@ -43,6 +48,9 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(DamageSystem())
     config.setSystem(PelletLifeSpanSystem())
     config.setSystem(PelletCollisionSystem())
+
+    //brains
+    config.setSystem(WanderingBrainSystem())
 
     //movement
     config.setSystem(PlayerInputSystem())
@@ -64,14 +72,14 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(SpriteRenderSystem(kodein))
     config.setSystem(HealthRenderSystem(kodein))
 
-    //config.setSystem(Box2dDebugSystem())
+    config.setSystem(Box2dDebugSystem())
 
     return World(config)
 }
 
 
-fun buildRenderManager(kodein: Kodein): RenderManager{
-    with(kodein.instance<World>()){
+fun buildRenderManager(kodein: Kodein): RenderManager {
+    with(kodein.instance<World>()) {
         return RenderManager(kodein,
                 cameraSystem = getSystem(),
                 batchSystems = listOf(
@@ -80,8 +88,15 @@ fun buildRenderManager(kodein: Kodein): RenderManager{
                         getSystem<HealthRenderSystem>()
                 ),
                 orthoSystems = listOf(
-                        //getSystem<Box2dDebugSystem>()
+                        getSystem<Box2dDebugSystem>()
                 )
-                )
+        )
     }
 }
+
+fun factoryBindings() = listOf(
+        Pair("camera", cameraFactory()),
+        Pair("player", playerFactory()),
+        Pair("junk", junkFactory()),
+        Pair("babySnail", babySnailFactory())
+)

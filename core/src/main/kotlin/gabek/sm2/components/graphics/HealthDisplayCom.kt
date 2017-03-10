@@ -5,7 +5,7 @@ import com.artemis.Component
 /**
  * @author Gabriel Keith
  */
-class HealthDisplayCom : Component(){
+class HealthDisplayCom : Component() {
     var viable = true
 
     var offsetX = 0f

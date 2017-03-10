@@ -3,7 +3,6 @@ package gabek.sm2.components.graphics
 import com.artemis.Component
 import com.artemis.annotations.EntityId
 import com.artemis.annotations.LinkPolicy
-import com.artemis.annotations.PooledWeaver
 import com.artemis.utils.IntBag
 
 /**

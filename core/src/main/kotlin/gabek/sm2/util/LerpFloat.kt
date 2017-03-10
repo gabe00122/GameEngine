@@ -8,15 +8,15 @@ import com.badlogic.gdx.math.MathUtils
 class LerpFloat(var value: Float = 0f) {
     private var pValue = value
 
-    fun flip(){
+    fun flip() {
         pValue = value
     }
 
-    fun lerp(progress: Float): Float{
+    fun lerp(progress: Float): Float {
         return MathUtils.lerp(pValue, value, progress)
     }
 
-    fun reset(){
+    fun reset() {
         value = 0f
         pValue = 0f
     }

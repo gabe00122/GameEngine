@@ -3,8 +3,8 @@ package gabek.sm2.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.components.PlayerInputCom
+import gabek.sm2.components.character.CharacterControllerCom
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 
@@ -33,7 +33,7 @@ class PlayerInputSystem : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java
         }
     }
 
-    fun setInput(entity: Int, playerInput: PlayerInput){
+    fun setInput(entity: Int, playerInput: PlayerInput) {
         playerInputMapper[entity].playerInput = playerInput
     }
 }

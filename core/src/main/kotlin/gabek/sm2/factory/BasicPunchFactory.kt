@@ -1,20 +1,5 @@
 package gabek.sm2.factory
 
-import com.artemis.ArchetypeBuilder
-import com.artemis.World
-import com.badlogic.gdx.physics.box2d.BodyDef
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.components.BodyCom
-import gabek.sm2.components.ParentOfCom
-import gabek.sm2.components.ParentOffsetCom
-import gabek.sm2.components.TranslationCom
-import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.components.pellet.PelletCollisionCom
-import gabek.sm2.components.pellet.PelletLifeSpanCom
-import gabek.sm2.physics.RPolygon
-
 /**
  * @author Gabriel Keith
  */

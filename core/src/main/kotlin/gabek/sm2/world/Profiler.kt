@@ -8,7 +8,7 @@ import com.badlogic.gdx.Gdx
 /**
  * @author Gabriel Keith
  */
-class Profiler: ArtemisProfiler {
+class Profiler : ArtemisProfiler {
     private var startTime: Long = 0
 
     private var sumTime: Long = 0
@@ -23,7 +23,7 @@ class Profiler: ArtemisProfiler {
         frame++
         sumTime += delta
 
-        if(sumTime > 100000000) {
+        if (sumTime > 100000000) {
             Gdx.app.log("Time", "${sumTime / (frame * 1000000.0)}")
             sumTime = 0
             frame = 0

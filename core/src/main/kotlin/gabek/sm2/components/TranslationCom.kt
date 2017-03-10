@@ -1,7 +1,6 @@
 package gabek.sm2.components
 
 import com.artemis.Component
-import com.artemis.annotations.PooledWeaver
 import com.badlogic.gdx.math.MathUtils
 
 /**
@@ -16,7 +15,7 @@ class TranslationCom : Component() {
     var pY: Float = 0f
     var pRotation: Float = 0f
 
-    fun initPos(x: Float, y: Float){
+    fun initPos(x: Float, y: Float) {
         this.x = x
         this.pX = x
         this.y = y

@@ -1,13 +1,12 @@
 package gabek.sm2.components.character
 
 import com.artemis.Component
-import com.artemis.PooledComponent
 
 /**
  * @author Gabriel Keith
  */
-class BiDirectionCom: Component(){
-    companion object{
+class BiDirectionCom : Component() {
+    companion object {
         val DEFAULT_DIRECTION = Direction.LEFT
     }
 
@@ -19,7 +18,7 @@ class BiDirectionCom: Component(){
     //    timeInState = 0
     //}
 
-    enum class Direction{
+    enum class Direction {
         LEFT, RIGHT
     }
 }

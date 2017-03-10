@@ -10,7 +10,7 @@ import ktx.actors.onChange
 class SettingsMenu : Screen() {
     init {
         val backBut = VisTextButton("Back")
-        backBut.onChange { changeEvent, visTextButton ->
+        backBut.onChange { _, _ ->
             manager.show("main")
         }
 

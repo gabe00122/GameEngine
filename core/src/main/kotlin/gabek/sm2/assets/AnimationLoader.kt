@@ -13,8 +13,8 @@ import gabek.sm2.graphics.AnimationDef
 /**
  * @author Gabriel Keith
  */
-class AnimationLoader(val assets: Assets,fileHandleResolver: FileHandleResolver):
-        SynchronousAssetLoader<AnimationMap, AnimationLoader.Parameters>(fileHandleResolver){
+class AnimationLoader(val assets: Assets, fileHandleResolver: FileHandleResolver) :
+        SynchronousAssetLoader<AnimationMap, AnimationLoader.Parameters>(fileHandleResolver) {
 
     private val jsonReader = JsonReader()
 
@@ -30,7 +30,7 @@ class AnimationLoader(val assets: Assets,fileHandleResolver: FileHandleResolver)
         val root = jsonReader.parse(file)
 
         val builder = AnimationDef.builder(assets)
-        for(animationDescription in root.JsonIterator()){
+        for (animationDescription in root.JsonIterator()) {
             builder.strategy = AnimationDef.Strategy.valueOf(animationDescription.getString("strategy"))
             builder.delay = animationDescription.getFloat("delay", -1f)
             builder.addFrame(animationDescription.getString("frames"))
@@ -41,5 +41,5 @@ class AnimationLoader(val assets: Assets,fileHandleResolver: FileHandleResolver)
         return out
     }
 
-    class Parameters: AssetLoaderParameters<AnimationMap>()
+    class Parameters : AssetLoaderParameters<AnimationMap>()
 }

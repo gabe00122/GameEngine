@@ -1,0 +1,12 @@
+{
+  "moving": {
+    "strategy": "PINGPONG",
+    "delay": 0.1,
+    "frames": "actors:baby_snail:*"
+  },
+  "still": {
+    "strategy": "SINGLE",
+    "delay": 0,
+    "frames": "actors:baby_snail:1"
+  }
+}

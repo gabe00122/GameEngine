@@ -9,7 +9,7 @@ import gabek.sm2.world.RenderManager
 /**
  * @author Gabriel Keith
  */
-class TileRenderSystem: BaseSystem(), RenderManager.BatchSystem{
+class TileRenderSystem : BaseSystem(), RenderManager.BatchSystem {
     private lateinit var tileSystem: TileMapSystem
 
     override fun processSystem() {}

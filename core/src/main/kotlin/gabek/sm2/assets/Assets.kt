@@ -28,7 +28,7 @@ class Assets() : Disposable {
         initLoaders()
 
         configureFromFile(jsonFile)
-        if(!configOnly){
+        if (!configOnly) {
             finish()
         }
     }
@@ -38,11 +38,11 @@ class Assets() : Disposable {
         resourceManager.finishLoading()
     }
 
-    private fun initLoaders(){
+    private fun initLoaders() {
         resourceManager.setLoader(AnimationMap::class.java, AnimationLoader(this, resourceManager.fileHandleResolver))
     }
 
-    fun configureFromFile(jsonFile: String){
+    fun configureFromFile(jsonFile: String) {
         JsonAssetLoader(resourceManager.fileHandleResolver.resolve(jsonFile)).configure(this)
     }
 
@@ -51,7 +51,7 @@ class Assets() : Disposable {
         parameter.loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
             val atlas = assetManager.get(fileName, TextureAtlas::class.java)
 
-            for(region in atlas.regions){
+            for (region in atlas.regions) {
                 val id = textureList.size
                 textureList.add(region)
                 textureIdMap.put("$packName:${region.name}:${region.index}", id)
@@ -61,7 +61,7 @@ class Assets() : Disposable {
         resourceManager.load(fileName, TextureAtlas::class.java, parameter)
     }
 
-    fun addShader(shaderName: String, vertFile: String, fragFile: String){
+    fun addShader(shaderName: String, vertFile: String, fragFile: String) {
         val parameter = ShaderProgramLoader.ShaderProgramParameter()
         parameter.vertexFile = vertFile
         parameter.fragmentFile = fragFile
@@ -74,12 +74,12 @@ class Assets() : Disposable {
         resourceManager.load(shaderName, ShaderProgram::class.java, parameter)
     }
 
-    fun addAnimationPack(packName: String, file: String){
+    fun addAnimationPack(packName: String, file: String) {
         val param = AnimationLoader.Parameters()
 
         param.loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
             val aMap = assetManager.get(file, AnimationMap::class.java)
-            for(anim in aMap){
+            for (anim in aMap) {
                 animationMap.put("$packName:${anim.key}", anim.value)
             }
         }
@@ -91,18 +91,18 @@ class Assets() : Disposable {
         return TextureRef(textureIdMap[defaultIndex(lookup)]!!)
     }
 
-    fun findTextures(lookup: String, range: IntRange): List<TextureRef>{
+    fun findTextures(lookup: String, range: IntRange): List<TextureRef> {
         return range.map { findTexture("$lookup:$it") }
     }
 
-    fun findTextures(lookup: String): List<TextureRef>{
+    fun findTextures(lookup: String): List<TextureRef> {
         val base = lookup.replace(":*", "")
         val out = mutableListOf<TextureRef>()
 
         var index = 0
         var current = textureIdMap["$base:${index++}"]
 
-        while(current != null){
+        while (current != null) {
             out.add(TextureRef(current))
             current = textureIdMap["$base:${index++}"]
         }
@@ -110,8 +110,8 @@ class Assets() : Disposable {
         return out
     }
 
-    private fun defaultIndex(lookup: String): String{
-        if(lookup.count { it == ':' } < 2){
+    private fun defaultIndex(lookup: String): String {
+        if (lookup.count { it == ':' } < 2) {
             return "$lookup:-1"
         } else {
             return lookup
@@ -126,7 +126,7 @@ class Assets() : Disposable {
         return textureList[textureIdMap[defaultIndex(lookup)]!!]
     }
 
-    fun retrieveAnimationDef(lookup: String): AnimationDef{
+    fun retrieveAnimationDef(lookup: String): AnimationDef {
         return animationMap[lookup]!!
     }
 

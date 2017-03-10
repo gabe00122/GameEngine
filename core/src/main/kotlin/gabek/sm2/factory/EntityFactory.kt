@@ -8,7 +8,7 @@ import gabek.sm2.systems.TranslationSystem
 /**
  * @author Gabriel Keith
  */
-class EntityFactory: Disposable{
+class EntityFactory : Disposable {
     private val kodein: Kodein
     private val world: World
 
@@ -20,7 +20,7 @@ class EntityFactory: Disposable{
 
     private constructor(builder: Builder,
                         kodein: Kodein,
-                        world: World){
+                        world: World) {
         this.kodein = kodein
         this.world = world
         world.inject(this)
@@ -29,28 +29,28 @@ class EntityFactory: Disposable{
 
 
         compBuilders.forEach { it.mapper = world.getMapper(it.clazz) }
-        archetype = compBuilders.fold(ArchetypeBuilder()){ builder, comp ->
+        archetype = compBuilders.fold(ArchetypeBuilder()) { builder, comp ->
             builder.add(comp.clazz); builder
         }.build(world)
     }
 
-    fun create(): Int{
+    fun create(): Int {
         val entity = world.create(archetype)
 
         compBuilders.forEach { comp ->
             comp.body?.invoke(comp.mapper!!.get(entity), entity)
         }
-        
+
         return entity
     }
 
-    fun create(x: Float, y: Float, rotation: Float): Int{
+    fun create(x: Float, y: Float, rotation: Float): Int {
         val id = create()
         transSystem.teleport(id, x, y, rotation)
         return id
     }
 
-    fun create(x: Float, y: Float): Int{
+    fun create(x: Float, y: Float): Int {
         val id = create()
         transSystem.teleport(id, x, y, 0f)
         return id
@@ -58,13 +58,13 @@ class EntityFactory: Disposable{
 
     override fun dispose() {}
 
-    class Builder(val define: Builder.(kodein: Kodein, world: World) -> Unit){
+    class Builder(val define: Builder.(kodein: Kodein, world: World) -> Unit) {
         private var dirty = false
         internal var compBuilders = mutableListOf<CompBuilder<Component>>()
 
         @Suppress("UNCHECKED_CAST")
-        fun <T: Component> com(clazz: Class<T>, body: (T.(entity: Int) -> Unit)? = null){
-            if(dirty){
+        fun <T : Component> com(clazz: Class<T>, body: BodyLambda<T>? = null) {
+            if (dirty) {
                 dirty = false
                 compBuilders = mutableListOf<CompBuilder<Component>>()
             }
@@ -72,21 +72,23 @@ class EntityFactory: Disposable{
             compBuilders.add(CompBuilder(clazz, body) as CompBuilder<Component>)
         }
 
-        inline fun <reified T: Component> com(noinline body: (T.(entity: Int) -> Unit)? = null){
+        inline fun <reified T : Component> com(noinline body: BodyLambda<T>? = null) {
             com(T::class.java, body)
         }
 
-        fun build(kodein: Kodein, world: World): EntityFactory{
+        fun build(kodein: Kodein, world: World): EntityFactory {
             define(kodein, world)
             dirty = true
             return EntityFactory(this, kodein, world)
         }
     }
 
-    internal data class CompBuilder<T: Component>(val clazz: Class<T>, val body: (T.(entity: Int) -> Unit)?, var mapper: ComponentMapper<T>? = null)
+    internal data class CompBuilder<T : Component>(val clazz: Class<T>, val body: BodyLambda<T>?, var mapper: ComponentMapper<T>? = null)
 }
 
-fun factory(define: EntityFactory.Builder.(kodein: Kodein, world: World) -> Unit): 
-        EntityFactory.Builder{
+fun factory(define: EntityFactory.Builder.(kodein: Kodein, world: World) -> Unit):
+        EntityFactory.Builder {
     return EntityFactory.Builder(define)
 }
+
+typealias BodyLambda<T> = (T.(entity: Int) -> Unit)

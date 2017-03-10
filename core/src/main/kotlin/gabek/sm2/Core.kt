@@ -5,8 +5,6 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL30
-import com.badlogic.gdx.graphics.glutils.ShaderProgram
-import com.badlogic.gdx.graphics.profiling.GLProfiler
 import com.badlogic.gdx.physics.box2d.Box2D
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
@@ -17,7 +15,7 @@ import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
 import gabek.sm2.world.RenderManager
-import gabek.sm2.world.WorldSetup
+import gabek.sm2.world.WorldConfig
 import gabek.sm2.world.buildRenderManager
 import gabek.sm2.world.buildWorld
 
@@ -29,15 +27,15 @@ class Core : ApplicationAdapter() {
     lateinit var screenManager: ScreenManager
 
     override fun create() {
-        VisUI.load("ui/skin.json")
+        VisUI.load("assets/ui/skin.json")
         Box2D.init()
 
         val kodein = Kodein {
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
-            bind<Assets>() with singleton { Assets("manifest.json") }
+            bind<Assets>() with singleton { Assets("assets/manifest.json") }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton { buildWorld(this) }
-            bind<WorldSetup>() with singleton { WorldSetup() }
+            bind<WorldConfig>() with singleton { WorldConfig() }
 
             bind<RenderManager>() with singleton { buildRenderManager(this) }
         }

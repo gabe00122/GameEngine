@@ -17,7 +17,7 @@ class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java)) {
     override fun processSystem() {
         val entities = entityIds
 
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
 
             val camera = cameraMapper[entity]
@@ -53,7 +53,7 @@ class CameraSystem : BaseEntitySystem(Aspect.all(CameraCom::class.java)) {
         return ortho
     }
 
-    fun setAspectRatio(cameraHandle: Int, aspectRatio: Float){
+    fun setAspectRatio(cameraHandle: Int, aspectRatio: Float) {
         cameraMapper[cameraHandle].aspectRatio = aspectRatio
     }
 }

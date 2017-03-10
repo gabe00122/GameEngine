@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.ParentOfCom
 import gabek.sm2.components.character.*
 import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
 import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
@@ -28,14 +27,15 @@ class CharacterControllerSystem : BaseEntitySystem(
                 BiDirectionCom::class.java,
                 CharacterMovementStateCom::class.java,
                 MovementDefinitionCom::class.java,
-                MovementPhysicsCom::class.java,
+                MovementGroundContactCom::class.java,
                 BodyCom::class.java
         )) {
     private lateinit var controllerMapper: ComponentMapper<CharacterControllerCom>
     private lateinit var biDirectionMapper: ComponentMapper<BiDirectionCom>
     private lateinit var movementStateMapper: ComponentMapper<CharacterMovementStateCom>
     private lateinit var movementDefinitionMapper: ComponentMapper<MovementDefinitionCom>
-    private lateinit var movementPhysicsMapper: ComponentMapper<MovementPhysicsCom>
+    private lateinit var movementGroundContactMapper: ComponentMapper<MovementGroundContactCom>
+    private lateinit var movementPhysicsWheelMapper: ComponentMapper<MovementPhysicsWheelCom>
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
     private lateinit var timeManager: TimeManager
@@ -51,12 +51,14 @@ class CharacterControllerSystem : BaseEntitySystem(
     }
 
     init {
-        transitionTable.addListenerEntering(LANDING) {entity, from, to ->
+        transitionTable.addListenerEntering(LANDING) { entity, from, to ->
             movementStateMapper[entity].timeOnGround = timeManager.currentFrame
         }
 
         transitionTable.addListenerLeavening(RUNNING) { entity, from, to ->
-            movementPhysicsMapper[entity].motor.motorSpeed = 0f
+            if (movementPhysicsWheelMapper.has(entity)) {
+                movementPhysicsWheelMapper[entity].motor.motorSpeed = 0f
+            }
         }
 
         transitionTable.addListener(arrayOf(RUNNING, STANDING), arrayOf(JUMPING, IN_AIR)) { entity, from, to ->
@@ -65,19 +67,16 @@ class CharacterControllerSystem : BaseEntitySystem(
 
         transitionTable.addListenerEntering(JUMPING) { entity, from, to ->
             val body = bodyMapper[entity].body
-            val movPhys = movementPhysicsMapper[entity]
+            val movContact = movementGroundContactMapper[entity]
             val movDef = movementDefinitionMapper[entity]
 
-            println()
-            println(movPhys.groundFixture)
-            println(movPhys.groundFixture?.body)
-
             val force = movDef.jumpForce
-            val groundBody = movPhys.groundFixture!!.body!!
-            val point = movPhys.groundPoint
-
             body.applyLinearImpulse(0f, force, body.x, body.y)
-            groundBody.applyLinearImpulse(0f, -force, point.x, point.y)
+
+            val forceOverSize = force / movContact.contacts.size
+            for ((x, y, fixture) in movContact.contacts) {
+                fixture.body!!.applyLinearImpulse(0f, -forceOverSize, x, y)
+            }
         }
 
         //addTransitionListener(RUNNING, ON_GROUND)
@@ -87,8 +86,8 @@ class CharacterControllerSystem : BaseEntitySystem(
         super.initialize()
         transSystem.addTeleportListener(object : TranslationSystem.TeleportListener {
             override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean) {
-                if (movementPhysicsMapper.has(id)) {
-                    transSystem.teleportChild(id, movementPhysicsMapper[id].wheelRef, x, y, rotation, smooth)
+                if (movementPhysicsWheelMapper.has(id)) {
+                    transSystem.teleportChild(id, movementPhysicsWheelMapper[id].wheelRef, x, y, rotation, smooth)
                 }
             }
         })
@@ -104,7 +103,6 @@ class CharacterControllerSystem : BaseEntitySystem(
             val biDirection = biDirectionMapper[entity]
             val movState = movementStateMapper[entity]
             val moveDef = movementDefinitionMapper[entity]
-            val movPhysics = movementPhysicsMapper[entity]
             val body = bodyMapper[entity]
 
 
@@ -126,10 +124,13 @@ class CharacterControllerSystem : BaseEntitySystem(
             //physics
             when (movState.state) {
                 RUNNING -> {
-                    if (biDirection.direction == LEFT) {
-                        movPhysics.motor.motorSpeed = moveDef.groundSpeed
-                    } else if (biDirection.direction == RIGHT) {
-                        movPhysics.motor.motorSpeed = -moveDef.groundSpeed
+                    if (movementPhysicsWheelMapper.has(entity)) {
+                        val movPhysics = movementPhysicsWheelMapper[entity]
+                        if (biDirection.direction == LEFT) {
+                            movPhysics.motor.motorSpeed = moveDef.groundSpeed
+                        } else if (biDirection.direction == RIGHT) {
+                            movPhysics.motor.motorSpeed = -moveDef.groundSpeed
+                        }
                     }
                 }
                 JUMPING -> {
@@ -155,7 +156,7 @@ class CharacterControllerSystem : BaseEntitySystem(
     private fun checkTransitions(entity: Int) {
         val control = controllerMapper[entity]
         val movState = movementStateMapper[entity]
-        val movPhysics = movementPhysicsMapper[entity]
+        val movContact = movementGroundContactMapper[entity]
 
         val timeOnGround = timeManager.getElapsedTime(movState.timeOnGround)
         val timeInAir = timeManager.getElapsedTime(movState.timeInAir)
@@ -170,34 +171,30 @@ class CharacterControllerSystem : BaseEntitySystem(
             }
 
             STANDING -> {
-                if(movPhysics.groundFixture == null){
+                if (!movContact.onGround) {
                     transitionTable.transition(entity, STANDING, IN_AIR)
-                }
-                else if (control.moveUp && timeOnGround > 0.1f) {
+                } else if (control.moveUp && timeOnGround > 0.1f) {
                     transitionTable.transition(entity, STANDING, JUMPING)
-                }
-                else if (control.moveLeft || control.moveRight) {
+                } else if (control.moveLeft || control.moveRight) {
                     transitionTable.transition(entity, STANDING, RUNNING)
                 }
             }
             RUNNING -> {
-                if(movPhysics.groundFixture == null){
+                if (!movContact.onGround) {
                     transitionTable.transition(entity, RUNNING, IN_AIR)
-                }
-                else if (control.moveUp && timeOnGround > 0.1f) {
+                } else if (control.moveUp && timeOnGround > 0.1f) {
                     transitionTable.transition(entity, RUNNING, JUMPING)
-                }
-                else if (!control.moveLeft && !control.moveRight) {
+                } else if (!control.moveLeft && !control.moveRight) {
                     transitionTable.transition(entity, RUNNING, STANDING)
                 }
             }
             IN_AIR -> {
-                if(movPhysics.groundFixture != null && timeInAir > 0.1f){
+                if (movContact.onGround && timeInAir > 0.1f) {
                     transitionTable.transition(entity, IN_AIR, LANDING)
                 }
             }
             JUMPING -> {
-                if(movPhysics.groundFixture != null && timeInAir > 0.1f){
+                if (movContact.onGround && timeInAir > 0.1f) {
                     transitionTable.transition(entity, JUMPING, LANDING)
                 }
             }
@@ -205,19 +202,53 @@ class CharacterControllerSystem : BaseEntitySystem(
     }
 
     override fun inserted(entityId: Int) {
-        val physics = movementPhysicsMapper[entityId]
-
-        bodyMapper[physics.wheelRef].body.fixutres[0].callbackList.add(contactHandler)
+        if (movementPhysicsWheelMapper.has(entityId)) {
+            val physics = movementPhysicsWheelMapper[entityId]
+            bodyMapper[physics.wheelRef].body.fixutres[0].callbackList.add(wheelContactHandler)
+        } else {
+            bodyMapper[entityId].body.fixutres[0].callbackList.add(platformContactHandler)
+        }
     }
 
-    private val contactHandler = object : RCollisionCallback {
+    private val platformContactHandler = object : RCollisionCallback {
+        override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
+            val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
+
+            val index = contacts.indexOf(otherRFixture)
+            if (index == -1) {
+                contacts.add(-1f, -1f, otherRFixture)
+            }
+        }
+
+        override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
+            val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
+            contacts.remove(otherRFixture)
+        }
+
+        override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
+            val direction = biDirectionMapper[ownerRFixture.ownerId].direction
+            val state = movementStateMapper[ownerRFixture.ownerId].state
+
+            if (state == RUNNING) {
+                if (direction == LEFT) {
+                    contact.tangentSpeed += -2f
+                } else {
+                    contact.tangentSpeed += 2f
+                }
+            }
+        }
+
+        override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {}
+    }
+
+    private val wheelContactHandler = object : RCollisionCallback {
         override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
 
         }
 
         override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val entity = parentSystem.getParent(ownerRFixture.ownerId)
-            movementPhysicsMapper[entity].groundFixture = null
+            movementGroundContactMapper[entity].remove(otherRFixture)
         }
 
         override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
@@ -226,7 +257,7 @@ class CharacterControllerSystem : BaseEntitySystem(
 
         override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val entity = parentSystem.getParent(ownerRFixture.ownerId)
-            val movPhysics = movementPhysicsMapper[entity]
+            val movContact = movementGroundContactMapper[entity]
             val movDef = movementDefinitionMapper[entity]
 
             val hWidth = movDef.width / 2f
@@ -234,10 +265,16 @@ class CharacterControllerSystem : BaseEntitySystem(
             val diffX = point.x - ownerRFixture.body!!.x
 
             if (diffX < hWidth - movDef.pad && diffX > -hWidth + movDef.pad) {
-                movPhysics.groundFixture = otherRFixture
-                movPhysics.groundPoint.set(point)
+                val index = movContact.indexOf(otherRFixture)
+                if (index > -1) {
+                    val c = movContact.contacts[index]
+                    c.x = point.x
+                    c.y = point.y
+                } else {
+                    movContact.add(point.x, point.y, otherRFixture)
+                }
             } else {
-                movPhysics.groundFixture = null
+                movContact.remove(otherRFixture)
             }
         }
     }

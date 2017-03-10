@@ -3,12 +3,14 @@ package gabek.sm2.factory
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.components.*
+import gabek.sm2.components.BodyCom
+import gabek.sm2.components.ParentOfCom
+import gabek.sm2.components.PlayerInputCom
+import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.character.*
 import gabek.sm2.components.graphics.AnimationCom
 import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.graphics.AnimationDef
 import gabek.sm2.physics.RCircle
 import gabek.sm2.physics.RPolygon
 import gabek.sm2.world.CHARACTER
@@ -20,7 +22,7 @@ import gabek.sm2.world.getMapper
  */
 
 
-val playerFactory = factory { kodein, world ->
+fun playerFactory() = factory { kodein, world ->
     val assets: Assets = kodein.instance()
 
     val bodyMapper = world.getMapper<BodyCom>()
@@ -37,7 +39,7 @@ val playerFactory = factory { kodein, world ->
     val legFactory = factory { kodein, world ->
         com<ParentOfCom> { diesWithParent = true }
         com<TranslationCom>()
-        com<BodyCom>{
+        com<BodyCom> {
             body.addFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
             body.bodyType = BodyDef.BodyType.DynamicBody
             body.setPosition(0f, -bodyHeight / 2)
@@ -61,7 +63,8 @@ val playerFactory = factory { kodein, world ->
     com<CharacterControllerCom>()
     com<BiDirectionCom>()
     com<CharacterMovementStateCom>()
-    com<MovementPhysicsCom>{ entity ->
+    com<MovementGroundContactCom>()
+    com<MovementPhysicsWheelCom> { entity ->
         wheelRef = legFactory.create()
         parentMapper[wheelRef].parent = entity
 

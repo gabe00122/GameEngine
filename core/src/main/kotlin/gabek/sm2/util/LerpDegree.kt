@@ -5,16 +5,16 @@ import com.badlogic.gdx.math.MathUtils
 /**
  * @author Gabriel Keith
  */
-class LerpDegree(var degree: Float = 0f){
+class LerpDegree(var degree: Float = 0f) {
     private var pDegree: Float = degree
 
     fun learDegree(progress: Float) = MathUtils.lerpAngleDeg(pDegree, degree, progress)
 
-    fun flip(){
+    fun flip() {
         pDegree = degree
     }
 
-    fun reset(){
+    fun reset() {
         degree = 0f
         pDegree = 0f
     }

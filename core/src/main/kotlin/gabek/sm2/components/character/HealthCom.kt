@@ -6,7 +6,7 @@ import com.artemis.Component
  * @author Gabriel Keith
  */
 
-class HealthCom: Component() {
+class HealthCom : Component() {
     var maximumHealth: Float = 0f
     var healthPoints: Float = 0f
 

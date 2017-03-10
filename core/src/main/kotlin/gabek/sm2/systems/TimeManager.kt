@@ -5,7 +5,7 @@ import com.artemis.BaseSystem
 /**
  * @author Gabriel Keith
  */
-class TimeManager: BaseSystem(){
+class TimeManager : BaseSystem() {
     var currentFrame = 0
         private set
 

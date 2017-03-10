@@ -4,9 +4,9 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.math.MathUtils
+import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.graphics.CameraCom
 import gabek.sm2.components.graphics.CameraTargetsCom
-import gabek.sm2.components.TranslationCom
 
 /**
  * @author Gabriel Keith
@@ -63,8 +63,8 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
                 //trans.x = (x1 + x2) / 2
                 //trans.y = (y1 + y2) / 2
 
-                val lagW = cameraTargets.padWidth / 2f
-                val lagH = cameraTargets.padHeight / 2f
+                val lagW = cameraTargets.padWidth * (5f/8f)
+                val lagH = cameraTargets.padHeight * (5f/8f)
 
                 camera.bottomLeft.x = MathUtils.clamp(camera.bottomLeft.x, x1, x1 + lagW)
                 camera.bottomLeft.y = MathUtils.clamp(camera.bottomLeft.y, y1, y1 + lagH)
@@ -74,7 +74,7 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
         }
     }
 
-    fun addTarget(entity: Int, target: Int){
+    fun addTarget(entity: Int, target: Int) {
         cameraTargetsMapper[entity].targets.add(target)
     }
 }

@@ -5,22 +5,20 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
-import gabek.sm2.world.PlayerInfo
-import gabek.sm2.world.WorldSetup
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.ui.CurserControl
-import gabek.sm2.ui.MenuControl
+import gabek.sm2.world.PlayerInfo
+import gabek.sm2.world.WorldConfig
 import ktx.actors.onChange
-import ktx.actors.onClick
 
 /**
  * @author Gabriel Keith
  */
 class GameSetupScreen(val kodein: Kodein) : Screen() {
     private val inputManager: PlayerInputManager = kodein.instance()
-    private val worldSetup: WorldSetup = kodein.instance()
+    private val worldConfig: WorldConfig = kodein.instance()
 
     private val table = VisTable()
     private val tableContainer = Container(table)
@@ -62,13 +60,13 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
         }
     }
 
-    private fun startGame(){
-        worldSetup.players.clear()
-        for(i in 0 until playerJoinWidgets.size){
+    private fun startGame() {
+        worldConfig.players.clear()
+        for (i in 0 until playerJoinWidgets.size) {
             val playerInput = playerJoinWidgets[i].playerInput
 
-            if(playerInput != null) {
-                worldSetup.players.add(PlayerInfo(i, playerInput))
+            if (playerInput != null) {
+                worldConfig.players.add(PlayerInfo(i, playerInput))
             }
         }
 
@@ -94,7 +92,7 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
                 field = value
 
                 clear()
-                if(value != null) {
+                if (value != null) {
                     add("Player ${index + 1}").row()
 
                     //val control = MenuControl(VisTextButton("Ready", "toggle"), VisTextButton("Leave", "toggle"))

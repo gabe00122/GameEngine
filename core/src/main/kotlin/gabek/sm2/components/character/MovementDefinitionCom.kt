@@ -1,12 +1,11 @@
 package gabek.sm2.components.character
 
-import com.artemis.Component
 import com.artemis.PooledComponent
 
 /**
  * @author Gabriel Keith
  */
-class MovementDefinitionCom : Component() {
+class MovementDefinitionCom : PooledComponent() {
     var groundSpeed: Float = 0f
     var airSpeed: Float = 0f
     var airDamping: Float = 0f
@@ -18,16 +17,20 @@ class MovementDefinitionCom : Component() {
     var width = 0f
     var height = 0f
 
-    //override fun reset() {
-    //    groundSpeed = 0f
-    //    airSpeed = 0f
-    //    airDamping = 0f
+    override fun reset() {
+        groundSpeed = 0f
+        airSpeed = 0f
+        airDamping = 0f
 
-    //    jumpCooldown = 0f
-    //    jumpForce = 0f
+        jumpCooldown = 0f
+        jumpForce = 0f
 
-    //    pad = 0f
-    //    width = 0f
-    //    height = 0f
-    //}
+        pad = 0f
+        width = 0f
+        height = 0f
+    }
+
+    enum class Strategy {
+        ADVANCED, SIMPLE
+    }
 }

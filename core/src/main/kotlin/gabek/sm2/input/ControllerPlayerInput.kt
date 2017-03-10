@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3
 /**
  * @author Gabriel Keith
  */
-class ControllerPlayerInput() : PlayerInput(), ControllerListener {
+class ControllerPlayerInput : PlayerInput(), ControllerListener {
     private val size = Actions.SIZE
 
     private val buttonBindings = mutableListOf<Int>()
@@ -33,7 +33,7 @@ class ControllerPlayerInput() : PlayerInput(), ControllerListener {
     }
 
     override fun pollAction(actionId: Int): Boolean {
-        return currentState[actionId] == true
+        return currentState[actionId]
     }
 
     fun bindButton(buttonCode: Int, actionId: Int) {

@@ -10,16 +10,16 @@ import gabek.sm2.components.ParentOfCom
 /**
  * @author Gabriel Keith
  */
-class ParentSystem: BaseSystem(){
+class ParentSystem : BaseSystem() {
     private lateinit var entityLinkManager: EntityLinkManager
     private lateinit var parentOfMapper: ComponentMapper<ParentOfCom>
 
     override fun initialize() {
         super.initialize()
 
-        entityLinkManager.register(ParentOfCom::class.java, object: LinkAdapter() {
+        entityLinkManager.register(ParentOfCom::class.java, object : LinkAdapter() {
             override fun onTargetDead(sourceId: Int, deadTargetId: Int) {
-                if(parentOfMapper[sourceId].diesWithParent){
+                if (parentOfMapper[sourceId].diesWithParent) {
                     world.delete(sourceId)
                 }
             }
@@ -28,14 +28,14 @@ class ParentSystem: BaseSystem(){
 
     override fun processSystem() {}
 
-    fun getParent(entity: Int): Int{
+    fun getParent(entity: Int): Int {
         return parentOfMapper[entity].parent
     }
 
-    fun <T: Component> recursiveGet(mapper: ComponentMapper<T>, entity: Int): T? {
-        if(mapper.has(entity)){
+    fun <T : Component> recursiveGet(mapper: ComponentMapper<T>, entity: Int): T? {
+        if (mapper.has(entity)) {
             return mapper[entity]
-        } else if(parentOfMapper.has(entity)){
+        } else if (parentOfMapper.has(entity)) {
             return recursiveGet(mapper, parentOfMapper[entity].parent)
         } else {
             return null

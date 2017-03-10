@@ -75,7 +75,7 @@ class MenuControl : VisTable {
     fun selectPress() {
         val selected = selected
 
-        if(selected != null) {
+        if (selected != null) {
             selectPressed = true
             selected.isChecked = true
         }
@@ -83,7 +83,7 @@ class MenuControl : VisTable {
 
     fun selectRelease() {
         val selected = selected
-        if(selectPressed && selected != null) {
+        if (selectPressed && selected != null) {
             selectPressed = false
             selected.fire(ChangeListener.ChangeEvent())
             selected.isChecked = false
@@ -126,7 +126,7 @@ class MenuControl : VisTable {
                 btn.focusLost()
             }
 
-            if(selectPressed){
+            if (selectPressed) {
                 selectPressed = false
                 btn.isChecked = false
             }

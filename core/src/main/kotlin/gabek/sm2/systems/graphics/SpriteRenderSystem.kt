@@ -3,7 +3,6 @@ package gabek.sm2.systems.graphics
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -20,7 +19,7 @@ import gabek.sm2.world.RenderManager
  */
 class SpriteRenderSystem(kodein: Kodein)
     : BaseEntitySystem(Aspect.all(SpriteCom::class.java, TranslationCom::class.java))
-        , RenderManager.BatchSystem{
+        , RenderManager.BatchSystem {
     private val assets: Assets = kodein.instance()
 
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
@@ -50,16 +49,16 @@ class SpriteRenderSystem(kodein: Kodein)
 
                 val r = rotation + spriteComp.offsetRotation
                 val sin = MathUtils.sinDeg(r)
-                val asin = if(sin > 0) sin else -sin
+                val asin = if (sin > 0) sin else -sin
                 val cos = MathUtils.cosDeg(r)
-                val acos = if(cos > 0) cos else -cos
+                val acos = if (cos > 0) cos else -cos
 
                 temp.width = height * asin + width * acos
                 temp.height = width * asin + height * acos
                 temp.x = x - temp.width / 2f
                 temp.y = y - temp.height / 2f
 
-                if(culling.overlaps(temp)) {
+                if (culling.overlaps(temp)) {
                     val flipX = spriteComp.flipX
                     val flipY = spriteComp.flipY
 

@@ -9,7 +9,7 @@ class LerpVector(var x: Float = 0f, var y: Float = 0f) {
     private var pX: Float = x
     private var pY: Float = y
 
-    fun set(x: Float, y: Float){
+    fun set(x: Float, y: Float) {
         this.x = x
         this.y = y
     }
@@ -17,12 +17,12 @@ class LerpVector(var x: Float = 0f, var y: Float = 0f) {
     fun lerpX(progress: Float) = MathUtils.lerp(pX, x, progress)
     fun lerpY(progress: Float) = MathUtils.lerp(pY, y, progress)
 
-    fun flip(){
+    fun flip() {
         pX = x
         pY = y
     }
 
-    fun reset(){
+    fun reset() {
         x = 0f
         y = 0f
         pX = 0f

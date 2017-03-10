@@ -6,7 +6,7 @@ eclipse.project.name = appName + '-core'
 
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
 
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
