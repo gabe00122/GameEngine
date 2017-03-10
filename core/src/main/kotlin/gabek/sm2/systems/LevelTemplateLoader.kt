@@ -1,10 +1,7 @@
 package gabek.sm2.systems
 
 import com.artemis.BaseSystem
-import com.artemis.managers.GroupManager
-import com.artemis.managers.TagManager
 import com.badlogic.gdx.utils.JsonValue
-import gabek.sm2.leveltemplete.LevelTemplate
 import gabek.sm2.leveltemplete.TemplateOperation
 import gabek.sm2.physics.RBody
 import gabek.sm2.tilemap.ArrayGrid
@@ -46,27 +43,32 @@ class LevelTemplateLoader : BaseSystem() {
                 operation[fields.name]?.preform(entity, fields)
             }
         }
+
+        val definitions = tileSystem.definitions
         
-        val tileMap = tileSystem.tileMap
-        val tileIdMap = tileMap.definitions.buildNameToIdMap()
-        
-        val symbolToId = mutableMapOf<String, Int>()
+        val symbolToId = mutableMapOf<String, Array<Int>>()
 
         val tileMapJson = jsonValue.get("tilemap")
         for(def in tileMapJson.get("def").JsonIterator()){
-            symbolToId.put(def.name, tileIdMap[def.get(0).asString()]!!)
+            symbolToId.put(def.name, arrayOf(
+                    definitions.getIdByName(def.get(0).asString()),
+                    definitions.getIdByName(def.get(1).asString())
+                    ))
         }
 
         val tiles = tileMapJson.get("tiles").asStringArray()
         val width = tiles[0].length
         val height = tiles.size
 
-        tileMap.body.store(box2dSystem.box2dWorld)
-        tileMap.body = RBody()
+        tileSystem.store()
+        tileSystem.body = RBody()
 
-        tileMap.tileMap = ArrayGrid(width, height){ x, y ->
-            TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!!)
+        tileSystem.backgroundTiles = ArrayGrid(width, height){ x, y ->
+            TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![0])
         }
-        tileMap.initPhysics(box2dSystem.box2dWorld)
+        tileSystem.foregroundTiles = ArrayGrid(width, height){ x, y ->
+            TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![1])
+        }
+        tileSystem.initPhysics()
     }
 }

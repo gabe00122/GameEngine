@@ -10,6 +10,7 @@ import gabek.sm2.assets.Assets
 class TileDefinitions(val kodein: Kodein) {
     private val assets: Assets = kodein.instance()
 
+    private val nameToId = mutableMapOf<String, Int>()
     private val tileTypes = mutableListOf<TileType>()
 
     operator fun get(typeId: Int): TileType {
@@ -20,19 +21,19 @@ class TileDefinitions(val kodein: Kodein) {
         return tileTypes[tileReference.typeId]
     }
 
-    fun buildNameToIdMap(): Map<String, Int>{
-        val out = mutableMapOf<String, Int>()
-        for(i in 0 until tileTypes.size){
-            out.put(tileTypes[i].name, i)
-        }
+    fun getIdByName(name: String): Int = nameToId[name]!!
 
-        return out
+    fun addType(type: TileType){
+        nameToId.put(type.name, tileTypes.size)
+        tileTypes.add(type)
     }
 
     init {
-        tileTypes.add(TileType("none", null, false))
-        tileTypes.add(TileType("background", assets.findTexture("tiles:back"), false))
-        tileTypes.add(TileType("wall", assets.findTexture("tiles:wall"), true))
+        addType(TileType("none", null, null, false))
+        addType(TileType("background", null, assets.findTexture("tiles:back"), false))
+        addType(TileType("wall", null, assets.findTexture("tiles:back2"), true))
+
+        addType(TileType("spike", null, assets.findTexture("tiles:spike")))
     }
 
 }

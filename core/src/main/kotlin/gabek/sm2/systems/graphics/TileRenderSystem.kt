@@ -14,6 +14,6 @@ class TileRenderSystem : BaseSystem(), RenderManager.BatchSystem {
 
     override fun processSystem() {}
     override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
-        tileSystem.tileMap.render(batch, culling)
+        tileSystem.render(batch, culling)
     }
 }

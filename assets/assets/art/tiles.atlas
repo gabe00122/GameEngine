@@ -1,6 +1,6 @@
 
 tiles.png
-size: 256,64
+size: 64,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -11,37 +11,23 @@ back
   orig: 16, 16
   offset: 0, 0
   index: -1
-tiles
+back2
   rotate: false
   xy: 1, 19
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
-  index: 0
-tiles
+  index: -1
+spike
   rotate: false
-  xy: 35, 19
-  size: 32, 32
-  orig: 32, 32
+  xy: 35, 35
+  size: 16, 16
+  orig: 16, 16
   offset: 0, 0
-  index: 1
-tiles
-  rotate: false
-  xy: 69, 19
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 2
-tiles
-  rotate: false
-  xy: 103, 19
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: 3
+  index: -1
 wall
   rotate: false
-  xy: 137, 35
+  xy: 19, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

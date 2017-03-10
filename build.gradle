@@ -47,25 +47,25 @@ task pack {
         // additional atlases with this task.
         TexturePacker.process(
                 'raw/ui/x1',        // Raw assets path.
-                'assets/ui',        // Output directory.
+                'assets/assets/ui',        // Output directory.
                 'skin'              // Name of the generated atlas (without extension).
         )
 
         TexturePacker.process(
                 'raw/art/actors',
-                'assets/art',
+                'assets/assets/art',
                 'actors'
         )
 
         TexturePacker.process(
                 'raw/art/tiles',
-                'assets/art',
+                'assets/assets/art',
                 'tiles'
         )
 
         TexturePacker.process(
                 'raw/art/menus',
-                'assets/art',
+                'assets/assets/art',
                 'menus'
         )
     }
