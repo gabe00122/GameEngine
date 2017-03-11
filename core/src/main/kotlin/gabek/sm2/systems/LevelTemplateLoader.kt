@@ -63,12 +63,19 @@ class LevelTemplateLoader : BaseSystem() {
         tileSystem.store()
         tileSystem.body = RBody()
 
-        tileSystem.backgroundTiles = ArrayGrid(width, height){ x, y ->
-            TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![0])
+        tileSystem.resize(width, height)
+
+        for(y in 0 until height){
+            for(x in 0 until width){
+                tileSystem.setTile(x, y,
+                        TileMapSystem.Layer.BACKGROUND,
+                        TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![0]))
+                tileSystem.setTile(x, y,
+                        TileMapSystem.Layer.FOREGROUND,
+                        TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![1]))
+            }
         }
-        tileSystem.foregroundTiles = ArrayGrid(width, height){ x, y ->
-            TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![1])
-        }
+
         tileSystem.initPhysics()
     }
 }

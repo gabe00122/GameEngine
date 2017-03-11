@@ -14,7 +14,7 @@ fun buildScreenManager(kodein: Kodein): ScreenManager {
     val sm = ScreenManager(kodein)
     with(sm) {
         bind("main") { MainMenu(kodein) }
-        bind("settings") { SettingsMenu() }
+        bind("settings") { SettingsMenu(kodein) }
         bind("playing") { PlayingScreen(kodein) }
         bind("startGame") { GameSetupScreen(kodein) }
 

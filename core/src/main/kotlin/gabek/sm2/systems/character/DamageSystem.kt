@@ -14,6 +14,8 @@ class DamageSystem : BaseSystem() {
 
     override fun processSystem() {}
 
+    fun hasHealth(entity: Int): Boolean = healthMapper.has(entity)
+
     fun damage(entity: Int, amount: Float): Boolean {
         val health = parentSystem.recursiveGet(healthMapper, entity)
         if (health != null) {

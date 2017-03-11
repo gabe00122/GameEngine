@@ -44,8 +44,6 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var biDirectionSystem: BiDirectionSystem
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
-        println("${movementStateMapper[entity].state}, $state")
-
         movementStateMapper[entity].state = state
         checkTransitions(entity)
     }

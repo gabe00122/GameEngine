@@ -5,12 +5,19 @@ import com.artemis.WorldConfiguration
 import com.artemis.link.EntityLinkManager
 import com.artemis.managers.GroupManager
 import com.artemis.managers.TagManager
+import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.ContactImpulse
+import com.badlogic.gdx.physics.box2d.Manifold
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
+import gabek.sm2.assets.Assets
 import gabek.sm2.factory.babySnailFactory
 import gabek.sm2.factory.cameraFactory
 import gabek.sm2.factory.junkFactory
 import gabek.sm2.factory.playerFactory
+import gabek.sm2.physics.RCollisionCallback
+import gabek.sm2.physics.RFixture
+import gabek.sm2.physics.RPolygon
 import gabek.sm2.systems.*
 import gabek.sm2.systems.brains.WanderingBrainSystem
 import gabek.sm2.systems.character.BiDirectionSystem
@@ -20,6 +27,8 @@ import gabek.sm2.systems.character.DamageSystem
 import gabek.sm2.systems.graphics.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem
+import gabek.sm2.tilemap.TileDefinitions
+import gabek.sm2.tilemap.TileType
 
 /**
  * @author Gabriel Keith
@@ -59,7 +68,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(BiDirectionSystem())
 
     //tiles
-    config.setSystem(TileMapSystem(kodein))
+    config.setSystem(TileMapSystem(kodein, ::buildTileDefinitions))
 
     //graphics
     config.setSystem(CameraSystem())
@@ -72,7 +81,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(SpriteRenderSystem(kodein))
     config.setSystem(HealthRenderSystem(kodein))
 
-    config.setSystem(Box2dDebugSystem())
+    //config.setSystem(Box2dDebugSystem())
 
     return World(config)
 }
@@ -88,7 +97,7 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
                         getSystem<HealthRenderSystem>()
                 ),
                 orthoSystems = listOf(
-                        getSystem<Box2dDebugSystem>()
+                        //getSystem<Box2dDebugSystem>()
                 )
         )
     }
@@ -100,3 +109,33 @@ fun factoryBindings() = listOf(
         Pair("junk", junkFactory()),
         Pair("babySnail", babySnailFactory())
 )
+
+fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein){
+    val assets: Assets = kodein.instance()
+    val tileMap: TileMapSystem = world.getSystem()
+    val damageSystem: DamageSystem = world.getSystem()
+
+
+    definitions.addType(TileType("none", null, false))
+    definitions.addType(TileType("background", assets.findTexture("tiles:back"), false))
+    definitions.addType(TileType("wall", assets.findTexture("tiles:back2"), true))
+
+    definitions.addType(TileType("spike", texture = assets.findTexture("tiles:spike")){ x, y, ref ->
+        val shape = RPolygon(tileMap.tileSize, tileMap.tileSize/2, x * tileMap.tileSize, y * tileMap.tileSize)
+        val fixture = RFixture(shape, isSensor = true)
+        fixture.callbackList.add(object: RCollisionCallback {
+            override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
+                val other = otherRFixture.ownerId
+                if(damageSystem.hasHealth(other)){
+                    damageSystem.damage(other, 1f)
+                }
+            }
+
+            override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
+            override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {}
+            override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {}
+        })
+
+        tileMap.body.addFixture(fixture)
+    })
+}

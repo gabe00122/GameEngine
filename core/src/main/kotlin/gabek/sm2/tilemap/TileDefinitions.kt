@@ -27,13 +27,4 @@ class TileDefinitions(val kodein: Kodein) {
         nameToId.put(type.name, tileTypes.size)
         tileTypes.add(type)
     }
-
-    init {
-        addType(TileType("none", null, null, false))
-        addType(TileType("background", null, assets.findTexture("tiles:back"), false))
-        addType(TileType("wall", null, assets.findTexture("tiles:back2"), true))
-
-        addType(TileType("spike", null, assets.findTexture("tiles:spike")))
-    }
-
 }

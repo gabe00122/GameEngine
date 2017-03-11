@@ -1,10 +1,10 @@
 package gabek.sm2.systems
 
 import com.artemis.BaseSystem
+import com.artemis.World
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.physics.box2d.World
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
@@ -18,7 +18,11 @@ import gabek.sm2.world.filter
 /**
  * @author Gabriel Keith
  */
-class TileMapSystem(kodein: Kodein) : BaseSystem() {
+class TileMapSystem(
+        val kodein: Kodein,
+        val definitionsInit: (TileDefinitions, World, Kodein) -> Unit
+) : BaseSystem() {
+
     private lateinit var box2dSystem: Box2dSystem
     override fun processSystem() {}
 
@@ -26,10 +30,16 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
 
     val tileSize = 0.75f
     val definitions = TileDefinitions(kodein)
-    var backgroundTiles: Grid<TileReference> = ArrayGrid(0, 0, { _, _ -> TileReference(0) })
-    var foregroundTiles: Grid<TileReference> = ArrayGrid(0, 0, { _, _ -> TileReference(0) })
+    private var backgroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
+    private var foregroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
 
     var body = RBody()
+
+    override fun initialize() {
+        super.initialize()
+
+        definitionsInit(definitions, world, kodein)
+    }
 
     fun render(batch: SpriteBatch, culling: Rectangle) {
         val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, backgroundTiles.w)
@@ -55,7 +65,14 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
     }
 
     fun resize(w: Int, h: Int){
+        backgroundTiles = ArrayGrid(w, h) { _, _ -> TileReference(0) }
+        foregroundTiles = ArrayGrid(w, h) { _, _ -> TileReference(0) }
+    }
 
+    fun setTile(x: Int, y: Int, layer: Layer, reference: TileReference){
+        val grid = if(layer == Layer.FOREGROUND) foregroundTiles else backgroundTiles
+        grid.set(x, y, reference)
+        definitions[reference].onInit?.invoke(x, y, reference)
     }
 
     fun initPhysics() {
@@ -74,7 +91,7 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
         body.store(box2dSystem.box2dWorld)
         for (y in 0 until backgroundTiles.h) {
             for (x in 0 until backgroundTiles.w) {
-                backgroundTiles.get(x, y).fixtures = null
+                backgroundTiles.get(x, y).fixtures.clear()
             }
         }
     }
@@ -89,7 +106,7 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
     }
 
     private fun initSolid(x: Int, y: Int) {
-        val fixtures = Array<RFixture?>(4, { null })
+        val fixtures = backgroundTiles.get(x, y).fixtures
 
         val n = checkSolid(x, y + 1)
         val s = checkSolid(x, y - 1)
@@ -111,7 +128,9 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
                 if (e) {
                     edge.setVertex3(x2 + tileSize, y2)
                 }
-                fixtures[0] = RFixture(edge).defaultSettings(x, y)
+                val fixture = RFixture(edge).defaultSettings(x, y)
+                fixtures.add(fixture)
+                body.addFixture(fixture)
             }
 
             if (!s) {
@@ -123,7 +142,9 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
                 if (w) {
                     edge.setVertex3(x1 - tileSize, y1)
                 }
-                fixtures[1] = RFixture(edge).defaultSettings(x, y)
+                val fixture = RFixture(edge).defaultSettings(x, y)
+                fixtures.add(fixture)
+                body.addFixture(fixture)
             }
 
             if (!e) {
@@ -135,7 +156,9 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
                 if (s) {
                     edge.setVertex3(x2, y1 - tileSize)
                 }
-                fixtures[2] = RFixture(edge).defaultSettings(x, y)
+                val fixture = RFixture(edge).defaultSettings(x, y)
+                fixtures.add(fixture)
+                body.addFixture(fixture)
             }
 
             if (!w) {
@@ -147,15 +170,14 @@ class TileMapSystem(kodein: Kodein) : BaseSystem() {
                 if (n) {
                     edge.setVertex3(x1, y2 + tileSize)
                 }
-                fixtures[3] = RFixture(edge).defaultSettings(x, y)
+                val fixture = RFixture(edge).defaultSettings(x, y)
+                fixtures.add(fixture)
+                body.addFixture(fixture)
             }
-
-            for (fixture in fixtures) {
-                if (fixture != null) {
-                    body.addFixture(fixture)
-                }
-            }
-            backgroundTiles.get(x, y).fixtures = fixtures
         }
+    }
+
+    enum class Layer{
+        FOREGROUND, BACKGROUND
     }
 }

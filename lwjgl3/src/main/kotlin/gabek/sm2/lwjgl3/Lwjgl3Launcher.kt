@@ -23,11 +23,11 @@ fun getDefaultConfig(): Lwjgl3ApplicationConfiguration{
     config.useOpenGL3(true, 3, 2)
 
     config.setTitle("SpaceMonk2")
-    config.setWindowedMode(800, 800)
+    config.setWindowedMode(600, 600)
     //config.useVsync(false)
     //config.setIdleFPS()
 
-    config.setBackBufferConfig(8, 8, 8, 8, 0, 0, 0)
+    //config.setBackBufferConfig(8, 8, 8, 8, 0, 0, 0)
     //config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode())
 
     return config

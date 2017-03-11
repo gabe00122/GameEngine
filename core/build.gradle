@@ -26,8 +26,8 @@ dependencies {
 
     compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
 
-    compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
-    compile "com.esotericsoftware:kryo:$kryoVersion"
+    //compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
+    //compile "com.esotericsoftware:kryo:$kryoVersion"
 
     compile "com.github.salomonbrys.kodein:kodein:$kodeinVersion"
 }
