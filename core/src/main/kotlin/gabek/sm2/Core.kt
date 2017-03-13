@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.GL30
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.physics.box2d.Box2D
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
@@ -28,10 +29,13 @@ class Core : ApplicationAdapter() {
     lateinit var screenManager: ScreenManager
 
     override fun create() {
+        ShaderProgram.prependFragmentCode = "#version 150\n" //ugggggggg took me hours to figure this out
+        ShaderProgram.prependVertexCode = "#version 150\n" //The implicit version numbers where not supported by my gfx card context.
+
         VisUI.load("assets/ui/skin.json")
         Box2D.init()
 
-        val kodein = Kodein {
+        val kodein = Kodein{
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
             bind<Assets>() with singleton { Assets("assets/manifest.json") }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
@@ -40,6 +44,7 @@ class Core : ApplicationAdapter() {
 
             bind<RenderManager>() with singleton { buildRenderManager(this) }
         }
+
         kodein.instance<Assets>().finish()
 
         screenManager = kodein.instance()

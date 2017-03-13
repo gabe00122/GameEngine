@@ -36,18 +36,22 @@ fun playerFactory() = factory { kodein, world ->
     val stillAnim = assets.retrieveAnimationDef("fred:still")
     val jumpingAnim = assets.retrieveAnimationDef("fred:jumping")
 
-    val legFactory = factory { kodein, world ->
-        com<ParentOfCom> { diesWithParent = true }
-        com<TranslationCom>()
-        com<BodyCom> {
-            body.addFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
-            body.bodyType = BodyDef.BodyType.DynamicBody
-            body.setPosition(0f, -bodyHeight / 2)
-        }
-    }.build(kodein, world)
+    //val legFactory = factory { kodein, world ->
+    //    com<ParentOfCom> { diesWithParent = true }
+    //    com<TranslationCom>()
+    //    com<BodyCom> {
+    //        body.addFixture(RCircle(width / 2f), density = 0.5f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
+    //        body.bodyType = BodyDef.BodyType.DynamicBody
+    //        body.setPosition(0f, -bodyHeight / 2)
+    //    }
+    //}.build(kodein, world)
 
     com<TranslationCom>()
     com<BodyCom> {
+        val platformShape = RPolygon()
+        platformShape.withClippedCorners(width, width / 2, 0f, -bodyHeight / 2 - width / 4, width / 8)
+        body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
+
         body.addFixture(RPolygon(width, bodyHeight), density = 1f, categoryBits = filter(CHARACTER))
         body.bodyType = BodyDef.BodyType.DynamicBody
         body.isFixedRotation = true
@@ -64,25 +68,25 @@ fun playerFactory() = factory { kodein, world ->
     com<BiDirectionCom>()
     com<CharacterMovementStateCom>()
     com<MovementGroundContactCom>()
-    com<MovementPhysicsWheelCom> { entity ->
-        wheelRef = legFactory.create()
-        parentMapper[wheelRef].parent = entity
+    //com<MovementPhysicsWheelCom> { entity ->
+    //    wheelRef = legFactory.create()
+    //    parentMapper[wheelRef].parent = entity
 
-        motor.isMoterEnabled = true
-        motor.maxTorque = 5f
-        motor.anchorAY = -bodyHeight / 2
+    //    motor.isMoterEnabled = true
+    //    motor.maxTorque = 5f
+    //    motor.anchorAY = -bodyHeight / 2
 
-        motor.bodyA = bodyMapper[entity].body
-        motor.bodyB = bodyMapper[wheelRef].body
-    }
+    //    motor.bodyA = bodyMapper[entity].body
+    //    motor.bodyB = bodyMapper[wheelRef].body
+    //}
 
     com<MovementDefinitionCom> {
-        airSpeed = 200f
-        groundSpeed = 600f
+        airSpeed = 3f
+        groundSpeed = 3f
         airDamping = 0.1f
 
         jumpCooldown = 0.1f
-        jumpForce = 3.5f
+        jumpForce = 2.5f
 
         this.width = width
         this.height = height

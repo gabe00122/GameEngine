@@ -44,6 +44,8 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var biDirectionSystem: BiDirectionSystem
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
+        println("${movementStateMapper[entity].state} $state ${timeManager.currentFrame}")
+
         movementStateMapper[entity].state = state
         checkTransitions(entity)
     }
@@ -71,10 +73,10 @@ class CharacterControllerSystem : BaseEntitySystem(
             val force = movDef.jumpForce
             body.applyLinearImpulse(0f, force, body.x, body.y)
 
-            val forceOverSize = force / movContact.contacts.size
-            for ((x, y, fixture) in movContact.contacts) {
-                fixture.body!!.applyLinearImpulse(0f, -forceOverSize, x, y)
-            }
+            //val forceOverSize = force / movContact.contacts.size
+            //for ((x, y, fixture) in movContact.contacts) {
+            //    fixture.body!!.applyLinearImpulse(0f, -forceOverSize, x, y)
+            //}
         }
 
         //addTransitionListener(RUNNING, ON_GROUND)
@@ -130,13 +132,14 @@ class CharacterControllerSystem : BaseEntitySystem(
                             movPhysics.motor.motorSpeed = -moveDef.groundSpeed
                         }
                     }
+                    body.body.isAwake = true
                 }
                 JUMPING -> {
                     val linearVelocityX = body.body.linearVelocityX
-                    if (control.moveLeft && linearVelocityX > -4) {
-                        body.body.applyForceToCenter(-moveDef.airSpeed * world.delta, 0f)
-                    } else if (control.moveRight && linearVelocityX < 4) {
-                        body.body.applyForceToCenter(moveDef.airSpeed * world.delta, 0f)
+                    if (control.moveLeft && linearVelocityX > -moveDef.airSpeed) {
+                        body.body.applyForceToCenter(-20f, 0f)
+                    } else if (control.moveRight && linearVelocityX < moveDef.airSpeed) {
+                        body.body.applyForceToCenter(20f, 0f)
                     }
 
                     val damp = -body.body.linearVelocityX * body.body.mass * moveDef.airDamping
@@ -215,23 +218,26 @@ class CharacterControllerSystem : BaseEntitySystem(
             val index = contacts.indexOf(otherRFixture)
             if (index == -1) {
                 contacts.add(-1f, -1f, otherRFixture)
+                checkTransitions(ownerRFixture.ownerId)
             }
         }
 
         override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
             contacts.remove(otherRFixture)
+            checkTransitions(ownerRFixture.ownerId)
         }
 
         override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val direction = biDirectionMapper[ownerRFixture.ownerId].direction
             val state = movementStateMapper[ownerRFixture.ownerId].state
+            val def = movementDefinitionMapper[ownerRFixture.ownerId]
 
             if (state == RUNNING) {
                 if (direction == LEFT) {
-                    contact.tangentSpeed += -2f
+                    contact.tangentSpeed += -def.groundSpeed
                 } else {
-                    contact.tangentSpeed += 2f
+                    contact.tangentSpeed += def.groundSpeed
                 }
             }
         }

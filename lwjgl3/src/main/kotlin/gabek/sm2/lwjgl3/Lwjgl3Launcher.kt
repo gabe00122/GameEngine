@@ -21,6 +21,7 @@ fun main(args: Array<String>){
 fun getDefaultConfig(): Lwjgl3ApplicationConfiguration{
     val config = Lwjgl3ApplicationConfiguration()
     config.useOpenGL3(true, 3, 2)
+    config.enableGLDebugOutput(true, System.err)
 
     config.setTitle("SpaceMonk2")
     config.setWindowedMode(600, 600)

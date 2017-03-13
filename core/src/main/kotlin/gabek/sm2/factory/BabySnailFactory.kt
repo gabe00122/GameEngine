@@ -44,7 +44,7 @@ fun babySnailFactory() = factory { kodein, world ->
 
     com<MovementDefinitionCom> {
         groundSpeed = 0.5f
-        jumpCooldown = 0.1f
+        jumpCooldown = 0.01f
         jumpForce = 2f
     }
     com<MovementGroundContactCom>()
@@ -55,8 +55,7 @@ fun babySnailFactory() = factory { kodein, world ->
         platform.withClippedCorners(width, height * (1f / 4f), 0f, -height * (3f / 8f), 0.1f)
 
         body.addFixture(platform, 1f, 0.2f, 0.1f)
-        body.addFixture(RPolygon(width, height * (3f / 4f), 0f, height * (1f / 8f)), 0.75f, 1f, 0.1f)
-        body.isSleepingAllowed = false
+        body.addFixture(RPolygon(width, height * (3f / 4f), 0f, height * (1f / 8f)), 1f, 1f, 0.1f)
         //body.isFixedRotation = true
     }
     com<BiDirectionCom>()

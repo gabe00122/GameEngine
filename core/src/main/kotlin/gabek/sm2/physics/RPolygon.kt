@@ -35,10 +35,10 @@ class RPolygon : RShape {
         val hh = h / 2
 
         vertices = floatArrayOf(
-                -hw + x + clip / 4f, hh + y,
+                -hw + x, hh + y,
                 -hw + x + clip, -hh + y,
                 hw + x - clip, -hh + y,
-                hw + x - clip / 4f, hh + y
+                hw + x, hh + y
         )
     }
 }

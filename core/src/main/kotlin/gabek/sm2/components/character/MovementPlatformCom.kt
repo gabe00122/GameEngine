@@ -7,9 +7,9 @@ import gabek.sm2.physics.RFixture
  * @author Gabriel Keith
  */
 class MovementPlatformCom : PooledComponent() {
-    var platform: RFixture? = null
+    var platformIndex: Int = -1
 
     override fun reset() {
-        platform = null
+        platformIndex = -1
     }
 }
