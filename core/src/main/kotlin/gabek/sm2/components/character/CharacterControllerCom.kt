@@ -8,8 +8,19 @@ import com.artemis.Component
 class CharacterControllerCom : Component() {
     var moveUp: Boolean = false
     var moveDown: Boolean = false
-    var moveLeft: Boolean = false
-    var moveRight: Boolean = false
+    var lateralMovement: Float = 0f
+
+    var moveLeft: Boolean
+        get() = lateralMovement < 0f
+        set(value) {
+            lateralMovement = if(value) -1f else 0f
+        }
+
+    var moveRight: Boolean
+        get() = lateralMovement > 0f
+        set(value) {
+            lateralMovement = if(value) 1f else 0f
+        }
 
     var jump: Boolean = false
 

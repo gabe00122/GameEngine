@@ -49,7 +49,7 @@ fun playerFactory() = factory { kodein, world ->
     com<TranslationCom>()
     com<BodyCom> {
         val platformShape = RPolygon()
-        platformShape.withClippedCorners(width, width / 2, 0f, -bodyHeight / 2 - width / 4, width / 8)
+        platformShape.withClippedCorners(width, width / 2, 0f, -bodyHeight / 2 - width / 4, width / 4)
         body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
 
         body.addFixture(RPolygon(width, bodyHeight), density = 1f, categoryBits = filter(CHARACTER))
@@ -67,7 +67,9 @@ fun playerFactory() = factory { kodein, world ->
     com<CharacterControllerCom>()
     com<BiDirectionCom>()
     com<CharacterMovementStateCom>()
-    com<MovementGroundContactCom>()
+    com<MovementGroundContactCom>{
+        platformIndex = 0
+    }
     //com<MovementPhysicsWheelCom> { entity ->
     //    wheelRef = legFactory.create()
     //    parentMapper[wheelRef].parent = entity

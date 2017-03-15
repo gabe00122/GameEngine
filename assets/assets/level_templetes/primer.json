@@ -25,6 +25,10 @@
     {
       "type": "junk",
       "pos": {"x": 5, "y": 3}
+    },
+    {
+      "type": "babySnail",
+      "pos": {"x": 7, "y": 3}
     }
   ]
 }

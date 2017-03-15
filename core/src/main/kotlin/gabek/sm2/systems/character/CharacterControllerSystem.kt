@@ -35,7 +35,6 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var movementStateMapper: ComponentMapper<CharacterMovementStateCom>
     private lateinit var movementDefinitionMapper: ComponentMapper<MovementDefinitionCom>
     private lateinit var movementGroundContactMapper: ComponentMapper<MovementGroundContactCom>
-    private lateinit var movementPhysicsWheelMapper: ComponentMapper<MovementPhysicsWheelCom>
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
     private lateinit var timeManager: TimeManager
@@ -55,12 +54,6 @@ class CharacterControllerSystem : BaseEntitySystem(
             movementStateMapper[entity].timeOnGround = timeManager.currentFrame
         }
 
-        transitionTable.addListenerLeavening(RUNNING) { entity, from, to ->
-            if (movementPhysicsWheelMapper.has(entity)) {
-                movementPhysicsWheelMapper[entity].motor.motorSpeed = 0f
-            }
-        }
-
         transitionTable.addListener(arrayOf(RUNNING, STANDING), arrayOf(JUMPING, IN_AIR)) { entity, from, to ->
             movementStateMapper[entity].timeInAir = timeManager.currentFrame
         }
@@ -73,24 +66,17 @@ class CharacterControllerSystem : BaseEntitySystem(
             val force = movDef.jumpForce
             body.applyLinearImpulse(0f, force, body.x, body.y)
 
-            //val forceOverSize = force / movContact.contacts.size
-            //for ((x, y, fixture) in movContact.contacts) {
-            //    fixture.body!!.applyLinearImpulse(0f, -forceOverSize, x, y)
-            //}
+            val forceOverSize = force / movContact.contacts.size
+            for (contact in movContact.contacts) {
+                val otherBody = contact.fixture.body!!
+                for(i in 0 until contact.numberOfPoints) {
+                    val point = contact.points[i]
+                    otherBody.applyLinearImpulse(0f, -forceOverSize / contact.numberOfPoints, point.x, point.y)
+                }
+            }
         }
 
         //addTransitionListener(RUNNING, ON_GROUND)
-    }
-
-    override fun initialize() {
-        super.initialize()
-        transSystem.addTeleportListener(object : TranslationSystem.TeleportListener {
-            override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean) {
-                if (movementPhysicsWheelMapper.has(id)) {
-                    transSystem.teleportChild(id, movementPhysicsWheelMapper[id].wheelRef, x, y, rotation, smooth)
-                }
-            }
-        })
     }
 
     override fun processSystem() {
@@ -124,14 +110,6 @@ class CharacterControllerSystem : BaseEntitySystem(
             //physics
             when (movState.state) {
                 RUNNING -> {
-                    if (movementPhysicsWheelMapper.has(entity)) {
-                        val movPhysics = movementPhysicsWheelMapper[entity]
-                        if (biDirection.direction == LEFT) {
-                            movPhysics.motor.motorSpeed = moveDef.groundSpeed
-                        } else if (biDirection.direction == RIGHT) {
-                            movPhysics.motor.motorSpeed = -moveDef.groundSpeed
-                        }
-                    }
                     body.body.isAwake = true
                 }
                 JUMPING -> {
@@ -152,7 +130,6 @@ class CharacterControllerSystem : BaseEntitySystem(
 
         }
     }
-
 
     private fun checkTransitions(entity: Int) {
         val control = controllerMapper[entity]
@@ -203,12 +180,9 @@ class CharacterControllerSystem : BaseEntitySystem(
     }
 
     override fun inserted(entityId: Int) {
-        if (movementPhysicsWheelMapper.has(entityId)) {
-            val physics = movementPhysicsWheelMapper[entityId]
-            bodyMapper[physics.wheelRef].body.fixutres[0].callbackList.add(wheelContactHandler)
-        } else {
-            bodyMapper[entityId].body.fixutres[0].callbackList.add(platformContactHandler)
-        }
+        val groundContact = movementGroundContactMapper[entityId]
+
+        bodyMapper[entityId].body.fixutres[groundContact.platformIndex].callbackList.add(platformContactHandler)
     }
 
     private val platformContactHandler = object : RCollisionCallback {
@@ -217,69 +191,32 @@ class CharacterControllerSystem : BaseEntitySystem(
 
             val index = contacts.indexOf(otherRFixture)
             if (index == -1) {
-                contacts.add(-1f, -1f, otherRFixture)
-                checkTransitions(ownerRFixture.ownerId)
+                contacts.add(otherRFixture)
             }
         }
 
         override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
             contacts.remove(otherRFixture)
-            checkTransitions(ownerRFixture.ownerId)
         }
 
         override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
-            val direction = biDirectionMapper[ownerRFixture.ownerId].direction
-            val state = movementStateMapper[ownerRFixture.ownerId].state
+            val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
+            val control = controllerMapper[ownerRFixture.ownerId]
             val def = movementDefinitionMapper[ownerRFixture.ownerId]
 
-            if (state == RUNNING) {
-                if (direction == LEFT) {
-                    contact.tangentSpeed += -def.groundSpeed
-                } else {
-                    contact.tangentSpeed += def.groundSpeed
+            contact.tangentSpeed += def.groundSpeed * control.lateralMovement
+
+            val groundContact = contacts.get(otherRFixture)
+            if(groundContact != null){
+                val manifold = contact.worldManifold
+                groundContact.numberOfPoints = manifold.numberOfContactPoints
+                for(i in 0 until manifold.numberOfContactPoints){
+                    groundContact.points[i].set(manifold.points[i])
                 }
             }
         }
 
         override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {}
-    }
-
-    private val wheelContactHandler = object : RCollisionCallback {
-        override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
-
-        }
-
-        override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
-            val entity = parentSystem.getParent(ownerRFixture.ownerId)
-            movementGroundContactMapper[entity].remove(otherRFixture)
-        }
-
-        override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
-
-        }
-
-        override fun postSolve(contact: Contact, impulse: ContactImpulse, ownerRFixture: RFixture, otherRFixture: RFixture) {
-            val entity = parentSystem.getParent(ownerRFixture.ownerId)
-            val movContact = movementGroundContactMapper[entity]
-            val movDef = movementDefinitionMapper[entity]
-
-            val hWidth = movDef.width / 2f
-            val point = contact.worldManifold.points[0]
-            val diffX = point.x - ownerRFixture.body!!.x
-
-            if (diffX < hWidth - movDef.pad && diffX > -hWidth + movDef.pad) {
-                val index = movContact.indexOf(otherRFixture)
-                if (index > -1) {
-                    val c = movContact.contacts[index]
-                    c.x = point.x
-                    c.y = point.y
-                } else {
-                    movContact.add(point.x, point.y, otherRFixture)
-                }
-            } else {
-                movContact.remove(otherRFixture)
-            }
-        }
     }
 }

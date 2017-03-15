@@ -1,6 +1,7 @@
 package gabek.sm2.components.character
 
 import com.artemis.PooledComponent
+import com.badlogic.gdx.math.Vector2
 import gabek.sm2.physics.RFixture
 
 /**
@@ -9,16 +10,24 @@ import gabek.sm2.physics.RFixture
 class MovementGroundContactCom : PooledComponent() {
     val contacts = mutableListOf<GroundContact>()
     val onGround get() = contacts.size > 0
+    var platformIndex: Int = -1
 
     override fun reset() {
         contacts.clear()
+        platformIndex = -1
     }
 
     fun indexOf(fixture: RFixture): Int =
             (0 until contacts.size).firstOrNull { contacts[it].fixture === fixture } ?: -1
 
-    fun add(x: Float, y: Float, fixture: RFixture) {
-        contacts.add(GroundContact(x, y, fixture))
+    fun get(fixture: RFixture): GroundContact? {
+        return contacts.firstOrNull { it.fixture === fixture }
+    }
+
+    fun add(fixture: RFixture): GroundContact {
+        val contact = GroundContact(fixture)
+        contacts.add(contact)
+        return contact
     }
 
     fun remove(index: Int) {
@@ -36,5 +45,8 @@ class MovementGroundContactCom : PooledComponent() {
         }
     }
 
-    data class GroundContact(var x: Float, var y: Float, val fixture: RFixture)
+    class GroundContact(val fixture: RFixture){
+        var numberOfPoints: Int = 0
+        val points = Array(2, { Vector2() })
+    }
 }

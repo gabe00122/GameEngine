@@ -47,7 +47,9 @@ fun babySnailFactory() = factory { kodein, world ->
         jumpCooldown = 0.01f
         jumpForce = 2f
     }
-    com<MovementGroundContactCom>()
+    com<MovementGroundContactCom>{
+        platformIndex = 0
+    }
 
     com<BodyCom> {
         body.bodyType = BodyDef.BodyType.DynamicBody
