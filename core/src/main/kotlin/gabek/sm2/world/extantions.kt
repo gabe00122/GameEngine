@@ -2,6 +2,7 @@ package gabek.sm2.world
 
 import com.artemis.*
 import com.artemis.managers.GroupManager
+import com.artemis.utils.Bag
 import kotlin.reflect.KClass
 
 /**
@@ -28,4 +29,13 @@ fun World.clear() {
     process() //remove entities
     entityManager.reset() //reset entity ids
     process() //clean up rest
+}
+
+fun World.entityDebugString(entity: Int) = buildString {
+    append("$entity\n")
+    val bag = Bag<Component>()
+    componentManager.getComponentsFor(entity, bag)
+    for(comp in bag){
+        append("$comp\n")
+    }
 }

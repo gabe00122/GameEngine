@@ -1,12 +1,13 @@
 package gabek.sm2.systems.character
 
-import com.artemis.Aspect
-import com.artemis.BaseEntitySystem
-import com.artemis.ComponentMapper
+import com.artemis.*
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.sm2.components.BodyCom
+import gabek.sm2.components.PlayerInputCom
 import gabek.sm2.components.character.*
 import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
 import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
@@ -37,19 +38,17 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var movementGroundContactMapper: ComponentMapper<MovementGroundContactCom>
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
+    private lateinit var damageManager: DamageManager
     private lateinit var timeManager: TimeManager
-    private lateinit var parentSystem: ParentSystem
-    private lateinit var transSystem: TranslationSystem
     private lateinit var biDirectionSystem: BiDirectionSystem
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
-        println("${movementStateMapper[entity].state} $state ${timeManager.currentFrame}")
-
+        //println("${movementStateMapper[entity].state} $state ${timeManager.currentFrame}")
         movementStateMapper[entity].state = state
         checkTransitions(entity)
     }
 
-    init {
+    override fun initialize() {
         transitionTable.addListenerEntering(LANDING) { entity, from, to ->
             movementStateMapper[entity].timeOnGround = timeManager.currentFrame
         }
@@ -69,13 +68,28 @@ class CharacterControllerSystem : BaseEntitySystem(
             val forceOverSize = force / movContact.contacts.size
             for (contact in movContact.contacts) {
                 val otherBody = contact.fixture.body!!
-                for(i in 0 until contact.numberOfPoints) {
-                    val point = contact.points[i]
-                    otherBody.applyLinearImpulse(0f, -forceOverSize / contact.numberOfPoints, point.x, point.y)
+                for (i in 0 until contact.numberOfPoints) {
+                    otherBody.applyLinearImpulse(0f,
+                            -forceOverSize / contact.numberOfPoints,
+                            contact.points[i].x, contact.points[i].y)
                 }
             }
         }
 
+        val transmuter = EntityTransmuterFactory(world)
+                .remove(CharacterControllerCom::class.java)
+                .remove(PlayerInputCom::class.java)
+                .build()
+
+        damageManager.addDeathListener{ entity: Int, damage: Float, damageType: Int ->
+            if(controllerMapper.has(entity) && bodyMapper.has(entity)){
+                transmuter.transmute(entity)
+                val body = bodyMapper[entity].body
+
+                body.isFixedRotation = false
+                body.fixutres[0].callbackList.clear()
+            }
+        }
         //addTransitionListener(RUNNING, ON_GROUND)
     }
 
@@ -112,12 +126,12 @@ class CharacterControllerSystem : BaseEntitySystem(
                 RUNNING -> {
                     body.body.isAwake = true
                 }
-                JUMPING -> {
+                JUMPING, IN_AIR -> {
                     val linearVelocityX = body.body.linearVelocityX
                     if (control.moveLeft && linearVelocityX > -moveDef.airSpeed) {
-                        body.body.applyForceToCenter(-20f, 0f)
+                        body.body.applyForceToCenter(-5f, 0f)
                     } else if (control.moveRight && linearVelocityX < moveDef.airSpeed) {
-                        body.body.applyForceToCenter(20f, 0f)
+                        body.body.applyForceToCenter(5f, 0f)
                     }
 
                     val damp = -body.body.linearVelocityX * body.body.mass * moveDef.airDamping
@@ -185,15 +199,10 @@ class CharacterControllerSystem : BaseEntitySystem(
         bodyMapper[entityId].body.fixutres[groundContact.platformIndex].callbackList.add(platformContactHandler)
     }
 
-    private val platformContactHandler = object : RCollisionCallback {
-        override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
-            val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
+    private val platformContactHandler = object: RCollisionCallback {
+        private val normal = Vector2()
 
-            val index = contacts.indexOf(otherRFixture)
-            if (index == -1) {
-                contacts.add(otherRFixture)
-            }
-        }
+        override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
 
         override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
@@ -205,15 +214,28 @@ class CharacterControllerSystem : BaseEntitySystem(
             val control = controllerMapper[ownerRFixture.ownerId]
             val def = movementDefinitionMapper[ownerRFixture.ownerId]
 
-            contact.tangentSpeed += def.groundSpeed * control.lateralMovement
+            val manifold = contact.worldManifold
+            normal.set(manifold.normal)
 
-            val groundContact = contacts.get(otherRFixture)
-            if(groundContact != null){
-                val manifold = contact.worldManifold
+            if (contact.fixtureA.userData !== ownerRFixture) {
+                normal.x = -normal.x
+                normal.y = -normal.y
+            }
+            normal.set(ownerRFixture.body!!.getLocalVector(normal))
+            val angle = normal.angle()
+
+            if(contacts.platformMinAngle < angle && angle < contacts.platformMaxAngle) {
+                contact.tangentSpeed += def.groundSpeed * control.lateralMovement
+                contact.friction = 1f
+
+                val groundContact = contacts.getOrCreate(otherRFixture)
+                groundContact.normal.set(normal)
                 groundContact.numberOfPoints = manifold.numberOfContactPoints
-                for(i in 0 until manifold.numberOfContactPoints){
+                for (i in 0 until manifold.numberOfContactPoints) {
                     groundContact.points[i].set(manifold.points[i])
                 }
+            } else {
+                contacts.remove(ownerRFixture)
             }
         }
 

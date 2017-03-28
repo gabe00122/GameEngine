@@ -7,7 +7,8 @@ import gabek.sm2.factory.EntityFactory
 /**
  * @author Gabriel Keith
  */
-class FactoryManager(val kodein: Kodein, private val builderMap: List<Pair<String, EntityFactory.Builder>>) : BaseSystem() {
+class FactoryManager(val kodein: Kodein, builder: Builder) : BaseSystem() {
+    private val factoryBuilderMap: Map<String, EntityFactory.Builder> = builder.factoryMap
     private val factoryMap = mutableMapOf<String, EntityFactory>()
 
     override fun processSystem() {}
@@ -15,7 +16,7 @@ class FactoryManager(val kodein: Kodein, private val builderMap: List<Pair<Strin
     override fun initialize() {
         super.initialize()
 
-        for ((name, builder) in builderMap) {
+        for ((name, builder) in factoryBuilderMap) {
             factoryMap.put(name, builder.build(kodein, world))
         }
     }
@@ -29,6 +30,22 @@ class FactoryManager(val kodein: Kodein, private val builderMap: List<Pair<Strin
     override fun dispose() {
         for (factory in factoryMap.values) {
             factory.dispose()
+        }
+    }
+
+    companion object{
+        fun build(kodein: Kodein, builderFunction: (builder: Builder) -> Unit): FactoryManager{
+            val builder = Builder()
+            builderFunction(builder)
+            return FactoryManager(kodein, builder)
+        }
+    }
+
+    class Builder{
+        internal val factoryMap = mutableMapOf<String, EntityFactory.Builder>()
+
+        fun bind(name: String, entityFactory: EntityFactory.Builder){
+            factoryMap.put(name, entityFactory)
         }
     }
 }

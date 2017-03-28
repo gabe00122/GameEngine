@@ -2,12 +2,12 @@ package gabek.sm2.world
 
 import com.artemis.World
 import com.artemis.WorldConfiguration
+import com.artemis.io.KryoArtemisSerializer
 import com.artemis.link.EntityLinkManager
 import com.artemis.managers.GroupManager
 import com.artemis.managers.TagManager
+import com.artemis.managers.WorldSerializationManager
 import com.badlogic.gdx.physics.box2d.Contact
-import com.badlogic.gdx.physics.box2d.ContactImpulse
-import com.badlogic.gdx.physics.box2d.Manifold
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
@@ -15,21 +15,17 @@ import gabek.sm2.factory.babySnailFactory
 import gabek.sm2.factory.cameraFactory
 import gabek.sm2.factory.junkFactory
 import gabek.sm2.factory.playerFactory
+import gabek.sm2.kryo.kryoSetup
 import gabek.sm2.physics.RCollisionAdapter
-import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
 import gabek.sm2.systems.*
 import gabek.sm2.systems.brains.WanderingBrainSystem
-import gabek.sm2.systems.character.BiDirectionSystem
-import gabek.sm2.systems.character.CharacterAnimatorSystem
-import gabek.sm2.systems.character.CharacterControllerSystem
-import gabek.sm2.systems.character.DamageSystem
+import gabek.sm2.systems.character.*
 import gabek.sm2.systems.graphics.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem
 import gabek.sm2.tilemap.TileDefinitions
-import gabek.sm2.tilemap.TileReference
 import gabek.sm2.tilemap.TileType
 
 /**
@@ -42,9 +38,10 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(EntityLinkManager())
     config.setSystem(TagManager())
     config.setSystem(GroupManager())
+    config.setSystem(WorldSerializationManager())
     //config.setSystem(PlayerManager())
     //config.setSystem(TeamManager())
-    config.setSystem(FactoryManager(kodein, factoryBindings()))
+    config.setSystem(FactoryManager.build(kodein, ::factoryBindings))
     config.setSystem(LevelTemplateLoader())
     config.setSystem(TimeManager())
 
@@ -56,7 +53,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(ParentBodyTackingSystem())
 
     //config.setSystem(WorldBoundsSystem())
-    config.setSystem(DamageSystem())
+    config.setSystem(DamageManager())
     config.setSystem(PelletLifeSpanSystem())
     config.setSystem(PelletCollisionSystem())
 
@@ -65,6 +62,7 @@ fun buildWorld(kodein: Kodein): World {
 
     //movement
     config.setSystem(PlayerInputSystem())
+    config.setSystem(PlayerManager())
     config.setSystem(CharacterControllerSystem())
     //config.setSystem(AbilityIndexSystem())
     config.setSystem(BiDirectionSystem())
@@ -85,7 +83,13 @@ fun buildWorld(kodein: Kodein): World {
 
     config.setSystem(Box2dDebugSystem())
 
-    return World(config)
+    val world = World(config)
+
+    val kryoSerializer = KryoArtemisSerializer(world)
+    kryoSetup(kodein, kryoSerializer.kryo)
+    world.getSystem<WorldSerializationManager>().setSerializer(kryoSerializer)
+
+    return world
 }
 
 
@@ -105,17 +109,17 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
     }
 }
 
-fun factoryBindings() = listOf(
-        Pair("camera", cameraFactory()),
-        Pair("player", playerFactory()),
-        Pair("junk", junkFactory()),
-        Pair("babySnail", babySnailFactory())
-)
+fun factoryBindings(builder: FactoryManager.Builder) = with(builder) {
+        bind("camera", cameraFactory())
+        bind("player", playerFactory())
+        bind("junk", junkFactory())
+        bind("babySnail", babySnailFactory())
+}
 
 fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein){
     val assets: Assets = kodein.instance()
     val tileMap: TileMapSystem = world.getSystem()
-    val damageSystem: DamageSystem = world.getSystem()
+    val damageManager: DamageManager = world.getSystem()
 
 
     definitions.addType(TileType("none", null, false))
@@ -128,8 +132,8 @@ fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kod
         fixture.callbackList.add(object: RCollisionAdapter() {
             override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
                 val other = otherRFixture.ownerId
-                if(otherRFixture.body!!.linearVelocityY < -2 && damageSystem.hasHealth(other)){
-                    damageSystem.damage(other, 1f)
+                if(otherRFixture.body!!.linearVelocityY < -2 && damageManager.hasHealth(other)){
+                    damageManager.kill(other)
                 }
             }
         })

@@ -10,7 +10,7 @@ import gabek.sm2.components.BodyCom
 import gabek.sm2.components.pellet.PelletCollisionCom
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.character.DamageSystem
+import gabek.sm2.systems.character.DamageManager
 
 /**
  * @author Gabriel Keith
@@ -18,7 +18,7 @@ import gabek.sm2.systems.character.DamageSystem
 
 class PelletCollisionSystem : BaseEntitySystem(Aspect.all(PelletCollisionCom::class.java, BodyCom::class.java)) {
     private lateinit var pelletCollisionMapper: ComponentMapper<PelletCollisionCom>
-    private lateinit var damageSystem: DamageSystem
+    private lateinit var damageManager: DamageManager
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
     override fun processSystem() {}
@@ -34,14 +34,13 @@ class PelletCollisionSystem : BaseEntitySystem(Aspect.all(PelletCollisionCom::cl
             val other = otherRFixture.ownerId
 
             val effect = pelletCollisionMapper[owner]
+            val hasHealth = damageManager.hasHealth(other)
 
-            var success = false
-            if (other != -1) {
-                success = damageSystem.damage(other, effect.damage)
+            if(hasHealth){
+                damageManager.damage(other, effect.damage)
             }
 
-
-            if ((success && effect.diesOnAttack) || effect.diesOnCollision) {
+            if ((hasHealth && effect.diesOnAttack) || effect.diesOnCollision) {
                 world.delete(owner)
             }
         }

@@ -1,4 +1,4 @@
-package gabek.sm2.leveltemplete
+package gabek.sm2.leveltemplate
 
 import com.badlogic.gdx.utils.JsonValue
 

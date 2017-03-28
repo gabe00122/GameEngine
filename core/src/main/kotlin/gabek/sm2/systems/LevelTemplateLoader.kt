@@ -2,7 +2,7 @@ package gabek.sm2.systems
 
 import com.artemis.BaseSystem
 import com.badlogic.gdx.utils.JsonValue
-import gabek.sm2.leveltemplete.TemplateOperation
+import gabek.sm2.leveltemplate.TemplateOperation
 import gabek.sm2.physics.RBody
 import gabek.sm2.tilemap.ArrayGrid
 import gabek.sm2.tilemap.TileReference
@@ -77,5 +77,6 @@ class LevelTemplateLoader : BaseSystem() {
         }
 
         tileSystem.initPhysics()
+        world.process()
     }
 }

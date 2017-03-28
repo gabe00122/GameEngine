@@ -41,4 +41,14 @@ class ParentSystem : BaseSystem() {
             return null
         }
     }
+
+    fun <T : Component> recursiveGetEntity(mapper: ComponentMapper<T>, entity: Int): Int {
+        if (mapper.has(entity)) {
+            return entity
+        } else if (parentOfMapper.has(entity)) {
+            return recursiveGetEntity(mapper, parentOfMapper[entity].parent)
+        } else {
+            return -1
+        }
+    }
 }

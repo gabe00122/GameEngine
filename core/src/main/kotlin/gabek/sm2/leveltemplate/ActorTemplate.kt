@@ -1,4 +1,4 @@
-package gabek.sm2.leveltemplete
+package gabek.sm2.leveltemplate
 
 /**
  * @author Gabriel Keith

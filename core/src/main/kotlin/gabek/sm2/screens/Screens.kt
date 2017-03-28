@@ -1,6 +1,8 @@
 package gabek.sm2.screens
 
 import com.github.salomonbrys.kodein.Kodein
+import gabek.sm2.screens.GraphicsSettingsMenu
+import gabek.sm2.screens.SettingsMenu
 
 /**
  * @author Gabriel Keith
@@ -15,6 +17,7 @@ fun buildScreenManager(kodein: Kodein): ScreenManager {
     with(sm) {
         bind("main") { MainMenu(kodein) }
         bind("settings") { SettingsMenu(kodein) }
+        bind("settings_graphics") { GraphicsSettingsMenu(kodein) }
         bind("playing") { PlayingScreen(kodein) }
         bind("startGame") { GameSetupScreen(kodein) }
 

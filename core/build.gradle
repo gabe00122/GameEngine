@@ -20,13 +20,14 @@ dependencies {
     compile "com.github.czyzby:ktx-log:$ktxVersion"
     compile "com.github.czyzby:ktx-collections:$ktxVersion"
     compile "com.github.czyzby:ktx-actors:$ktxVersion"
-    compile "com.github.czyzby:ktx-assets:$ktxVersion"
+    //compile "com.github.czyzby:ktx-assets:$ktxVersion"
     compile "com.github.czyzby:ktx-vis:$ktxVersion"
     compile "com.github.czyzby:ktx-i18n:$ktxVersion"
 
     compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
 
-    //compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
+    compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
+    //compile "net.onedaybeard.artemis:artemis-odb-serializer-json-libgdx:$artemisOdbVersion"
     //compile "com.esotericsoftware:kryo:$kryoVersion"
 
     compile "com.github.salomonbrys.kodein:kodein:$kodeinVersion"

@@ -4,21 +4,27 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
+import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.instance
+import gabek.sm2.settings.Settings
 import gabek.sm2.systems.graphics.CameraSystem
 
 /**
  * @author Gabriel Keith
  */
-class DisplayBuffer : Widget(), Disposable {
+class RenderPipeline(kodein: Kodein) : Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
     var cameraHandle: Int = -1
+        private set
     var cameraSystem: CameraSystem? = null
+        private set
+    private var pixWidth: Int = 0
+    private var pixHeight: Int = 0
 
-    init {
-        //primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, )
-    }
+    private val uiScale = kodein.instance<Settings>().getFloatValue("ui_scale")
 
     override fun layout() {
         super.layout()
@@ -31,19 +37,23 @@ class DisplayBuffer : Widget(), Disposable {
         if (oldBuffer == null || Math.abs(oldBuffer.width - width) > 10.0 || Math.abs(oldBuffer.height - height) > 10.0) {
             primaryBuffer?.dispose()
 
-            //TODO replace me
-            val w = (width * 2).toInt()
-            val h = (height * 2).toInt()
+            val w = MathUtils.ceil(width * uiScale.value)
+            val h = MathUtils.ceil(height * uiScale.value)
 
             if (w >= 1 && h >= 1) {
                 primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, w, h, false)
                 primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
             }
+            pixWidth = w
+            pixHeight = h
+            sendRatio()
+        }
+    }
 
-            val cameraSystem = cameraSystem
-            if (cameraSystem != null && cameraHandle != -1) {
-                cameraSystem.setAspectRatio(cameraHandle, w / h.toFloat())
-            }
+    private fun sendRatio(){
+        val cameraSystem = cameraSystem
+        if (cameraSystem != null && cameraHandle != -1) {
+            cameraSystem.setAspectRatio(cameraHandle, pixWidth / pixHeight.toFloat())
         }
     }
 
@@ -69,5 +79,6 @@ class DisplayBuffer : Widget(), Disposable {
     fun setHandle(cameraHandle: Int, cameraSystem: CameraSystem) {
         this.cameraHandle = cameraHandle
         this.cameraSystem = cameraSystem
+        sendRatio()
     }
 }

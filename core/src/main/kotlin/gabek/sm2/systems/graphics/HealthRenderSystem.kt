@@ -5,6 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
@@ -53,12 +54,14 @@ class HealthRenderSystem(kodein: Kodein) : BaseEntitySystem(
             temp.x = trans.lerpX(progress) + healthDisplay.offsetX - temp.width / 2f
             temp.y = trans.lerpY(progress) + healthDisplay.offsetY - temp.height / 2f
 
+            val healthPoints = MathUtils.clamp(health.healthPoints, 0f, health.maximumHealth)
+
             if (culling.overlaps(temp)) {
                 batch.color = background
                 batch.draw(rect, temp.x, temp.y, temp.width, temp.height)
 
                 batch.color = foreground
-                batch.draw(rect, temp.x, temp.y, temp.width * (health.healthPoints / health.maximumHealth), temp.height)
+                batch.draw(rect, temp.x, temp.y, temp.width * (healthPoints / health.maximumHealth), temp.height)
 
                 batch.color = Color.WHITE
             }

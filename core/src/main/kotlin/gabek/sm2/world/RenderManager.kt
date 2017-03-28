@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.graphics.DisplayBuffer
+import gabek.sm2.graphics.RenderPipeline
 import gabek.sm2.systems.graphics.CameraSystem
 
 /**
@@ -20,7 +20,7 @@ class RenderManager(val kodein: Kodein,
     //private val shader = kodein.instance<Assets>().resourceManager.get("shaders/hex.vert", ShaderProgram::class.java)
     private val culling = Rectangle()
 
-    fun render(buffer: DisplayBuffer, batch: SpriteBatch, progress: Float) {
+    fun render(buffer: RenderPipeline, batch: SpriteBatch, progress: Float) {
         val ortho = cameraSystem.updateProjection(buffer.cameraHandle, progress)
         updateCulling(ortho)
 

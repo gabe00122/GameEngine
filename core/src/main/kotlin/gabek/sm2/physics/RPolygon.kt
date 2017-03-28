@@ -30,15 +30,18 @@ class RPolygon : RShape {
         )
     }
 
-    fun withClippedCorners(w: Float, h: Float, x: Float, y: Float, clip: Float) {
+    fun withClippedCorners(w: Float, h: Float, x: Float, y: Float, clipW: Float, clipH: Float): RPolygon {
         val hw = w / 2
         val hh = h / 2
 
         vertices = floatArrayOf(
                 -hw + x, hh + y,
-                -hw + x + clip, -hh + y,
-                hw + x - clip, -hh + y,
+                -hw + x, -hh + y + clipH,
+                -hw + x + clipW, -hh + y,
+                hw + x - clipW, -hh + y,
+                hw + x, -hh + y + clipH,
                 hw + x, hh + y
         )
+        return this
     }
 }

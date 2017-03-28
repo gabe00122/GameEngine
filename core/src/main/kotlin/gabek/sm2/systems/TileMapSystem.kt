@@ -99,7 +99,7 @@ class TileMapSystem(
     private fun checkSolid(x: Int, y: Int) = backgroundTiles.has(x, y) && definitions[backgroundTiles.get(x, y)].solid
 
     private fun RFixture.defaultSettings(x: Int, y: Int): RFixture {
-        friction = 1f
+        friction = 0.3f
         restitution = 0f
         categoryBits = filter(WALL)
         return this

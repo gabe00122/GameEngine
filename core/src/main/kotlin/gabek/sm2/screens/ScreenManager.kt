@@ -10,7 +10,9 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisLabel
+import gabek.sm2.settings.Settings
 
 /**
  * @author Gabriel Keith
@@ -28,8 +30,14 @@ class ScreenManager(val kodein: Kodein) : Disposable {
     private val fpsLabel: VisLabel = VisLabel("", Color.RED)
 
     init {
+        val uiScale = kodein.instance<Settings>().getFloatValue("ui_scale")
+
         val viewport = ScreenViewport()
-        viewport.unitsPerPixel = 0.5f
+        viewport.unitsPerPixel = 1f / uiScale.value
+        uiScale.onChange { _, newValue ->
+            viewport.unitsPerPixel = 1f / newValue
+            viewport.update(Gdx.graphics.width, Gdx.graphics.height, true)
+        }
 
         stage = Stage(viewport, batch)
 

@@ -11,10 +11,14 @@ class MovementGroundContactCom : PooledComponent() {
     val contacts = mutableListOf<GroundContact>()
     val onGround get() = contacts.size > 0
     var platformIndex: Int = -1
+    var platformMinAngle = 180f
+    var platformMaxAngle = 360f
 
     override fun reset() {
         contacts.clear()
         platformIndex = -1
+        platformMinAngle = 180f
+        platformMaxAngle = 360f
     }
 
     fun indexOf(fixture: RFixture): Int =
@@ -22,6 +26,10 @@ class MovementGroundContactCom : PooledComponent() {
 
     fun get(fixture: RFixture): GroundContact? {
         return contacts.firstOrNull { it.fixture === fixture }
+    }
+
+    fun getOrCreate(fixture: RFixture): GroundContact{
+        return get(fixture) ?: add(fixture)
     }
 
     fun add(fixture: RFixture): GroundContact {
@@ -48,5 +56,6 @@ class MovementGroundContactCom : PooledComponent() {
     class GroundContact(val fixture: RFixture){
         var numberOfPoints: Int = 0
         val points = Array(2, { Vector2() })
+        val normal = Vector2()
     }
 }

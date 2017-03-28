@@ -1,21 +1,19 @@
 package gabek.sm2.factory
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.ParentOfCom
 import gabek.sm2.components.PlayerInputCom
 import gabek.sm2.components.TranslationCom
 import gabek.sm2.components.character.*
 import gabek.sm2.components.graphics.AnimationCom
 import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.physics.RCircle
 import gabek.sm2.physics.RPolygon
 import gabek.sm2.world.CHARACTER
 import gabek.sm2.world.filter
-import gabek.sm2.world.getMapper
 
 /**
  * @author Gabriel Keith
@@ -24,9 +22,6 @@ import gabek.sm2.world.getMapper
 
 fun playerFactory() = factory { kodein, world ->
     val assets: Assets = kodein.instance()
-
-    val bodyMapper = world.getMapper<BodyCom>()
-    val parentMapper = world.getMapper<ParentOfCom>()
 
     val width = 0.5f
     val height = 1f
@@ -48,18 +43,19 @@ fun playerFactory() = factory { kodein, world ->
 
     com<TranslationCom>()
     com<BodyCom> {
-        val platformShape = RPolygon()
-        platformShape.withClippedCorners(width, width / 2, 0f, -bodyHeight / 2 - width / 4, width / 4)
+        //val bodyShape = RPolygon()
+        //bodyShape.setAsBox(width, bodyHeight, 0f, 0f)
+        //body.addFixture(bodyShape, density = 1f, categoryBits = filter(CHARACTER))
+        val platformShape = RPolygon().withClippedCorners(width, height, 0f, 0f, width / 4, 0.25f)
         body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
 
-        body.addFixture(RPolygon(width, bodyHeight), density = 1f, categoryBits = filter(CHARACTER))
         body.bodyType = BodyDef.BodyType.DynamicBody
         body.isFixedRotation = true
     }
 
     com<SpriteCom> {
-        setSize(width, height)
-        offsetY = -width / 4f
+        setSize(width + 0.025f, height + 0.025f)
+        //offsetY = -width / 4f
     }
 
     com<AnimationCom>()

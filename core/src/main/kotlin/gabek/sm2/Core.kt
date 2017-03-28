@@ -16,27 +16,27 @@ import gabek.sm2.assets.Assets
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
-import gabek.sm2.world.RenderManager
-import gabek.sm2.world.WorldConfig
-import gabek.sm2.world.buildRenderManager
-import gabek.sm2.world.buildWorld
+import gabek.sm2.settings.Settings
+import gabek.sm2.world.*
 
 /**
  * @author Gabriel Keith
  */
 
-class Core : ApplicationAdapter() {
+class Core(val settings: Settings) : ApplicationAdapter() {
+    lateinit var kodein: Kodein
     lateinit var screenManager: ScreenManager
 
     override fun create() {
-        ShaderProgram.prependFragmentCode = "#version 150\n" //ugggggggg took me hours to figure this out
-        ShaderProgram.prependVertexCode = "#version 150\n" //The implicit version numbers where not supported by my gfx card context.
+        ShaderProgram.prependFragmentCode = "#version 150\n"
+        ShaderProgram.prependVertexCode = "#version 150\n"
 
         VisUI.load("assets/ui/skin.json")
         Box2D.init()
 
-        val kodein = Kodein{
+        kodein = Kodein{
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
+            bind<Settings>() with singleton { settings }
             bind<Assets>() with singleton { Assets("assets/manifest.json") }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton { buildWorld(this) }
@@ -49,10 +49,24 @@ class Core : ApplicationAdapter() {
 
         screenManager = kodein.instance()
         Gdx.input.inputProcessor = InputMultiplexer(kodein.instance<PlayerInputManager>().inputProcessor, screenManager.inputProcessor)
+
+        quickLaunch()
+    }
+
+
+    fun quickLaunch(){
+        val screenManager: ScreenManager = kodein.instance()
+        val worldConfig: WorldConfig = kodein.instance()
+        val inputManager: PlayerInputManager = kodein.instance()
+
+        worldConfig.players.add(PlayerInfo(0, inputManager.getPlayerInput(0)))
+
+        screenManager.show("playing")
     }
 
     override fun dispose() {
         screenManager.dispose()
+        settings.save()
     }
 
     override fun render() {

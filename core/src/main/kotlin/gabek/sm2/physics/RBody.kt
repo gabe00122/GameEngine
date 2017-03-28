@@ -1,6 +1,7 @@
 package gabek.sm2.physics
 
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
@@ -200,6 +201,10 @@ class RBody {
         for (fixture in _fixutres) {
             fixture.callbackList.add(callback)
         }
+    }
+
+    fun getLocalVector(worldVector: Vector2): Vector2{
+        return body!!.getLocalVector(worldVector)
     }
 
     fun addFixture(fixture: RFixture) {

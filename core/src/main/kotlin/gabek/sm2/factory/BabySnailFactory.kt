@@ -11,6 +11,8 @@ import gabek.sm2.components.character.*
 import gabek.sm2.components.graphics.AnimationCom
 import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.physics.RPolygon
+import gabek.sm2.world.CHARACTER
+import gabek.sm2.world.filter
 
 /**
  * @author Gabriel Keith
@@ -27,8 +29,8 @@ fun babySnailFactory() = factory { kodein, world ->
 
     com<TranslationCom>()
     com<SpriteCom> {
-        this.width = width
-        this.height = height
+        this.width = width + 0.025f
+        this.height = height + 0.025f
     }
     com<AnimationCom>()
 
@@ -53,11 +55,8 @@ fun babySnailFactory() = factory { kodein, world ->
 
     com<BodyCom> {
         body.bodyType = BodyDef.BodyType.DynamicBody
-        val platform = RPolygon()
-        platform.withClippedCorners(width, height * (1f / 4f), 0f, -height * (3f / 8f), 0.1f)
-
-        body.addFixture(platform, 1f, 0.2f, 0.1f)
-        body.addFixture(RPolygon(width, height * (3f / 4f), 0f, height * (1f / 8f)), 1f, 1f, 0.1f)
+        val platform = RPolygon().withClippedCorners(width, height, 0f, 0f, 0.1f, height / 4f)
+        body.addFixture(platform, 1f, 0.75f, 0f, false, filter(CHARACTER))
         //body.isFixedRotation = true
     }
     com<BiDirectionCom>()
