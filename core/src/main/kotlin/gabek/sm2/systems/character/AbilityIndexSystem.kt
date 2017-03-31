@@ -53,7 +53,7 @@ class AbilityIndexSystem : BaseEntitySystem(Aspect.all(
             if (control.primary && abilityIndex.moveTimeout <= 0f) {
                 abilityIndex.moveTimeout += 0.1f
 
-
+                factoryManager.create("pellet")
             }
         }
     }

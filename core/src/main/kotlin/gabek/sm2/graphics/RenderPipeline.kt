@@ -24,7 +24,7 @@ class RenderPipeline(kodein: Kodein) : Widget(), Disposable {
     private var pixWidth: Int = 0
     private var pixHeight: Int = 0
 
-    private val uiScale = kodein.instance<Settings>().getFloatValue("ui_scale")
+    private val uiScale = kodein.instance<Settings>().getFloat("ui_scale")
 
     override fun layout() {
         super.layout()

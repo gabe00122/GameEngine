@@ -16,7 +16,7 @@ import gabek.sm2.input.Actions
 import gabek.sm2.systems.FactoryManager
 import gabek.sm2.systems.LevelTemplateLoader
 import gabek.sm2.systems.PlayerInputSystem
-import gabek.sm2.systems.character.PlayerManager
+import gabek.sm2.systems.gamemodes.GameModeManager
 import gabek.sm2.systems.graphics.CameraTrackingSystem
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.*
@@ -88,7 +88,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     private fun launchLevel(){
         val loader: LevelTemplateLoader = world.getSystem()
         val factoryManager: FactoryManager = world.getSystem()
-        val playerManager: PlayerManager = world.getSystem()
+        val gameModeManager: GameModeManager = world.getSystem()
         val cameraTrackingSystem: CameraTrackingSystem = world.getSystem()
         val playerInputSystem: PlayerInputSystem = world.getSystem()
 
@@ -97,13 +97,13 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
         val json = JsonReader().parse(Gdx.files.getFileHandle("assets/level_templates/primer.json", Files.FileType.Internal))
         loader.loadLevel(json, worldConfig)
 
-        val player = playerManager.getPlayerList()[0]
+        val player = gameModeManager.playerList[0]
         playerInputSystem.setInput(player, worldConfig.players[0].input)
 
         val cameraHandle = factoryManager.create("camera")
         cameraTrackingSystem.addTarget(cameraHandle, player)
 
-        playerManager.onAllPlayersDead {
+        gameModeManager.onGameOver {
             isGameOver = true
         }
 

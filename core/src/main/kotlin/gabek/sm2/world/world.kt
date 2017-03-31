@@ -22,6 +22,7 @@ import gabek.sm2.physics.RPolygon
 import gabek.sm2.systems.*
 import gabek.sm2.systems.brains.WanderingBrainSystem
 import gabek.sm2.systems.character.*
+import gabek.sm2.systems.gamemodes.GameModeManager
 import gabek.sm2.systems.graphics.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem
@@ -39,7 +40,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(TagManager())
     config.setSystem(GroupManager())
     config.setSystem(WorldSerializationManager())
-    //config.setSystem(PlayerManager())
+    //config.setSystem(GameModeManager())
     //config.setSystem(TeamManager())
     config.setSystem(FactoryManager.build(kodein, ::factoryBindings))
     config.setSystem(LevelTemplateLoader())
@@ -62,7 +63,7 @@ fun buildWorld(kodein: Kodein): World {
 
     //movement
     config.setSystem(PlayerInputSystem())
-    config.setSystem(PlayerManager())
+    config.setSystem(GameModeManager())
     config.setSystem(CharacterControllerSystem())
     //config.setSystem(AbilityIndexSystem())
     config.setSystem(BiDirectionSystem())

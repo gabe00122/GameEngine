@@ -14,21 +14,35 @@ class Settings{
 
     constructor(pref: String){
         preferences = Gdx.app.getPreferences(pref)
-        initilize()
+        initialize()
     }
 
     constructor(pref: Preferences){
         preferences = pref
-        initilize()
+        initialize()
     }
 
-    private fun initilize(){
+    private fun initialize(){
+        values.put("fullscreen", BooleanSettingsValue(false))
+        values.put("resolution", StringSettingsValue("800x800"))
+
         values.put("ui_scale", FloatSettingValue(2.0f))
+
+        values.put("music_level", FloatSettingValue(1.0f))
+        values.put("effect_level", FloatSettingValue(1.0f))
         load()
     }
 
-    fun getFloatValue(name: String): FloatSettingValue{
+    fun getFloat(name: String): FloatSettingValue{
         return values[name] as FloatSettingValue
+    }
+
+    fun getBoolean(name: String): BooleanSettingsValue {
+        return values[name] as BooleanSettingsValue
+    }
+
+    fun getString(name: String): StringSettingsValue {
+        return values[name] as StringSettingsValue
     }
 
     fun load(){

@@ -50,7 +50,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
         screenManager = kodein.instance()
         Gdx.input.inputProcessor = InputMultiplexer(kodein.instance<PlayerInputManager>().inputProcessor, screenManager.inputProcessor)
 
-        quickLaunch()
+        //quickLaunch()
     }
 
 

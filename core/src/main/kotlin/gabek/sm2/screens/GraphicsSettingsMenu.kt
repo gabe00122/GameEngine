@@ -1,15 +1,19 @@
 package gabek.sm2.screens
 
-import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.scenes.scene2d.ui.Container
+import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import com.kotcrab.vis.ui.widget.*
-import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.screens.Screen
+import com.kotcrab.vis.ui.widget.VisCheckBox
+import com.kotcrab.vis.ui.widget.VisSelectBox
+import com.kotcrab.vis.ui.widget.VisTextButton
+import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.settings.Settings
-import gabek.sm2.ui.MenuControl
 import ktx.actors.onChange
+import ktx.collections.toGdxArray
 
 /**
 * @author Gabriel Keith
@@ -18,46 +22,104 @@ import ktx.actors.onChange
 class GraphicsSettingsMenu(kodein: Kodein): Screen(){
     init{
         val setting: Settings = kodein.instance()
-        val uiScale = setting.getFloatValue("ui_scale")
+        val resolution = setting.getString("resolution")
+        val fullscreen = setting.getBoolean("fullscreen")
 
-        val uiScaleX1 = VisTextButton("UI Size 1")
-        uiScaleX1.onChange { _, _ ->
-            uiScale.value = 1.75f
+        val uiScale = setting.getFloat("ui_scale")
+
+        val displayModes = Gdx.graphics.displayModes
+
+        val resolutionChoiceBox = VisSelectBox<String>()
+        resolutionChoiceBox.items = displayList
+        resolutionChoiceBox.selected = resolution.value
+        resolutionChoiceBox.onChange { _, _ ->
+            resolution.value = resolutionChoiceBox.selected
+            if(fullscreen.value){
+                Gdx.graphics.setFullscreenMode(getDisplayMode(resolution.value))
+            }
         }
 
-        val uiScaleX2 = VisTextButton("UI Size 2")
-        uiScaleX2.onChange { _, _ ->
-            uiScale.value = 2.25f
+        val fullscreenCheckBox = VisCheckBox("")
+        fullscreenCheckBox.isChecked = fullscreen.value
+        fullscreenCheckBox.onChange { _, _ ->
+            fullscreen.value = fullscreenCheckBox.isChecked
+            if(fullscreen.value){
+                Gdx.graphics.setFullscreenMode(getDisplayMode(resolution.value))
+                Gdx.graphics.setVSync(true)
+            } else {
+                Gdx.graphics.setWindowedMode(600, 600)
+                Gdx.graphics.setVSync(true)
+            }
         }
 
-        val uiScaleX3 = VisTextButton("UI Size 3")
-        uiScaleX3.onChange { _, _ ->
-            uiScale.value = 3.0f
+        val uiScaleChoiceBox = VisSelectBox<UiScale>()
+        uiScaleChoiceBox.setItems(UiScale.SCALE1, UiScale.SCALE2, UiScale.SCALE3, UiScale.SCALE4)
+        uiScaleChoiceBox.selected = closestValue(uiScale.value)
+
+        uiScaleChoiceBox.onChange { _, _ ->
+            uiScale.value = uiScaleChoiceBox.selected.factor
         }
 
-        val uiScaleX4 = VisTextButton("UI Size 4")
-        uiScaleX4.onChange { _, _ ->
-            uiScale.value = 4.0f
-        }
-
-        val choiceBox = VisSelectBox<String>()
-        choiceBox.setItems("One", "Two", "Three")
 
         val back = VisTextButton("Back")
         back.onChange { _, _ ->
             manager.show("settings")
         }
 
-        val menuControl = MenuControl(uiScaleX1, uiScaleX2, uiScaleX3, uiScaleX4, back)
-        menuControl.playerInput = kodein.instance<PlayerInputManager>()
 
         val window = VisWindow("Graphics")
         window.isMovable = false
-        window.add(choiceBox).row()
-        window.add(menuControl)
+        val whole = 5f
+        val half = 2.5f
+        with(window){
+            add("Resolution: ").pad(whole, whole, half, half)
+            add(resolutionChoiceBox).pad(whole, half, half, whole).align(Align.left)
+            row()
+
+            add("Fullscreen: ").pad(half, whole, half, half)
+            add(fullscreenCheckBox).pad(half, half, half, whole).align(Align.left)
+            row()
+
+            add("Ui Scale: ").pad(half, whole, half, half)
+            add(uiScaleChoiceBox).pad(half, half, half, whole).align(Align.left)
+            row()
+
+            add(back).pad(half, whole, whole, whole).colspan(2)
+        }
+
 
         val container = Container(window)
         container.setFillParent(true)
         root.addActor(container)
+    }
+
+    private fun closestValue(factor: Float): UiScale{
+        return UiScale.values().firstOrNull { factor == it.factor } ?: UiScale.SCALE1
+    }
+
+    private fun getDisplayMode(name: String): Graphics.DisplayMode{
+        val split = name.split("x")
+        val width = split[0].toInt()
+        val height = split[1].toInt()
+
+        return Gdx.graphics.displayModes
+                .filter { it.refreshRate == 60 }
+                .firstOrNull { it.width == width && it.height == height }
+                ?: Gdx.graphics.displayModes[0]
+    }
+
+    private val displayList: Array<String> get() {
+        return Gdx.graphics.displayModes
+                .filter { it.refreshRate == 60 }
+                .map { "${it.width}x${it.height}" }
+                .toGdxArray()
+    }
+
+    enum class UiScale(val text: String, val factor: Float){
+        SCALE1("Size 1", 1f), SCALE2("Size 2", 2f),  SCALE3("Size 3", 3f), SCALE4("Size 4", 4f);
+
+        override fun toString(): String {
+            return text
+        }
     }
 }

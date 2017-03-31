@@ -18,6 +18,8 @@ fun buildScreenManager(kodein: Kodein): ScreenManager {
         bind("main") { MainMenu(kodein) }
         bind("settings") { SettingsMenu(kodein) }
         bind("settings_graphics") { GraphicsSettingsMenu(kodein) }
+        bind("settings_sound") { SoundSettingsMenu(kodein) }
+        bind("settings_controller") { ControllerSettingsMenus(kodein) }
         bind("playing") { PlayingScreen(kodein) }
         bind("startGame") { GameSetupScreen(kodein) }
 

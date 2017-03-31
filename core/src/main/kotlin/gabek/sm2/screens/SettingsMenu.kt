@@ -20,12 +20,22 @@ class SettingsMenu(kodein: Kodein): Screen() {
             manager.show("settings_graphics")
         }
 
+        val sound = VisTextButton("Sound")
+        sound.onChange{ _, _ ->
+            manager.show("settings_sound")
+        }
+
+        val controller = VisTextButton("Controllers")
+        controller.onChange { _, _ ->
+            manager.show("settings_controller")
+        }
+
         val backBut = VisTextButton("Back")
         backBut.onChange { _, _ ->
             manager.show("main")
         }
 
-        val menuControl = MenuControl(graphics, backBut)
+        val menuControl = MenuControl(graphics, sound, controller, backBut)
         menuControl.playerInput = kodein.instance<PlayerInputManager>()
 
         val window = VisWindow("Settings")

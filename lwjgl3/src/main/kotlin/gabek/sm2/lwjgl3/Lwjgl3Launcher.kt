@@ -1,10 +1,9 @@
 package gabek.sm2.lwjgl3
 
 import com.badlogic.gdx.Files
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3FileHandle
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Preferences
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Graphics
+import com.badlogic.gdx.backends.lwjgl3.*
 import gabek.sm2.Core
 import gabek.sm2.settings.Settings
 import java.io.File
@@ -19,10 +18,20 @@ fun main(args: Array<String>){
     //config.height = 800
 
     //LwjglApplication(Core(), config)
-    val settings = Settings(Lwjgl3Preferences(Lwjgl3FileHandle("./settings.pref", Files.FileType.External)))
+    val settings = Settings(Lwjgl3Preferences(Lwjgl3FileHandle("spacemonk2.pref", Files.FileType.External)))
     Lwjgl3Application(Core(settings), getDefaultConfig(settings))
 }
 
+fun getDisplayMode(name: String): Graphics.DisplayMode{
+    val split = name.split("x")
+    val width = split[0].toInt()
+    val height = split[1].toInt()
+
+    return Lwjgl3ApplicationConfiguration.getDisplayModes()
+            .filter { it.refreshRate == 60 }
+            .firstOrNull { it.width == width && it.height == height }
+            ?: Gdx.graphics.displayModes[0]
+}
 
 fun getDefaultConfig(settings: Settings): Lwjgl3ApplicationConfiguration{
     val config = Lwjgl3ApplicationConfiguration()
@@ -30,7 +39,13 @@ fun getDefaultConfig(settings: Settings): Lwjgl3ApplicationConfiguration{
     config.enableGLDebugOutput(true, System.err)
 
     config.setTitle("SpaceMonk2")
-    config.setWindowedMode(600, 600)
+
+    if(settings.getBoolean("fullscreen").value) {
+        config.setFullscreenMode(getDisplayMode(settings.getString("resolution").value))
+    } else {
+        config.setWindowedMode(600, 600)
+    }
+
     //config.useVsync(false)
     //config.setIdleFPS()
 
