@@ -103,8 +103,8 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
                 cameraSystem = getSystem(),
                 batchSystems = listOf(
                         getSystem<TileRenderSystem>(),
-                        getSystem<SpriteRenderSystem>(),
-                        getSystem<HealthRenderSystem>()
+                        getSystem<SpriteRenderSystem>()
+                        //getSystem<HealthRenderSystem>()
                 ),
                 orthoSystems = listOf(
                         //getSystem<Box2dDebugSystem>()
