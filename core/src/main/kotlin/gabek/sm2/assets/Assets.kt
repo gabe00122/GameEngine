@@ -2,8 +2,10 @@ package gabek.sm2.assets
 
 import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.assets.loaders.MusicLoader
 import com.badlogic.gdx.assets.loaders.ShaderProgramLoader
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
@@ -23,6 +25,8 @@ class Assets() : Disposable {
 
     private val shaderMap = mutableMapOf<String, ShaderProgram>()
     private val animationMap = mutableMapOf<String, AnimationDef>()
+
+    private val musicMap = mutableMapOf<String, Music>()
 
     constructor(jsonFile: String, configOnly: Boolean = true) : this() {
         initLoaders()
@@ -72,6 +76,16 @@ class Assets() : Disposable {
         }
 
         resourceManager.load(shaderName, ShaderProgram::class.java, parameter)
+    }
+
+    fun addMusic(musicName: String, fileName: String) {
+        val parameter = MusicLoader.MusicParameter()
+        parameter.loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
+            val music = assetManager.get(fileName, Music::class.java)
+            musicMap.put(musicName, music)
+        }
+
+        resourceManager.load(fileName, Music::class.java, parameter)
     }
 
     fun addAnimationPack(packName: String, file: String) {
@@ -128,6 +142,10 @@ class Assets() : Disposable {
 
     fun retrieveAnimationDef(lookup: String): AnimationDef {
         return animationMap[lookup]!!
+    }
+
+    fun retrieveMusic(lookup: String): Music{
+        return musicMap[lookup]!!
     }
 
     override fun dispose() {

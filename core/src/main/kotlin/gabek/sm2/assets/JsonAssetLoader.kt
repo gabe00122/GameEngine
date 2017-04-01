@@ -16,6 +16,8 @@ class JsonAssetLoader(val handle: FileHandle) {
         private const val SHADER_FRAG_LABEL = "frag"
 
         private const val ANIMATION_LABEL = "animations"
+
+        private const val MUSIC_LABLE = "music"
     }
 
     private val rootDir = handle.parent()
@@ -27,6 +29,7 @@ class JsonAssetLoader(val handle: FileHandle) {
         configTexturePacks(assets, json)
         configShaders(assets, json)
         configAnimations(assets, json)
+        configMusic(assets, json)
     }
 
     private fun withRoot(path: String) = rootDir.child(path).path()
@@ -61,6 +64,14 @@ class JsonAssetLoader(val handle: FileHandle) {
 
         for (animFile in root.JsonIterator()) {
             assets.addAnimationPack(animFile.name, withRoot(animFile.asString()))
+        }
+    }
+
+    private fun configMusic(assets: Assets, json: JsonValue){
+        val root = json.get(MUSIC_LABLE)
+
+        for(music in root.JsonIterator()){
+            assets.addMusic(music.name, withRoot(music.asString()))
         }
     }
 }

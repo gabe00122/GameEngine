@@ -13,6 +13,7 @@ import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
 import gabek.sm2.assets.Assets
+import gabek.sm2.audio.MusicPlayer
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
@@ -38,6 +39,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
             bind<Settings>() with singleton { settings }
             bind<Assets>() with singleton { Assets("assets/manifest.json") }
+            bind<MusicPlayer>() with singleton { MusicPlayer(kodein) }
             bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
             bind<World>() with singleton { buildWorld(this) }
             bind<WorldConfig>() with singleton { WorldConfig() }
@@ -46,11 +48,12 @@ class Core(val settings: Settings) : ApplicationAdapter() {
         }
 
         kodein.instance<Assets>().finish()
+        kodein.instance<MusicPlayer>().playSong("mixdown")
 
         screenManager = kodein.instance()
         Gdx.input.inputProcessor = InputMultiplexer(kodein.instance<PlayerInputManager>().inputProcessor, screenManager.inputProcessor)
 
-        //quickLaunch()
+        quickLaunch()
     }
 
 
@@ -61,7 +64,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
 
         worldConfig.players.add(PlayerInfo(0, inputManager.getPlayerInput(0)))
 
-        screenManager.show("playing")
+        //screenManager.show("playing")
     }
 
     override fun dispose() {

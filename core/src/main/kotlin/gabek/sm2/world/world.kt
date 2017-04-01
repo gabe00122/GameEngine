@@ -11,10 +11,8 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.factory.babySnailFactory
-import gabek.sm2.factory.cameraFactory
-import gabek.sm2.factory.junkFactory
-import gabek.sm2.factory.playerFactory
+import gabek.sm2.factory.*
+import gabek.sm2.factory.enviroment.spinnerFactory
 import gabek.sm2.kryo.kryoSetup
 import gabek.sm2.physics.RCollisionAdapter
 import gabek.sm2.physics.RFixture
@@ -24,8 +22,10 @@ import gabek.sm2.systems.brains.WanderingBrainSystem
 import gabek.sm2.systems.character.*
 import gabek.sm2.systems.gamemodes.GameModeManager
 import gabek.sm2.systems.graphics.*
+import gabek.sm2.systems.pellet.BleedingSystem
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem
+import gabek.sm2.systems.pellet.PelletMovmentSystem
 import gabek.sm2.tilemap.TileDefinitions
 import gabek.sm2.tilemap.TileType
 
@@ -50,13 +50,16 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(TranslationSystem())
     //box2d
     config.setSystem(Box2dSystem())
+    config.setSystem(StaticJointSystem())
     config.setSystem(ParentSystem())
     config.setSystem(ParentBodyTackingSystem())
 
     //config.setSystem(WorldBoundsSystem())
     config.setSystem(DamageManager())
+    //config.setSystem(BleedingSystem())
     config.setSystem(PelletLifeSpanSystem())
     config.setSystem(PelletCollisionSystem())
+    config.setSystem(PelletMovmentSystem())
 
     //brains
     config.setSystem(WanderingBrainSystem())
@@ -80,7 +83,7 @@ fun buildWorld(kodein: Kodein): World {
 
     config.setSystem(TileRenderSystem())
     config.setSystem(SpriteRenderSystem(kodein))
-    config.setSystem(HealthRenderSystem(kodein))
+    //config.setSystem(HealthRenderSystem(kodein))
 
     config.setSystem(Box2dDebugSystem())
 
@@ -104,17 +107,22 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
                         getSystem<HealthRenderSystem>()
                 ),
                 orthoSystems = listOf(
-                        getSystem<Box2dDebugSystem>()
+                        //getSystem<Box2dDebugSystem>()
                 )
         )
     }
 }
 
 fun factoryBindings(builder: FactoryManager.Builder) = with(builder) {
-        bind("camera", cameraFactory())
-        bind("player", playerFactory())
-        bind("junk", junkFactory())
-        bind("babySnail", babySnailFactory())
+    bind("camera", cameraFactory())
+    bind("player", playerFactory())
+    bind("acid_monk", acidMonkFactory())
+    bind("junk", junkFactory())
+    bind("babySnail", babySnailFactory())
+
+    bind("spinner", spinnerFactory())
+
+    bind("blood", bloodDroplets())
 }
 
 fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein){

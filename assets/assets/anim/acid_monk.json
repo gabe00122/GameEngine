@@ -1,0 +1,7 @@
+{
+  "still": {
+    "strategy": "PINGPONG",
+    "frames": "actors:acid_monk_still:*",
+    "delay": 0.15
+  }
+}

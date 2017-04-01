@@ -17,14 +17,13 @@ import gabek.sm2.world.category
 fun junkFactory() = factory { kodein, world ->
     val texture = kodein.instance<Assets>().findTexture("actors:junk")
 
-    val width = 1f
-    val height = 1f
+    val width = 0.75f
+    val height = 0.75f
 
     com<TranslationCom>()
     com<SpriteCom> {
         this.textureRef = texture
-        this.width = width
-        this.height = height
+        setSize(width + 0.025f, height + 0.025f)
     }
 
     com<BodyCom> {

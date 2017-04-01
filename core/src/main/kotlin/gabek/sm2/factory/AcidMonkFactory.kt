@@ -1,6 +1,5 @@
 package gabek.sm2.factory
 
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
@@ -17,19 +16,20 @@ import gabek.sm2.world.filter
 
 /**
  * @author Gabriel Keith
+ * @date 4/1/2017
  */
 
 
-fun playerFactory() = factory { kodein, world ->
+fun acidMonkFactory() = factory { kodein, world ->
     val assets: Assets = kodein.instance()
 
     val width = 0.5f
     val height = 1f
     val bodyHeight = height - width / 2f
 
-    val runningAnim = assets.retrieveAnimationDef("fred:running")
-    val stillAnim = assets.retrieveAnimationDef("fred:still")
-    val jumpingAnim = assets.retrieveAnimationDef("fred:jumping")
+    //val runningAnim = assets.retrieveAnimationDef("fred:running")
+    val stillAnim = assets.retrieveAnimationDef("acid_monk:still")
+    //val jumpingAnim = assets.retrieveAnimationDef("fred:jumping")
 
     //val legFactory = factory { kodein, world ->
     //    com<ParentOfCom> { diesWithParent = true }
@@ -59,24 +59,12 @@ fun playerFactory() = factory { kodein, world ->
     }
 
     com<AnimationCom>()
-    com<PlayerInputCom>()
     com<CharacterControllerCom>()
     com<BiDirectionCom>()
     com<CharacterMovementStateCom>()
     com<MovementGroundContactCom>{
         platformIndex = 0
     }
-    //com<MovementPhysicsWheelCom> { entity ->
-    //    wheelRef = legFactory.create()
-    //    parentMapper[wheelRef].parent = entity
-
-    //    motor.isMoterEnabled = true
-    //    motor.maxTorque = 5f
-    //    motor.anchorAY = -bodyHeight / 2
-
-    //    motor.bodyA = bodyMapper[entity].body
-    //    motor.bodyB = bodyMapper[wheelRef].body
-    //}
 
     com<MovementDefinitionCom> {
         airSpeed = 3f
@@ -92,8 +80,6 @@ fun playerFactory() = factory { kodein, world ->
     }
 
     com<CharacterAnimatorCom> {
-        runningAnimationDef = runningAnim
-        jumpingAnimationDef = jumpingAnim
         stillAnimationDef = stillAnim
     }
 
@@ -105,4 +91,5 @@ fun playerFactory() = factory { kodein, world ->
     com<HealthDisplayCom> {
         offsetY = height * 0.75f
     }
+
 }

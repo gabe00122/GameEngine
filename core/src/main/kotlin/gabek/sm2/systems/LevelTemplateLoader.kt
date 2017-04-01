@@ -26,7 +26,7 @@ class LevelTemplateLoader : BaseSystem() {
             val translationSystem = world.getSystem<TranslationSystem>()
 
             override fun preform(entity: Int, json: JsonValue) {
-                translationSystem.teleport(entity, json.getFloat("x"), json.getFloat("y"), 0f)
+                translationSystem.teleport(entity, json.getFloat("x") * 0.75f, json.getFloat("y") * 0.75f, 0f)
             }
         })
     }

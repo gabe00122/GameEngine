@@ -12,8 +12,10 @@ import gabek.sm2.components.character.*
 import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
 import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
 import gabek.sm2.components.character.CharacterMovementStateCom.State.*
+import gabek.sm2.factory.EntityFactory
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
+import gabek.sm2.systems.FactoryManager
 import gabek.sm2.systems.ParentSystem
 import gabek.sm2.systems.TimeManager
 import gabek.sm2.systems.TranslationSystem
@@ -41,6 +43,9 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var damageManager: DamageManager
     private lateinit var timeManager: TimeManager
     private lateinit var biDirectionSystem: BiDirectionSystem
+
+    private lateinit var factoryManager: FactoryManager
+    private lateinit var bloodFactory: EntityFactory
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
         //println("${movementStateMapper[entity].state} $state ${timeManager.currentFrame}")
@@ -76,6 +81,8 @@ class CharacterControllerSystem : BaseEntitySystem(
             }
         }
 
+        bloodFactory = factoryManager.getFactory("blood")
+
         val transmuter = EntityTransmuterFactory(world)
                 .remove(CharacterControllerCom::class.java)
                 .remove(PlayerInputCom::class.java)
@@ -87,7 +94,12 @@ class CharacterControllerSystem : BaseEntitySystem(
                 val body = bodyMapper[entity].body
 
                 body.isFixedRotation = false
+                body.angularVelocity = 10f
                 body.fixutres[0].callbackList.clear()
+
+                for(i in 0 until 25){
+                    bloodFactory.create(body.x, body.y)
+                }
             }
         }
         //addTransitionListener(RUNNING, ON_GROUND)
