@@ -17,66 +17,77 @@ class LevelTemplateLoader : BaseSystem() {
     private lateinit var factoryManager: FactoryManager
     private lateinit var tileSystem: TileMapSystem
     private lateinit var box2dSystem: Box2dSystem
+    private lateinit var transSystem: TranslationSystem
     private var operation = HashMap<String, TemplateOperation>()
 
     override fun initialize() {
         super.initialize()
 
-        operation.put("pos", object: TemplateOperation{
-            val translationSystem = world.getSystem<TranslationSystem>()
 
-            override fun preform(entity: Int, json: JsonValue) {
-                translationSystem.teleport(entity, json.getFloat("x") * 0.75f, json.getFloat("y") * 0.75f, 0f)
-            }
-        })
     }
 
 
     override fun processSystem() {}
 
-    fun loadLevel(jsonValue: JsonValue, worldConfig: WorldConfig) {
+    fun loadLevel(root: JsonValue, worldConfig: WorldConfig) {
         world.clear()
 
-        for(actor in jsonValue.get("actors")){
-            val entity = factoryManager.create(actor.getString("type"))
-            for(fields in actor.JsonIterator()){
-                operation[fields.name]?.preform(entity, fields)
-            }
-        }
+
+        val layers = root.get("layers")
+
+        val width = root.getInt("width")
+        val height = root.getInt("height")
+        val tileWidth = root.getInt("tileWidth")
+        val tileHeight = root.getInt("tileHeight")
 
         val definitions = tileSystem.definitions
-        
-        val symbolToId = mutableMapOf<String, Array<Int>>()
 
-        val tileMapJson = jsonValue.get("tilemap")
-        for(def in tileMapJson.get("def").JsonIterator()){
-            symbolToId.put(def.name, arrayOf(
-                    definitions.getIdByName(def.get(0).asString()),
-                    definitions.getIdByName(def.get(1).asString())
-                    ))
+        val tileset = root
+                .get("tilesets")
+                .JsonIterator().first { it.getString("name") == "tiles" }
+
+        val defLookup = IntArray(tileset.getInt("tilecount"))
+        for(prop in tileset.get("tileproperties").JsonIterator()){
+            defLookup[prop.name.toInt()] = definitions.getIdByName(prop.getString("type"))
         }
 
-        val tiles = tileMapJson.get("tiles").asStringArray()
-        val width = tiles[0].length
-        val height = tiles.size
+        val background = layers
+                .JsonIterator()
+                .first { it.getString("name") == "background" }
 
         tileSystem.store()
-        tileSystem.body = RBody()
-
         tileSystem.resize(width, height)
 
-        for(y in 0 until height){
-            for(x in 0 until width){
+        var i = 0
+        for(tile in background.get("data").JsonIterator()){
+            val x = i.rem(width)
+            val y = height - i / width
+            i++
+            val tileData = tile.asInt()
+
+            if(tileData > 0) {
                 tileSystem.setTile(x, y,
                         TileMapSystem.Layer.BACKGROUND,
-                        TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![0]))
-                tileSystem.setTile(x, y,
-                        TileMapSystem.Layer.FOREGROUND,
-                        TileReference(symbolToId[tiles[height-y - 1].elementAt(x).toString()]!![1]))
+                        TileReference(defLookup[tileData - 1]))
             }
         }
 
         tileSystem.initPhysics()
+
+
+        val objects = layers
+                .JsonIterator()
+                .first { it.getString("name") == "objects" }
+                .get("objects")
+
+        for(obj in objects.JsonIterator()){
+            val id = factoryManager.create(obj.getString("type"))
+            transSystem.teleport(id,
+                    (obj.getInt("x")/16f) * tileSystem.tileSize,
+                    (height - (obj.getInt("y") - obj.getInt("height"))/16f) * tileSystem.tileSize,
+                    0f)
+        }
+
         world.process()
     }
 }

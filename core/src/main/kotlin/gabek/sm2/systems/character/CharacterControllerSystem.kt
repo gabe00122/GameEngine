@@ -94,7 +94,7 @@ class CharacterControllerSystem : BaseEntitySystem(
                 val body = bodyMapper[entity].body
 
                 body.isFixedRotation = false
-                body.angularVelocity = 10f
+                body.angularVelocity = if(body.linearVelocityX > 0) -10f else 10f
                 body.fixutres[0].callbackList.clear()
 
                 for(i in 0 until 25){

@@ -74,7 +74,8 @@ class Core(val settings: Settings) : ApplicationAdapter() {
 
     override fun render() {
         screenManager.update(Gdx.graphics.deltaTime)
-
+		
+		Gdx.gl.glClearColor(34f/255f, 32f/255f, 52f/255f, 1f)
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
         screenManager.render()
     }

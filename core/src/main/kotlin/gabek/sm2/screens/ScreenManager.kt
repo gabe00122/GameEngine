@@ -27,7 +27,7 @@ class ScreenManager(val kodein: Kodein) : Disposable {
         private set
 
     private val fpsContainer: Container<VisLabel>
-    private val fpsLabel: VisLabel = VisLabel("", Color.RED)
+    private val fpsLabel: VisLabel = VisLabel("")
 
     init {
         val uiScale = kodein.instance<Settings>().getFloat("ui_scale")

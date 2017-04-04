@@ -60,4 +60,8 @@ fun babySnailFactory() = factory { kodein, world ->
         //body.isFixedRotation = true
     }
     com<BiDirectionCom>()
+    com<HealthCom> {
+        healthPoints = 3f
+        maximumHealth = 3f
+    }
 }

@@ -76,7 +76,7 @@ task compileSkin {
         // Convert USL skin file into JSON
         String[] uslArgs = [
                 projectDir.path + '/raw/ui/skin.usl',     // Input USL file
-                projectDir.path + '/assets/ui/skin.json'  // Output JSON file
+                projectDir.path + '/assets/assets/ui/skin.json'  // Output JSON file
         ]
         Main.main(uslArgs)
     }

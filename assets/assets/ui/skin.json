@@ -16,8 +16,8 @@ com.badlogic.gdx.graphics.Color: {
 	t-light: {hex: 76428aff },
 	t-medium: {hex: 639bffff },
 	t-medium-dark: {hex: 306082ff },
-	t-dark: {hex: 222034ff },
-	t-progress: {r: 0, g: 0, b: 0, a: 0.5 },
+	t-dark: {hex: 3f3f74ff },
+	t-alpha: {r: 0, g: 0, b: 0, a: 0.5 },
 	black: t-black,
 	white: t-white,
 	grey: t-light,
@@ -27,7 +27,7 @@ com.badlogic.gdx.graphics.Color: {
 	link-label: t-highlight
 },
 com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
-	dialogDim: {name: t-dot, color: t-progress },
+	dialogDim: {name: t-dot, color: t-alpha },
 	border: {name: t-border, color: t-highlight },
 	border-circle: {name: t-border-circle, color: t-highlight },
 	border-circle-error: {name: t-border-circle, color: t-warn },
