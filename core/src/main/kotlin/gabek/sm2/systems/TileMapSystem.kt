@@ -29,7 +29,7 @@ class TileMapSystem(
     val assets: Assets = kodein.instance()
 
     val tileSize = 0.75f
-    val definitions = TileDefinitions(kodein)
+    val definitions = TileDefinitions()
     private var backgroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
     private var foregroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
 
@@ -72,7 +72,7 @@ class TileMapSystem(
     fun setTile(x: Int, y: Int, layer: Layer, reference: TileReference){
         val grid = if(layer == Layer.FOREGROUND) foregroundTiles else backgroundTiles
         grid.set(x, y, reference)
-        definitions[reference].onInit?.invoke(x, y, reference)
+        definitions[reference].onTileInit(x, y, reference)
     }
 
     fun initPhysics() {

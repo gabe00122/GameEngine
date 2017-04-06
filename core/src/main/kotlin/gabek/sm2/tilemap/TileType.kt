@@ -5,7 +5,9 @@ import gabek.sm2.graphics.TextureRef
 /**
  * @author Gabriel Keith
  */
-class TileType(val name: String,
+open class TileType(val name: String,
                val texture: TextureRef? = null,
-               val solid: Boolean = false,
-               val onInit: ((x: Int, y: Int, reference: TileReference) -> Unit)? = null)
+               val solid: Boolean = false){
+
+    open fun onTileInit(x: Int, y: Int, reference: TileReference){}
+}

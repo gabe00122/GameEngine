@@ -20,13 +20,6 @@ class LevelTemplateLoader : BaseSystem() {
     private lateinit var transSystem: TranslationSystem
     private var operation = HashMap<String, TemplateOperation>()
 
-    override fun initialize() {
-        super.initialize()
-
-
-    }
-
-
     override fun processSystem() {}
 
     fun loadLevel(root: JsonValue, worldConfig: WorldConfig) {
@@ -44,50 +37,50 @@ class LevelTemplateLoader : BaseSystem() {
 
         val tileset = root
                 .get("tilesets")
-                .JsonIterator().first { it.getString("name") == "tiles" }
+                .first { it.getString("name") == "tiles" }
+        val gid = tileset.getInt("firstgid")
 
         val defLookup = IntArray(tileset.getInt("tilecount"))
-        for(prop in tileset.get("tileproperties").JsonIterator()){
+        for(prop in tileset.get("tileproperties")){
             defLookup[prop.name.toInt()] = definitions.getIdByName(prop.getString("type"))
         }
 
-        val background = layers
-                .JsonIterator()
-                .first { it.getString("name") == "background" }
 
         tileSystem.store()
         tileSystem.resize(width, height)
 
-        var i = 0
-        for(tile in background.get("data").JsonIterator()){
-            val x = i.rem(width)
-            val y = height - i / width
-            i++
-            val tileData = tile.asInt()
-
-            if(tileData > 0) {
-                tileSystem.setTile(x, y,
-                        TileMapSystem.Layer.BACKGROUND,
-                        TileReference(defLookup[tileData - 1]))
-            }
-        }
+        loadLayer(layers, TileMapSystem.Layer.BACKGROUND, width, height, defLookup, gid)
+        loadLayer(layers, TileMapSystem.Layer.FOREGROUND, width, height, defLookup, gid)
 
         tileSystem.initPhysics()
 
 
         val objects = layers
-                .JsonIterator()
                 .first { it.getString("name") == "objects" }
                 .get("objects")
 
         for(obj in objects.JsonIterator()){
             val id = factoryManager.create(obj.getString("type"))
             transSystem.teleport(id,
-                    (obj.getInt("x")/16f) * tileSystem.tileSize,
-                    (height - (obj.getInt("y") - obj.getInt("height"))/16f) * tileSystem.tileSize,
+                    (obj.getInt("x")/tileWidth.toFloat()) * tileSystem.tileSize,
+                    (height - (obj.getInt("y") - obj.getInt("height"))/tileHeight.toFloat()) * tileSystem.tileSize,
                     0f)
         }
 
         world.process()
+    }
+
+    private fun loadLayer(layers: JsonValue, layer: TileMapSystem.Layer, width: Int, height: Int, tileSets: IntArray, gid: Int){
+        for((i, tile) in layers.first { it.getString("name") == layer.name.toLowerCase()}.get("data").withIndex()){
+            val x = i.rem(width)
+            val y = height - i / width
+            val tileData = tile.asInt()
+
+            if(tileData > 0) {
+                tileSystem.setTile(x, y,
+                        layer,
+                        TileReference(tileSets[tileData - gid]))
+            }
+        }
     }
 }

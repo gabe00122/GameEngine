@@ -21,33 +21,35 @@ import java.util.*
  * @date 3/29/2017
  */
 
-fun bloodDroplets() = factory { kodein, world ->
-    val rect = kodein.instance<Assets>().findTexture("actors:rect")
-    val color = Color(172f/255, 50f/255, 50f/255, 0.75f)
-    val w = 0.2f
-    val h = 0.2f
+class BloodDroplet: EntityFactory(){
+    override fun define() {
+        val rect = kodein.instance<Assets>().findTexture("actors:rect")
+        val color = Color(172f / 255, 50f / 255, 50f / 255, 0.75f)
+        val w = 0.2f
+        val h = 0.2f
 
-    val random = Random()
+        val random = Random()
 
-    com<TranslationCom>()
-    com<SpriteCom>{
-        textureRef = rect
-        tint = color
-        width = w
-        height = h
-    }
-    //com<BodyCom> {
-    //    body.bodyType = BodyDef.BodyType.DynamicBody
-    //    body.isFixedRotation = true
-    //    body.addFixture(RPolygon(w, h), 1f, 0.2f, 0.75f, maskBits = filter(WALL))
-    //}
-    com<PelletMovementCom>{
-        gravity = 9f
+        com<TranslationCom>()
+        com<SpriteCom> {
+            textureRef = rect
+            tint = color
+            width = w
+            height = h
+        }
+        //com<BodyCom> {
+        //    body.bodyType = BodyDef.BodyType.DynamicBody
+        //    body.isFixedRotation = true
+        //    body.addFixture(RPolygon(w, h), 1f, 0.2f, 0.75f, maskBits = filter(WALL))
+        //}
+        com<PelletMovementCom> {
+            gravity = 9f
 
-        speedX = (random.nextFloat() - 0.5f) * 4f
-        speedY = random.nextFloat() * 8
-    }
-    com<PelletLifeSpanCom>{
-        lifeSpan = 5f + random.nextFloat()
+            speedX = (random.nextFloat() - 0.5f) * 4f
+            speedY = random.nextFloat() * 8
+        }
+        com<PelletLifeSpanCom> {
+            lifeSpan = 5f + random.nextFloat()
+        }
     }
 }

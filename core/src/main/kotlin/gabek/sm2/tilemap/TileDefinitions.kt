@@ -7,9 +7,7 @@ import gabek.sm2.assets.Assets
 /**
  * @author Gabriel Keith
  */
-class TileDefinitions(val kodein: Kodein) {
-    private val assets: Assets = kodein.instance()
-
+class TileDefinitions {
     private val nameToId = mutableMapOf<String, Int>()
     private val tileTypes = mutableListOf<TileType>()
 

@@ -12,7 +12,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
 import gabek.sm2.factory.*
-import gabek.sm2.factory.enviroment.spinnerFactory
+import gabek.sm2.factory.enviroment.SpinnerFactory
 import gabek.sm2.kryo.kryoSetup
 import gabek.sm2.physics.RCollisionAdapter
 import gabek.sm2.physics.RFixture
@@ -27,6 +27,7 @@ import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletLifeSpanSystem
 import gabek.sm2.systems.pellet.PelletMovmentSystem
 import gabek.sm2.tilemap.TileDefinitions
+import gabek.sm2.tilemap.TileReference
 import gabek.sm2.tilemap.TileType
 
 /**
@@ -114,15 +115,15 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
 }
 
 fun factoryBindings(builder: FactoryManager.Builder) = with(builder) {
-    bind("camera", cameraFactory())
-    bind("player", playerFactory())
-    bind("acid_monk", acidMonkFactory())
-    bind("junk", junkFactory())
-    bind("babySnail", babySnailFactory())
+    bind("camera", CameraFactory())
+    bind("player", PlayerFactory())
+    bind("acid_monk", AcidMonkFactory())
+    bind("junk", JunkFactory())
+    bind("babySnail", BabySnailFactory())
 
-    bind("spinner", spinnerFactory())
+    bind("spinner", SpinnerFactory())
 
-    bind("blood", bloodDroplets())
+    bind("blood", BloodDroplet())
 }
 
 fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein){
@@ -135,18 +136,20 @@ fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kod
     definitions.addType(TileType("background", assets.findTexture("tiles:back"), false))
     definitions.addType(TileType("wall", assets.findTexture("tiles:wall"), true))
 
-    definitions.addType(TileType("spike", texture = assets.findTexture("tiles:spike")){ x, y, ref ->
-        val shape = RPolygon(tileMap.tileSize, tileMap.tileSize/2, x * tileMap.tileSize + tileMap.tileSize/2, y * tileMap.tileSize + tileMap.tileSize/4)
-        val fixture = RFixture(shape, isSensor = true)
-        fixture.callbackList.add(object: RCollisionAdapter() {
-            override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
-                val other = otherRFixture.ownerId
-                if(otherRFixture.body!!.linearVelocityY < -2 && damageManager.hasHealth(other)){
-                    damageManager.kill(other)
+    definitions.addType(object: TileType("spike", texture = assets.findTexture("tiles:spike")) {
+        override fun onTileInit(x: Int, y: Int, reference: TileReference) {
+            val shape = RPolygon(tileMap.tileSize, tileMap.tileSize / 2, x * tileMap.tileSize + tileMap.tileSize / 2, y * tileMap.tileSize + tileMap.tileSize / 4)
+            val fixture = RFixture(shape, isSensor = true)
+            fixture.callbackList.add(object : RCollisionAdapter() {
+                override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
+                    val other = otherRFixture.ownerId
+                    if (otherRFixture.body!!.linearVelocityY < -2 && damageManager.hasHealth(other)) {
+                        damageManager.kill(other)
+                    }
                 }
-            }
-        })
+            })
 
-        tileMap.body.addFixture(fixture)
+            tileMap.body.addFixture(fixture)
+        }
     })
 }

@@ -18,50 +18,53 @@ import gabek.sm2.world.filter
  * @author Gabriel Keith
  */
 
-fun babySnailFactory() = factory { kodein, world ->
-    val assets: Assets = kodein.instance()
+class BabySnailFactory: EntityFactory(){
 
-    val snailMoving = assets.retrieveAnimationDef("baby_snail:moving")
-    val snailStill = assets.retrieveAnimationDef("baby_snail:still")
+    override fun define() {
+        val assets: Assets = kodein.instance()
 
-    val width = 1f
-    val height = 0.5f
+        val snailMoving = assets.retrieveAnimationDef("baby_snail:moving")
+        val snailStill = assets.retrieveAnimationDef("baby_snail:still")
 
-    com<TranslationCom>()
-    com<SpriteCom> {
-        this.width = width + 0.025f
-        this.height = height + 0.025f
-    }
-    com<AnimationCom>()
+        val width = 1f
+        val height = 0.5f
 
-    com<CharacterAnimatorCom> {
-        runningAnimationDef = snailMoving
-        stillAnimationDef = snailStill
-    }
-    com<CharacterMovementStateCom>()
+        com<TranslationCom>()
+        com<SpriteCom> {
+            this.width = width + 0.025f
+            this.height = height + 0.025f
+        }
+        com<AnimationCom>()
 
-    com<WanderingBrainCom>()
+        com<CharacterAnimatorCom> {
+            runningAnimationDef = snailMoving
+            stillAnimationDef = snailStill
+        }
+        com<CharacterMovementStateCom>()
 
-    com<CharacterControllerCom>()
+        com<WanderingBrainCom>()
 
-    com<MovementDefinitionCom> {
-        groundSpeed = 0.5f
-        jumpCooldown = 0.01f
-        jumpForce = 2f
-    }
-    com<MovementGroundContactCom>{
-        platformIndex = 0
-    }
+        com<CharacterControllerCom>()
 
-    com<BodyCom> {
-        body.bodyType = BodyDef.BodyType.DynamicBody
-        val platform = RPolygon().withClippedCorners(width, height, 0f, 0f, 0.1f, height / 4f)
-        body.addFixture(platform, 1f, 0.75f, 0f, false, filter(CHARACTER))
-        //body.isFixedRotation = true
-    }
-    com<BiDirectionCom>()
-    com<HealthCom> {
-        healthPoints = 3f
-        maximumHealth = 3f
+        com<MovementDefinitionCom> {
+            groundSpeed = 0.5f
+            jumpCooldown = 0.01f
+            jumpForce = 2f
+        }
+        com<MovementGroundContactCom> {
+            platformIndex = 0
+        }
+
+        com<BodyCom> {
+            body.bodyType = BodyDef.BodyType.DynamicBody
+            val platform = RPolygon().withClippedCorners(width, height, 0f, 0f, 0.1f, height / 4f)
+            body.addFixture(platform, 1f, 0.75f, 0f, false, filter(CHARACTER))
+            //body.isFixedRotation = true
+        }
+        com<BiDirectionCom>()
+        com<HealthCom> {
+            healthPoints = 3f
+            maximumHealth = 3f
+        }
     }
 }

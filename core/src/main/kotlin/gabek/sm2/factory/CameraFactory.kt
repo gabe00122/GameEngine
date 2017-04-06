@@ -8,13 +8,15 @@ import gabek.sm2.components.graphics.CameraTargetsCom
  */
 
 
-fun cameraFactory() = factory { kodein, world ->
-    val width = 5f
-    val height = 5f
+class CameraFactory: EntityFactory(){
+    override fun define() {
+        val width = 5f
+        val height = 5f
 
-    com<CameraCom>()
-    com<CameraTargetsCom> {
-        padWidth = width
-        padHeight = height
+        com<CameraCom>()
+        com<CameraTargetsCom> {
+            padWidth = width
+            padHeight = height
+        }
     }
 }
