@@ -11,7 +11,7 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.graphics.RenderPipeline
+import gabek.sm2.graphics.RenderBuffers
 import gabek.sm2.input.Actions
 import gabek.sm2.systems.FactoryManager
 import gabek.sm2.systems.LevelTemplateLoader
@@ -26,7 +26,7 @@ import ktx.actors.onChange
  * @author Gabriel Keith
  */
 class PlayingScreen(val kodein: Kodein) : Screen() {
-    private val display = RenderPipeline(kodein)
+    private val display = RenderBuffers(kodein)
 
     private val world: World = kodein.instance()
     private val worldConfig: WorldConfig = kodein.instance()
@@ -80,7 +80,7 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
     override fun show() {
         launchLevel()
 
-        val displayContainer = Container<RenderPipeline>(display).fill()
+        val displayContainer = Container<RenderBuffers>(display).fill()
         displayContainer.setFillParent(true)
         root.addActor(displayContainer)
     }

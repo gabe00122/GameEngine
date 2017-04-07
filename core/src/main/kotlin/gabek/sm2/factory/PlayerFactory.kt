@@ -13,6 +13,7 @@ import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.physics.RPolygon
 import gabek.sm2.world.CHARACTER
+import gabek.sm2.world.WALL
 import gabek.sm2.world.filter
 
 /**
@@ -48,7 +49,7 @@ class PlayerFactory: EntityFactory(){
             //bodyShape.setAsBox(width, bodyHeight, 0f, 0f)
             //body.addFixture(bodyShape, density = 1f, categoryBits = filter(CHARACTER))
             val platformShape = RPolygon().withClippedCorners(width, height, 0f, 0f, width / 4, 0.25f)
-            body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
+            body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER), maskBits = filter(WALL))
 
             body.bodyType = BodyDef.BodyType.DynamicBody
             body.isFixedRotation = true
@@ -57,6 +58,7 @@ class PlayerFactory: EntityFactory(){
         com<SpriteCom> {
             setSize(width + 0.025f, height + 0.025f)
             //offsetY = -width / 4f
+            layer = 2
         }
 
         com<AnimationCom>()

@@ -15,7 +15,7 @@ import gabek.sm2.systems.graphics.CameraSystem
 /**
  * @author Gabriel Keith
  */
-class RenderPipeline(kodein: Kodein) : Widget(), Disposable {
+class RenderBuffers(kodein: Kodein) : Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
     var cameraHandle: Int = -1
         private set

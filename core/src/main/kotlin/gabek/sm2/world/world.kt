@@ -82,7 +82,6 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(CharacterAnimatorSystem())
     config.setSystem(AnimationSystem())
 
-    config.setSystem(TileRenderSystem())
     config.setSystem(SpriteRenderSystem(kodein))
     //config.setSystem(HealthRenderSystem(kodein))
 
@@ -103,8 +102,9 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
         return RenderManager(kodein,
                 cameraSystem = getSystem(),
                 batchSystems = listOf(
-                        getSystem<TileRenderSystem>(),
-                        getSystem<SpriteRenderSystem>()
+                        getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
+                        EntityRendererManager(listOf(getSystem<SpriteRenderSystem>())),
+                        getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
                         //getSystem<HealthRenderSystem>()
                 ),
                 orthoSystems = listOf(

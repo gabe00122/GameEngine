@@ -12,6 +12,7 @@ import gabek.sm2.physics.RBody
 import gabek.sm2.physics.REdge
 import gabek.sm2.physics.RFixture
 import gabek.sm2.tilemap.*
+import gabek.sm2.world.RenderManager
 import gabek.sm2.world.WALL
 import gabek.sm2.world.filter
 
@@ -41,17 +42,30 @@ class TileMapSystem(
         definitionsInit(definitions, world, kodein)
     }
 
-    fun render(batch: SpriteBatch, culling: Rectangle) {
-        val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, backgroundTiles.w)
-        val x2 = MathUtils.clamp(MathUtils.ceil((culling.x + culling.width) / tileSize), 0, backgroundTiles.w)
+    fun render(batch: SpriteBatch, culling: Rectangle, layer: Layer) {
+        val tiles = when (layer){
+            Layer.FOREGROUND -> foregroundTiles
+            Layer.BACKGROUND -> backgroundTiles
+        }
 
-        val y1 = MathUtils.clamp(MathUtils.floor(culling.y / tileSize), 0, backgroundTiles.h)
-        val y2 = MathUtils.clamp(MathUtils.ceil((culling.y + culling.height) / tileSize), 0, backgroundTiles.h)
+        val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, tiles.w)
+        val x2 = MathUtils.clamp(MathUtils.ceil((culling.x + culling.width) / tileSize), 0, tiles.w)
+
+        val y1 = MathUtils.clamp(MathUtils.floor(culling.y / tileSize), 0, tiles.h)
+        val y2 = MathUtils.clamp(MathUtils.ceil((culling.y + culling.height) / tileSize), 0, tiles.h)
 
         for (y in y1 until y2) {
             for (x in x1 until x2) {
-                drawTile(batch, backgroundTiles, x, y)
-                drawTile(batch, foregroundTiles, x, y)
+                drawTile(batch, tiles, x, y)
+                drawTile(batch, tiles, x, y)
+            }
+        }
+    }
+
+    fun getRendererForLayer(layer: Layer): RenderManager.BatchSystem{
+        return object: RenderManager.BatchSystem{
+            override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
+                this@TileMapSystem.render(batch, culling, layer)
             }
         }
     }

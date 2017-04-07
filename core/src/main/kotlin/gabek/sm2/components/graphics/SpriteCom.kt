@@ -20,6 +20,8 @@ class SpriteCom : Component() {
 
     var tint: Color = Color.WHITE
 
+    var layer: Int = 4
+
     fun setSize(width: Float, height: Float) {
         this.width = width
         this.height = height
