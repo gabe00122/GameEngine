@@ -6,7 +6,6 @@ import com.kotcrab.vis.ui.Focusable
 import com.kotcrab.vis.ui.widget.VisTable
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
-import gabek.sm2.screens.buttonWidth
 import gabek.sm2.screens.eagePad
 import gabek.sm2.screens.menuPad
 
@@ -22,11 +21,21 @@ class MenuControl : VisTable {
     private var selected: Button? = null
     private val items = mutableListOf<Button>()
 
+    private val buttonWidth: Float
+
     var playerInput: PlayerInput? = null
 
-    constructor() : super()
+    constructor() : super() {
+        buttonWidth = 80f
+    }
 
-    constructor(vararg buttons: Button) : super() {
+    constructor(vararg buttons: Button): super() {
+        buttonWidth = 80f
+        setItems(*buttons)
+    }
+
+    constructor(buttonWidth: Float, vararg buttons: Button): super() {
+        this.buttonWidth = buttonWidth
         setItems(*buttons)
     }
 

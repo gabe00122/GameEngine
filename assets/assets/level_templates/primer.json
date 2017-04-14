@@ -21,12 +21,20 @@
                  "height":32,
                  "id":1,
                  "name":"",
+                 "properties":
+                    {
+                     "group":"spawn.player"
+                    },
+                 "propertytypes":
+                    {
+                     "group":"string"
+                    },
                  "rotation":0,
-                 "type":"player",
+                 "type":"point",
                  "visible":true,
                  "width":16,
-                 "x":290.5,
-                 "y":207
+                 "x":319.75,
+                 "y":207.75
                 }, 
                 {
                  "gid":4,
@@ -63,6 +71,26 @@
                  "width":32,
                  "x":81.25,
                  "y":208
+                }, 
+                {
+                 "gid":5,
+                 "height":32,
+                 "id":17,
+                 "name":"",
+                 "properties":
+                    {
+                     "group":"spawn.player"
+                    },
+                 "propertytypes":
+                    {
+                     "group":"string"
+                    },
+                 "rotation":0,
+                 "type":"point",
+                 "visible":true,
+                 "width":16,
+                 "x":303.75,
+                 "y":207.75
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -82,7 +110,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":17,
+ "nextobjectid":18,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

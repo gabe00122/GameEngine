@@ -8,7 +8,6 @@ import gabek.sm2.screens.SettingsMenu
  * @author Gabriel Keith
  */
 
-val buttonWidth = 80f
 val eagePad = 7f
 val menuPad = 5f
 

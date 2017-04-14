@@ -63,6 +63,10 @@ class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java
         }
     }
 
+    fun getTranslation(entity: Int): TranslationCom{
+        return translationMapper[entity]
+    }
+
     interface TeleportListener {
         fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean)
     }

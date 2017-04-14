@@ -20,7 +20,7 @@ class GameModeManager : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java))
 
     override fun removed(entities: IntBag) {
         super.removed(entities)
-        if(playerList.size() - entities.size() <= 0){
+        if(playerList.size() == 0){
             onGameOver?.invoke()
         }
     }

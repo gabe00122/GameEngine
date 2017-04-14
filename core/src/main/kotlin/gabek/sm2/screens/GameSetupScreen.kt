@@ -9,6 +9,7 @@ import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.ui.CurserControl
+import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.PlayerInfo
 import gabek.sm2.world.WorldConfig
 import ktx.actors.onChange
@@ -25,7 +26,7 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
 
     private val curserControler = CurserControl(kodein)
 
-    private val playerJoinWidgets = Array(6, { i -> PlayerJoinWidget(i) })
+    private val playerJoinWidgets = Array(4, { i -> PlayerJoinWidget(i) })
     private val playerInputSet = mutableSetOf<PlayerInput>()
     private var joinIndex = 0
     private val joinPool = mutableListOf<PlayerJoinWidget>()
@@ -34,22 +35,27 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
         tableContainer.fill()
         tableContainer.setFillParent(true)
 
-        for (i in 0..2) {
-            table.add(playerJoinWidgets[i]).prefSize(200f).pad(10f)
+        val avitarGrid = VisTable()
+        for(y in 0 until 2){
+            for(x in 0 until 4){
+                avitarGrid.add(VisTextButton("")).prefSize(20f).pad(2f)
+            }
+            avitarGrid.row()
         }
-        table.row()
 
-        for (i in 3..5) {
-            table.add(playerJoinWidgets[i]).prefSize(200f).pad(10f)
+        table.add(avitarGrid).colspan(4).expand().row()
+
+        for (i in 0..3) {
+            table.add(playerJoinWidgets[i]).prefSize(100f).pad(10f)
         }
         table.row()
 
         val startGameBut = VisTextButton("Start")
         startGameBut.onChange { changeEvent, visTextButton -> startGame() }
-        table.add(startGameBut).colspan(3)
+        table.add(startGameBut).colspan(4)
 
         root.addActor(tableContainer)
-        root.addActor(curserControler)
+        //root.addActor(curserControler)
     }
 
     override fun update(delta: Float) {
@@ -95,9 +101,9 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
                 if (value != null) {
                     add("Player ${index + 1}").row()
 
-                    //val control = MenuControl(VisTextButton("Ready", "toggle"), VisTextButton("Leave", "toggle"))
-                    //control.playerInput = playerInput
-                    //add(control)
+                    val control = MenuControl(40f, VisTextButton("Ready", "toggle"), VisTextButton("Leave", "toggle"))
+                    control.playerInput = playerInput
+                    add(control)
                 } else {
                     add("Empty")
                 }

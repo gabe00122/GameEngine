@@ -116,6 +116,7 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
 
 fun factoryBindings(builder: FactoryManager.Builder) = with(builder) {
     bind("camera", CameraFactory())
+    bind("point", PointFactory())
     bind("player", PlayerFactory())
     bind("acid_monk", AcidMonkFactory())
     bind("junk", JunkFactory())

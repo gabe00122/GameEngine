@@ -1,6 +1,7 @@
 package gabek.sm2.systems
 
 import com.artemis.BaseSystem
+import com.artemis.managers.GroupManager
 import com.badlogic.gdx.utils.JsonValue
 import gabek.sm2.leveltemplate.TemplateOperation
 import gabek.sm2.physics.RBody
@@ -18,7 +19,8 @@ class LevelTemplateLoader : BaseSystem() {
     private lateinit var tileSystem: TileMapSystem
     private lateinit var box2dSystem: Box2dSystem
     private lateinit var transSystem: TranslationSystem
-    private var operation = HashMap<String, TemplateOperation>()
+
+    private lateinit var groupManager: GroupManager
 
     override fun processSystem() {}
 
@@ -63,8 +65,15 @@ class LevelTemplateLoader : BaseSystem() {
             val id = factoryManager.create(obj.getString("type"))
             transSystem.teleport(id,
                     (obj.getInt("x")/tileWidth.toFloat()) * tileSystem.tileSize,
-                    (height - (obj.getInt("y") - obj.getInt("height"))/tileHeight.toFloat()) * tileSystem.tileSize,
+                    (height - (obj.getInt("y") - obj.getInt("height") )/tileHeight.toFloat()) * tileSystem.tileSize,
                     0f)
+
+            if(obj.has("properties")) {
+                val properties = obj.get("properties")
+                if (properties.has("group")) {
+                    groupManager.add(world.getEntity(id), properties.getString("group"))
+                }
+            }
         }
 
         world.process()
