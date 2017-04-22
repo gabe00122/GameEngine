@@ -12,13 +12,13 @@ import gabek.sm2.components.character.*
 import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
 import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
 import gabek.sm2.components.character.CharacterMovementStateCom.State.*
-import gabek.sm2.factory.EntityFactory
+import gabek.sm2.prefab.Prefab
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.FactoryManager
-import gabek.sm2.systems.ParentSystem
-import gabek.sm2.systems.TimeManager
-import gabek.sm2.systems.TranslationSystem
+import gabek.sm2.systems.common.PrefabManager
+import gabek.sm2.systems.common.ParentSystem
+import gabek.sm2.systems.common.TimeManager
+import gabek.sm2.systems.common.TranslationSystem
 import gabek.sm2.util.FSMTransitionTable
 
 /**
@@ -40,12 +40,12 @@ class CharacterControllerSystem : BaseEntitySystem(
     private lateinit var movementGroundContactMapper: ComponentMapper<MovementGroundContactCom>
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
-    private lateinit var damageManager: DamageManager
+    private lateinit var damageSystem: DamageSystem
     private lateinit var timeManager: TimeManager
     private lateinit var biDirectionSystem: BiDirectionSystem
 
-    private lateinit var factoryManager: FactoryManager
-    private lateinit var bloodFactory: EntityFactory
+    private lateinit var prefabManager: PrefabManager
+    private lateinit var bloodFactory: Prefab
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
         //println("${movementStateMapper[entity].state} $state ${timeManager.currentFrame}")
@@ -81,14 +81,14 @@ class CharacterControllerSystem : BaseEntitySystem(
             }
         }
 
-        bloodFactory = factoryManager.getFactory("blood")
+        bloodFactory = prefabManager.getPrefab("blood")
 
         val transmuter = EntityTransmuterFactory(world)
                 .remove(CharacterControllerCom::class.java)
                 .remove(PlayerInputCom::class.java)
                 .build()
 
-        damageManager.addDeathListener{ entity: Int, damage: Float, damageType: Int ->
+        damageSystem.addDeathListener{ entity: Int, damage: Float, damageType: Int ->
             if(controllerMapper.has(entity) && bodyMapper.has(entity)){
                 transmuter.transmute(entity)
                 val body = bodyMapper[entity].body

@@ -1,13 +1,27 @@
 package gabek.sm2.components.character
 
-import com.artemis.Component
+import gabek.sm2.components.RComponent
 import gabek.sm2.graphics.AnimationDef
 
 /**
  * @author Gabriel Keith
  */
-class CharacterAnimatorCom : Component() {
+class CharacterAnimatorCom : RComponent<CharacterAnimatorCom>() {
     var runningAnimationDef: AnimationDef? = null
     var stillAnimationDef: AnimationDef? = null
     var jumpingAnimationDef: AnimationDef? = null
+
+    override fun set(other: CharacterAnimatorCom) {
+        runningAnimationDef = other.runningAnimationDef
+        stillAnimationDef = other.stillAnimationDef
+        jumpingAnimationDef = other.jumpingAnimationDef
+    }
+
+    override fun reset() {
+        runningAnimationDef = null
+        stillAnimationDef = null
+        jumpingAnimationDef = null
+    }
+
+    override fun toString() = "CharacterAnimatorCom"
 }

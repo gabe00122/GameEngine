@@ -1,13 +1,13 @@
 package gabek.sm2.components.graphics
 
-import com.artemis.Component
 import com.badlogic.gdx.graphics.Color
+import gabek.sm2.components.RComponent
 import gabek.sm2.graphics.TextureRef
 
 /**
  * @author Gabriel Keith
  */
-class SpriteCom : Component() {
+class SpriteCom: RComponent<SpriteCom>() {
     var textureRef = TextureRef.NONE
 
     var width = 0f
@@ -26,4 +26,34 @@ class SpriteCom : Component() {
         this.width = width
         this.height = height
     }
+
+    override fun set(other: SpriteCom) {
+        textureRef = other.textureRef
+        width = other.width
+        height = other.height
+        flipX = other.flipX
+        flipY = other.flipY
+        offsetX = other.offsetX
+        offsetY = other.offsetY
+        offsetRotation = other.offsetRotation
+
+        tint = other.tint
+        layer = other.layer
+    }
+
+    override fun reset() {
+        textureRef = TextureRef.NONE
+        width = 0f
+        height = 0f
+        flipX = false
+        flipY = false
+        offsetX = 0f
+        offsetY = 0f
+        offsetRotation = 0f
+
+        tint = Color.WHITE
+        layer = 4
+    }
+
+    override fun toString() = "SpriteCom"
 }

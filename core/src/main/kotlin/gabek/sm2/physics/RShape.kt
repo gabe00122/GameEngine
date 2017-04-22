@@ -9,8 +9,10 @@ abstract class RShape {
     var shape: Shape? = null
         protected set
 
+    abstract fun clone(): RShape
+
     abstract fun preInit()
-    fun postInit() {
+    open fun postInit() {
         shape?.dispose()
         shape = null
     }

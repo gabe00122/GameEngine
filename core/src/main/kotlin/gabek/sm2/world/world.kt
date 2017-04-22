@@ -11,9 +11,11 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.factory.*
-import gabek.sm2.factory.enviroment.SpinnerFactory
-import gabek.sm2.kryo.kryoSetup
+import gabek.sm2.graphics.EntityRendererManager
+import gabek.sm2.graphics.RenderManager
+import gabek.sm2.prefab.*
+import gabek.sm2.prefab.enviroment.SpinnerPropPrefab
+import gabek.sm2.serialisation.kryoSetup
 import gabek.sm2.physics.RCollisionAdapter
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
@@ -22,13 +24,14 @@ import gabek.sm2.systems.brains.WanderingBrainSystem
 import gabek.sm2.systems.character.*
 import gabek.sm2.systems.gamemodes.GameModeManager
 import gabek.sm2.systems.graphics.*
-import gabek.sm2.systems.pellet.BleedingSystem
+import gabek.sm2.systems.BleedingSystem
+import gabek.sm2.systems.common.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
-import gabek.sm2.systems.pellet.PelletLifeSpanSystem
 import gabek.sm2.systems.pellet.PelletMovmentSystem
 import gabek.sm2.tilemap.TileDefinitions
 import gabek.sm2.tilemap.TileReference
 import gabek.sm2.tilemap.TileType
+import gabek.sm2.tilemap.types.SpikeTile
 
 /**
  * @author Gabriel Keith
@@ -43,7 +46,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(WorldSerializationManager())
     //config.setSystem(GameModeManager())
     //config.setSystem(TeamManager())
-    config.setSystem(FactoryManager.build(kodein, ::factoryBindings))
+    config.setSystem(PrefabManager.build(kodein, ::prefabBindings))
     config.setSystem(LevelTemplateLoader())
     config.setSystem(TimeManager())
 
@@ -56,9 +59,9 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(ParentBodyTackingSystem())
 
     //config.setSystem(WorldBoundsSystem())
-    config.setSystem(DamageManager())
+    config.setSystem(DamageSystem())
     //config.setSystem(BleedingSystem())
-    config.setSystem(PelletLifeSpanSystem())
+    config.setSystem(LifeSpanSystem())
     config.setSystem(PelletCollisionSystem())
     config.setSystem(PelletMovmentSystem())
 
@@ -82,6 +85,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(CharacterAnimatorSystem())
     config.setSystem(AnimationSystem())
 
+    config.setSystem(ParallaxRenderSystem(kodein))
     config.setSystem(SpriteRenderSystem(kodein))
     //config.setSystem(HealthRenderSystem(kodein))
 
@@ -102,6 +106,7 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
         return RenderManager(kodein,
                 cameraSystem = getSystem(),
                 batchSystems = listOf(
+                        getSystem<ParallaxRenderSystem>(),
                         getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
                         EntityRendererManager(listOf(getSystem<SpriteRenderSystem>())),
                         getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
@@ -114,43 +119,26 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
     }
 }
 
-fun factoryBindings(builder: FactoryManager.Builder) = with(builder) {
-    bind("camera", CameraFactory())
-    bind("point", PointFactory())
-    bind("player", PlayerFactory())
-    bind("acid_monk", AcidMonkFactory())
-    bind("junk", JunkFactory())
-    bind("babySnail", BabySnailFactory())
+fun prefabBindings(builder: PrefabManager.Builder) = with(builder) {
+    bind("camera", CameraPrefab())
+    bind("point", PointPrefab())
 
-    bind("spinner", SpinnerFactory())
+    bind("player", PlayerPrefab())
+    bind("acid_monk", AcidMonkPrefab())
+    bind("junk", JunkPrefab())
+    bind("snail", SnailPrefab())
 
-    bind("blood", BloodDroplet())
+    bind("spinner", SpinnerPropPrefab())
+
+    bind("blood", BloodPrefab())
 }
 
 fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein){
     val assets: Assets = kodein.instance()
-    val tileMap: TileMapSystem = world.getSystem()
-    val damageManager: DamageManager = world.getSystem()
-
 
     definitions.addType(TileType("none", null, false))
     definitions.addType(TileType("background", assets.findTexture("tiles:back"), false))
     definitions.addType(TileType("wall", assets.findTexture("tiles:wall"), true))
 
-    definitions.addType(object: TileType("spike", texture = assets.findTexture("tiles:spike")) {
-        override fun onTileInit(x: Int, y: Int, reference: TileReference) {
-            val shape = RPolygon(tileMap.tileSize, tileMap.tileSize / 2, x * tileMap.tileSize + tileMap.tileSize / 2, y * tileMap.tileSize + tileMap.tileSize / 4)
-            val fixture = RFixture(shape, isSensor = true)
-            fixture.callbackList.add(object : RCollisionAdapter() {
-                override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {
-                    val other = otherRFixture.ownerId
-                    if (otherRFixture.body!!.linearVelocityY < -2 && damageManager.hasHealth(other)) {
-                        damageManager.kill(other)
-                    }
-                }
-            })
-
-            tileMap.body.addFixture(fixture)
-        }
-    })
+    definitions.addType(SpikeTile(world, kodein))
 }

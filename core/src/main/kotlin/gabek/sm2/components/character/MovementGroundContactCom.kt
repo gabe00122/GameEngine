@@ -1,13 +1,13 @@
 package gabek.sm2.components.character
 
-import com.artemis.PooledComponent
 import com.badlogic.gdx.math.Vector2
+import gabek.sm2.components.RComponent
 import gabek.sm2.physics.RFixture
 
 /**
  * @author Gabriel Keith
  */
-class MovementGroundContactCom : PooledComponent() {
+class MovementGroundContactCom : RComponent<MovementGroundContactCom>() {
     val contacts = mutableListOf<GroundContact>()
     val onGround get() = contacts.size > 0
     var platformIndex: Int = -1
@@ -20,6 +20,16 @@ class MovementGroundContactCom : PooledComponent() {
         platformMinAngle = 180f
         platformMaxAngle = 360f
     }
+
+    override fun set(other: MovementGroundContactCom) {
+        contacts.clear()
+        contacts.addAll(other.contacts)
+        platformIndex = other.platformIndex
+        platformMinAngle = other.platformMinAngle
+        platformMaxAngle = other.platformMaxAngle
+    }
+
+    override fun toString() = "MovementGroundContactCom"
 
     fun indexOf(fixture: RFixture): Int =
             (0 until contacts.size).firstOrNull { contacts[it].fixture === fixture } ?: -1

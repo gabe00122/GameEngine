@@ -1,6 +1,5 @@
 package gabek.sm2.components
 
-import com.artemis.Component
 import com.artemis.annotations.DelayedComponentRemoval
 import gabek.sm2.physics.RBody
 
@@ -8,6 +7,14 @@ import gabek.sm2.physics.RBody
  * @author Gabriel Keith
  */
 @DelayedComponentRemoval
-class BodyCom : Component() {
+class BodyCom: RComponent<BodyCom>() {
     var body = RBody()
+
+    override fun set(other: BodyCom) {
+        body.set(other.body)
+    }
+
+    override fun reset() {
+        body.reset()
+    }
 }

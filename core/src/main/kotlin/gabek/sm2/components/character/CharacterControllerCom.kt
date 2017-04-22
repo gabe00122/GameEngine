@@ -1,11 +1,11 @@
 package gabek.sm2.components.character
 
-import com.artemis.Component
+import gabek.sm2.components.RComponent
 
 /**
  * @author Gabriel Keith
  */
-class CharacterControllerCom : Component() {
+class CharacterControllerCom : RComponent<CharacterControllerCom>() {
     var moveUp: Boolean = false
     var moveDown: Boolean = false
     var lateralMovement: Float = 0f
@@ -25,4 +25,28 @@ class CharacterControllerCom : Component() {
     var jump: Boolean = false
 
     var primary: Boolean = false
+
+    override fun set(other: CharacterControllerCom) {
+        moveUp = other.moveUp
+        moveDown = other.moveDown
+        moveLeft = other.moveLeft
+        moveRight = other.moveRight
+        lateralMovement = other.lateralMovement
+
+        jump = other.jump
+        primary = other.primary
+    }
+
+    override fun reset() {
+        moveUp = false
+        moveDown = false
+        moveLeft = false
+        moveRight = false
+        lateralMovement = 0f
+
+        jump = false
+        primary = false
+    }
+
+    override fun toString() = "CharacterControllerCom"
 }

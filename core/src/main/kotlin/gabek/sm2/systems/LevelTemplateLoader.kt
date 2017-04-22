@@ -1,21 +1,18 @@
 package gabek.sm2.systems
 
-import com.artemis.BaseSystem
 import com.artemis.managers.GroupManager
 import com.badlogic.gdx.utils.JsonValue
-import gabek.sm2.leveltemplate.TemplateOperation
-import gabek.sm2.physics.RBody
-import gabek.sm2.tilemap.ArrayGrid
+import gabek.sm2.systems.common.PrefabManager
+import gabek.sm2.systems.common.TranslationSystem
 import gabek.sm2.tilemap.TileReference
 import gabek.sm2.world.WorldConfig
 import gabek.sm2.world.clear
-import gabek.sm2.world.getSystem
 
 /**
  * @author Gabriel Keith
  */
-class LevelTemplateLoader : BaseSystem() {
-    private lateinit var factoryManager: FactoryManager
+class LevelTemplateLoader : PassiveSystem() {
+    private lateinit var prefabManager: PrefabManager
     private lateinit var tileSystem: TileMapSystem
     private lateinit var box2dSystem: Box2dSystem
     private lateinit var transSystem: TranslationSystem
@@ -62,7 +59,7 @@ class LevelTemplateLoader : BaseSystem() {
                 .get("objects")
 
         for(obj in objects.JsonIterator()){
-            val id = factoryManager.create(obj.getString("type"))
+            val id = prefabManager.create(obj.getString("type"))
             transSystem.teleport(id,
                     (obj.getInt("x")/tileWidth.toFloat()) * tileSystem.tileSize,
                     (height - (obj.getInt("y") - obj.getInt("height") )/tileHeight.toFloat()) * tileSystem.tileSize,

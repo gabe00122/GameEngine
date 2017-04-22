@@ -18,6 +18,12 @@ class RPolygon : RShape {
         shape = polyShape
     }
 
+    override fun clone(): RShape {
+        val out = RPolygon()
+        out.vertices = vertices.clone()
+        return out
+    }
+
     fun setAsBox(w: Float, h: Float, x: Float, y: Float) {
         val hw = w / 2
         val hh = h / 2

@@ -12,7 +12,7 @@ import gabek.sm2.physics.RBody
 import gabek.sm2.physics.REdge
 import gabek.sm2.physics.RFixture
 import gabek.sm2.tilemap.*
-import gabek.sm2.world.RenderManager
+import gabek.sm2.graphics.RenderManager
 import gabek.sm2.world.WALL
 import gabek.sm2.world.filter
 
@@ -22,10 +22,9 @@ import gabek.sm2.world.filter
 class TileMapSystem(
         val kodein: Kodein,
         val definitionsInit: (TileDefinitions, World, Kodein) -> Unit
-) : BaseSystem() {
+) : PassiveSystem() {
 
     private lateinit var box2dSystem: Box2dSystem
-    override fun processSystem() {}
 
     val assets: Assets = kodein.instance()
 

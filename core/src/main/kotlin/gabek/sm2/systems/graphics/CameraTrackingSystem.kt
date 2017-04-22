@@ -4,7 +4,7 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.math.MathUtils
-import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.CameraCom
 import gabek.sm2.components.graphics.CameraTargetsCom
 

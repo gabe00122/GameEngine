@@ -14,6 +14,13 @@ class LerpVector(var x: Float = 0f, var y: Float = 0f) {
         this.y = y
     }
 
+    fun set(other: LerpVector){
+        x = other.x
+        y = other.y
+        pX = other.pX
+        pY = other.pY
+    }
+
     fun lerpX(progress: Float) = MathUtils.lerp(pX, x, progress)
     fun lerpY(progress: Float) = MathUtils.lerp(pY, y, progress)
 

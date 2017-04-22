@@ -1,14 +1,29 @@
 package gabek.sm2.components.character
 
-import com.artemis.Component
+import gabek.sm2.components.RComponent
 
 /**
  * @author Gabriel Keith
  */
 
-class HealthCom : Component() {
-    var maximumHealth: Float = 0f
-    var healthPoints: Float = 0f
+class HealthCom : RComponent<HealthCom>() {
+    var maximum: Float = 0f
+    var value: Float = 0f
 
-    var healthCooldown: Float = 0f
+    var cooldown: Float = 0f
+
+    override fun set(other: HealthCom) {
+        maximum = other.maximum
+        value = other.value
+
+        cooldown = other.cooldown
+    }
+
+    override fun reset() {
+        maximum = 0f
+        value = 0f
+        cooldown = 0f
+    }
+
+    override fun toString() = "HealthCom: health = $value, maximum = $maximum, cooldown = $cooldown"
 }

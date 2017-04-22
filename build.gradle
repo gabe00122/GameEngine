@@ -58,6 +58,12 @@ task pack {
         )
 
         TexturePacker.process(
+                'raw/art/backgrounds',
+                'assets/assets/art',
+                'backgrounds'
+        )
+
+        TexturePacker.process(
                 'raw/art/tiles',
                 'assets/assets/art',
                 'tiles'

@@ -7,13 +7,14 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import gabek.sm2.systems.Box2dSystem
-import gabek.sm2.world.RenderManager
+import gabek.sm2.systems.PassiveSystem
+import gabek.sm2.graphics.RenderManager
 import gabek.sm2.world.getSystem
 
 /**
  * @author Gabriel Keith
  */
-class Box2dDebugSystem : BaseSystem(), RenderManager.OrthoRenderSystem {
+class Box2dDebugSystem : PassiveSystem(), RenderManager.OrthoRenderSystem {
     private var render: Box2DDebugRenderer? = null
     private lateinit var b2dSystem: Box2dSystem
 

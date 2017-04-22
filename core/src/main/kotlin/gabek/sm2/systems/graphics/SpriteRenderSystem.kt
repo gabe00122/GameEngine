@@ -10,11 +10,11 @@ import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.graphics.TextureRef
-import gabek.sm2.world.EntityRendererManager
-import gabek.sm2.world.RenderManager
+import gabek.sm2.graphics.EntityRendererManager
+import gabek.sm2.graphics.RenderManager
 
 /**
  * @author Gabriel Keith

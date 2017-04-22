@@ -5,7 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.sm2.components.brains.WanderingBrainCom
 import gabek.sm2.components.character.CharacterControllerCom
-import gabek.sm2.systems.TimeManager
+import gabek.sm2.systems.common.TimeManager
 import java.util.*
 
 /**

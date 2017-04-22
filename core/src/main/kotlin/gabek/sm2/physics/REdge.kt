@@ -12,6 +12,16 @@ class REdge : RShape {
 
     constructor() : super()
 
+    override fun clone(): RShape {
+        val out = REdge()
+
+        System.arraycopy(vertices, 0, out.vertices, 0, 8)
+        out.hasVertex0 = hasVertex0
+        out.hasVertex3 = hasVertex3
+
+        return out
+    }
+
     fun set(v1X: Float, v1Y: Float, v2X: Float, v2Y: Float) {
         vertices[2] = v1X
         vertices[3] = v1Y

@@ -12,15 +12,18 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.common.TranslationCom
+import gabek.sm2.components.graphics.ParallaxGraphicCom
 import gabek.sm2.graphics.RenderBuffers
+import gabek.sm2.graphics.RenderManager
 import gabek.sm2.input.Actions
-import gabek.sm2.systems.FactoryManager
+import gabek.sm2.systems.common.PrefabManager
 import gabek.sm2.systems.LevelTemplateLoader
 import gabek.sm2.systems.PlayerInputSystem
-import gabek.sm2.systems.TranslationSystem
+import gabek.sm2.systems.common.TranslationSystem
 import gabek.sm2.systems.gamemodes.GameModeManager
 import gabek.sm2.systems.graphics.CameraTrackingSystem
+import gabek.sm2.systems.graphics.ParallaxRenderSystem
 import gabek.sm2.ui.MenuControl
 import gabek.sm2.world.*
 import ktx.actors.onChange
@@ -90,8 +93,9 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
 
     private fun launchLevel(){
         val loader: LevelTemplateLoader = world.getSystem()
-        val factoryManager: FactoryManager = world.getSystem()
+        val prefabManager: PrefabManager = world.getSystem()
         val groupManager: GroupManager = world.getSystem()
+        val parallaxSystem: ParallaxRenderSystem = world.getSystem()
         val gameModeManager: GameModeManager = world.getSystem()
         val cameraTrackingSystem: CameraTrackingSystem = world.getSystem()
         val transSystem: TranslationSystem = world.getSystem()
@@ -102,25 +106,30 @@ class PlayingScreen(val kodein: Kodein) : Screen() {
         val json = JsonReader().parse(Gdx.files.getFileHandle("assets/level_templates/primer.json", Files.FileType.Internal))
         loader.loadLevel(json, worldConfig)
 
-        val cameraHandle = factoryManager.create("camera")
+        val cameraHandle = prefabManager.create("camera")
 
         val playerSpawns = groupManager.getEntities("spawn.player")
         val playerConfigs = worldConfig.players
-
-        println(playerSpawns.size())
 
         for(i in 0 until playerConfigs.size){
             if(i >= playerSpawns.size()){
                 break
             }
 
-            val player = factoryManager.create("player")
+            val player = prefabManager.create("player")
             val playerSpawnLocation = playerSpawns[i].getComponent(TranslationCom::class.java)
 
             transSystem.teleport(player, playerSpawnLocation.x, playerSpawnLocation.y, 0f)
             playerInputSystem.setInput(player, playerConfigs[i].input)
             cameraTrackingSystem.addTarget(cameraHandle, player)
         }
+
+
+        //parallaxSystem.createParallax("backgrounds:layer1", 1.0f, 1f)
+        //parallaxSystem.createParallax("backgrounds:layer2", 0.8f, 1f)
+        //parallaxSystem.createParallax("backgrounds:layer3", 0.7f, 1f)
+        //parallaxSystem.createParallax("backgrounds:layer4", 0.6f, 1f)
+        //parallaxSystem.createParallax("backgrounds:layer5", 0.5f, 1f)
 
         gameModeManager.onGameOver {
             isGameOver = true

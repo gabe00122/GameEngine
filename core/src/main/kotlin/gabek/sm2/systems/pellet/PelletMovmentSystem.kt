@@ -4,7 +4,7 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.physics.box2d.Fixture
-import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.pellet.PelletMovementCom
 import gabek.sm2.systems.Box2dSystem
 

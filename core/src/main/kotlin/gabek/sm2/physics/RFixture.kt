@@ -127,6 +127,21 @@ class RFixture {
         }
     }
 
+    fun clone(): RFixture {
+        val out = RFixture()
+
+        out.shape = shape?.clone()
+        out.density = density
+        out.friction = friction
+        out.restitution = restitution
+        out.isSensor = isSensor
+        out.categoryBits = categoryBits
+        out.maskBits = maskBits
+        out.groupIndex = groupIndex
+
+        return out
+    }
+
     private val fixtureDef: FixtureDef get() {
         val fixtureDef = TEMP_FIXTURE_DEF
 

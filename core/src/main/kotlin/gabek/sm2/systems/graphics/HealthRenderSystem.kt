@@ -10,10 +10,10 @@ import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.components.TranslationCom
+import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.character.HealthCom
 import gabek.sm2.components.graphics.HealthDisplayCom
-import gabek.sm2.world.RenderManager
+import gabek.sm2.graphics.RenderManager
 
 /**
  * @author Gabriel Keith
@@ -54,14 +54,14 @@ class HealthRenderSystem(kodein: Kodein) : BaseEntitySystem(
             temp.x = trans.lerpX(progress) + healthDisplay.offsetX - temp.width / 2f
             temp.y = trans.lerpY(progress) + healthDisplay.offsetY - temp.height / 2f
 
-            val healthPoints = MathUtils.clamp(health.healthPoints, 0f, health.maximumHealth)
+            val healthPoints = MathUtils.clamp(health.value, 0f, health.maximum)
 
             if (culling.overlaps(temp)) {
                 batch.color = background
                 batch.draw(rect, temp.x, temp.y, temp.width, temp.height)
 
                 batch.color = foreground
-                batch.draw(rect, temp.x, temp.y, temp.width * (healthPoints / health.maximumHealth), temp.height)
+                batch.draw(rect, temp.x, temp.y, temp.width * (healthPoints / health.maximum), temp.height)
 
                 batch.color = Color.WHITE
             }

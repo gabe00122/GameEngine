@@ -1,11 +1,11 @@
 package gabek.sm2.components.character
 
-import com.artemis.PooledComponent
+import gabek.sm2.components.RComponent
 
 /**
  * @author Gabriel Keith
  */
-class MovementDefinitionCom : PooledComponent() {
+class MovementDefinitionCom : RComponent<MovementDefinitionCom>() {
     var groundSpeed: Float = 0f
     var airSpeed: Float = 0f
     var airDamping: Float = 0f
@@ -29,6 +29,22 @@ class MovementDefinitionCom : PooledComponent() {
         width = 0f
         height = 0f
     }
+
+    override fun set(other: MovementDefinitionCom) {
+        groundSpeed = other.groundSpeed
+        airSpeed = other.airSpeed
+        airDamping = other.airDamping
+
+        jumpCooldown = other.jumpCooldown
+        jumpForce = other.jumpForce
+
+        pad = other.pad
+        width = other.width
+        height = other.height
+    }
+
+    override fun toString() = "MovementDefinitionCom: groundSpeed = $groundSpeed, airSpeed = $airSpeed, airDamping = $airDamping, " +
+            "jumpCooldown = $jumpCooldown, jumpForce = $jumpForce, pad = $pad, width = $width, height = $height"
 
     enum class Strategy {
         ADVANCED, SIMPLE

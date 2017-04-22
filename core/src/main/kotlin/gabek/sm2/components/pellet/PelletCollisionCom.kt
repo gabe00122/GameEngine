@@ -1,14 +1,32 @@
 package gabek.sm2.components.pellet
 
-import com.artemis.Component
+import gabek.sm2.components.RComponent
 
 /**
  * @author Gabriel Keith
  */
-class PelletCollisionCom : Component() {
+class PelletCollisionCom : RComponent<PelletCollisionCom>() {
     var damage: Float = 0f
     var kickback: Float = 0f
 
     var diesOnCollision: Boolean = false
     var diesOnAttack: Boolean = false
+
+    override fun set(other: PelletCollisionCom) {
+        damage = other.damage
+        kickback = other.kickback
+
+        diesOnCollision = other.diesOnCollision
+        diesOnAttack = other.diesOnAttack
+    }
+
+    override fun reset() {
+        damage = 0f
+        kickback = 0f
+
+        diesOnCollision = false
+        diesOnAttack = false
+    }
+
+    override fun toString() = "PelletCollisionCom: damage = $damage, kickback = $kickback, diesOnCollision = $diesOnCollision, diesOnAttack = $diesOnAttack"
 }

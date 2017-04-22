@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisLabel
+import gabek.sm2.console.Console
+import gabek.sm2.console.ConsoleGuiOverlay
 import gabek.sm2.settings.Settings
 
 /**
@@ -25,6 +27,8 @@ class ScreenManager(val kodein: Kodein) : Disposable {
     private val screenBuilderMap = mutableMapOf<String, () -> Screen>()
     var currentScreen: Screen? = null
         private set
+
+    var overlay: Screen? = null
 
     private val fpsContainer: Container<VisLabel>
     private val fpsLabel: VisLabel = VisLabel("")
@@ -47,6 +51,9 @@ class ScreenManager(val kodein: Kodein) : Disposable {
         fpsContainer.setFillParent(true)
         fpsContainer.align(Align.topRight)
 
+        val cgo = ConsoleGuiOverlay(kodein)
+        overlay = cgo
+        stage.root.addActor(cgo.root)
         stage.root.addActor(fpsContainer)
     }
 
@@ -54,16 +61,19 @@ class ScreenManager(val kodein: Kodein) : Disposable {
         fpsLabel.setText("FPS: ${Gdx.graphics.framesPerSecond}")
 
         currentScreen?.update(delta)
+        overlay?.update(delta)
         stage.act(delta)
     }
 
     fun render() {
         currentScreen?.render(batch)
+        overlay?.render(batch)
         stage.draw()
     }
 
     fun resize(width: Int, height: Int) {
         currentScreen?.resize(width, height)
+        overlay?.resize(width, height)
         stage.viewport.update(width, height, true)
     }
 

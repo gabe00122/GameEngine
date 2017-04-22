@@ -6,13 +6,14 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
 import gabek.sm2.physics.joints.RJoint
+import gabek.sm2.util.Mirrorable
 import java.util.*
 
 /**
  * @author Gabriel Keith
  */
 
-class RBody {
+class RBody: Mirrorable<RBody>{
     @Transient internal var body: Body? = null
     internal val joints = mutableListOf<RJoint>()
     private val _fixutres: MutableList<RFixture> = ArrayList()
@@ -260,6 +261,67 @@ class RBody {
         for (fixture in fixutres) {
             fixture.store(null)
         }
+    }
+
+    private fun clearFixtures(){
+        val body = body
+
+        if(body != null){
+            for(fixture in _fixutres){
+                fixture.store(body)
+            }
+        }
+
+        _fixutres.clear()
+    }
+
+    override fun set(other: RBody) {
+        clearFixtures()
+        other._fixutres.forEach { addFixture(it.clone()) }
+
+        x = other.x
+        y = other.y
+        rotationRad = other.rotationRad
+
+        angularDamping = other.angularDamping
+        angularVelocity = other.angularVelocity
+
+        linearDamping = other.linearDamping
+        linearVelocityX = other.linearVelocityX
+        linearVelocityY = other.linearVelocityY
+
+        gravityScale = other.gravityScale
+
+        isActive = other.isActive
+        isAwake = other.isAwake
+        isSleepingAllowed = other.isSleepingAllowed
+        isBullet = other.isBullet
+        isFixedRotation = other.isFixedRotation
+        bodyType = other.bodyType
+    }
+
+    fun reset(){
+        clearFixtures()
+
+        x = 0f
+        y = 0f
+        rotationRad = 0f
+
+        angularDamping = 0f
+        angularVelocity = 0f
+
+        linearDamping = 0f
+        linearVelocityX = 0f
+        linearVelocityY = 0f
+
+        gravityScale = 1f
+
+        isActive = true
+        isAwake = true
+        isSleepingAllowed = true
+        isBullet = false
+        isFixedRotation = false
+        bodyType = BodyDef.BodyType.StaticBody
     }
 
     private val bodyDef: BodyDef get() {

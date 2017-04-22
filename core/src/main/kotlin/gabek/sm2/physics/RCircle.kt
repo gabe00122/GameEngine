@@ -23,6 +23,16 @@ class RCircle : RShape {
         this.radius = radius
     }
 
+    override fun clone(): RShape {
+        val out = RCircle()
+
+        out.x = x
+        out.y = y
+        out.radius = radius
+
+        return out
+    }
+
     override fun preInit() {
         val circleShape = CircleShape()
         circleShape.radius = radius

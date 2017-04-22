@@ -5,6 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.sm2.components.StaticJointCom
 import gabek.sm2.physics.RBody
+import gabek.sm2.systems.common.TranslationSystem
 
 /**
  * @author Gabriel Keith

@@ -4,16 +4,19 @@ import com.artemis.World
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.GL30
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.physics.box2d.Box2D
 import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
 import gabek.sm2.assets.Assets
 import gabek.sm2.audio.MusicPlayer
+import gabek.sm2.console.Console
+import gabek.sm2.console.ConsoleGuiOverlay
+import gabek.sm2.graphics.RenderManager
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
@@ -45,13 +48,17 @@ class Core(val settings: Settings) : ApplicationAdapter() {
             bind<WorldConfig>() with singleton { WorldConfig() }
 
             bind<RenderManager>() with singleton { buildRenderManager(this) }
+
+            bind<Console>() with singleton { Console(kodein) }
         }
+        Gdx.app.applicationLogger = kodein.instance<Console>()
 
         kodein.instance<Assets>().finish()
         kodein.instance<MusicPlayer>().playSong("mixdown")
 
         screenManager = kodein.instance()
-        Gdx.input.inputProcessor = InputMultiplexer(kodein.instance<PlayerInputManager>().inputProcessor, screenManager.inputProcessor)
+        Gdx.input.inputProcessor = InputMultiplexer(screenManager.inputProcessor, kodein.instance<PlayerInputManager>().inputProcessor)
+        //Gdx.input.inputProcessor = screenManager.inputProcessor
 
         //quickLaunch()
     }
@@ -64,7 +71,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
 
         worldConfig.players.add(PlayerInfo(0, inputManager.getPlayerInput(0)))
 
-        //screenManager.show("playing")
+        screenManager.show("playing")
     }
 
     override fun dispose() {

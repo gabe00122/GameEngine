@@ -2,7 +2,8 @@
   "texturePacks": {
     "actors": "art/actors.atlas",
     "menus": "art/menus.atlas",
-    "tiles": "art/tiles.atlas"
+    "tiles": "art/tiles.atlas",
+    "backgrounds": "art/backgrounds.atlas"
   },
   "shaders": {
 

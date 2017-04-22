@@ -1,12 +1,12 @@
 package gabek.sm2.components.character
 
-import com.artemis.Component
+import gabek.sm2.components.RComponent
 import java.util.*
 
 /**
  * @author Gabriel Keith
  */
-class CharacterMovementStateCom : Component() {
+class CharacterMovementStateCom: RComponent<CharacterMovementStateCom>() {
     companion object {
         val DEFAULT_STATE = State.STANDING
 
@@ -17,11 +17,19 @@ class CharacterMovementStateCom : Component() {
     var timeOnGround = 0
     var timeInAir = 0
 
-    //override fun reset() {
-    //    state = DEFAULT_STATE
-    //    timeOnGround = 0
-    //    timeInAir = 0
-    //}
+    override fun set(other: CharacterMovementStateCom) {
+        state = other.state
+        timeOnGround = other.timeOnGround
+        timeInAir = other.timeInAir
+    }
+
+    override fun reset() {
+        state = DEFAULT_STATE
+        timeOnGround = 0
+        timeInAir = 0
+    }
+
+    override fun toString() = "CharacterMovementStateCom: state = $state, airTime = $timeInAir, groundTime = $timeOnGround"
 
     enum class State {
         //STARTING,
