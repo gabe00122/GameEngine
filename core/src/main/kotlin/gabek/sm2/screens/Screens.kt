@@ -1,8 +1,6 @@
 package gabek.sm2.screens
 
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.screens.GraphicsSettingsMenu
-import gabek.sm2.screens.SettingsMenu
 
 /**
  * @author Gabriel Keith

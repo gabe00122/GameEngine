@@ -2,7 +2,6 @@ package gabek.sm2.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Container
@@ -12,7 +11,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisLabel
-import gabek.sm2.console.Console
 import gabek.sm2.console.ConsoleGuiOverlay
 import gabek.sm2.settings.Settings
 

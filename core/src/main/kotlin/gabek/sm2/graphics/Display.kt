@@ -15,8 +15,9 @@ import gabek.sm2.systems.graphics.CameraSystem
 /**
  * @author Gabriel Keith
  */
-class RenderBuffers(kodein: Kodein) : Widget(), Disposable {
+class Display(kodein: Kodein) : Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
+
     var cameraHandle: Int = -1
         private set
     var cameraSystem: CameraSystem? = null
@@ -50,7 +51,7 @@ class RenderBuffers(kodein: Kodein) : Widget(), Disposable {
         }
     }
 
-    private fun sendRatio(){
+    private fun sendRatio() {
         val cameraSystem = cameraSystem
         if (cameraSystem != null && cameraHandle != -1) {
             cameraSystem.setAspectRatio(cameraHandle, pixWidth / pixHeight.toFloat())

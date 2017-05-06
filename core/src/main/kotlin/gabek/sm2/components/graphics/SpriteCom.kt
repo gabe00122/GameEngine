@@ -7,8 +7,8 @@ import gabek.sm2.graphics.TextureRef
 /**
  * @author Gabriel Keith
  */
-class SpriteCom: RComponent<SpriteCom>() {
-    var textureRef = TextureRef.NONE
+class SpriteCom : RComponent<SpriteCom>() {
+    var textureRef: TextureRef? = null
 
     var width = 0f
     var height = 0f
@@ -42,7 +42,7 @@ class SpriteCom: RComponent<SpriteCom>() {
     }
 
     override fun reset() {
-        textureRef = TextureRef.NONE
+        textureRef = null
         width = 0f
         height = 0f
         flipX = false

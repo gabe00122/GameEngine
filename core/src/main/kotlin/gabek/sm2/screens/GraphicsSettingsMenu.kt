@@ -16,11 +16,11 @@ import ktx.actors.onChange
 import ktx.collections.toGdxArray
 
 /**
-* @author Gabriel Keith
-* @date 3/15/2017
-*/
-class GraphicsSettingsMenu(kodein: Kodein): Screen(){
-    init{
+ * @author Gabriel Keith
+ * @date 3/15/2017
+ */
+class GraphicsSettingsMenu(kodein: Kodein) : Screen() {
+    init {
         val setting: Settings = kodein.instance()
         val resolution = setting.getString("resolution")
         val fullscreen = setting.getBoolean("fullscreen")
@@ -34,7 +34,7 @@ class GraphicsSettingsMenu(kodein: Kodein): Screen(){
         resolutionChoiceBox.selected = resolution.value
         resolutionChoiceBox.onChange { _, _ ->
             resolution.value = resolutionChoiceBox.selected
-            if(fullscreen.value){
+            if (fullscreen.value) {
                 Gdx.graphics.setFullscreenMode(getDisplayMode(resolution.value))
             }
         }
@@ -43,7 +43,7 @@ class GraphicsSettingsMenu(kodein: Kodein): Screen(){
         fullscreenCheckBox.isChecked = fullscreen.value
         fullscreenCheckBox.onChange { _, _ ->
             fullscreen.value = fullscreenCheckBox.isChecked
-            if(fullscreen.value){
+            if (fullscreen.value) {
                 Gdx.graphics.setFullscreenMode(getDisplayMode(resolution.value))
                 Gdx.graphics.setVSync(true)
             } else {
@@ -71,7 +71,7 @@ class GraphicsSettingsMenu(kodein: Kodein): Screen(){
         window.isMovable = false
         val whole = 5f
         val half = 2.5f
-        with(window){
+        with(window) {
             add("Resolution: ").pad(whole, whole, half, half)
             add(resolutionChoiceBox).pad(whole, half, half, whole).align(Align.left)
             row()
@@ -93,11 +93,11 @@ class GraphicsSettingsMenu(kodein: Kodein): Screen(){
         root.addActor(container)
     }
 
-    private fun closestValue(factor: Float): UiScale{
+    private fun closestValue(factor: Float): UiScale {
         return UiScale.values().firstOrNull { factor == it.factor } ?: UiScale.SCALE1
     }
 
-    private fun getDisplayMode(name: String): Graphics.DisplayMode{
+    private fun getDisplayMode(name: String): Graphics.DisplayMode {
         val split = name.split("x")
         val width = split[0].toInt()
         val height = split[1].toInt()
@@ -115,8 +115,8 @@ class GraphicsSettingsMenu(kodein: Kodein): Screen(){
                 .toGdxArray()
     }
 
-    enum class UiScale(val text: String, val factor: Float){
-        SCALE1("Size 1", 1f), SCALE2("Size 2", 2f),  SCALE3("Size 3", 3f), SCALE4("Size 4", 4f);
+    enum class UiScale(val text: String, val factor: Float) {
+        SCALE1("Size 1", 1f), SCALE2("Size 2", 2f), SCALE3("Size 3", 3f), SCALE4("Size 4", 4f);
 
         override fun toString(): String {
             return text

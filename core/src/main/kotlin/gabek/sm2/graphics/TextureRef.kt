@@ -1,10 +1,8 @@
 package gabek.sm2.graphics
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+
 /**
  * @author Gabriel Keith
  */
-class TextureRef(val id: Int) {
-    companion object {
-        val NONE = TextureRef(-1)
-    }
-}
+class TextureRef(val texture: TextureRegion, val lookup: String)

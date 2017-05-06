@@ -1,16 +1,14 @@
-package gabek.sm2.console
+package gabek.sm2.console.commands
 
-import com.artemis.World
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.systems.common.PrefabManager
-import gabek.sm2.world.getSystem
+import gabek.sm2.util.getSystem
 
 /**
  * @author Gabriel Keith
  * @date 4/20/2017
  */
-class CreateCommand(console: Console): Command(console, "create"){
-    val prefabManager = console.kodein.instance<World>().getSystem<PrefabManager>()
+class CreateCommand(console: gabek.sm2.console.Console) : gabek.sm2.console.Command(console, "create") {
+    val prefabManager = console.kodein.instance<com.artemis.World>().getSystem<gabek.sm2.systems.common.PrefabManager>()
 
     override fun command(arguments: String) {
         val split = arguments.split(" ")

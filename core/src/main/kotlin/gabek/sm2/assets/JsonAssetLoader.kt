@@ -67,10 +67,10 @@ class JsonAssetLoader(val handle: FileHandle) {
         }
     }
 
-    private fun configMusic(assets: Assets, json: JsonValue){
+    private fun configMusic(assets: Assets, json: JsonValue) {
         val root = json.get(MUSIC_LABLE)
 
-        for(music in root.JsonIterator()){
+        for (music in root.JsonIterator()) {
             assets.addMusic(music.name, withRoot(music.asString()))
         }
     }

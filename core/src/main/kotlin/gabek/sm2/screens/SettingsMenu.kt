@@ -6,14 +6,13 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.screens.Screen
 import gabek.sm2.ui.MenuControl
 import ktx.actors.onChange
 
 /**
  * @author Gabriel Keith
  */
-class SettingsMenu(kodein: Kodein): Screen() {
+class SettingsMenu(kodein: Kodein) : Screen() {
     init {
         val graphics = VisTextButton("Graphics")
         graphics.onChange { _, _ ->
@@ -21,7 +20,7 @@ class SettingsMenu(kodein: Kodein): Screen() {
         }
 
         val sound = VisTextButton("Sound")
-        sound.onChange{ _, _ ->
+        sound.onChange { _, _ ->
             manager.show("settings_sound")
         }
 

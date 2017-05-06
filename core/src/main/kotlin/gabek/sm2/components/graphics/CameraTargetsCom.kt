@@ -1,6 +1,5 @@
 package gabek.sm2.components.graphics
 
-import com.artemis.Component
 import com.artemis.annotations.EntityId
 import com.artemis.annotations.LinkPolicy
 import com.artemis.utils.IntBag
@@ -9,7 +8,7 @@ import gabek.sm2.components.RComponent
 /**
  * @author Gabriel Keith
  */
-class CameraTargetsCom: RComponent<CameraTargetsCom>() {
+class CameraTargetsCom : RComponent<CameraTargetsCom>() {
     @JvmField @EntityId @LinkPolicy(LinkPolicy.Policy.CHECK_SOURCE_AND_TARGETS)
     val targets: IntBag = IntBag()
 

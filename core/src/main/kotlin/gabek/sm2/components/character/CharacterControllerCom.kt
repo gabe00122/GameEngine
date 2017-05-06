@@ -13,13 +13,13 @@ class CharacterControllerCom : RComponent<CharacterControllerCom>() {
     var moveLeft: Boolean
         get() = lateralMovement < 0f
         set(value) {
-            lateralMovement = if(value) -1f else 0f
+            lateralMovement = if (value) -1f else 0f
         }
 
     var moveRight: Boolean
         get() = lateralMovement > 0f
         set(value) {
-            lateralMovement = if(value) 1f else 0f
+            lateralMovement = if (value) 1f else 0f
         }
 
     var jump: Boolean = false

@@ -6,7 +6,7 @@
     "backgrounds": "art/backgrounds.atlas"
   },
   "shaders": {
-
+    "basic": {"frag": "shaders/basic.frag", "vert": "shaders/basic.vert"}
   },
   "animations": {
     "fred": "anim/fred.json",

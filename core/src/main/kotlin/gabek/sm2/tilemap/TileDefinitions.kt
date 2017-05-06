@@ -1,9 +1,5 @@
 package gabek.sm2.tilemap
 
-import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-
 /**
  * @author Gabriel Keith
  */
@@ -21,7 +17,7 @@ class TileDefinitions {
 
     fun getIdByName(name: String): Int = nameToId[name]!!
 
-    fun addType(type: TileType){
+    fun addType(type: TileType) {
         nameToId.put(type.name, tileTypes.size)
         tileTypes.add(type)
     }

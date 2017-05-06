@@ -36,7 +36,7 @@ class PelletCollisionSystem : BaseEntitySystem(Aspect.all(PelletCollisionCom::cl
             val effect = pelletCollisionMapper[owner]
             val hasHealth = damageSystem.hasHealth(other)
 
-            if(hasHealth){
+            if (hasHealth) {
                 damageSystem.damage(other, effect.damage)
             }
 

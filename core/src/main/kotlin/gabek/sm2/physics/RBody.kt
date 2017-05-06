@@ -13,7 +13,7 @@ import java.util.*
  * @author Gabriel Keith
  */
 
-class RBody: Mirrorable<RBody>{
+class RBody : Mirrorable<RBody> {
     @Transient internal var body: Body? = null
     internal val joints = mutableListOf<RJoint>()
     private val _fixutres: MutableList<RFixture> = ArrayList()
@@ -204,7 +204,7 @@ class RBody: Mirrorable<RBody>{
         }
     }
 
-    fun getLocalVector(worldVector: Vector2): Vector2{
+    fun getLocalVector(worldVector: Vector2): Vector2 {
         return body!!.getLocalVector(worldVector)
     }
 
@@ -263,11 +263,11 @@ class RBody: Mirrorable<RBody>{
         }
     }
 
-    private fun clearFixtures(){
+    private fun clearFixtures() {
         val body = body
 
-        if(body != null){
-            for(fixture in _fixutres){
+        if (body != null) {
+            for (fixture in _fixutres) {
                 fixture.store(body)
             }
         }
@@ -300,7 +300,7 @@ class RBody: Mirrorable<RBody>{
         bodyType = other.bodyType
     }
 
-    fun reset(){
+    fun reset() {
         clearFixtures()
 
         x = 0f

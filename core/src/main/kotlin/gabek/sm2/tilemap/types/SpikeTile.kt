@@ -17,7 +17,7 @@ import gabek.sm2.tilemap.TileType
  * @author Gabriel Keith
  * @date 4/20/2017
  */
-class SpikeTile(world: World, kodein: Kodein): TileType("spike", texture = kodein.instance<Assets>().findTexture("tiles:spike")) {
+class SpikeTile(world: World, kodein: Kodein) : TileType("spike", texture = kodein.instance<Assets>().findTexture("tiles:spike")) {
     val tileMap = world.getSystem(TileMapSystem::class.java)!!
     val damageSystem = world.getSystem(DamageSystem::class.java)!!
 

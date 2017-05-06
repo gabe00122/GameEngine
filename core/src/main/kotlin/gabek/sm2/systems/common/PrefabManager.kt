@@ -34,7 +34,7 @@ class PrefabManager(val kodein: Kodein, builder: Builder) : PassiveSystem() {
         }
     }
 
-    companion object{
+    companion object {
         fun build(kodein: Kodein, builderFunction: (builder: Builder) -> Unit): PrefabManager {
             val builder = Builder()
             builderFunction(builder)
@@ -42,11 +42,12 @@ class PrefabManager(val kodein: Kodein, builder: Builder) : PassiveSystem() {
         }
     }
 
-    class Builder{
+    class Builder {
         internal val factoryMap = LinkedHashMap<String, Prefab>()
 
-        fun bind(name: String, prefab: Prefab){
+        fun bind(name: String, prefab: Prefab) {
             factoryMap.put(name, prefab)
+            prefab.name = name
         }
     }
 }

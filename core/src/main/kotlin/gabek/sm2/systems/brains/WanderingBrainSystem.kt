@@ -31,7 +31,7 @@ class WanderingBrainSystem : BaseEntitySystem(Aspect.all(
             if (timeManager.getElapsedTime(brain.timeToTurn) >= 0) {
                 brain.timeToTurn = timeManager.currentFrame + 60 * 5
                 if (controller.moveLeft) {
-                    if(random.nextBoolean()){
+                    if (random.nextBoolean()) {
                         controller.moveUp = true
                     }
                     controller.moveLeft = false
@@ -39,7 +39,7 @@ class WanderingBrainSystem : BaseEntitySystem(Aspect.all(
                         controller.moveRight = true
                     }
                 } else if (controller.moveRight) {
-                    if(random.nextBoolean()){
+                    if (random.nextBoolean()) {
                         controller.moveUp = true
                     }
                     if (random.nextBoolean()) {

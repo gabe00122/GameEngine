@@ -36,8 +36,8 @@ class GameSetupScreen(val kodein: Kodein) : Screen() {
         tableContainer.setFillParent(true)
 
         val avitarGrid = VisTable()
-        for(y in 0 until 2){
-            for(x in 0 until 4){
+        for (y in 0 until 2) {
+            for (x in 0 until 4) {
                 avitarGrid.add(VisTextButton("")).prefSize(20f).pad(2f)
             }
             avitarGrid.row()

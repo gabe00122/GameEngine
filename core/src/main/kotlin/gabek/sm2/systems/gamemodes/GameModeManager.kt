@@ -9,7 +9,7 @@ import gabek.sm2.components.PlayerInputCom
  * @author Gabriel Keith
  * @date 3/28/2017
  */
-class GameModeManager : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java)){
+class GameModeManager : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java)) {
 
     private var onGameOver: (() -> Unit)? = null
 
@@ -20,12 +20,12 @@ class GameModeManager : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java))
 
     override fun removed(entities: IntBag) {
         super.removed(entities)
-        if(playerList.size() == 0){
+        if (playerList.size() == 0) {
             onGameOver?.invoke()
         }
     }
 
-    fun onGameOver(onGameOver: () -> Unit){
+    fun onGameOver(onGameOver: () -> Unit) {
         this.onGameOver = onGameOver
     }
 }

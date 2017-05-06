@@ -3,20 +3,19 @@ package gabek.sm2.systems.graphics
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.artemis.utils.IntBag
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
 import gabek.sm2.components.graphics.ParallaxGraphicCom
-import gabek.sm2.graphics.RenderManager
+import gabek.sm2.world.RenderManager
 
 /**
  * @author Gabriel Keith
  * @date 4/15/2017
  */
-class ParallaxRenderSystem(kodein: Kodein): BaseEntitySystem(Aspect.all(ParallaxGraphicCom::class.java)),
+class ParallaxRenderSystem(kodein: Kodein) : BaseEntitySystem(Aspect.all(ParallaxGraphicCom::class.java)),
         RenderManager.BatchSystem {
     private val assets: Assets = kodein.instance()
     private lateinit var parallaxMapper: ComponentMapper<ParallaxGraphicCom>
@@ -32,24 +31,24 @@ class ParallaxRenderSystem(kodein: Kodein): BaseEntitySystem(Aspect.all(Parallax
 
         //batch.disableBlending()
 
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
             val parallax = parallaxMapper[entity]
             val region = parallax.sprite
 
-            if(region != null) {
-                batch.draw(assets.retrieveRegion(region),
+            if (region != null) {
+                batch.draw(region.texture,
                         centerX * parallax.scrollFactorX,
                         0f,
-                        1920/60f,
-                        1080/60f)
+                        1920 / 60f,
+                        1080 / 60f)
             }
         }
 
         //batch.enableBlending()
     }
 
-    fun createParallax(spriteName: String, scrollX: Float, scrollY: Float){
+    fun createParallax(spriteName: String, scrollX: Float, scrollY: Float) {
         val entity = world.create()
         val par = parallaxMapper.create(entity)
 

@@ -3,7 +3,6 @@ package gabek.sm2.systems.pellet
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.physics.box2d.Fixture
 import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.pellet.PelletMovementCom
 import gabek.sm2.systems.Box2dSystem
@@ -12,7 +11,7 @@ import gabek.sm2.systems.Box2dSystem
  * @author Gabriel Keith
  * @date 4/1/2017
  */
-class PelletMovmentSystem: BaseEntitySystem(Aspect.all(TranslationCom::class.java, PelletMovementCom::class.java)){
+class PelletMovmentSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java, PelletMovementCom::class.java)) {
     private lateinit var transMapper: ComponentMapper<TranslationCom>
     private lateinit var pelletMovementMapper: ComponentMapper<PelletMovementCom>
     private lateinit var box2dWorld: Box2dSystem
@@ -21,7 +20,7 @@ class PelletMovmentSystem: BaseEntitySystem(Aspect.all(TranslationCom::class.jav
     override fun processSystem() {
         val entities = entityIds
 
-        for(i in 0 until entities.size()){
+        for (i in 0 until entities.size()) {
             val entity = entities[i]
 
             val trans = transMapper[entity]
@@ -38,7 +37,7 @@ class PelletMovmentSystem: BaseEntitySystem(Aspect.all(TranslationCom::class.jav
                 1f
             }, trans.x, trans.y, nextX, nextY)
 
-            if(hit) {
+            if (hit) {
                 movement.speedX = -movement.speedX * 0.15f
                 movement.speedY = -movement.speedY * 0.15f
             }

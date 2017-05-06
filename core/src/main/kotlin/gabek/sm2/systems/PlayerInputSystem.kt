@@ -26,10 +26,10 @@ class PlayerInputSystem : BaseEntitySystem(Aspect.all(PlayerInputCom::class.java
                 char.moveUp = playerInput.pollAction(Actions.UP)
                 char.moveDown = playerInput.pollAction(Actions.DOWN)
 
-                if(!(char.moveRight && playerInput.pollAction(Actions.RIGHT))
-                        && playerInput.pollAction(Actions.LEFT)){
+                if (!(char.moveRight && playerInput.pollAction(Actions.RIGHT))
+                        && playerInput.pollAction(Actions.LEFT)) {
                     char.lateralMovement = -1f
-                } else if(playerInput.pollAction(Actions.RIGHT)){
+                } else if (playerInput.pollAction(Actions.RIGHT)) {
                     char.lateralMovement = 1f
                 } else {
                     char.lateralMovement = 0f

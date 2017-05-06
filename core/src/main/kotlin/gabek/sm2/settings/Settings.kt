@@ -7,22 +7,22 @@ import com.badlogic.gdx.Preferences
  * @author Gabriel Keith
  * @date 3/15/2017
  */
-class Settings{
+class Settings {
     private val preferences: Preferences
 
     private val values = LinkedHashMap<String, SettingsValue>()
 
-    constructor(pref: String){
+    constructor(pref: String) {
         preferences = Gdx.app.getPreferences(pref)
         initialize()
     }
 
-    constructor(pref: Preferences){
+    constructor(pref: Preferences) {
         preferences = pref
         initialize()
     }
 
-    private fun initialize(){
+    private fun initialize() {
         values.put("fullscreen", BooleanSettingsValue(false))
         values.put("resolution", StringSettingsValue("800x800"))
 
@@ -33,7 +33,7 @@ class Settings{
         load()
     }
 
-    fun getFloat(name: String): FloatSettingValue{
+    fun getFloat(name: String): FloatSettingValue {
         return values[name] as FloatSettingValue
     }
 
@@ -45,14 +45,14 @@ class Settings{
         return values[name] as StringSettingsValue
     }
 
-    fun load(){
-        for((name, value) in values){
+    fun load() {
+        for ((name, value) in values) {
             value.load(name, preferences)
         }
     }
 
-    fun save(){
-        for((name, value) in values){
+    fun save() {
+        for ((name, value) in values) {
             value.save(name, preferences)
         }
         preferences.flush()

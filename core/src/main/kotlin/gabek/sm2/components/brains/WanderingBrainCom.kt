@@ -1,6 +1,5 @@
 package gabek.sm2.components.brains
 
-import com.artemis.PooledComponent
 import gabek.sm2.components.RComponent
 
 /**

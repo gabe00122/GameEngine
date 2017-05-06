@@ -3,7 +3,7 @@ package gabek.sm2.systems.graphics
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.math.MathUtils
+import gabek.sm2.components.common.BoundCom
 import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.CameraCom
 import gabek.sm2.components.graphics.CameraTargetsCom
@@ -13,9 +13,12 @@ import gabek.sm2.components.graphics.CameraTargetsCom
  */
 class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
         CameraCom::class.java,
+        TranslationCom::class.java,
+        BoundCom::class.java,
         CameraTargetsCom::class.java)) {
 
     private lateinit var transMapper: ComponentMapper<TranslationCom>
+    private lateinit var boundMapper: ComponentMapper<BoundCom>
     private lateinit var cameraMapper: ComponentMapper<CameraCom>
     private lateinit var cameraTargetsMapper: ComponentMapper<CameraTargetsCom>
 
@@ -28,6 +31,9 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
             val cameraTargets = cameraTargetsMapper[entity]
             if (!cameraTargets.targets.isEmpty) {
                 val camera = cameraMapper[entity]
+                val trans = transMapper[entity]
+                val bounds = boundMapper[entity]
+
                 val firstTarget = transMapper[cameraTargets.targets[0]]
 
                 var x1 = firstTarget.x
@@ -63,13 +69,13 @@ class CameraTrackingSystem : BaseEntitySystem(Aspect.all(
                 //trans.x = (x1 + x2) / 2
                 //trans.y = (y1 + y2) / 2
 
-                val lagW = cameraTargets.padWidth * (5f/8f)
-                val lagH = cameraTargets.padHeight * (5f/8f)
+                val lagW = cameraTargets.padWidth * (5f / 8f)
+                val lagH = cameraTargets.padHeight * (5f / 8f)
 
-                camera.bottomLeft.x = MathUtils.clamp(camera.bottomLeft.x, x1, x1 + lagW)
-                camera.bottomLeft.y = MathUtils.clamp(camera.bottomLeft.y, y1, y1 + lagH)
-                camera.topRight.x = MathUtils.clamp(camera.topRight.x, x2 - lagW, x2)
-                camera.topRight.y = MathUtils.clamp(camera.topRight.y, y2 - lagH, y2)
+                trans.x = (x1 + x2) / 2f // = MathUtils.clamp(camera.bottomLeft.x, x1, x1 + lagW)
+                trans.y = (y1 + y2) / 2f // = MathUtils.clamp(camera.bottomLeft.y, y1, y1 + lagH)
+                bounds.width = x2 - x1 // = MathUtils.clamp(camera.topRight.x, x2 - lagW, x2)
+                bounds.height = y2 - y1 // = MathUtils.clamp(camera.topRight.y, y2 - lagH, y2)
             }
         }
     }

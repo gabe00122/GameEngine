@@ -1,6 +1,5 @@
 package gabek.sm2.components.character
 
-import com.artemis.Component
 import gabek.sm2.components.RComponent
 
 /**

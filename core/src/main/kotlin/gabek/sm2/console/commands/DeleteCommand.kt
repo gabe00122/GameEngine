@@ -1,6 +1,5 @@
-package gabek.sm2.console
+package gabek.sm2.console.commands
 
-import com.artemis.World
 import com.github.salomonbrys.kodein.instance
 
 /**
@@ -8,8 +7,8 @@ import com.github.salomonbrys.kodein.instance
  * @date 4/20/2017
  */
 
-class DeleteCommand(console: Console): Command(console, "delete"){
-    val world = console.kodein.instance<World>()
+class DeleteCommand(console: gabek.sm2.console.Console) : gabek.sm2.console.Command(console, "delete") {
+    val world = console.kodein.instance<com.artemis.World>()
 
     override fun command(arguments: String) {
         val id = arguments.toInt()

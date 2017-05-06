@@ -14,8 +14,10 @@ import gabek.sm2.world.category
  * @author Gabriel Keith
  */
 
-class JunkPrefab : Prefab(){
+class JunkPrefab : Prefab() {
     override fun define() {
+        super.define()
+
         val texture = kodein.instance<Assets>().findTexture("actors:junk")
 
         val width = 0.75f

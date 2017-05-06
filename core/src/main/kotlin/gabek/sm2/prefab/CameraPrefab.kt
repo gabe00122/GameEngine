@@ -1,5 +1,7 @@
 package gabek.sm2.prefab
 
+import gabek.sm2.components.common.BoundCom
+import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.CameraCom
 import gabek.sm2.components.graphics.CameraTargetsCom
 
@@ -8,8 +10,10 @@ import gabek.sm2.components.graphics.CameraTargetsCom
  */
 
 
-class CameraPrefab : Prefab(){
+class CameraPrefab : Prefab() {
     override fun define() {
+        super.define()
+
         val width = 5f
         val height = 5f
 
@@ -18,5 +22,7 @@ class CameraPrefab : Prefab(){
             padWidth = width
             padHeight = height
         }
+        add<TranslationCom>()
+        add<BoundCom>()
     }
 }

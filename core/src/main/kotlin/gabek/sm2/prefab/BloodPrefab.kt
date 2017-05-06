@@ -1,19 +1,12 @@
 package gabek.sm2.prefab
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.components.BodyCom
+import gabek.sm2.components.LifeSpanCom
 import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.components.LifeSpanCom
 import gabek.sm2.components.pellet.PelletMovementCom
-import gabek.sm2.graphics.TextureRef
-import gabek.sm2.physics.RPolygon
-import gabek.sm2.settings.Settings
-import gabek.sm2.world.WALL
-import gabek.sm2.world.filter
 import java.util.*
 
 /**
@@ -21,8 +14,10 @@ import java.util.*
  * @date 3/29/2017
  */
 
-class BloodPrefab: Prefab(){
+class BloodPrefab : Prefab() {
     override fun define() {
+        super.define()
+
         val rect = kodein.instance<Assets>().findTexture("actors:rect")
         val color = Color(172f / 255, 50f / 255, 50f / 255, 0.75f)
         val w = 0.2f

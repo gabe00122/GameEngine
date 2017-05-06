@@ -4,14 +4,15 @@ import com.artemis.*
 import com.badlogic.gdx.utils.Disposable
 import com.github.salomonbrys.kodein.Kodein
 import gabek.sm2.components.RComponent
+import gabek.sm2.components.meta.PrefabCom
 import gabek.sm2.systems.common.TranslationSystem
-import gabek.sm2.world.getSystem
+import gabek.sm2.util.getSystem
 import kotlin.reflect.KClass
 
 /**
  * @author Gabriel Keith
  */
-open class Prefab(): Disposable {
+open class Prefab : Disposable {
     lateinit var kodein: Kodein
     lateinit var world: World
 
@@ -21,22 +22,28 @@ open class Prefab(): Disposable {
     private val parts = HashMap<KClass<*>, Part<*>>()
     private val quickList = ArrayList<Part<*>>()
 
-    fun initialise(kodein: Kodein, world: World){
+    var name: String = ""
+
+    fun initialise(kodein: Kodein, world: World) {
         this.kodein = kodein
         this.world = world
         transSystem = world.getSystem()
     }
 
-    open fun define() {}
+    open fun define() {
+        add<PrefabCom> {
+            name = this@Prefab.name
+        }
+    }
 
     @Suppress("UNCHECKED_CAST")
-    fun assemble(){
+    fun assemble() {
         val archetypeBuilder = ArchetypeBuilder()
-        for((clazz, part) in parts){
+        for ((clazz, part) in parts) {
             val jclazz = clazz.java as Class<Component>
             archetypeBuilder.add(jclazz)
 
-            if(!part.default) {
+            if (!part.default) {
                 part.initialise(world)
                 quickList.add(part)
             }
@@ -44,17 +51,17 @@ open class Prefab(): Disposable {
         archetype = archetypeBuilder.build(world)
     }
 
-    fun create(): Int{
+    fun create(): Int {
         val id = world.create(archetype)
 
-        for(part in quickList){
+        for (part in quickList) {
             part.use(id)
         }
 
         return id
     }
 
-    fun create(x: Float, y: Float): Int{
+    fun create(x: Float, y: Float): Int {
         val id = create()
         transSystem.teleport(id, x, y, 0f)
 
@@ -62,33 +69,33 @@ open class Prefab(): Disposable {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T: RComponent<T>> add(clazz: KClass<T>, builder: (T.() -> Unit)? = null){
+    fun <T : RComponent<T>> add(clazz: KClass<T>, builder: (T.() -> Unit)? = null) {
         val part = parts.computeIfAbsent(clazz) { Part(clazz, instanceOf(clazz)) } as Part<T>
-        if(builder != null) {
+        if (builder != null) {
             part.component.builder()
             part.default = false
         }
     }
 
-    inline fun <reified T: RComponent<T>> add(noinline builder: (T.() -> Unit)? = null){
+    inline fun <reified T : RComponent<T>> add(noinline builder: (T.() -> Unit)? = null) {
         add(T::class, builder)
     }
 
-    private fun <T: Component> instanceOf(clazz: KClass<T>): T{
+    private fun <T : Component> instanceOf(clazz: KClass<T>): T {
         return clazz.java.newInstance()
     }
 
     override fun dispose() {}
 
-    private class Part<T: RComponent<T>>(val clazz: KClass<T>, val component: T){
+    private class Part<T : RComponent<T>>(val clazz: KClass<T>, val component: T) {
         private lateinit var mapper: ComponentMapper<T>
         var default: Boolean = true
 
-        fun initialise(world: World){
+        fun initialise(world: World) {
             mapper = world.getMapper(clazz.java)
         }
 
-        fun use(entityId: Int){
+        fun use(entityId: Int) {
             mapper[entityId].set(component)
         }
     }

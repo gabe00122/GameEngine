@@ -1,4 +1,3 @@
-
 package gabek.sm2.audio
 
 import com.badlogic.gdx.audio.Music
@@ -11,7 +10,7 @@ import gabek.sm2.settings.Settings
  * @author Gabriel Keith
  * @date 4/1/2017
  */
-class MusicPlayer(val kodein: Kodein){
+class MusicPlayer(val kodein: Kodein) {
     val settings: Settings = kodein.instance()
     val assets: Assets = kodein.instance()
 
@@ -20,15 +19,26 @@ class MusicPlayer(val kodein: Kodein){
     var currentSong: Music? = null
 
     init {
-        musicLevel.onChange { oldValue, newValue ->
-            currentSong?.volume = newValue
+        musicLevel.onChange { _, newValue ->
+            val currentSong = currentSong
+            if(currentSong != null) {
+                if (newValue > 0f) {
+                    currentSong.volume = newValue
+
+                    if(!currentSong.isPlaying){
+                        currentSong.play()
+                    }
+                } else if(currentSong.isPlaying){
+                    currentSong.stop()
+                }
+            }
         }
     }
 
-    fun playSong(name: String){
+    fun playSong(name: String) {
         currentSong?.stop()
 
-        currentSong = assets.retrieveMusic(name)
+        currentSong = assets.fineMusic(name)
         currentSong?.volume = musicLevel.value
         currentSong?.isLooping = true
         currentSong?.play()

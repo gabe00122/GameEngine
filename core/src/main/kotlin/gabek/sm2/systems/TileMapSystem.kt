@@ -1,6 +1,5 @@
 package gabek.sm2.systems
 
-import com.artemis.BaseSystem
 import com.artemis.World
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
@@ -11,8 +10,11 @@ import gabek.sm2.assets.Assets
 import gabek.sm2.physics.RBody
 import gabek.sm2.physics.REdge
 import gabek.sm2.physics.RFixture
-import gabek.sm2.tilemap.*
-import gabek.sm2.graphics.RenderManager
+import gabek.sm2.tilemap.ArrayGrid
+import gabek.sm2.tilemap.Grid
+import gabek.sm2.tilemap.TileDefinitions
+import gabek.sm2.tilemap.TileReference
+import gabek.sm2.world.RenderManager
 import gabek.sm2.world.WALL
 import gabek.sm2.world.filter
 
@@ -42,7 +44,7 @@ class TileMapSystem(
     }
 
     fun render(batch: SpriteBatch, culling: Rectangle, layer: Layer) {
-        val tiles = when (layer){
+        val tiles = when (layer) {
             Layer.FOREGROUND -> foregroundTiles
             Layer.BACKGROUND -> backgroundTiles
         }
@@ -61,29 +63,29 @@ class TileMapSystem(
         }
     }
 
-    fun getRendererForLayer(layer: Layer): RenderManager.BatchSystem{
-        return object: RenderManager.BatchSystem{
+    fun getRendererForLayer(layer: Layer): RenderManager.BatchSystem {
+        return object : RenderManager.BatchSystem {
             override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
                 this@TileMapSystem.render(batch, culling, layer)
             }
         }
     }
 
-    private fun drawTile(batch: SpriteBatch, grid: Grid<TileReference>, x: Int, y: Int){
+    private fun drawTile(batch: SpriteBatch, grid: Grid<TileReference>, x: Int, y: Int) {
         val tile = grid.get(x, y)
         val ref = definitions[tile.typeId].texture
-        if(ref != null) {
-            batch.draw(assets.retrieveRegion(ref), x * tileSize, y * tileSize, tileSize, tileSize)
+        if (ref != null) {
+            batch.draw(ref.texture, x * tileSize, y * tileSize, tileSize, tileSize)
         }
     }
 
-    fun resize(w: Int, h: Int){
+    fun resize(w: Int, h: Int) {
         backgroundTiles = ArrayGrid(w, h) { _, _ -> TileReference(0) }
         foregroundTiles = ArrayGrid(w, h) { _, _ -> TileReference(0) }
     }
 
-    fun setTile(x: Int, y: Int, layer: Layer, reference: TileReference){
-        val grid = if(layer == Layer.FOREGROUND) foregroundTiles else backgroundTiles
+    fun setTile(x: Int, y: Int, layer: Layer, reference: TileReference) {
+        val grid = if (layer == Layer.FOREGROUND) foregroundTiles else backgroundTiles
         grid.set(x, y, reference)
         definitions[reference].onTileInit(x, y, reference)
     }
@@ -190,7 +192,7 @@ class TileMapSystem(
         }
     }
 
-    enum class Layer{
+    enum class Layer {
         FOREGROUND, BACKGROUND
     }
 }

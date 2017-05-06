@@ -1,19 +1,17 @@
 package gabek.sm2.prefab
 
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
 import gabek.sm2.components.BodyCom
 import gabek.sm2.components.PlayerInputCom
-import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.character.*
+import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.AnimationCom
 import gabek.sm2.components.graphics.HealthDisplayCom
 import gabek.sm2.components.graphics.SpriteCom
 import gabek.sm2.physics.RPolygon
 import gabek.sm2.world.CHARACTER
-import gabek.sm2.world.WALL
 import gabek.sm2.world.filter
 
 /**
@@ -21,17 +19,19 @@ import gabek.sm2.world.filter
  */
 
 
-class PlayerPrefab : Prefab(){
+class PlayerPrefab : Prefab() {
     override fun define() {
+        super.define()
+
         val assets: Assets = kodein.instance()
 
         val width = 0.5f
         val height = 1f
         val bodyHeight = height - width / 2f
 
-        val runningAnim = assets.retrieveAnimationDef("fred:running")
-        val stillAnim = assets.retrieveAnimationDef("fred:still")
-        val jumpingAnim = assets.retrieveAnimationDef("fred:jumping")
+        val runningAnim = assets.findAnimation("fred:running")
+        val stillAnim = assets.findAnimation("fred:still")
+        val jumpingAnim = assets.findAnimation("fred:jumping")
 
         //val legFactory = prefab { kodein, world ->
         //    com<ParentOfCom> { diesWithParent = true }
@@ -49,7 +49,7 @@ class PlayerPrefab : Prefab(){
             //bodyShape.setAsBox(width, bodyHeight, 0f, 0f)
             //body.addFixture(bodyShape, density = 1f, categoryBits = filter(CHARACTER))
             val platformShape = RPolygon().withClippedCorners(width, height, 0f, 0f, width / 4, 0.25f)
-            body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER), maskBits = filter(WALL))
+            body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = filter(CHARACTER))
 
             body.bodyType = BodyDef.BodyType.DynamicBody
             body.isFixedRotation = true

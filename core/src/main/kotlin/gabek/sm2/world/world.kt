@@ -7,31 +7,27 @@ import com.artemis.link.EntityLinkManager
 import com.artemis.managers.GroupManager
 import com.artemis.managers.TagManager
 import com.artemis.managers.WorldSerializationManager
-import com.badlogic.gdx.physics.box2d.Contact
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
-import gabek.sm2.graphics.EntityRendererManager
-import gabek.sm2.graphics.RenderManager
 import gabek.sm2.prefab.*
 import gabek.sm2.prefab.enviroment.SpinnerPropPrefab
 import gabek.sm2.serialisation.kryoSetup
-import gabek.sm2.physics.RCollisionAdapter
-import gabek.sm2.physics.RFixture
-import gabek.sm2.physics.RPolygon
 import gabek.sm2.systems.*
 import gabek.sm2.systems.brains.WanderingBrainSystem
-import gabek.sm2.systems.character.*
+import gabek.sm2.systems.character.BiDirectionSystem
+import gabek.sm2.systems.character.CharacterAnimatorSystem
+import gabek.sm2.systems.character.CharacterControllerSystem
+import gabek.sm2.systems.character.DamageSystem
+import gabek.sm2.systems.common.*
 import gabek.sm2.systems.gamemodes.GameModeManager
 import gabek.sm2.systems.graphics.*
-import gabek.sm2.systems.BleedingSystem
-import gabek.sm2.systems.common.*
 import gabek.sm2.systems.pellet.PelletCollisionSystem
 import gabek.sm2.systems.pellet.PelletMovmentSystem
 import gabek.sm2.tilemap.TileDefinitions
-import gabek.sm2.tilemap.TileReference
 import gabek.sm2.tilemap.TileType
 import gabek.sm2.tilemap.types.SpikeTile
+import gabek.sm2.util.getSystem
 
 /**
  * @author Gabriel Keith
@@ -52,6 +48,7 @@ fun buildWorld(kodein: Kodein): World {
 
     //needs to be first
     config.setSystem(TranslationSystem())
+    config.setSystem(BoundSystem())
     //box2d
     config.setSystem(Box2dSystem())
     config.setSystem(StaticJointSystem())
@@ -113,7 +110,7 @@ fun buildRenderManager(kodein: Kodein): RenderManager {
                         //getSystem<HealthRenderSystem>()
                 ),
                 orthoSystems = listOf(
-                        //getSystem<Box2dDebugSystem>()
+                        getSystem<Box2dDebugSystem>()
                 )
         )
     }
@@ -133,7 +130,7 @@ fun prefabBindings(builder: PrefabManager.Builder) = with(builder) {
     bind("blood", BloodPrefab())
 }
 
-fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein){
+fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kodein) {
     val assets: Assets = kodein.instance()
 
     definitions.addType(TileType("none", null, false))

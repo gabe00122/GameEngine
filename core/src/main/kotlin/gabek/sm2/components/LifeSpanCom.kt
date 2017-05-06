@@ -1,7 +1,5 @@
 package gabek.sm2.components
 
-import com.artemis.Component
-
 /**
  * @author Gabriel Keith
  */

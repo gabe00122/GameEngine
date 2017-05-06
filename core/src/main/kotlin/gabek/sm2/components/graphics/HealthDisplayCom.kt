@@ -1,6 +1,5 @@
 package gabek.sm2.components.graphics
 
-import com.artemis.Component
 import gabek.sm2.components.RComponent
 
 /**

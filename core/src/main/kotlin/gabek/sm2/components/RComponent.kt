@@ -8,4 +8,4 @@ import gabek.sm2.util.Mirrorable
  * @date 4/18/2017
  */
 
-abstract class RComponent<T: RComponent<T>>: PooledComponent(), Mirrorable<T>
+abstract class RComponent<T : RComponent<T>> : PooledComponent(), Mirrorable<T>

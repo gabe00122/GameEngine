@@ -2,23 +2,24 @@ package gabek.sm2.console
 
 import com.badlogic.gdx.ApplicationLogger
 import com.github.salomonbrys.kodein.Kodein
+import gabek.sm2.console.commands.*
 
 /**
  * @author Gabriel Keith
  * @date 4/18/2017
  */
 
-class Console(val kodein: Kodein): ApplicationLogger {
+class Console(val kodein: Kodein) : ApplicationLogger {
     var outputProcessor: ConsoleListener? = null
         set(value) {
             field = value
-            backlog.forEach { value?.write(it) }
-            backlog.clear()
+            flush()
         }
-    private val backlog = ArrayList<String>()
 
     private val commands = HashMap<String, Command>()
     private var isInitialized = false
+
+    private var outputBuffer = StringBuilder()
 
     override fun error(tag: String, message: String) {
         handleOutput(tag, message)
@@ -44,32 +45,41 @@ class Console(val kodein: Kodein): ApplicationLogger {
 
     }
 
-    fun handleOutput(tag: String, message: String){
-        write("$tag: $message")
+    fun handleOutput(tag: String, message: String) {
+        writeln("$tag: $message")
     }
 
-    fun write(message: String){
-        val listener = outputProcessor
-        if(listener != null){
-            listener.write(message)
-        } else {
-            backlog.add(message)
+    fun write(message: String) {
+        outputBuffer.append(message)
+    }
+
+    fun writeln(message: String){
+        outputBuffer.append("$message\n")
+    }
+
+    private fun flush(){
+        val out = outputProcessor
+        if(out != null) {
+            out.write(outputBuffer.toString())
+            outputBuffer = StringBuilder()
         }
     }
 
-    fun processInput(text: String){
+    fun processInput(text: String) {
         val list = text.split(' ', limit = 2)
-        if(list.size == 1){
-            write(text)
+        if (list.size == 1) {
+            writeln(text)
             commands[list[0]]?.command("")
-        } else if(list.size == 2){
-            write(text)
+            flush()
+        } else if (list.size == 2) {
+            writeln(text)
             commands[list[0]]?.command(list[1])
+            flush()
         }
     }
 
-    fun initializeCommands(){
-        if(!isInitialized){
+    fun initializeCommands() {
+        if (!isInitialized) {
             isInitialized = true
 
             addCommand(EchoCommand(this))
@@ -77,14 +87,16 @@ class Console(val kodein: Kodein): ApplicationLogger {
             addCommand(InspectCommand(this))
             addCommand(CreateCommand(this))
             addCommand(DeleteCommand(this))
+
+            addCommand(Box2dOverlayCommand(this))
         }
     }
 
-    private fun addCommand(command: Command){
+    private fun addCommand(command: Command) {
         commands.put(command.name, command)
     }
 
-    interface ConsoleListener{
+    interface ConsoleListener {
         fun write(message: String)
     }
 }

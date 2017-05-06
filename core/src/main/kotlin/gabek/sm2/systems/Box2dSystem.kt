@@ -113,8 +113,8 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
             val fixtureA = contact.fixtureA.userData as RFixture
             val fixtureB = contact.fixtureB.userData as RFixture
             contact.tangentSpeed = 0f
-			
-			
+
+
             for (callback in fixtureA.callbackList) {
                 callback.preSolve(contact, oldManifold, fixtureA, fixtureB)
             }
@@ -127,7 +127,7 @@ class Box2dSystem : BaseEntitySystem(Aspect.all(BodyCom::class.java, Translation
         override fun postSolve(contact: Contact, impulse: ContactImpulse) {
             val fixtureA = contact.fixtureA.userData as RFixture
             val fixtureB = contact.fixtureB.userData as RFixture
-			
+
             for (callback in fixtureA.callbackList) {
                 callback.postSolve(contact, impulse, fixtureA, fixtureB)
             }

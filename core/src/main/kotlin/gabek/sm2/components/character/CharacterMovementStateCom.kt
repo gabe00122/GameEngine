@@ -6,7 +6,7 @@ import java.util.*
 /**
  * @author Gabriel Keith
  */
-class CharacterMovementStateCom: RComponent<CharacterMovementStateCom>() {
+class CharacterMovementStateCom : RComponent<CharacterMovementStateCom>() {
     companion object {
         val DEFAULT_STATE = State.STANDING
 

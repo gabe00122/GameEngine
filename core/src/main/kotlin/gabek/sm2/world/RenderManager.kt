@@ -1,4 +1,4 @@
-package gabek.sm2.graphics
+package gabek.sm2.world
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL30
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.graphics.RenderBuffers
+import gabek.sm2.graphics.Display
 import gabek.sm2.systems.graphics.CameraSystem
 
 /**
@@ -19,9 +19,10 @@ class RenderManager(val kodein: Kodein,
 
     //private val shader = kodein.instance<Assets>().resourceManager.get("shaders/hex.vert", ShaderProgram::class.java)
     private val culling = Rectangle()
+    private val ortho = OrthographicCamera()
 
-    fun render(buffer: RenderBuffers, batch: SpriteBatch, progress: Float) {
-        val ortho = cameraSystem.updateProjection(buffer.cameraHandle, progress)
+    fun render(buffer: Display, batch: SpriteBatch, progress: Float) {
+        cameraSystem.updateProjection(ortho, buffer.cameraHandle, progress)
         updateCulling(ortho)
 
         batch.projectionMatrix = ortho.projection

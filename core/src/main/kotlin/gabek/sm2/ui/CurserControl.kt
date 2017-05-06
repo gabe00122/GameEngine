@@ -1,12 +1,12 @@
 package gabek.sm2.ui
 
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
+import gabek.sm2.graphics.TextureRef
 import gabek.sm2.input.Actions
 import gabek.sm2.input.PlayerInput
 
@@ -14,13 +14,13 @@ import gabek.sm2.input.PlayerInput
  * @author Gabriel Keith
  */
 class CurserControl(val kodein: Kodein) : Actor() {
-    private val curserTextures = mutableListOf<TextureRegion>()
+    private val curserTextures = mutableListOf<TextureRef>()
     private val curserList = mutableListOf<Curser>()
 
     init {
         val assets: Assets = kodein.instance()
 
-        (0..5).mapTo(curserTextures) { assets.retrieveRegion("menus:curser:$it") }
+        (0..5).mapTo(curserTextures) { assets.findTexture("menus:curser:$it") }
     }
 
     fun join(playerInput: PlayerInput, index: Int) {
@@ -41,7 +41,7 @@ class CurserControl(val kodein: Kodein) : Actor() {
         }
     }
 
-    private inner class Curser(val playerInput: PlayerInput, val textureRegion: TextureRegion) {
+    private inner class Curser(val playerInput: PlayerInput, val textureRegion: TextureRef) {
         val speed = 200f
         val size = 24f
 
@@ -73,7 +73,7 @@ class CurserControl(val kodein: Kodein) : Actor() {
         }
 
         fun draw(batch: Batch) {
-            batch.draw(textureRegion, x, y, size, size)
+            batch.draw(textureRegion.texture, x, y, size, size)
         }
     }
 }

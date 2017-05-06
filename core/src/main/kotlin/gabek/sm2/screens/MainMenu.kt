@@ -2,8 +2,6 @@ package gabek.sm2.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.utils.Align
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisImage
@@ -28,8 +26,8 @@ class MainMenu(val kodein: Kodein) : Screen() {
         window.isMovable = false
         window.isResizable = false
 
-        val titleImage = kodein.instance<Assets>().retrieveRegion("menus:title")
-        title = VisImage(titleImage)
+        val titleImage = kodein.instance<Assets>().findTexture("menus:title")
+        title = VisImage(titleImage.texture)
         title.setScale(2.5f)
         title.originX = title.width / 2f
         title.originY = title.height / 2f

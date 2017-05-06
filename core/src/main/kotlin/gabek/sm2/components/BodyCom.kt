@@ -7,7 +7,7 @@ import gabek.sm2.physics.RBody
  * @author Gabriel Keith
  */
 @DelayedComponentRemoval
-class BodyCom: RComponent<BodyCom>() {
+class BodyCom : RComponent<BodyCom>() {
     var body = RBody()
 
     override fun set(other: BodyCom) {

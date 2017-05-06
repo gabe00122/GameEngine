@@ -6,18 +6,18 @@ import com.badlogic.gdx.Preferences
  * @author Gabriel Keith
  * @date 3/30/2017
  */
-class StringSettingsValue(default: String): SettingsValue(){
+class StringSettingsValue(default: String) : SettingsValue() {
     private val listeners = ArrayList<(oldValue: String, newValue: String) -> Unit>()
 
     var value: String = default
         set(value) {
-            if(field != value) {
+            if (field != value) {
                 listeners.forEach { it(field, value) }
                 field = value
             }
         }
 
-    fun onChange(listener: (oldValue: String, newValue: String) -> Unit){
+    fun onChange(listener: (oldValue: String, newValue: String) -> Unit) {
         listeners.add(listener)
     }
 
@@ -29,7 +29,7 @@ class StringSettingsValue(default: String): SettingsValue(){
         value = pref.getString(name, value)
     }
 
-    interface ChangeListener{
+    interface ChangeListener {
         fun onChange(oldValue: Float, newValue: Float)
     }
 }

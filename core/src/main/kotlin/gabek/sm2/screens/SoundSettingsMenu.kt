@@ -4,7 +4,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.utils.Align
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import com.kotcrab.vis.ui.widget.*
+import com.kotcrab.vis.ui.widget.VisLabel
+import com.kotcrab.vis.ui.widget.VisSlider
+import com.kotcrab.vis.ui.widget.VisTextButton
+import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.sm2.settings.Settings
 import ktx.actors.onChange
 
@@ -13,8 +16,8 @@ import ktx.actors.onChange
  * @date 3/30/2017
  */
 
-class SoundSettingsMenu(val kodein: Kodein): Screen(){
-    init{
+class SoundSettingsMenu(val kodein: Kodein) : Screen() {
+    init {
         val settings: Settings = kodein.instance()
         val musicLevel = settings.getFloat("music_level")
         val effectLevel = settings.getFloat("effect_level")
@@ -51,7 +54,7 @@ class SoundSettingsMenu(val kodein: Kodein): Screen(){
 
         val whole = 5f
         val half = 2.5f
-        with(window){
+        with(window) {
             add("Music Level: ").pad(whole, whole, half, half)
             add(musicLevelSlider).pad(whole, half, half, half)
             add(musicLevelMonitor).pad(whole, half, whole, half).prefWidth(20f).row()

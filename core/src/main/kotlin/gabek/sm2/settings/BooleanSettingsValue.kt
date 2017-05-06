@@ -6,18 +6,18 @@ import com.badlogic.gdx.Preferences
  * @author Gabriel Keith
  * @date 3/30/2017
  */
-class BooleanSettingsValue(default: Boolean): SettingsValue(){
+class BooleanSettingsValue(default: Boolean) : SettingsValue() {
     private val listeners = ArrayList<(oldValue: Boolean, newValue: Boolean) -> Unit>()
 
     var value: Boolean = default
         set(value) {
-            if(field != value) {
+            if (field != value) {
                 listeners.forEach { it(field, value) }
                 field = value
             }
         }
 
-    fun onChange(listener: (oldValue: Boolean, newValue: Boolean) -> Unit){
+    fun onChange(listener: (oldValue: Boolean, newValue: Boolean) -> Unit) {
         listeners.add(listener)
     }
 
@@ -29,7 +29,7 @@ class BooleanSettingsValue(default: Boolean): SettingsValue(){
         value = pref.getBoolean(name, value)
     }
 
-    interface ChangeListener{
+    interface ChangeListener {
         fun onChange(oldValue: Float, newValue: Float)
     }
 }

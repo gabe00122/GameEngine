@@ -8,13 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
-import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
 import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.graphics.TextureRef
-import gabek.sm2.graphics.EntityRendererManager
-import gabek.sm2.graphics.RenderManager
+import gabek.sm2.world.EntityRendererManager
 
 /**
  * @author Gabriel Keith
@@ -23,15 +19,19 @@ class SpriteRenderSystem(kodein: Kodein)
     : BaseEntitySystem(Aspect.all(SpriteCom::class.java, TranslationCom::class.java))
         , EntityRendererManager.Renderer {
 
+    private lateinit var spriteMapper: ComponentMapper<SpriteCom>
+    private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
-    override fun fill(state: Array<IntBag>, culling: Rectangle, progress: Float) {
+    private val temp = Rectangle()
+
+    override fun fill(layers: Array<EntityRendererManager.Layer>, culling: Rectangle, progress: Float) {
         val entities = entityIds
         for (i in 0 until entities.size()) {
             val entity = entities[i]
             val spriteComp = spriteMapper.get(entity)
             val transComp = translationMapper.get(entity)
 
-            if (spriteComp.textureRef != TextureRef.NONE) {
+            if (spriteComp.textureRef != null) {
                 val x = transComp.lerpX(progress) + spriteComp.offsetX
                 val y = transComp.lerpY(progress) + spriteComp.offsetY
                 val width = spriteComp.width
@@ -50,46 +50,42 @@ class SpriteRenderSystem(kodein: Kodein)
                 temp.y = y - temp.height / 2f
 
                 if (culling.overlaps(temp)) {
-                    state[spriteComp.layer].add(entity)
+                    layers[spriteComp.layer].pushIndex(entity)
                 }
             }
         }
     }
 
-    override fun render(entity: Int, batch: SpriteBatch, culling: Rectangle, progress: Float) {
+    override fun render(entity: Int, batch: SpriteBatch, progress: Float) {
         val spriteComp = spriteMapper.get(entity)
         val transComp = translationMapper.get(entity)
 
-        val region = assets.retrieveRegion(spriteComp.textureRef)
+        val ref = spriteComp.textureRef
 
-        val x = transComp.lerpX(progress) + spriteComp.offsetX
-        val y = transComp.lerpY(progress) + spriteComp.offsetY
-        val width = spriteComp.width
-        val height = spriteComp.height
-        val halfWidth = width / 2f
-        val halfHeight = height / 2f
-        val rotation = transComp.lerpRotation(progress) + spriteComp.offsetRotation
+        if (ref != null) {
+            val region = ref.texture
 
-        val flipX = spriteComp.flipX
-        val flipY = spriteComp.flipY
+            val x = transComp.lerpX(progress) + spriteComp.offsetX
+            val y = transComp.lerpY(progress) + spriteComp.offsetY
+            val width = spriteComp.width
+            val height = spriteComp.height
+            val halfWidth = width / 2f
+            val halfHeight = height / 2f
+            val rotation = transComp.lerpRotation(progress) + spriteComp.offsetRotation
 
-        val oldColor = batch.color
-        batch.color = spriteComp.tint
+            val flipX = spriteComp.flipX
+            val flipY = spriteComp.flipY
 
-        region.flip(flipX, flipY)
-        batch.draw(region,
-                x - halfWidth, y - halfHeight,
-                halfWidth, halfHeight, width, height, 1f, 1f, rotation)
-        region.flip(flipX, flipY)
-        batch.color = oldColor
+            val oldColor = batch.color
+            batch.color = spriteComp.tint
+
+            region.flip(flipX, flipY)
+            batch.draw(region, x - halfWidth, y - halfHeight,
+                    halfWidth, halfHeight, width, height, 1f, 1f, rotation)
+            region.flip(flipX, flipY)
+            batch.color = oldColor
+        }
     }
-
-    private val assets: Assets = kodein.instance()
-
-    private lateinit var spriteMapper: ComponentMapper<SpriteCom>
-    private lateinit var translationMapper: ComponentMapper<TranslationCom>
-
-    private val temp = Rectangle()
 
     override fun processSystem() {}
 }

@@ -21,7 +21,7 @@ class DamageSystem : PassiveSystem() {
         val health = healthMapper[entity]
         health.value -= amount
 
-        if(health.value <= 0f){
+        if (health.value <= 0f) {
             deathListeners.forEach { it(entity, 0f, 0) }
         }
     }
@@ -33,7 +33,7 @@ class DamageSystem : PassiveSystem() {
         deathListeners.forEach { it(entity, 0f, 0) }
     }
 
-    fun addDeathListener(deathListener: DeathListener){
+    fun addDeathListener(deathListener: DeathListener) {
         deathListeners.add(deathListener)
     }
 }

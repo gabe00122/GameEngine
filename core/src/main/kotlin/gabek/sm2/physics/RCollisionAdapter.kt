@@ -5,10 +5,10 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 
 /**
-* @author Gabriel Keith
-* @date 3/12/2017
-*/
-abstract class RCollisionAdapter: RCollisionCallback{
+ * @author Gabriel Keith
+ * @date 3/12/2017
+ */
+abstract class RCollisionAdapter : RCollisionCallback {
     override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
 
     override fun end(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}

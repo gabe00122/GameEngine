@@ -6,7 +6,7 @@ import gabek.sm2.systems.common.PrefabManager
 import gabek.sm2.systems.common.TranslationSystem
 import gabek.sm2.tilemap.TileReference
 import gabek.sm2.world.WorldConfig
-import gabek.sm2.world.clear
+import gabek.sm2.util.clear
 
 /**
  * @author Gabriel Keith
@@ -40,7 +40,7 @@ class LevelTemplateLoader : PassiveSystem() {
         val gid = tileset.getInt("firstgid")
 
         val defLookup = IntArray(tileset.getInt("tilecount"))
-        for(prop in tileset.get("tileproperties")){
+        for (prop in tileset.get("tileproperties")) {
             defLookup[prop.name.toInt()] = definitions.getIdByName(prop.getString("type"))
         }
 
@@ -58,14 +58,14 @@ class LevelTemplateLoader : PassiveSystem() {
                 .first { it.getString("name") == "objects" }
                 .get("objects")
 
-        for(obj in objects.JsonIterator()){
+        for (obj in objects.JsonIterator()) {
             val id = prefabManager.create(obj.getString("type"))
             transSystem.teleport(id,
-                    (obj.getInt("x")/tileWidth.toFloat()) * tileSystem.tileSize,
-                    (height - (obj.getInt("y") - obj.getInt("height") )/tileHeight.toFloat()) * tileSystem.tileSize,
+                    (obj.getInt("x") / tileWidth.toFloat()) * tileSystem.tileSize,
+                    (height - (obj.getInt("y") - obj.getInt("height")) / tileHeight.toFloat()) * tileSystem.tileSize,
                     0f)
 
-            if(obj.has("properties")) {
+            if (obj.has("properties")) {
                 val properties = obj.get("properties")
                 if (properties.has("group")) {
                     groupManager.add(world.getEntity(id), properties.getString("group"))
@@ -76,13 +76,13 @@ class LevelTemplateLoader : PassiveSystem() {
         world.process()
     }
 
-    private fun loadLayer(layers: JsonValue, layer: TileMapSystem.Layer, width: Int, height: Int, tileSets: IntArray, gid: Int){
-        for((i, tile) in layers.first { it.getString("name") == layer.name.toLowerCase()}.get("data").withIndex()){
+    private fun loadLayer(layers: JsonValue, layer: TileMapSystem.Layer, width: Int, height: Int, tileSets: IntArray, gid: Int) {
+        for ((i, tile) in layers.first { it.getString("name") == layer.name.toLowerCase() }.get("data").withIndex()) {
             val x = i.rem(width)
             val y = height - i / width
             val tileData = tile.asInt()
 
-            if(tileData > 0) {
+            if (tileData > 0) {
                 tileSystem.setTile(x, y,
                         layer,
                         TileReference(tileSets[tileData - gid]))

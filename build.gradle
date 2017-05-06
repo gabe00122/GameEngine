@@ -11,18 +11,14 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: 'eclipse'
-    apply plugin: 'idea'
-}
-
-configure(subprojects) {
-    apply plugin: 'kotlin'
-    sourceCompatibility = 1.8
+    apply plugin: "eclipse"
+    apply plugin: "idea"
 }
 
 subprojects {
-    version = '0.0.3'
-    ext.appName = 'SpaceMonk2'
+    version = "0.0.3"
+
+    ext.appName = "SpaceMonk2"
     repositories {
         jcenter()
     }
@@ -38,7 +34,6 @@ tasks.eclipse.doLast {
 // Run `gradle pack` task to generate skin.atlas file at assets/ui.
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import com.kotcrab.vis.usl.Main
-
 
 task pack {
     doLast {

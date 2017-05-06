@@ -1,9 +1,10 @@
 apply plugin: 'application'
+apply plugin: 'kotlin'
 
 sourceSets.main.resources.srcDirs += [rootProject.file('assets').absolutePath]
 mainClassName = 'gabek.sm2.lwjgl3.Lwjgl3LauncherKt'
 eclipse.project.name = appName + '-lwjgl3'
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     compile project(':core')

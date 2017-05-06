@@ -1,9 +1,10 @@
 apply plugin: "artemis"
+apply plugin: "kotlin"
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
 
-
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
@@ -12,7 +13,6 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-
 
     compile "com.kotcrab.vis:vis-ui:$visUiVersion"
 

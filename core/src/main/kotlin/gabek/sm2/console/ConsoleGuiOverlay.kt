@@ -2,9 +2,6 @@ package gabek.sm2.console
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
@@ -20,7 +17,7 @@ import ktx.actors.onKeyDown
  * @author Gabriel Keith
  * @date 4/18/2017
  */
-class ConsoleGuiOverlay(kodein: Kodein): Screen(), Console.ConsoleListener{
+class ConsoleGuiOverlay(kodein: Kodein) : Screen(), Console.ConsoleListener {
     val console: Console = kodein.instance()
 
     val outputGroup = VerticalGroup()
@@ -45,8 +42,8 @@ class ConsoleGuiOverlay(kodein: Kodein): Screen(), Console.ConsoleListener{
         //outputGroup.isDisabled = true
 
         inputField.onKeyDown { event, actor, keyCode ->
-            if(keyCode == Input.Keys.ENTER){
-                if(!inputField.isEmpty){
+            if (keyCode == Input.Keys.ENTER) {
+                if (!inputField.isEmpty) {
                     console.processInput(inputField.text)
                     inputField.text = ""
                 }
@@ -64,7 +61,7 @@ class ConsoleGuiOverlay(kodein: Kodein): Screen(), Console.ConsoleListener{
         root.addActor(splitPane)
         root.touchable = Touchable.childrenOnly
         root.setColor(1f, 1f, 1f, 0.9f)
-        //root.isVisible = false
+        root.isVisible = false
     }
 
     override fun write(message: String) {
@@ -72,22 +69,22 @@ class ConsoleGuiOverlay(kodein: Kodein): Screen(), Console.ConsoleListener{
         label.setAlignment(Align.left)
         outputGroup.addActor(label)
 
-        if(outputScroll.scrollPercentY == 1f || outputScroll.scrollPercentY == Float.NaN){
+        if (outputScroll.scrollPercentY == 1f || outputScroll.scrollPercentY == Float.NaN) {
             outputScroll.layout()
             outputScroll.scrollPercentY = 1f
         }
     }
 
     override fun update(delta: Float) {
-        if(Gdx.input.isKeyJustPressed(68)){
+        if (Gdx.input.isKeyJustPressed(68)) {
             root.isVisible = !root.isVisible
-            if(root.stage.keyboardFocus == inputField) {
+            if (root.stage.keyboardFocus == inputField) {
                 root.stage.keyboardFocus = null
                 inputField.text = ""
             }
         }
 
-        if(root.isVisible) {
+        if (root.isVisible) {
             temp.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
             temp.set(splitPane.stage.screenToStageCoordinates(temp))
             if (temp.y < splitPane.height - splitPane.split * splitPane.height) {

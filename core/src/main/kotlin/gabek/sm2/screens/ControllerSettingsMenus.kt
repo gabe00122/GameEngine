@@ -10,7 +10,7 @@ import ktx.actors.onChange
  * @author Gabriel Keith
  * @date 3/30/2017
  */
-class ControllerSettingsMenus(kodein: Kodein): Screen(){
+class ControllerSettingsMenus(kodein: Kodein) : Screen() {
     init {
         val backBut = VisTextButton("Back")
         backBut.onChange { _, _ ->

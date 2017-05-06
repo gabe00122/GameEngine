@@ -7,7 +7,7 @@ import gabek.sm2.graphics.TextureRef
  * @author Gabriel Keith
  * @date 4/15/2017
  */
-class ParallaxGraphicCom: RComponent<ParallaxGraphicCom>(){
+class ParallaxGraphicCom : RComponent<ParallaxGraphicCom>() {
     var sprite: TextureRef? = null
 
     var scrollFactorX: Float = 0f

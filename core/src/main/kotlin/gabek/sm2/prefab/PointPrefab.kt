@@ -7,8 +7,10 @@ import gabek.sm2.components.common.TranslationCom
  * @date 4/8/2017
  */
 
-class PointPrefab : Prefab(){
+class PointPrefab : Prefab() {
     override fun define() {
+        super.define()
+
         add<TranslationCom>()
     }
 }

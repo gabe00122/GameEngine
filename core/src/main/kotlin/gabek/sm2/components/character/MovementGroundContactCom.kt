@@ -38,7 +38,7 @@ class MovementGroundContactCom : RComponent<MovementGroundContactCom>() {
         return contacts.firstOrNull { it.fixture === fixture }
     }
 
-    fun getOrCreate(fixture: RFixture): GroundContact{
+    fun getOrCreate(fixture: RFixture): GroundContact {
         return get(fixture) ?: add(fixture)
     }
 
@@ -63,7 +63,7 @@ class MovementGroundContactCom : RComponent<MovementGroundContactCom>() {
         }
     }
 
-    class GroundContact(val fixture: RFixture){
+    class GroundContact(val fixture: RFixture) {
         var numberOfPoints: Int = 0
         val points = Array(2, { Vector2() })
         val normal = Vector2()

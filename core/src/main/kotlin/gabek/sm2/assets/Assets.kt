@@ -7,7 +7,6 @@ import com.badlogic.gdx.assets.loaders.ShaderProgramLoader
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Logger
@@ -20,8 +19,7 @@ import gabek.sm2.graphics.TextureRef
 class Assets() : Disposable {
     private val resourceManager = AssetManager()
 
-    private val textureIdMap = mutableMapOf<String, Int>()
-    private val textureList = mutableListOf<TextureRegion>()
+    private val textureMap = HashMap<String, TextureRef>()
 
     private val shaderMap = mutableMapOf<String, ShaderProgram>()
     private val animationMap = mutableMapOf<String, AnimationDef>()
@@ -56,9 +54,10 @@ class Assets() : Disposable {
             val atlas = assetManager.get(fileName, TextureAtlas::class.java)
 
             for (region in atlas.regions) {
-                val id = textureList.size
-                textureList.add(region)
-                textureIdMap.put("$packName:${region.name}:${region.index}", id)
+                val texture = region
+                val lookup = "$packName:${region.name}:${region.index}"
+
+                textureMap.put(lookup, TextureRef(texture, lookup))
             }
         }
 
@@ -102,7 +101,7 @@ class Assets() : Disposable {
     }
 
     fun findTexture(lookup: String): TextureRef {
-        return TextureRef(textureIdMap[defaultIndex(lookup)]!!)
+        return textureMap[defaultIndex(lookup)]!!
     }
 
     fun findTextures(lookup: String, range: IntRange): List<TextureRef> {
@@ -114,11 +113,11 @@ class Assets() : Disposable {
         val out = mutableListOf<TextureRef>()
 
         var index = 0
-        var current = textureIdMap["$base:${index++}"]
+        var current = textureMap["$base:${index++}"]
 
         while (current != null) {
-            out.add(TextureRef(current))
-            current = textureIdMap["$base:${index++}"]
+            out.add(current)
+            current = textureMap["$base:${index++}"]
         }
 
         return out
@@ -132,20 +131,16 @@ class Assets() : Disposable {
         }
     }
 
-    fun retrieveRegion(ref: TextureRef): TextureRegion {
-        return textureList[ref.id]
-    }
-
-    fun retrieveRegion(lookup: String): TextureRegion {
-        return textureList[textureIdMap[defaultIndex(lookup)]!!]
-    }
-
-    fun retrieveAnimationDef(lookup: String): AnimationDef {
+    fun findAnimation(lookup: String): AnimationDef {
         return animationMap[lookup]!!
     }
 
-    fun retrieveMusic(lookup: String): Music{
+    fun fineMusic(lookup: String): Music {
         return musicMap[lookup]!!
+    }
+
+    fun fineShader(lookup: String): ShaderProgram {
+        return shaderMap[lookup]!!
     }
 
     override fun dispose() {

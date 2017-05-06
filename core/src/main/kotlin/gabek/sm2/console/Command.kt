@@ -7,6 +7,8 @@ import com.github.salomonbrys.kodein.Kodein
  * @date 4/18/2017
  */
 
-abstract class Command(val console: Console, val name: String){
+abstract class Command(val console: Console, val name: String) {
+    val kodein: Kodein = console.kodein
+
     abstract fun command(arguments: String)
 }

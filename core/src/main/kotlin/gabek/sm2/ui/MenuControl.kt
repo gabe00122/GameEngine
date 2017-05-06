@@ -29,12 +29,12 @@ class MenuControl : VisTable {
         buttonWidth = 80f
     }
 
-    constructor(vararg buttons: Button): super() {
+    constructor(vararg buttons: Button) : super() {
         buttonWidth = 80f
         setItems(*buttons)
     }
 
-    constructor(buttonWidth: Float, vararg buttons: Button): super() {
+    constructor(buttonWidth: Float, vararg buttons: Button) : super() {
         this.buttonWidth = buttonWidth
         setItems(*buttons)
     }

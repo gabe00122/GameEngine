@@ -1,7 +1,9 @@
 package gabek.sm2.systems.character
 
-import com.artemis.*
-import com.badlogic.gdx.math.MathUtils
+import com.artemis.Aspect
+import com.artemis.BaseEntitySystem
+import com.artemis.ComponentMapper
+import com.artemis.EntityTransmuterFactory
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
@@ -12,13 +14,11 @@ import gabek.sm2.components.character.*
 import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
 import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
 import gabek.sm2.components.character.CharacterMovementStateCom.State.*
-import gabek.sm2.prefab.Prefab
 import gabek.sm2.physics.RCollisionCallback
 import gabek.sm2.physics.RFixture
+import gabek.sm2.prefab.Prefab
 import gabek.sm2.systems.common.PrefabManager
-import gabek.sm2.systems.common.ParentSystem
 import gabek.sm2.systems.common.TimeManager
-import gabek.sm2.systems.common.TranslationSystem
 import gabek.sm2.util.FSMTransitionTable
 
 /**
@@ -88,16 +88,16 @@ class CharacterControllerSystem : BaseEntitySystem(
                 .remove(PlayerInputCom::class.java)
                 .build()
 
-        damageSystem.addDeathListener{ entity: Int, damage: Float, damageType: Int ->
-            if(controllerMapper.has(entity) && bodyMapper.has(entity)){
+        damageSystem.addDeathListener { entity: Int, damage: Float, damageType: Int ->
+            if (controllerMapper.has(entity) && bodyMapper.has(entity)) {
                 transmuter.transmute(entity)
                 val body = bodyMapper[entity].body
 
                 body.isFixedRotation = false
-                body.angularVelocity = if(body.linearVelocityX > 0) -10f else 10f
+                body.angularVelocity = if (body.linearVelocityX > 0) -10f else 10f
                 body.fixutres[0].callbackList.clear()
 
-                for(i in 0 until 25){
+                for (i in 0 until 25) {
                     bloodFactory.create(body.x, body.y)
                 }
             }
@@ -211,7 +211,7 @@ class CharacterControllerSystem : BaseEntitySystem(
         bodyMapper[entityId].body.fixutres[groundContact.platformIndex].callbackList.add(platformContactHandler)
     }
 
-    private val platformContactHandler = object: RCollisionCallback {
+    private val platformContactHandler = object : RCollisionCallback {
         private val normal = Vector2()
 
         override fun begin(contact: Contact, ownerRFixture: RFixture, otherRFixture: RFixture) {}
@@ -236,7 +236,7 @@ class CharacterControllerSystem : BaseEntitySystem(
             normal.set(ownerRFixture.body!!.getLocalVector(normal))
             val angle = normal.angle()
 
-            if(contacts.platformMinAngle < angle && angle < contacts.platformMaxAngle) {
+            if (contacts.platformMinAngle < angle && angle < contacts.platformMaxAngle) {
                 contact.tangentSpeed += def.groundSpeed * control.lateralMovement
                 contact.friction = 1f
 

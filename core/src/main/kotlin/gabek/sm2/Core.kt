@@ -15,8 +15,6 @@ import com.kotcrab.vis.ui.VisUI
 import gabek.sm2.assets.Assets
 import gabek.sm2.audio.MusicPlayer
 import gabek.sm2.console.Console
-import gabek.sm2.console.ConsoleGuiOverlay
-import gabek.sm2.graphics.RenderManager
 import gabek.sm2.input.PlayerInputManager
 import gabek.sm2.screens.ScreenManager
 import gabek.sm2.screens.buildScreenManager
@@ -38,7 +36,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
         VisUI.load("assets/ui/skin.json")
         Box2D.init()
 
-        kodein = Kodein{
+        kodein = Kodein {
             bind<ScreenManager>() with singleton { buildScreenManager(this) }
             bind<Settings>() with singleton { settings }
             bind<Assets>() with singleton { Assets("assets/manifest.json") }
@@ -60,11 +58,11 @@ class Core(val settings: Settings) : ApplicationAdapter() {
         Gdx.input.inputProcessor = InputMultiplexer(screenManager.inputProcessor, kodein.instance<PlayerInputManager>().inputProcessor)
         //Gdx.input.inputProcessor = screenManager.inputProcessor
 
-        //quickLaunch()
+        quickLaunch()
     }
 
 
-    fun quickLaunch(){
+    fun quickLaunch() {
         val screenManager: ScreenManager = kodein.instance()
         val worldConfig: WorldConfig = kodein.instance()
         val inputManager: PlayerInputManager = kodein.instance()
@@ -81,8 +79,8 @@ class Core(val settings: Settings) : ApplicationAdapter() {
 
     override fun render() {
         screenManager.update(Gdx.graphics.deltaTime)
-		
-		Gdx.gl.glClearColor(34f/255f, 32f/255f, 52f/255f, 1f)
+
+        Gdx.gl.glClearColor(34f / 255f, 32f / 255f, 52f / 255f, 1f)
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
         screenManager.render()
     }

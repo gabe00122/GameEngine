@@ -14,7 +14,7 @@ class LerpVector(var x: Float = 0f, var y: Float = 0f) {
         this.y = y
     }
 
-    fun set(other: LerpVector){
+    fun set(other: LerpVector) {
         x = other.x
         y = other.y
         pX = other.pX

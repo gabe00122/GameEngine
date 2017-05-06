@@ -4,22 +4,22 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.sm2.assets.Assets
 import gabek.sm2.components.BodyCom
-import gabek.sm2.components.StaticJointCom
 import gabek.sm2.components.common.TranslationCom
 import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.prefab.Prefab
 import gabek.sm2.physics.RFixture
 import gabek.sm2.physics.RPolygon
-import gabek.sm2.physics.joints.RRevoluteJoint
-import gabek.sm2.world.getMapper
+import gabek.sm2.prefab.Prefab
+import gabek.sm2.util.getMapper
 
 /**
  * @author Gabriel Keith
  * @date 3/31/2017
  */
 
-class SpinnerPropPrefab : Prefab(){
+class SpinnerPropPrefab : Prefab() {
     override fun define() {
+        super.define()
+
         val bodyMapper = world.getMapper<BodyCom>()
 
         val sprite = kodein.instance<Assets>().findTexture("actors:junk")

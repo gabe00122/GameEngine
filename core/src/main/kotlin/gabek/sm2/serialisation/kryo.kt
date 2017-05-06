@@ -8,6 +8,6 @@ import com.github.salomonbrys.kodein.Kodein
  * @date 3/19/2017
  */
 
-fun kryoSetup(kodein: Kodein, kryo: Kryo){
+fun kryoSetup(kodein: Kodein, kryo: Kryo) {
 
 }

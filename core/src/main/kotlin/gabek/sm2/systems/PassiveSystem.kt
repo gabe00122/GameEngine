@@ -7,7 +7,7 @@ import com.artemis.BaseSystem
  * @date 4/18/2017
  */
 
-abstract class PassiveSystem: BaseSystem(){
+abstract class PassiveSystem : BaseSystem() {
     override fun processSystem() {}
 
     override fun checkProcessing(): Boolean {
