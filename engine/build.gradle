@@ -2,9 +2,13 @@ apply plugin: "artemis"
 apply plugin: "kotlin"
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-eclipse.project.name = appName + '-core'
+eclipse.project.name = 'engine'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
+
+sourceSets {
+    main.kotlin.srcDirs = ["src/"]
+}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
@@ -31,6 +35,11 @@ dependencies {
     //compile "com.esotericsoftware:serialisation:$kryoVersion"
 
     compile "com.github.salomonbrys.kodein:kodein:$kodeinVersion"
+
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
 }
 
 weave {

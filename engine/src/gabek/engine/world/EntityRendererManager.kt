@@ -23,7 +23,7 @@ class EntityRendererManager(val renderSystems: List<Renderer>) : RenderManager.B
         }
 
         for(layer in layers){
-            layer.render(batch, culling, progress)
+            layer.render(batch, progress)
             layer.clear()
         }
     }
@@ -45,7 +45,7 @@ class EntityRendererManager(val renderSystems: List<Renderer>) : RenderManager.B
             indices[rendererIndex] = renderIds.size()
         }
 
-        internal fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
+        internal fun render(batch: SpriteBatch, progress: Float) {
             var i = 0
 
             for(rendererIndex in 0 until indices.size){

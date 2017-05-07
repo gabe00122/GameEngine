@@ -1,0 +1,25 @@
+apply plugin: 'application'
+apply plugin: 'kotlin'
+
+sourceSets.main.resources.srcDirs += [project.file('assets').absolutePath]
+mainClassName = 'gabek.magicarrow.LauncherKt'
+eclipse.project.name = 'magic_arrow'
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+version = "0.0.4"
+
+sourceSets {
+    main.kotlin.srcDirs = ["src/"]
+}
+
+dependencies {
+    compile project(':engine')
+}
+
+jar {
+    archiveName "MagicArrow-${version}.jar"
+    from { configurations.compile.collect { zipTree(it) } }
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+}
