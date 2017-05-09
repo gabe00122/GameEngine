@@ -1,4 +1,4 @@
-package gabek.sm2.systems.character
+package gabek.engine.systems.character
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -8,18 +8,18 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
-import gabek.sm2.components.BodyCom
-import gabek.sm2.components.PlayerInputCom
-import gabek.sm2.components.character.*
-import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
-import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
-import gabek.sm2.components.character.CharacterMovementStateCom.State.*
-import gabek.sm2.physics.RCollisionCallback
-import gabek.sm2.physics.RFixture
-import gabek.sm2.prefab.Prefab
-import gabek.sm2.systems.common.PrefabManager
-import gabek.sm2.systems.common.TimeManager
-import gabek.sm2.util.FSMTransitionTable
+import gabek.engine.components.BodyCom
+import gabek.engine.components.PlayerInputCom
+import gabek.engine.components.character.*
+import gabek.engine.components.character.BiDirectionCom.Direction.LEFT
+import gabek.engine.components.character.BiDirectionCom.Direction.RIGHT
+import gabek.engine.components.character.CharacterMovementStateCom.State.*
+import gabek.engine.physics.RCollisionCallback
+import gabek.engine.physics.RFixture
+import gabek.engine.prefab.Prefab
+import gabek.engine.systems.common.PrefabManager
+import gabek.engine.systems.common.TimeManager
+import gabek.engine.util.FSMTransitionTable
 
 /**
  * @author Gabriel Keith

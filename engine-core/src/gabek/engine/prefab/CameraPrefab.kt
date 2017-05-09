@@ -1,9 +1,9 @@
-package gabek.sm2.prefab
+package gabek.engine.prefab
 
-import gabek.sm2.components.common.BoundCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.components.graphics.CameraCom
-import gabek.sm2.components.graphics.CameraTargetsCom
+import gabek.engine.components.common.BoundCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.components.graphics.CameraCom
+import gabek.engine.components.graphics.CameraTargetsCom
 
 /**
  * @author Gabriel Keith

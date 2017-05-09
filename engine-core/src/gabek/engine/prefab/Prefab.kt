@@ -1,12 +1,12 @@
-package gabek.sm2.prefab
+package gabek.engine.prefab
 
 import com.artemis.*
 import com.badlogic.gdx.utils.Disposable
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.components.RComponent
-import gabek.sm2.components.meta.PrefabCom
-import gabek.sm2.systems.common.TranslationSystem
-import gabek.sm2.util.getSystem
+import gabek.engine.components.RComponent
+import gabek.engine.components.meta.PrefabCom
+import gabek.engine.systems.common.TranslationSystem
+import gabek.engine.util.getSystem
 import kotlin.reflect.KClass
 
 /**

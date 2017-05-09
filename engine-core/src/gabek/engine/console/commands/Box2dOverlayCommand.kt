@@ -1,11 +1,11 @@
-package gabek.sm2.console.commands
+package gabek.engine.console.commands
 
 import com.artemis.World
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.console.Command
-import gabek.sm2.console.Console
-import gabek.sm2.systems.graphics.Box2dDebugSystem
-import gabek.sm2.util.getSystem
+import gabek.engine.console.Command
+import gabek.engine.console.Console
+import gabek.engine.systems.graphics.Box2dDebugSystem
+import gabek.engine.util.getSystem
 
 /**
  * @author Gabriel Keith

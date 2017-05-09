@@ -1,4 +1,4 @@
-package gabek.sm2.serialisation
+package gabek.engine.serialisation
 
 import com.esotericsoftware.kryo.Kryo
 import com.github.salomonbrys.kodein.Kodein

@@ -1,12 +1,12 @@
-package gabek.sm2.systems
+package gabek.engine.systems
 
 import com.artemis.managers.GroupManager
 import com.badlogic.gdx.utils.JsonValue
-import gabek.sm2.systems.common.PrefabManager
-import gabek.sm2.systems.common.TranslationSystem
-import gabek.sm2.tilemap.TileReference
-import gabek.sm2.world.WorldConfig
-import gabek.sm2.util.clear
+import gabek.engine.systems.common.PrefabManager
+import gabek.engine.systems.common.TranslationSystem
+import gabek.engine.tilemap.TileReference
+import gabek.engine.util.clear
+import gabek.engine.world.WorldConfig
 
 /**
  * @author Gabriel Keith

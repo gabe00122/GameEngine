@@ -1,4 +1,4 @@
-package gabek.sm2.screens
+package gabek.engine.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.utils.Align
@@ -8,7 +8,7 @@ import com.kotcrab.vis.ui.widget.VisLabel
 import com.kotcrab.vis.ui.widget.VisSlider
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.settings.Settings
+import gabek.engine.settings.Settings
 import ktx.actors.onChange
 
 /**

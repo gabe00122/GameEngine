@@ -1,14 +1,14 @@
-package gabek.sm2.prefab
+package gabek.engine.prefab
 
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.components.BodyCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.physics.RPolygon
-import gabek.sm2.world.PROP_LARGE
-import gabek.sm2.world.category
+import gabek.engine.assets.Assets
+import gabek.engine.components.BodyCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.components.graphics.SpriteCom
+import gabek.engine.physics.RPolygon
+import gabek.engine.world.PROP_LARGE
+import gabek.engine.world.category
 
 /**
  * @author Gabriel Keith

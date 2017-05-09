@@ -1,4 +1,4 @@
-package gabek.sm2.assets
+package gabek.engine.assets
 
 import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.Logger
-import gabek.sm2.graphics.AnimationDef
-import gabek.sm2.graphics.TextureRef
+import gabek.engine.graphics.AnimationDef
+import gabek.engine.graphics.TextureRef
 
 /**
  * @author Gabriel Keith

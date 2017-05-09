@@ -1,6 +1,6 @@
-package gabek.sm2.tilemap
+package gabek.engine.tilemap
 
-import gabek.sm2.graphics.TextureRef
+import gabek.engine.graphics.TextureRef
 
 /**
  * @author Gabriel Keith

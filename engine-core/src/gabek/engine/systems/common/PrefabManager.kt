@@ -1,8 +1,8 @@
-package gabek.sm2.systems.common
+package gabek.engine.systems.common
 
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.prefab.Prefab
-import gabek.sm2.systems.PassiveSystem
+import gabek.engine.prefab.Prefab
+import gabek.engine.systems.PassiveSystem
 
 /**
  * @author Gabriel Keith

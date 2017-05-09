@@ -1,9 +1,9 @@
-package gabek.sm2.systems.character
+package gabek.engine.systems.character
 
 import com.artemis.ComponentMapper
-import gabek.sm2.components.character.HealthCom
-import gabek.sm2.systems.PassiveSystem
-import gabek.sm2.systems.common.ParentSystem
+import gabek.engine.components.character.HealthCom
+import gabek.engine.systems.PassiveSystem
+import gabek.engine.systems.common.ParentSystem
 
 /**
  * @author Gabriel Keith

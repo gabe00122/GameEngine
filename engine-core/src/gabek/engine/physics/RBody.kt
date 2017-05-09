@@ -1,12 +1,12 @@
-package gabek.sm2.physics
+package gabek.engine.physics
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.World
-import gabek.sm2.physics.joints.RJoint
-import gabek.sm2.util.Mirrorable
+import gabek.engine.physics.joints.RJoint
+import gabek.engine.util.Mirrorable
 import java.util.*
 
 /**

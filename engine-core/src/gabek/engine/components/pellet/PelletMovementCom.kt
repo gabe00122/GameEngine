@@ -1,6 +1,6 @@
-package gabek.sm2.components.pellet
+package gabek.engine.components.pellet
 
-import gabek.sm2.components.RComponent
+import gabek.engine.components.RComponent
 
 /**
  * @author Gabriel Keith

@@ -1,11 +1,11 @@
-package gabek.sm2.systems
+package gabek.engine.systems
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.StaticJointCom
-import gabek.sm2.physics.RBody
-import gabek.sm2.systems.common.TranslationSystem
+import gabek.engine.components.StaticJointCom
+import gabek.engine.physics.RBody
+import gabek.engine.systems.common.TranslationSystem
 
 /**
  * @author Gabriel Keith

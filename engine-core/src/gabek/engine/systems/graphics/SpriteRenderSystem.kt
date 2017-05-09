@@ -1,16 +1,15 @@
-package gabek.sm2.systems.graphics
+package gabek.engine.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.artemis.utils.IntBag
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.world.EntityRendererManager
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.components.graphics.SpriteCom
+import gabek.engine.world.EntityRendererManager
 
 /**
  * @author Gabriel Keith

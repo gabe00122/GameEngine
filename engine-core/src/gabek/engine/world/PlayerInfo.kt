@@ -1,10 +1,8 @@
-package gabek.sm2.world
+package gabek.engine.world
 
-import gabek.sm2.input.PlayerInput
+import gabek.engine.input.PlayerInput
 
 /**
  * @author Gabriel Keith
  */
-class PlayerInfo(val id: Int, val input: PlayerInput) {
-
-}
+class PlayerInfo(val id: Int, val input: PlayerInput)

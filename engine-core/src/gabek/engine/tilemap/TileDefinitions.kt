@@ -1,4 +1,4 @@
-package gabek.sm2.tilemap
+package gabek.engine.tilemap
 
 /**
  * @author Gabriel Keith

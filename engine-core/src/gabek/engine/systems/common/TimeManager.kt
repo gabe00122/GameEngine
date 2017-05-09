@@ -1,4 +1,4 @@
-package gabek.sm2.systems.common
+package gabek.engine.systems.common
 
 import com.artemis.BaseSystem
 

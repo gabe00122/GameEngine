@@ -1,4 +1,4 @@
-package gabek.sm2.assets
+package gabek.engine.assets
 
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.JsonReader

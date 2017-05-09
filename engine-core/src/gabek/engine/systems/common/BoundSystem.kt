@@ -1,9 +1,9 @@
-package gabek.sm2.systems.common
+package gabek.engine.systems.common
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.common.BoundCom
+import gabek.engine.components.common.BoundCom
 
 /**
  * @author Gabriel Keith

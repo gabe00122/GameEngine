@@ -1,13 +1,15 @@
-package gabek.sm2.console.commands
+package gabek.engine.console.commands
 
 import com.github.salomonbrys.kodein.instance
+import gabek.engine.console.Command
+import gabek.engine.console.Console
 
 /**
  * @author Gabriel Keith
  * @date 4/20/2017
  */
 
-class DeleteCommand(console: gabek.sm2.console.Console) : gabek.sm2.console.Command(console, "delete") {
+class DeleteCommand(console: Console) : Command(console, "delete") {
     val world = console.kodein.instance<com.artemis.World>()
 
     override fun command(arguments: String) {

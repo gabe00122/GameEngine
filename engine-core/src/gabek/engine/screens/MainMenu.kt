@@ -1,4 +1,4 @@
-package gabek.sm2.screens
+package gabek.engine.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
@@ -8,9 +8,9 @@ import com.kotcrab.vis.ui.widget.VisImage
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.assets.Assets
-import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.ui.MenuControl
+import gabek.engine.assets.Assets
+import gabek.engine.input.PlayerInputManager
+import gabek.engine.ui.MenuControl
 import ktx.actors.onChange
 
 /**

@@ -1,7 +1,7 @@
-package gabek.sm2.components
+package gabek.engine.components
 
 import com.artemis.annotations.DelayedComponentRemoval
-import gabek.sm2.physics.RBody
+import gabek.engine.physics.RBody
 
 /**
  * @author Gabriel Keith

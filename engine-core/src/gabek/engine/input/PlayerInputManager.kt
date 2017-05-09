@@ -1,4 +1,4 @@
-package gabek.sm2.input
+package gabek.engine.input
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor

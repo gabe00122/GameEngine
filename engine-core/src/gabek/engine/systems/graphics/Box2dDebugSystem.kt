@@ -1,11 +1,11 @@
-package gabek.sm2.systems.graphics
+package gabek.engine.systems.graphics
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
-import gabek.sm2.systems.Box2dSystem
-import gabek.sm2.systems.PassiveSystem
-import gabek.sm2.world.RenderManager
+import gabek.engine.systems.Box2dSystem
+import gabek.engine.systems.PassiveSystem
+import gabek.engine.world.RenderManager
 
 /**
  * @author Gabriel Keith

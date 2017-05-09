@@ -1,4 +1,4 @@
-package gabek.sm2
+package gabek.engine
 
 import com.artemis.World
 import com.badlogic.gdx.ApplicationAdapter
@@ -12,14 +12,14 @@ import com.github.salomonbrys.kodein.bind
 import com.github.salomonbrys.kodein.instance
 import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
-import gabek.sm2.assets.Assets
-import gabek.sm2.audio.MusicPlayer
-import gabek.sm2.console.Console
-import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.screens.ScreenManager
-import gabek.sm2.screens.buildScreenManager
-import gabek.sm2.settings.Settings
-import gabek.sm2.world.*
+import gabek.engine.assets.Assets
+import gabek.engine.audio.MusicPlayer
+import gabek.engine.console.Console
+import gabek.engine.input.PlayerInputManager
+import gabek.engine.screens.ScreenManager
+import gabek.engine.screens.buildScreenManager
+import gabek.engine.settings.Settings
+import gabek.engine.world.*
 
 /**
  * @author Gabriel Keith

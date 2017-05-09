@@ -1,12 +1,12 @@
-package gabek.sm2.screens
+package gabek.engine.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.input.PlayerInputManager
-import gabek.sm2.ui.MenuControl
+import gabek.engine.input.PlayerInputManager
+import gabek.engine.ui.MenuControl
 import ktx.actors.onChange
 
 /**

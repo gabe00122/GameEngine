@@ -1,4 +1,4 @@
-package gabek.sm2.fsm
+package gabek.engine.fsm
 
 /**
  * @author Gabriel Keith

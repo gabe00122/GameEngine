@@ -1,4 +1,4 @@
-package gabek.sm2.graphics
+package gabek.engine.graphics
 
 /**
  * @author Gabriel Keith

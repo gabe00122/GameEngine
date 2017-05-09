@@ -1,11 +1,11 @@
-package gabek.sm2.console.commands
+package gabek.engine.console.commands
 
 import com.artemis.Component
 import com.artemis.World
 import com.artemis.utils.Bag
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.console.Command
-import gabek.sm2.console.Console
+import gabek.engine.console.Command
+import gabek.engine.console.Console
 
 /**
  * @author Gabriel Keith

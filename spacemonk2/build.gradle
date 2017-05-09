@@ -3,7 +3,7 @@ apply plugin: "artemis"
 apply plugin: "kotlin"
 
 sourceSets.main.resources.srcDirs += [project.file('assets').absolutePath]
-mainClassName = 'gabek.magicarrow.LauncherKt'
+mainClassName = 'gabek.spacemonk.LauncherKt'
 eclipse.project.name = 'spacemonk2'
 sourceCompatibility = JavaVersion.VERSION_1_8
 

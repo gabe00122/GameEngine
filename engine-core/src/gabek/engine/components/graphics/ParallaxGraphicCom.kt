@@ -1,7 +1,7 @@
-package gabek.sm2.components.graphics
+package gabek.engine.components.graphics
 
-import gabek.sm2.components.RComponent
-import gabek.sm2.graphics.TextureRef
+import gabek.engine.components.RComponent
+import gabek.engine.graphics.TextureRef
 
 /**
  * @author Gabriel Keith

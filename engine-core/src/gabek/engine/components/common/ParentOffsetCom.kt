@@ -1,6 +1,6 @@
-package gabek.sm2.components.common
+package gabek.engine.components.common
 
-import gabek.sm2.components.RComponent
+import gabek.engine.components.RComponent
 
 /**
  * @author Gabriel Keith

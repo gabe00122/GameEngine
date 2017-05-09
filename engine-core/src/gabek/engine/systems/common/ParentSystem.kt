@@ -1,11 +1,11 @@
-package gabek.sm2.systems.common
+package gabek.engine.systems.common
 
 import com.artemis.Component
 import com.artemis.ComponentMapper
 import com.artemis.link.EntityLinkManager
 import com.artemis.link.LinkAdapter
-import gabek.sm2.components.common.ParentOfCom
-import gabek.sm2.systems.PassiveSystem
+import gabek.engine.components.common.ParentOfCom
+import gabek.engine.systems.PassiveSystem
 
 /**
  * @author Gabriel Keith

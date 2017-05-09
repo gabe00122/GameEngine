@@ -1,4 +1,4 @@
-package gabek.sm2.graphics
+package gabek.engine.graphics
 
 import com.badlogic.gdx.graphics.GL30
 import com.badlogic.gdx.graphics.Mesh

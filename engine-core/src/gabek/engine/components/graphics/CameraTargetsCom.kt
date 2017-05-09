@@ -1,9 +1,9 @@
-package gabek.sm2.components.graphics
+package gabek.engine.components.graphics
 
 import com.artemis.annotations.EntityId
 import com.artemis.annotations.LinkPolicy
 import com.artemis.utils.IntBag
-import gabek.sm2.components.RComponent
+import gabek.engine.components.RComponent
 
 /**
  * @author Gabriel Keith

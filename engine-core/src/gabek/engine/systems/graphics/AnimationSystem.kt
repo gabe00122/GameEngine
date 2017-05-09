@@ -1,11 +1,11 @@
-package gabek.sm2.systems.graphics
+package gabek.engine.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.graphics.AnimationCom
-import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.graphics.AnimationDef
+import gabek.engine.components.graphics.AnimationCom
+import gabek.engine.components.graphics.SpriteCom
+import gabek.engine.graphics.AnimationDef
 
 /**
  * @author Gabriel Keith

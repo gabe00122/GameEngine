@@ -1,4 +1,4 @@
-package gabek.sm2.console
+package gabek.engine.console
 
 import com.github.salomonbrys.kodein.Kodein
 

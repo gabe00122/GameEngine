@@ -1,4 +1,4 @@
-package gabek.sm2.physics.joints
+package gabek.engine.physics.joints
 
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.physics.box2d.World

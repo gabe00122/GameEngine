@@ -1,4 +1,4 @@
-package gabek.sm2.physics
+package gabek.engine.physics
 
 import com.badlogic.gdx.physics.box2d.PolygonShape
 

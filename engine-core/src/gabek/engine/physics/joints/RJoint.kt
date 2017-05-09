@@ -1,8 +1,8 @@
-package gabek.sm2.physics.joints
+package gabek.engine.physics.joints
 
 import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.World
-import gabek.sm2.physics.RBody
+import gabek.engine.physics.RBody
 
 /**
  * @author Gabriel Keith

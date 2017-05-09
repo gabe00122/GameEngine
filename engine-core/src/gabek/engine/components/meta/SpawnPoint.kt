@@ -1,4 +1,4 @@
-package gabek.sm2.components.meta
+package gabek.engine.components.meta
 
 /**
  * @author Gabriel Keith

@@ -1,11 +1,11 @@
-package gabek.magicarrow
+package gabek.spacemonk
 
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.backends.lwjgl3.*
-import gabek.sm2.Core
-import gabek.sm2.settings.Settings
+import gabek.engine.Core
+import gabek.engine.settings.Settings
 
 /**
  * @author Gabriel Keith

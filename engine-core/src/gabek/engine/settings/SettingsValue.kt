@@ -1,4 +1,4 @@
-package gabek.sm2.settings
+package gabek.engine.settings
 
 import com.badlogic.gdx.Preferences
 

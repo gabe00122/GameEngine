@@ -1,14 +1,14 @@
-package gabek.sm2.ui
+package gabek.engine.ui
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.graphics.TextureRef
-import gabek.sm2.input.Actions
-import gabek.sm2.input.PlayerInput
+import gabek.engine.assets.Assets
+import gabek.engine.graphics.TextureRef
+import gabek.engine.input.Actions
+import gabek.engine.input.PlayerInput
 
 /**
  * @author Gabriel Keith

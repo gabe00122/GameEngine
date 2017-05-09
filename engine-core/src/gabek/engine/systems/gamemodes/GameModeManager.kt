@@ -1,9 +1,9 @@
-package gabek.sm2.systems.gamemodes
+package gabek.engine.systems.gamemodes
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.utils.IntBag
-import gabek.sm2.components.PlayerInputCom
+import gabek.engine.components.PlayerInputCom
 
 /**
  * @author Gabriel Keith

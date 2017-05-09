@@ -1,6 +1,6 @@
-package gabek.sm2.prefab
+package gabek.engine.prefab
 
-import gabek.sm2.components.common.TranslationCom
+import gabek.engine.components.common.TranslationCom
 
 /**
  * @author Gabriel Keith

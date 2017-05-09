@@ -1,4 +1,4 @@
-package gabek.sm2.screens
+package gabek.engine.screens
 
 import com.artemis.World
 import com.artemis.managers.GroupManager
@@ -12,20 +12,22 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.graphics.Display
-import gabek.sm2.input.Actions
-import gabek.sm2.systems.LevelTemplateLoader
-import gabek.sm2.systems.PlayerInputSystem
-import gabek.sm2.systems.common.PrefabManager
-import gabek.sm2.systems.common.TranslationSystem
-import gabek.sm2.systems.gamemodes.GameModeManager
-import gabek.sm2.systems.graphics.CameraTrackingSystem
-import gabek.sm2.systems.graphics.ParallaxRenderSystem
-import gabek.sm2.ui.MenuControl
-import gabek.sm2.util.clear
-import gabek.sm2.util.getSystem
-import gabek.sm2.world.*
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.graphics.Display
+import gabek.engine.input.Actions
+import gabek.engine.systems.LevelTemplateLoader
+import gabek.engine.systems.PlayerInputSystem
+import gabek.engine.systems.common.PrefabManager
+import gabek.engine.systems.common.TranslationSystem
+import gabek.engine.systems.gamemodes.GameModeManager
+import gabek.engine.systems.graphics.CameraTrackingSystem
+import gabek.engine.systems.graphics.ParallaxRenderSystem
+import gabek.engine.ui.MenuControl
+import gabek.engine.util.clear
+import gabek.engine.util.getSystem
+import gabek.engine.world.RenderManager
+import gabek.engine.world.UpdateManager
+import gabek.engine.world.WorldConfig
 import ktx.actors.onChange
 
 /**

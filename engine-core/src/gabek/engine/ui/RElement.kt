@@ -1,4 +1,4 @@
-package gabek.sm2.ui
+package gabek.engine.ui
 
 /**
  * @author Gabriel Keith

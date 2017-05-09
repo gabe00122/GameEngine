@@ -1,12 +1,12 @@
-package gabek.sm2.systems.graphics
+package gabek.engine.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.common.BoundCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.components.graphics.CameraCom
-import gabek.sm2.components.graphics.CameraTargetsCom
+import gabek.engine.components.common.BoundCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.components.graphics.CameraCom
+import gabek.engine.components.graphics.CameraTargetsCom
 
 /**
  * @author Gabriel Keith

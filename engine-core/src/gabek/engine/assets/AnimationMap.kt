@@ -1,7 +1,7 @@
-package gabek.sm2.assets
+package gabek.engine.assets
 
 import com.badlogic.gdx.utils.ArrayMap
-import gabek.sm2.graphics.AnimationDef
+import gabek.engine.graphics.AnimationDef
 
 /**
  * @author Gabriel Keith

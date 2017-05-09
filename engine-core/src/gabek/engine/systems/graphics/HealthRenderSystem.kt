@@ -1,4 +1,4 @@
-package gabek.sm2.systems.graphics
+package gabek.engine.systems.graphics
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -9,11 +9,11 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.components.character.HealthCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.components.graphics.HealthDisplayCom
-import gabek.sm2.world.RenderManager
+import gabek.engine.assets.Assets
+import gabek.engine.components.character.HealthCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.components.graphics.HealthDisplayCom
+import gabek.engine.world.RenderManager
 
 /**
  * @author Gabriel Keith

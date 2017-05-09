@@ -1,4 +1,4 @@
-package gabek.sm2.util
+package gabek.engine.util
 
 import com.badlogic.gdx.math.MathUtils
 

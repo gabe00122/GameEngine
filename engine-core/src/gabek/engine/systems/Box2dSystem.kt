@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.engine.systems
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -8,10 +8,10 @@ import com.artemis.utils.IntBag
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.utils.Disposable
-import gabek.sm2.components.BodyCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.common.TranslationSystem
+import gabek.engine.components.BodyCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.physics.RFixture
+import gabek.engine.systems.common.TranslationSystem
 
 /**
  * @author Gabriel Keith

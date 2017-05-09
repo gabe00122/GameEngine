@@ -1,6 +1,6 @@
-package gabek.sm2.components.brains
+package gabek.engine.components.brains
 
-import gabek.sm2.components.RComponent
+import gabek.engine.components.RComponent
 
 /**
  * @author Gabriel Keith

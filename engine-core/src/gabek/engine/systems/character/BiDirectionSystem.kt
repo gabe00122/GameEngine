@@ -1,13 +1,13 @@
-package gabek.sm2.systems.character
+package gabek.engine.systems.character
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.character.BiDirectionCom
-import gabek.sm2.components.character.BiDirectionCom.Direction.LEFT
-import gabek.sm2.components.character.BiDirectionCom.Direction.RIGHT
-import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.util.FSMTransitionTable
+import gabek.engine.components.character.BiDirectionCom
+import gabek.engine.components.character.BiDirectionCom.Direction.LEFT
+import gabek.engine.components.character.BiDirectionCom.Direction.RIGHT
+import gabek.engine.components.graphics.SpriteCom
+import gabek.engine.util.FSMTransitionTable
 
 /**
  * @author Gabriel Keith

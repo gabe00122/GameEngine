@@ -1,4 +1,4 @@
-package gabek.sm2.input
+package gabek.engine.input
 
 
 /**

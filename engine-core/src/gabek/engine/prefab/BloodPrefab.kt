@@ -1,12 +1,12 @@
-package gabek.sm2.prefab
+package gabek.engine.prefab
 
 import com.badlogic.gdx.graphics.Color
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.components.LifeSpanCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.components.graphics.SpriteCom
-import gabek.sm2.components.pellet.PelletMovementCom
+import gabek.engine.assets.Assets
+import gabek.engine.components.LifeSpanCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.components.graphics.SpriteCom
+import gabek.engine.components.pellet.PelletMovementCom
 import java.util.*
 
 /**

@@ -1,11 +1,11 @@
-package gabek.sm2.systems.brains
+package gabek.engine.systems.brains
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.brains.WanderingBrainCom
-import gabek.sm2.components.character.CharacterControllerCom
-import gabek.sm2.systems.common.TimeManager
+import gabek.engine.components.brains.WanderingBrainCom
+import gabek.engine.components.character.CharacterControllerCom
+import gabek.engine.systems.common.TimeManager
 import java.util.*
 
 /**

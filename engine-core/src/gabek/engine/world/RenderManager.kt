@@ -1,4 +1,4 @@
-package gabek.sm2.world
+package gabek.engine.world
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL30
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.graphics.Display
-import gabek.sm2.systems.graphics.CameraSystem
+import gabek.engine.graphics.Display
+import gabek.engine.systems.graphics.CameraSystem
 
 /**
  * @author Gabriel Keith

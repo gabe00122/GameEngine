@@ -1,17 +1,17 @@
-package gabek.sm2.tilemap.types
+package gabek.engine.tilemap.types
 
 import com.artemis.World
 import com.badlogic.gdx.physics.box2d.Contact
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.physics.RCollisionAdapter
-import gabek.sm2.physics.RFixture
-import gabek.sm2.physics.RPolygon
-import gabek.sm2.systems.TileMapSystem
-import gabek.sm2.systems.character.DamageSystem
-import gabek.sm2.tilemap.TileReference
-import gabek.sm2.tilemap.TileType
+import gabek.engine.assets.Assets
+import gabek.engine.physics.RCollisionAdapter
+import gabek.engine.physics.RFixture
+import gabek.engine.physics.RPolygon
+import gabek.engine.systems.TileMapSystem
+import gabek.engine.systems.character.DamageSystem
+import gabek.engine.tilemap.TileReference
+import gabek.engine.tilemap.TileType
 
 /**
  * @author Gabriel Keith

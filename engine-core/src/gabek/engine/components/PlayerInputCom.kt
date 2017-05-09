@@ -1,6 +1,6 @@
-package gabek.sm2.components
+package gabek.engine.components
 
-import gabek.sm2.input.PlayerInput
+import gabek.engine.input.PlayerInput
 
 /**
  * @author Gabriel Keith

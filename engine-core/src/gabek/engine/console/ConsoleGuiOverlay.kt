@@ -1,4 +1,4 @@
-package gabek.sm2.console
+package gabek.engine.console
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -10,7 +10,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.*
-import gabek.sm2.screens.Screen
+import gabek.engine.screens.Screen
 import ktx.actors.onKeyDown
 
 /**

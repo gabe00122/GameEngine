@@ -1,6 +1,6 @@
-package gabek.sm2.graphics
+package gabek.engine.graphics
 
-import gabek.sm2.assets.Assets
+import gabek.engine.assets.Assets
 
 /**
  * @author Gabriel Keith

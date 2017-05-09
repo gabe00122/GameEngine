@@ -1,12 +1,12 @@
-package gabek.sm2.systems
+package gabek.engine.systems
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.PlayerInputCom
-import gabek.sm2.components.character.CharacterControllerCom
-import gabek.sm2.input.Actions
-import gabek.sm2.input.PlayerInput
+import gabek.engine.components.PlayerInputCom
+import gabek.engine.components.character.CharacterControllerCom
+import gabek.engine.input.Actions
+import gabek.engine.input.PlayerInput
 
 /**
  * @author Gabriel Keith

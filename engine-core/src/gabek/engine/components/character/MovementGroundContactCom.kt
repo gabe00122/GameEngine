@@ -1,8 +1,8 @@
-package gabek.sm2.components.character
+package gabek.engine.components.character
 
 import com.badlogic.gdx.math.Vector2
-import gabek.sm2.components.RComponent
-import gabek.sm2.physics.RFixture
+import gabek.engine.components.RComponent
+import gabek.engine.physics.RFixture
 
 /**
  * @author Gabriel Keith

@@ -1,4 +1,4 @@
-package gabek.sm2.graphics
+package gabek.engine.graphics
 
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Disposable
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.settings.Settings
-import gabek.sm2.systems.graphics.CameraSystem
+import gabek.engine.settings.Settings
+import gabek.engine.systems.graphics.CameraSystem
 
 /**
  * @author Gabriel Keith

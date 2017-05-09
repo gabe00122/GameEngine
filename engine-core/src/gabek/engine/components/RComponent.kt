@@ -1,7 +1,7 @@
-package gabek.sm2.components
+package gabek.engine.components
 
 import com.artemis.PooledComponent
-import gabek.sm2.util.Mirrorable
+import gabek.engine.util.Mirrorable
 
 /**
  * @author Gabriel Keith

@@ -1,12 +1,12 @@
-package gabek.sm2.systems
+package gabek.engine.systems
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.sm2.components.character.CharacterControllerCom
-import gabek.sm2.components.common.TranslationCom
-import gabek.sm2.prefab.Prefab
-import gabek.sm2.systems.common.PrefabManager
+import gabek.engine.components.character.CharacterControllerCom
+import gabek.engine.components.common.TranslationCom
+import gabek.engine.prefab.Prefab
+import gabek.engine.systems.common.PrefabManager
 import java.util.*
 
 /**

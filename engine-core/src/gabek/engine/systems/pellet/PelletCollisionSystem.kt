@@ -1,4 +1,4 @@
-package gabek.sm2.systems.pellet
+package gabek.engine.systems.pellet
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
@@ -6,11 +6,11 @@ import com.artemis.ComponentMapper
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
-import gabek.sm2.components.BodyCom
-import gabek.sm2.components.pellet.PelletCollisionCom
-import gabek.sm2.physics.RCollisionCallback
-import gabek.sm2.physics.RFixture
-import gabek.sm2.systems.character.DamageSystem
+import gabek.engine.components.BodyCom
+import gabek.engine.components.pellet.PelletCollisionCom
+import gabek.engine.physics.RCollisionCallback
+import gabek.engine.physics.RFixture
+import gabek.engine.systems.character.DamageSystem
 
 /**
  * @author Gabriel Keith

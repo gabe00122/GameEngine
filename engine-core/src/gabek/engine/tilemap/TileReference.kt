@@ -1,6 +1,6 @@
-package gabek.sm2.tilemap
+package gabek.engine.tilemap
 
-import gabek.sm2.physics.RFixture
+import gabek.engine.physics.RFixture
 
 /**
  * @author Gabriel Keith

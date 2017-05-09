@@ -1,15 +1,15 @@
-package gabek.sm2.systems.character
+package gabek.engine.systems.character
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.utils.BitVector
-import gabek.sm2.components.character.CharacterAnimatorCom
-import gabek.sm2.components.character.CharacterMovementStateCom.State
-import gabek.sm2.components.character.CharacterMovementStateCom.State.*
-import gabek.sm2.components.graphics.AnimationCom
-import gabek.sm2.graphics.AnimationDef
-import gabek.sm2.systems.graphics.AnimationSystem
+import gabek.engine.components.character.CharacterAnimatorCom
+import gabek.engine.components.character.CharacterMovementStateCom.State
+import gabek.engine.components.character.CharacterMovementStateCom.State.*
+import gabek.engine.components.graphics.AnimationCom
+import gabek.engine.graphics.AnimationDef
+import gabek.engine.systems.graphics.AnimationSystem
 
 /**
  * @author Gabriel Keith

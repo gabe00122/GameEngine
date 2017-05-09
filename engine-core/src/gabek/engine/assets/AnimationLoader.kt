@@ -1,4 +1,4 @@
-package gabek.sm2.assets
+package gabek.engine.assets
 
 import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.assets.AssetLoaderParameters
@@ -8,7 +8,7 @@ import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.JsonReader
-import gabek.sm2.graphics.AnimationDef
+import gabek.engine.graphics.AnimationDef
 
 /**
  * @author Gabriel Keith

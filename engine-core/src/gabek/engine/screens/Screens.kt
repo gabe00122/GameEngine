@@ -1,4 +1,4 @@
-package gabek.sm2.screens
+package gabek.engine.screens
 
 import com.github.salomonbrys.kodein.Kodein
 

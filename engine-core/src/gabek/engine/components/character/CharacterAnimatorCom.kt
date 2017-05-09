@@ -1,7 +1,7 @@
-package gabek.sm2.components.character
+package gabek.engine.components.character
 
-import gabek.sm2.components.RComponent
-import gabek.sm2.graphics.AnimationDef
+import gabek.engine.components.RComponent
+import gabek.engine.graphics.AnimationDef
 
 /**
  * @author Gabriel Keith

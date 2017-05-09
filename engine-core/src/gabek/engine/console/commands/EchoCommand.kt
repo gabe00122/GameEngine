@@ -1,11 +1,14 @@
-package gabek.sm2.console.commands
+package gabek.engine.console.commands
+
+import gabek.engine.console.Command
+import gabek.engine.console.Console
 
 /**
  * @author Gabriel Keith
  * @date 4/18/2017
  */
 
-class EchoCommand(console: gabek.sm2.console.Console) : gabek.sm2.console.Command(console, "echo") {
+class EchoCommand(console: Console) : Command(console, "echo") {
 
 
     override fun command(arguments: String) {

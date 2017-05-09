@@ -1,4 +1,4 @@
-package gabek.sm2.systems
+package gabek.engine.systems
 
 import com.artemis.World
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -6,17 +6,17 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.physics.RBody
-import gabek.sm2.physics.REdge
-import gabek.sm2.physics.RFixture
-import gabek.sm2.tilemap.ArrayGrid
-import gabek.sm2.tilemap.Grid
-import gabek.sm2.tilemap.TileDefinitions
-import gabek.sm2.tilemap.TileReference
-import gabek.sm2.world.RenderManager
-import gabek.sm2.world.WALL
-import gabek.sm2.world.filter
+import gabek.engine.assets.Assets
+import gabek.engine.physics.RBody
+import gabek.engine.physics.REdge
+import gabek.engine.physics.RFixture
+import gabek.engine.tilemap.ArrayGrid
+import gabek.engine.tilemap.Grid
+import gabek.engine.tilemap.TileDefinitions
+import gabek.engine.tilemap.TileReference
+import gabek.engine.world.RenderManager
+import gabek.engine.world.WALL
+import gabek.engine.world.filter
 
 /**
  * @author Gabriel Keith

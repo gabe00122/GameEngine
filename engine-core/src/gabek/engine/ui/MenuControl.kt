@@ -1,13 +1,13 @@
-package gabek.sm2.ui
+package gabek.engine.ui
 
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.kotcrab.vis.ui.Focusable
 import com.kotcrab.vis.ui.widget.VisTable
-import gabek.sm2.input.Actions
-import gabek.sm2.input.PlayerInput
-import gabek.sm2.screens.eagePad
-import gabek.sm2.screens.menuPad
+import gabek.engine.input.Actions
+import gabek.engine.input.PlayerInput
+import gabek.engine.screens.eagePad
+import gabek.engine.screens.menuPad
 
 /**
  * @author Gabriel Keith

@@ -1,8 +1,8 @@
-package gabek.sm2.console
+package gabek.engine.console
 
 import com.badlogic.gdx.ApplicationLogger
 import com.github.salomonbrys.kodein.Kodein
-import gabek.sm2.console.commands.*
+import gabek.engine.console.commands.*
 
 /**
  * @author Gabriel Keith

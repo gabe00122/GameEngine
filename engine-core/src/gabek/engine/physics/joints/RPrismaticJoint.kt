@@ -1,4 +1,4 @@
-package gabek.sm2.physics.joints
+package gabek.engine.physics.joints
 
 /**
  * @author Gabriel Keith

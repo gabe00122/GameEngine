@@ -1,6 +1,6 @@
-package gabek.sm2.components
+package gabek.engine.components
 
-import gabek.sm2.physics.joints.RJoint
+import gabek.engine.physics.joints.RJoint
 
 /**
  * @author Gabriel Keith

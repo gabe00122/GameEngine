@@ -1,10 +1,10 @@
-package gabek.sm2.audio
+package gabek.engine.audio
 
 import com.badlogic.gdx.audio.Music
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.settings.Settings
+import gabek.engine.assets.Assets
+import gabek.engine.settings.Settings
 
 /**
  * @author Gabriel Keith

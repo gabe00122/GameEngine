@@ -1,6 +1,6 @@
-package gabek.sm2.components.character
+package gabek.engine.components.character
 
-import gabek.sm2.components.RComponent
+import gabek.engine.components.RComponent
 import java.util.*
 
 /**

@@ -1,4 +1,4 @@
-package gabek.sm2.world
+package gabek.engine.world
 
 import com.artemis.World
 import com.artemis.WorldConfiguration
@@ -9,25 +9,25 @@ import com.artemis.managers.TagManager
 import com.artemis.managers.WorldSerializationManager
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import gabek.sm2.assets.Assets
-import gabek.sm2.prefab.*
-import gabek.sm2.prefab.enviroment.SpinnerPropPrefab
-import gabek.sm2.serialisation.kryoSetup
-import gabek.sm2.systems.*
-import gabek.sm2.systems.brains.WanderingBrainSystem
-import gabek.sm2.systems.character.BiDirectionSystem
-import gabek.sm2.systems.character.CharacterAnimatorSystem
-import gabek.sm2.systems.character.CharacterControllerSystem
-import gabek.sm2.systems.character.DamageSystem
-import gabek.sm2.systems.common.*
-import gabek.sm2.systems.gamemodes.GameModeManager
-import gabek.sm2.systems.graphics.*
-import gabek.sm2.systems.pellet.PelletCollisionSystem
-import gabek.sm2.systems.pellet.PelletMovmentSystem
-import gabek.sm2.tilemap.TileDefinitions
-import gabek.sm2.tilemap.TileType
-import gabek.sm2.tilemap.types.SpikeTile
-import gabek.sm2.util.getSystem
+import gabek.engine.assets.Assets
+import gabek.engine.prefab.*
+import gabek.engine.prefab.enviroment.SpinnerPropPrefab
+import gabek.engine.serialisation.kryoSetup
+import gabek.engine.systems.*
+import gabek.engine.systems.brains.WanderingBrainSystem
+import gabek.engine.systems.character.BiDirectionSystem
+import gabek.engine.systems.character.CharacterAnimatorSystem
+import gabek.engine.systems.character.CharacterControllerSystem
+import gabek.engine.systems.character.DamageSystem
+import gabek.engine.systems.common.*
+import gabek.engine.systems.gamemodes.GameModeManager
+import gabek.engine.systems.graphics.*
+import gabek.engine.systems.pellet.PelletCollisionSystem
+import gabek.engine.systems.pellet.PelletMovmentSystem
+import gabek.engine.tilemap.TileDefinitions
+import gabek.engine.tilemap.TileType
+import gabek.engine.tilemap.types.SpikeTile
+import gabek.engine.util.getSystem
 
 /**
  * @author Gabriel Keith

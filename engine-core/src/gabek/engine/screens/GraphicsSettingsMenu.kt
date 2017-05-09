@@ -1,4 +1,4 @@
-package gabek.sm2.screens
+package gabek.engine.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Graphics
@@ -11,7 +11,7 @@ import com.kotcrab.vis.ui.widget.VisCheckBox
 import com.kotcrab.vis.ui.widget.VisSelectBox
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.sm2.settings.Settings
+import gabek.engine.settings.Settings
 import ktx.actors.onChange
 import ktx.collections.toGdxArray
 
