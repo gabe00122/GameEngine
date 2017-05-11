@@ -1,1 +1,1 @@
-include 'spacemonk2', 'engine-core'
+include 'spacemonk2', 'engine-core', 'engine-platformer'
