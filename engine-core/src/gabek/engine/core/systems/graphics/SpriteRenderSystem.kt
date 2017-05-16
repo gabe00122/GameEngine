@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
-import gabek.engine.core.world.EntityRendererManager
+import gabek.engine.core.world.EntityRenderManager
 
 /**
  * @author Gabriel Keith
@@ -19,14 +19,14 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
                 SpriteCom::class.java,
                 TranslationCom::class.java
         )
-), EntityRendererManager.Renderer {
+), EntityRenderManager.Renderer {
 
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
     private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
     private val temp = Rectangle()
 
-    override fun fill(layers: Array<EntityRendererManager.Layer>, culling: Rectangle, progress: Float) {
+    override fun fill(layers: Array<EntityRenderManager.Layer>, culling: Rectangle, progress: Float) {
         val entities = entityIds
         for (i in 0 until entities.size()) {
             val entity = entities[i]

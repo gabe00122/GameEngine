@@ -6,14 +6,14 @@ import com.kotcrab.vis.ui.Focusable
 import com.kotcrab.vis.ui.widget.VisTable
 import gabek.engine.core.input.Actions
 import gabek.engine.core.input.PlayerInput
-import gabek.engine.core.screens.eagePad
-import gabek.engine.core.screens.menuPad
-
 /**
  * @author Gabriel Keith
  */
 class MenuControl: VisTable {
-    private val defaltCooldown = 0.25f
+    private val edgePad = 7f
+    private val menuPad = 5f
+
+    private val defaultCooldown = 0.25f
     private var selectPressed = false
     private var delay = 0f
 
@@ -48,7 +48,7 @@ class MenuControl: VisTable {
 
             val cell = add(button)
             cell.width(buttonWidth)
-            cell.pad(eagePad)
+            cell.pad(edgePad)
             if (i != 0) {
                 cell.padTop(menuPad)
             }
@@ -111,11 +111,11 @@ class MenuControl: VisTable {
             if (delay <= 0) {
                 if (input.pollAction(Actions.UP)) {
                     up()
-                    delay += defaltCooldown
+                    delay += defaultCooldown
                 }
                 if (input.pollAction(Actions.DOWN)) {
                     down()
-                    delay += defaltCooldown
+                    delay += defaultCooldown
                 }
                 if (input.pollAction(Actions.SELECT)) {
                     selectPress()

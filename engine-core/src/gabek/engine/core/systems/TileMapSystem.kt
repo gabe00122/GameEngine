@@ -12,7 +12,7 @@ import gabek.engine.core.physics.RFixture
 import gabek.engine.core.tilemap.ArrayGrid
 import gabek.engine.core.tilemap.Grid
 import gabek.engine.core.tilemap.TileDefinitions
-import gabek.engine.core.physics.REdge
+import gabek.engine.core.physics.shape.REdge
 import gabek.engine.core.tilemap.TileReference
 import gabek.engine.core.world.RenderManager
 import gabek.engine.core.world.WALL

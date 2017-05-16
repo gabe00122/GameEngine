@@ -10,7 +10,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.VisUI
 import com.kotcrab.vis.ui.widget.*
-import gabek.engine.core.screens.Screen
+import gabek.engine.core.screen.Screen
 import ktx.actors.onKeyDown
 
 /**

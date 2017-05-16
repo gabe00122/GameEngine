@@ -3,13 +3,14 @@ package gabek.engine.core.physics
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.FixtureDef
+import gabek.engine.core.physics.shape.RShape
 
 /**
  * @author Gabriel Keith
  */
 class RFixture {
     @Transient private var fixture: Fixture? = null
-    @Transient internal var body: RBody? = null
+    @Transient var body: RBody? = null
     var shape: RShape? = null
 
     var ownerId: Int = -1

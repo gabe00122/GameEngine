@@ -16,8 +16,8 @@ import gabek.engine.core.assets.Assets
 import gabek.engine.core.audio.MusicPlayer
 import gabek.engine.core.console.Console
 import gabek.engine.core.input.PlayerInputManager
-import gabek.engine.core.screens.ScreenManager
-import gabek.engine.core.screens.buildScreenManager
+import gabek.engine.core.screen.ScreenManager
+import gabek.spacemonk.screen.buildScreenManager
 import gabek.engine.core.settings.Settings
 import gabek.engine.core.world.*
 
