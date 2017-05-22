@@ -9,7 +9,7 @@ import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.engine.core.assets.Assets
-import gabek.engine.core.input.PlayerInputManager
+import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.Screen
 import gabek.engine.core.ui.MenuControl
 import ktx.actors.onChange
@@ -48,7 +48,7 @@ class MainMenu(val kodein: Kodein) : Screen() {
             Gdx.app.exit()
         }
         val menu = MenuControl(startBut, settingsBut, quitBut)
-        menu.playerInput = kodein.instance<PlayerInputManager>()
+        menu.playerInput = kodein.instance<InputManager>()
         window.add(menu).fill()
 
         val table = VisTable()

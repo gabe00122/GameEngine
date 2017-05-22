@@ -5,7 +5,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
-import gabek.engine.core.input.PlayerInputManager
+import gabek.engine.core.input.InputManager
 import gabek.engine.core.input.Actions
 import gabek.engine.core.input.PlayerInput
 import gabek.engine.core.screen.Screen
@@ -19,7 +19,7 @@ import ktx.actors.onChange
  * @author Gabriel Keith
  */
 class GameSetupScreen(val kodein: Kodein) : Screen() {
-    private val inputManager: PlayerInputManager = kodein.instance()
+    private val inputManager: InputManager = kodein.instance()
     private val worldConfig: WorldConfig = kodein.instance()
 
     private val table = VisTable()

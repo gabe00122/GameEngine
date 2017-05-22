@@ -4,20 +4,34 @@ package gabek.engine.core.input
 /**
  * @author Gabriel Keith
  */
-class KeyboardPlayerInput : PlayerInput() {
-    private val size = Actions.SIZE
+class KeyboardPlayerInput internal constructor(
+        private val inputManager: InputManager ,
+        private val inputId: Int
+) : PlayerInput() {
 
-    private val currentState = BooleanArray(size)
+    private val currentState = ArrayList<Boolean>()
 
     override fun pollAction(actionId: Int): Boolean {
-        return currentState[actionId]
+        return actionId < currentState.size && currentState[actionId]
     }
 
-    fun keyUp(actionId: Int) {
+    internal fun keyUp(actionId: Int) {
+        ensureCapacity(actionId)
         currentState[actionId] = false
     }
 
-    fun keyDown(actionId: Int) {
+    internal fun keyDown(actionId: Int) {
+        ensureCapacity(actionId)
         currentState[actionId] = true
+    }
+
+    fun bindKey(actionCode: Int, keyCode: Int) {
+        inputManager.bindKey(this, actionCode, keyCode)
+    }
+
+    private fun ensureCapacity(actionId: Int){
+        while(actionId >= currentState.size) {
+            currentState.add(false)
+        }
     }
 }

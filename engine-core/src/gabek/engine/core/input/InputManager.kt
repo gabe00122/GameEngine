@@ -1,47 +1,18 @@
 package gabek.engine.core.input
 
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.controllers.Controller
 import com.badlogic.gdx.controllers.ControllerAdapter
-import com.badlogic.gdx.controllers.Controllers
-import com.github.salomonbrys.kodein.Kodein
 
 /**
  * @author Gabriel Keith
  */
-class PlayerInputManager(val kodein: Kodein) : PlayerInput() {
+class InputManager: PlayerInput() {
     private val inputHandler = InputHandler()
     val inputProcessor: InputProcessor get() = inputHandler
 
     private val keyBindings = Array<KeyBinding?>(255, { null })
-
-    private val playerInputs = mutableListOf<PlayerInput>()
-
-    init {
-        playerInputs.add(KeyboardPlayerInput())
-        playerInputs.add(KeyboardPlayerInput())
-
-        bindKey(0, Actions.UP, Input.Keys.UP)
-        bindKey(0, Actions.DOWN, Input.Keys.DOWN)
-        bindKey(0, Actions.LEFT, Input.Keys.LEFT)
-        bindKey(0, Actions.RIGHT, Input.Keys.RIGHT)
-        bindKey(0, Actions.SELECT, Input.Keys.ENTER)
-        bindKey(0, Actions.ESCAPE, Input.Keys.ESCAPE)
-
-        bindKey(1, Actions.UP, Input.Keys.W)
-        bindKey(1, Actions.DOWN, Input.Keys.S)
-        bindKey(1, Actions.LEFT, Input.Keys.A)
-        bindKey(1, Actions.RIGHT, Input.Keys.D)
-        bindKey(1, Actions.SELECT, Input.Keys.SPACE)
-
-        Controllers.addListener(inputHandler)
-        for (controller in Controllers.getControllers()) {
-            val pi = ControllerPlayerInput()
-            controller.addListener(pi)
-            playerInputs.add(pi)
-        }
-    }
+    private val playerInputs = ArrayList<PlayerInput>()
 
     override fun pollAction(actionId: Int): Boolean = pollAllInputs(actionId) != null
 
@@ -55,13 +26,17 @@ class PlayerInputManager(val kodein: Kodein) : PlayerInput() {
         return playerInputs[playerInputId]
     }
 
-    fun bindKey(playerInputId: Int, actionId: Int, keycode: Int) {
-        val playerInput = playerInputs[playerInputId] as KeyboardPlayerInput
+    fun createKeyboardInput(): KeyboardPlayerInput{
+        val keyboardInput = KeyboardPlayerInput(this, playerInputs.size)
+        playerInputs.add(keyboardInput)
+        return keyboardInput
+    }
 
+    internal fun bindKey(playerInput: KeyboardPlayerInput, actionId: Int, keycode: Int) {
         keyBindings[keycode] = KeyBinding(playerInput, actionId)
     }
 
-    private class KeyBinding(val playerInput: KeyboardPlayerInput, val actionId: Int)
+    private data class KeyBinding(val playerInput: KeyboardPlayerInput, val actionId: Int)
 
     private inner class InputHandler: ControllerAdapter(), InputProcessor {
         override fun keyUp(keycode: Int): Boolean {

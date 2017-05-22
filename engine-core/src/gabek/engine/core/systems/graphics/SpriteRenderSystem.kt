@@ -6,7 +6,6 @@ import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
-import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.world.EntityRenderManager
@@ -14,7 +13,7 @@ import gabek.engine.core.world.EntityRenderManager
 /**
  * @author Gabriel Keith
  */
-class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
+class SpriteRenderSystem: BaseEntitySystem(
         Aspect.all(
                 SpriteCom::class.java,
                 TranslationCom::class.java

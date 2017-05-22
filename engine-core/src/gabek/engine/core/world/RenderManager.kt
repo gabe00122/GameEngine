@@ -1,5 +1,6 @@
 package gabek.engine.core.world
 
+import com.artemis.World
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL30
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -7,19 +8,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.graphics.Display
+import gabek.engine.core.systems.PassiveSystem
 import gabek.engine.core.systems.graphics.CameraSystem
 
 /**
  * @author Gabriel Keith
  */
-class RenderManager(val kodein: Kodein,
-                    val cameraSystem: CameraSystem,
-                    val batchSystems: List<BatchSystem>,
-                    val orthoSystems: List<OrthoRenderSystem> = listOf()) {
+class RenderManager(
+        private var setupCode: (RenderManager.(world: World) -> Unit)? = null
+): PassiveSystem() {
+    private lateinit var cameraSystem: CameraSystem
+
+    var batchSystems: List<BatchSystem> = listOf()
+    var orthoSystems: List<OrthoRenderSystem> = listOf()
 
     //private val shader = kodein.instance<Assets>().resourceManager.get("shaders/hex.vert", ShaderProgram::class.java)
     private val culling = Rectangle()
     private val ortho = OrthographicCamera()
+
+    override fun initialize() {
+        super.initialize()
+
+        setupCode?.invoke(this, world)
+    }
 
     fun render(buffer: Display, batch: SpriteBatch, progress: Float) {
         cameraSystem.updateProjection(ortho, buffer.cameraHandle, progress)

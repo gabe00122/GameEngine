@@ -15,7 +15,7 @@ import com.kotcrab.vis.ui.VisUI
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.audio.MusicPlayer
 import gabek.engine.core.console.Console
-import gabek.engine.core.input.PlayerInputManager
+import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.ScreenManager
 import gabek.spacemonk.screen.buildScreenManager
 import gabek.engine.core.settings.Settings
@@ -41,11 +41,9 @@ class Core(val settings: Settings) : ApplicationAdapter() {
             bind<Settings>() with singleton { settings }
             bind<Assets>() with singleton { Assets("assets/manifest.json") }
             bind<MusicPlayer>() with singleton { MusicPlayer(kodein) }
-            bind<PlayerInputManager>() with singleton { PlayerInputManager(this) }
+            bind<InputManager>() with singleton { buildInputManager() }
             bind<World>() with singleton { buildWorld(this) }
             bind<WorldConfig>() with singleton { WorldConfig() }
-
-            bind<RenderManager>() with singleton { buildRenderManager(this) }
 
             bind<Console>() with singleton { Console(kodein) }
         }
@@ -55,7 +53,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
         kodein.instance<MusicPlayer>().playSong("mixdown")
 
         screenManager = kodein.instance()
-        Gdx.input.inputProcessor = InputMultiplexer(screenManager.inputProcessor, kodein.instance<PlayerInputManager>().inputProcessor)
+        Gdx.input.inputProcessor = InputMultiplexer(screenManager.inputProcessor, kodein.instance<InputManager>().inputProcessor)
         //Gdx.input.inputProcessor = screenManager.inputProcessor
 
         quickLaunch()
@@ -65,7 +63,7 @@ class Core(val settings: Settings) : ApplicationAdapter() {
     fun quickLaunch() {
         val screenManager: ScreenManager = kodein.instance()
         val worldConfig: WorldConfig = kodein.instance()
-        val inputManager: PlayerInputManager = kodein.instance()
+        val inputManager: InputManager = kodein.instance()
 
         worldConfig.players.add(PlayerInfo(0, inputManager.getPlayerInput(0)))
 

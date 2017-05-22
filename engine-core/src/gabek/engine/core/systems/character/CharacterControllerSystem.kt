@@ -17,7 +17,7 @@ import gabek.engine.core.physics.RCollisionCallback
 import gabek.engine.core.physics.RFixture
 import gabek.engine.core.prefab.Prefab
 import gabek.engine.core.systems.common.PrefabManager
-import gabek.engine.core.systems.common.TimeManager
+import gabek.engine.core.systems.common.UpdateManager
 import gabek.engine.core.util.FSMTransitionTable
 
 /**
@@ -40,25 +40,25 @@ class CharacterControllerSystem: BaseEntitySystem(
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
 
     private lateinit var damageSystem: DamageSystem
-    private lateinit var timeManager: TimeManager
+    private lateinit var updateManager: UpdateManager
     private lateinit var biDirectionSystem: BiDirectionSystem
 
     private lateinit var prefabManager: PrefabManager
     private lateinit var bloodFactory: Prefab
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
-        //println("${movementStateMapper[entity].state} $state ${timeManager.currentFrame}")
+        //println("${movementStateMapper[entity].state} $state ${updateManager.currentFrame}")
         movementStateMapper[entity].state = state
         checkTransitions(entity)
     }
 
     override fun initialize() {
         transitionTable.addListenerEntering(LANDING) { entity, from, to ->
-            movementStateMapper[entity].timeOnGround = timeManager.currentFrame
+            movementStateMapper[entity].timeOnGround = updateManager.currentFrame
         }
 
         transitionTable.addListener(arrayOf(RUNNING, STANDING), arrayOf(JUMPING, IN_AIR)) { entity, from, to ->
-            movementStateMapper[entity].timeInAir = timeManager.currentFrame
+            movementStateMapper[entity].timeInAir = updateManager.currentFrame
         }
 
         transitionTable.addListenerEntering(JUMPING) { entity, from, to ->
@@ -161,8 +161,8 @@ class CharacterControllerSystem: BaseEntitySystem(
         val movState = movementStateMapper[entity]
         val movContact = movementGroundContactMapper[entity]
 
-        val timeOnGround = timeManager.getElapsedTime(movState.timeOnGround)
-        val timeInAir = timeManager.getElapsedTime(movState.timeInAir)
+        val timeOnGround = updateManager.getElapsedTime(movState.timeOnGround)
+        val timeInAir = updateManager.getElapsedTime(movState.timeInAir)
 
         when (movState.state) {
             LANDING -> {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle
  * @date 4/7/2017
  */
 
-class EntityRenderManager(val renderSystems: List<Renderer>): RenderManager.BatchSystem {
+class EntityRenderManager(vararg val renderSystems: Renderer): RenderManager.BatchSystem {
     val layerSize = 10
     val layers = Array(layerSize) { Layer() }
 

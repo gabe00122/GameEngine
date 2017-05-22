@@ -26,8 +26,8 @@ import gabek.engine.core.ui.MenuControl
 import gabek.engine.core.util.clear
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.systems.PlayerInputSystem
+import gabek.engine.core.systems.common.UpdateManager
 import gabek.engine.core.world.RenderManager
-import gabek.engine.core.world.UpdateManager
 import gabek.engine.core.world.WorldConfig
 import ktx.actors.onChange
 
@@ -40,8 +40,8 @@ class PlayingScreen(val kodein: Kodein): Screen() {
     private val world: World = kodein.instance()
     private val worldConfig: WorldConfig = kodein.instance()
 
-    private val updateManager = UpdateManager(world, 60f)
-    private val renderManager: RenderManager = kodein.instance()
+    private val updateManager: UpdateManager = world.getSystem()
+    private val renderManager: RenderManager = world.getSystem()
 
     private val pauseWindow: VisWindow = VisWindow("Pause")
     private val pauseContainer = Container(pauseWindow)
@@ -53,6 +53,8 @@ class PlayingScreen(val kodein: Kodein): Screen() {
     private val deathFadIn = 0f
 
     init {
+
+
         // pause menu
         pauseContainer.setFillParent(true)
         pauseWindow.isMovable = false

@@ -48,4 +48,19 @@ class CameraSystem: BaseEntitySystem(
     fun setAspectRatio(cameraHandle: Int, aspectRatio: Float) {
         cameraMapper[cameraHandle].aspectRatio = aspectRatio
     }
+
+    fun setView(entityId: Int, x: Float, y: Float, width: Float, height: Float){
+        assert(transMapper.has(entityId))
+        assert(boundMapper.has(entityId))
+        assert(cameraMapper.has(entityId))
+
+        val trans = transMapper[entityId]
+        val bounds = boundMapper[entityId]
+
+        trans.x = x
+        trans.y = y
+
+        bounds.width = width
+        bounds.height = height
+    }
 }

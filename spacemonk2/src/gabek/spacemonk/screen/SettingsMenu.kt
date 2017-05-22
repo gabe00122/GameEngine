@@ -5,7 +5,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
-import gabek.engine.core.input.PlayerInputManager
+import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.Screen
 import gabek.engine.core.ui.MenuControl
 import ktx.actors.onChange
@@ -36,7 +36,7 @@ class SettingsMenu(kodein: Kodein) : Screen() {
         }
 
         val menuControl = MenuControl(graphics, sound, controller, backBut)
-        menuControl.playerInput = kodein.instance<PlayerInputManager>()
+        menuControl.playerInput = kodein.instance<InputManager>()
 
         val window = VisWindow("Settings")
         window.isMovable = false

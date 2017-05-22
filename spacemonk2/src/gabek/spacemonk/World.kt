@@ -31,6 +31,7 @@ import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
 import gabek.engine.core.world.RenderManager
 import gabek.spacemonk.prefab.*
+import java.rmi.activation.ActivationGroup.getSystem
 
 /**
  * @author Gabriel Keith
@@ -47,7 +48,7 @@ fun buildWorld(kodein: Kodein): World {
     //config.setSystem(TeamManager())
     config.setSystem(PrefabManager.build(kodein, ::prefabBindings))
     config.setSystem(LevelTemplateLoader())
-    config.setSystem(TimeManager())
+    config.setSystem(UpdateManager())
 
     //needs to be first
     config.setSystem(TranslationSystem())
@@ -86,8 +87,20 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(AnimationSystem())
 
     config.setSystem(ParallaxRenderSystem(kodein))
-    config.setSystem(SpriteRenderSystem(kodein))
+    config.setSystem(SpriteRenderSystem())
     //config.setSystem(HealthRenderSystem(kodein))
+    config.setSystem(RenderManager { world ->
+        batchSystems = listOf(
+                world.getSystem<ParallaxRenderSystem>(),
+                world.getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
+                EntityRenderManager(world.getSystem<SpriteRenderSystem>()),
+                world.getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
+                //getSystem<HealthRenderSystem>()
+        )
+        orthoSystems = listOf(
+                world.getSystem<Box2dDebugSystem>()
+        )
+    })
 
     config.setSystem(Box2dDebugSystem())
 
@@ -98,25 +111,6 @@ fun buildWorld(kodein: Kodein): World {
     world.getSystem<WorldSerializationManager>().setSerializer(kryoSerializer)
 
     return world
-}
-
-
-fun buildRenderManager(kodein: Kodein): RenderManager {
-    with(kodein.instance<World>()) {
-        return RenderManager(kodein,
-                cameraSystem = getSystem(),
-                batchSystems = listOf(
-                        getSystem<ParallaxRenderSystem>(),
-                        getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
-                        EntityRenderManager(listOf(getSystem<SpriteRenderSystem>())),
-                        getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
-                        //getSystem<HealthRenderSystem>()
-                ),
-                orthoSystems = listOf(
-                        getSystem<Box2dDebugSystem>()
-                )
-        )
-    }
 }
 
 fun prefabBindings(builder: PrefabManager.Builder) = with(builder) {

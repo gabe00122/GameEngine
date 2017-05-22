@@ -8,14 +8,14 @@ import gabek.engine.core.systems.PassiveSystem
  * @author Gabriel Keith
  */
 class PrefabManager(val kodein: Kodein, builder: Builder): PassiveSystem() {
-    private val factoryMap = builder.factoryMap
+    private val prefabMap = builder.factoryMap
 
     override fun processSystem() {}
 
     override fun initialize() {
         super.initialize()
 
-        factoryMap.forEach { _, v ->
+        prefabMap.forEach { _, v ->
             v.initialise(kodein, world)
             v.define()
             v.assemble()
@@ -23,13 +23,15 @@ class PrefabManager(val kodein: Kodein, builder: Builder): PassiveSystem() {
     }
 
     fun getPrefab(name: String): Prefab {
-        return factoryMap[name] ?: throw IllegalArgumentException("Factory not found with the name: $name")
+        return prefabMap[name] ?: throw IllegalArgumentException("Factory not found with the name: $name")
     }
 
     fun create(name: String): Int = getPrefab(name).create()
 
+    fun create(name: String, x: Float, y: Float): Int = getPrefab(name).create(x, y)
+
     override fun dispose() {
-        for (factory in factoryMap.values) {
+        for (factory in prefabMap.values) {
             factory.dispose()
         }
     }
