@@ -1,6 +1,7 @@
 package gabek.engine.core.systems.common
 
 import com.artemis.Aspect
+import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.engine.core.components.common.ParentOfCom
 import gabek.engine.core.components.common.ParentOffsetCom
@@ -9,7 +10,7 @@ import gabek.engine.core.components.common.TranslationCom
 /**
  * @author Gabriel Keith
  */
-class ParentBodyTackingSystem : com.artemis.BaseEntitySystem(
+class ParentTackingSystem : BaseEntitySystem(
         Aspect.all(
                 TranslationCom::class.java,
                 ParentOfCom::class.java,

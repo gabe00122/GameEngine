@@ -14,6 +14,7 @@ import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
 import gabek.engine.core.world.RenderManager
 import gabek.magicarrow.prefab.BasicAttackerPrefab
+import gabek.magicarrow.system.MagicArrowInputSystem
 
 /**
  * @another Gabriel Keith
@@ -23,31 +24,44 @@ import gabek.magicarrow.prefab.BasicAttackerPrefab
 
 fun buildWorld(kodein: Kodein): World {
     val wc = WorldConfiguration()
+
+    wc.setSystem(UpdateManager()) // tick frame count
+
+    // <PASSIVE>
     wc.setSystem(EntityLinkManager())
     wc.setSystem(TagManager())
     wc.setSystem(GroupManager())
 
-    wc.setSystem(UpdateManager())
-    wc.setSystem(RenderManager { world ->
+    wc.setSystem(CameraSystem())
+    wc.setSystem(Box2dDebugSystem())
+    wc.setSystem(RenderManager { world -> //define render order
         batchSystems = listOf(
                 EntityRenderManager(world.getSystem<SpriteRenderSystem>())
         )
     })
 
     wc.setSystem(PrefabManager.build(kodein, ::prefabs))
-
     wc.setSystem(ParentSystem())
+    // </PASSIVE>
+
+    // <INTERPOLATION PREP>
     wc.setSystem(TranslationSystem())
     wc.setSystem(BoundSystem())
+    // </INTERPOLATION PREP>
 
+    // <INPUT HANDLING>
+    wc.setSystem(MagicArrowInputSystem()) //custom input for all projects
+    // </INPUT HANDLING>
+
+    // <MOVE STUFF>
     wc.setSystem(Box2dSystem())
-
-    wc.setSystem(CameraSystem())
-    wc.setSystem(CameraTrackingSystem())
+    wc.setSystem(ParentTackingSystem()) // follow the parent entities movement
+    wc.setSystem(CameraTrackingSystem()) // when the camera follows stuff
+    wc.setSystem(CameraDirectControlSystem())
+    // </MOVE STUFF>
 
     wc.setSystem(SpriteRenderSystem())
     wc.setSystem(AnimationSystem())
-    wc.setSystem(Box2dDebugSystem())
 
     return World(wc)
 }

@@ -3,13 +3,13 @@ package gabek.engine.core.systems.gamemodes
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.utils.IntBag
-import gabek.engine.core.components.PlayerInputCom
+import gabek.engine.core.components.InputCom
 
 /**
  * @author Gabriel Keith
  * @date 3/28/2017
  */
-class GameModeManager: BaseEntitySystem(Aspect.all(PlayerInputCom::class.java)) {
+class GameModeManager: BaseEntitySystem(Aspect.all(InputCom::class.java)) {
 
     private var onGameOver: (() -> Unit)? = null
 

@@ -11,7 +11,6 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.prefab.*
-import gabek.engine.core.serialisation.kryoSetup
 import gabek.engine.core.systems.*
 import gabek.spacemonk.system.WanderingBrainSystem
 import gabek.engine.core.systems.character.BiDirectionSystem
@@ -31,7 +30,6 @@ import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
 import gabek.engine.core.world.RenderManager
 import gabek.spacemonk.prefab.*
-import java.rmi.activation.ActivationGroup.getSystem
 
 /**
  * @author Gabriel Keith
@@ -57,7 +55,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(Box2dSystem())
     config.setSystem(StaticJointSystem())
     config.setSystem(ParentSystem())
-    config.setSystem(ParentBodyTackingSystem())
+    config.setSystem(ParentTackingSystem())
 
     //config.setSystem(WorldBoundsSystem())
     config.setSystem(DamageSystem())
@@ -107,7 +105,6 @@ fun buildWorld(kodein: Kodein): World {
     val world = World(config)
 
     val kryoSerializer = KryoArtemisSerializer(world)
-    kryoSetup(kodein, kryoSerializer.kryo)
     world.getSystem<WorldSerializationManager>().setSerializer(kryoSerializer)
 
     return world

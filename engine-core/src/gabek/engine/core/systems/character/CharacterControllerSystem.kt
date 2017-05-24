@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.engine.core.components.BodyCom
-import gabek.engine.core.components.PlayerInputCom
+import gabek.engine.core.components.InputCom
 import gabek.engine.core.components.character.*
 import gabek.engine.core.components.character.CharacterMovementStateCom.State.*
 import gabek.engine.core.components.character.BiDirectionCom.Direction.*
@@ -84,7 +84,7 @@ class CharacterControllerSystem: BaseEntitySystem(
 
         val transmuter = EntityTransmuterFactory(world)
                 .remove(CharacterControllerCom::class.java)
-                .remove(PlayerInputCom::class.java)
+                .remove(InputCom::class.java)
                 .build()
 
         damageSystem.addDeathListener { entity: Int, damage: Float, damageType: Int ->

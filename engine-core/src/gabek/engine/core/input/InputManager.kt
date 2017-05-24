@@ -60,9 +60,9 @@ class InputManager: PlayerInput() {
         }
 
         override fun connected(controller: Controller) {
-            //val playerInput = ControllerPlayerInput()
-            //controller.addListener(playerInput)
-            //playerInputs.add(playerInput)
+            //val input = ControllerPlayerInput()
+            //controller.addListener(input)
+            //playerInputs.add(input)
         }
 
         override fun disconnected(controller: Controller) {

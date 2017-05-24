@@ -51,7 +51,7 @@ class PlayerPrefab : gabek.engine.core.prefab.Prefab() {
         }
 
         add<gabek.engine.core.components.graphics.AnimationCom>()
-        add<gabek.engine.core.components.PlayerInputCom>()
+        add<gabek.engine.core.components.InputCom>()
         add<gabek.engine.core.components.character.CharacterControllerCom>()
         add<gabek.engine.core.components.character.BiDirectionCom>()
         add<gabek.engine.core.components.character.CharacterMovementStateCom>()
