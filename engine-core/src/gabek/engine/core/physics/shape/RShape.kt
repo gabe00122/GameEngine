@@ -5,11 +5,9 @@ import com.badlogic.gdx.physics.box2d.Shape
 /**
  * @author Gabriel Keith
  */
-abstract class RShape {
+abstract class RShape: Cloneable {
     var shape: Shape? = null
         protected set
-
-    abstract fun clone(): RShape
 
     abstract fun preInit()
     open fun postInit() {
