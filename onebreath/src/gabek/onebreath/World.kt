@@ -1,4 +1,4 @@
-package gabek.magicarrow
+package gabek.onebreath
 
 import com.artemis.World
 import com.artemis.WorldConfiguration
@@ -13,8 +13,8 @@ import gabek.engine.core.systems.graphics.*
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
 import gabek.engine.core.world.RenderManager
-import gabek.magicarrow.prefab.BasicAttackerPrefab
-import gabek.magicarrow.system.MagicArrowInputSystem
+import gabek.onebreath.prefab.BasicAttackerPrefab
+import gabek.onebreath.system.OneBreathInputSystem
 
 /**
  * @another Gabriel Keith
@@ -50,7 +50,7 @@ fun buildWorld(kodein: Kodein): World {
     // </INTERPOLATION PREP>
 
     // <INPUT HANDLING>
-    wc.setSystem(MagicArrowInputSystem()) //custom input for all projects
+    wc.setSystem(OneBreathInputSystem()) //custom input for all projects
     // </INPUT HANDLING>
 
     // <MOVE STUFF>

@@ -1,4 +1,4 @@
-package gabek.magicarrow.prefab
+package gabek.onebreath.prefab
 
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets

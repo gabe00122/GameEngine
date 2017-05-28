@@ -1,8 +1,8 @@
-package gabek.magicarrow
+package gabek.onebreath
 
 import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.screen.ScreenManager
-import gabek.magicarrow.screen.GameViewScreen
+import gabek.onebreath.screen.GameViewScreen
 
 /**
  * @another Gabriel Keith

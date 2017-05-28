@@ -1,4 +1,4 @@
-package gabek.magicarrow.screen
+package gabek.onebreath.screen
 
 import com.artemis.World
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -55,7 +55,7 @@ class GameViewScreen(kodein: Kodein): Screen() {
 
         val camera = prefabManager.create("camera")
         cameraSystem.setView(camera, 0f, 0f, 10f, 10f)
-        cameraUtil.addInputController(camera, input)
+        cameraUtil.addDirectControl(camera, input)
 
         display.setHandle(camera, cameraSystem)
 

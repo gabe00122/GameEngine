@@ -1,4 +1,4 @@
-package gabek.magicarrow
+package gabek.onebreath
 
 import com.badlogic.gdx.Input
 import com.github.salomonbrys.kodein.Kodein

@@ -1,4 +1,4 @@
-package gabek.magicarrow
+package gabek.onebreath
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
@@ -17,7 +17,7 @@ fun main(args: Array<String>){
     config.setWindowedMode(600, 600)
     config.useVsync(true)
 
-    val settings = Settings(Lwjgl3Preferences("magicarrow.pref", "./"))
+    val settings = Settings(Lwjgl3Preferences("onebreath.pref", "./"))
 
-    Lwjgl3Application(MagicArrow(settings), config)
+    Lwjgl3Application(OneBreath(settings), config)
 }

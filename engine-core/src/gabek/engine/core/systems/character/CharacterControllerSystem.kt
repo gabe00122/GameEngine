@@ -4,12 +4,14 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.EntityTransmuterFactory
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.InputCom
+import gabek.engine.core.components.channel.DirectionalInputCom
 import gabek.engine.core.components.character.*
 import gabek.engine.core.components.character.CharacterMovementStateCom.State.*
 import gabek.engine.core.components.character.BiDirectionCom.Direction.*
@@ -25,14 +27,14 @@ import gabek.engine.core.util.FSMTransitionTable
  */
 class CharacterControllerSystem: BaseEntitySystem(
         Aspect.all(
-                CharacterControllerCom::class.java,
+                DirectionalInputCom::class.java,
                 BiDirectionCom::class.java,
                 CharacterMovementStateCom::class.java,
                 MovementDefinitionCom::class.java,
                 MovementGroundContactCom::class.java,
                 BodyCom::class.java
         )) {
-    private lateinit var controllerMapper: ComponentMapper<CharacterControllerCom>
+    private lateinit var directionalInputMapper: ComponentMapper<DirectionalInputCom>
     private lateinit var biDirectionMapper: ComponentMapper<BiDirectionCom>
     private lateinit var movementStateMapper: ComponentMapper<CharacterMovementStateCom>
     private lateinit var movementDefinitionMapper: ComponentMapper<MovementDefinitionCom>
@@ -45,6 +47,8 @@ class CharacterControllerSystem: BaseEntitySystem(
 
     private lateinit var prefabManager: PrefabManager
     private lateinit var bloodFactory: Prefab
+
+    private val threshold = 0.2f
 
     val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
         //println("${movementStateMapper[entity].state} $state ${updateManager.currentFrame}")
@@ -88,7 +92,7 @@ class CharacterControllerSystem: BaseEntitySystem(
                 .build()
 
         damageSystem.addDeathListener { entity: Int, damage: Float, damageType: Int ->
-            if (controllerMapper.has(entity) && bodyMapper.has(entity)) {
+            if (directionalInputMapper.has(entity) && bodyMapper.has(entity)) {
                 transmuter.transmute(entity)
                 val body = bodyMapper[entity].body
 
@@ -110,7 +114,7 @@ class CharacterControllerSystem: BaseEntitySystem(
         for (i in 0 until entities.size()) {
             val entity = entities[i]
 
-            val control = controllerMapper[entity]
+            val input = directionalInputMapper[entity]
             val biDirection = biDirectionMapper[entity]
             val movState = movementStateMapper[entity]
             val moveDef = movementDefinitionMapper[entity]
@@ -120,12 +124,12 @@ class CharacterControllerSystem: BaseEntitySystem(
             //transitions
             when (biDirection.direction) {
                 LEFT -> {
-                    if (control.moveRight && !control.moveLeft) {
+                    if (input.panX > threshold) {
                         biDirectionSystem.setDirection(entity, RIGHT)
                     }
                 }
                 RIGHT -> {
-                    if (control.moveLeft && !control.moveRight) {
+                    if (input.panX < -threshold) {
                         biDirectionSystem.setDirection(entity, LEFT)
                     }
                 }
@@ -139,9 +143,9 @@ class CharacterControllerSystem: BaseEntitySystem(
                 }
                 JUMPING, IN_AIR -> {
                     val linearVelocityX = body.body.linearVelocityX
-                    if (control.moveLeft && linearVelocityX > -moveDef.airSpeed) {
+                    if (input.panX < -threshold && linearVelocityX > -moveDef.airSpeed) {
                         body.body.applyForceToCenter(-5f, 0f)
-                    } else if (control.moveRight && linearVelocityX < moveDef.airSpeed) {
+                    } else if (input.panX > threshold && linearVelocityX < moveDef.airSpeed) {
                         body.body.applyForceToCenter(5f, 0f)
                     }
 
@@ -157,7 +161,7 @@ class CharacterControllerSystem: BaseEntitySystem(
     }
 
     private fun checkTransitions(entity: Int) {
-        val control = controllerMapper[entity]
+        val input = directionalInputMapper[entity]
         val movState = movementStateMapper[entity]
         val movContact = movementGroundContactMapper[entity]
 
@@ -166,7 +170,7 @@ class CharacterControllerSystem: BaseEntitySystem(
 
         when (movState.state) {
             LANDING -> {
-                if (control.moveLeft || control.moveRight) {
+                if (Math.abs(input.panX) > threshold) {
                     transitionTable.transition(entity, LANDING, RUNNING)
                 } else {
                     transitionTable.transition(entity, LANDING, STANDING)
@@ -175,18 +179,18 @@ class CharacterControllerSystem: BaseEntitySystem(
             STANDING -> {
                 if (!movContact.onGround) {
                     transitionTable.transition(entity, STANDING, IN_AIR)
-                } else if (control.moveUp && timeOnGround > 0.1f) {
+                } else if(input.panY > threshold && timeOnGround > 0.1f) {
                     transitionTable.transition(entity, STANDING, JUMPING)
-                } else if (control.moveLeft || control.moveRight) {
+                } else if(Math.abs(input.panX) > threshold) {
                     transitionTable.transition(entity, STANDING, RUNNING)
                 }
             }
             RUNNING -> {
-                if (!movContact.onGround) {
+                if(!movContact.onGround) {
                     transitionTable.transition(entity, RUNNING, IN_AIR)
-                } else if (control.moveUp && timeOnGround > 0.1f) {
+                } else if(input.panY > threshold && timeOnGround > 0.1f) {
                     transitionTable.transition(entity, RUNNING, JUMPING)
-                } else if (!control.moveLeft && !control.moveRight) {
+                } else if(Math.abs(input.panX) < threshold) {
                     transitionTable.transition(entity, RUNNING, STANDING)
                 }
             }
@@ -221,7 +225,7 @@ class CharacterControllerSystem: BaseEntitySystem(
 
         override fun preSolve(contact: Contact, oldManifold: Manifold, ownerRFixture: RFixture, otherRFixture: RFixture) {
             val contacts = movementGroundContactMapper[ownerRFixture.ownerId]
-            val control = controllerMapper[ownerRFixture.ownerId]
+            val input = directionalInputMapper[ownerRFixture.ownerId]
             val def = movementDefinitionMapper[ownerRFixture.ownerId]
 
             val manifold = contact.worldManifold
@@ -235,7 +239,7 @@ class CharacterControllerSystem: BaseEntitySystem(
             val angle = normal.angle()
 
             if (contacts.platformMinAngle < angle && angle < contacts.platformMaxAngle) {
-                contact.tangentSpeed += def.groundSpeed * control.lateralMovement
+                contact.tangentSpeed += def.groundSpeed * input.panX
                 contact.friction = 1f
 
                 val groundContact = contacts.getOrCreate(otherRFixture)

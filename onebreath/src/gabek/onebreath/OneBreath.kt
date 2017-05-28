@@ -1,4 +1,4 @@
-package gabek.magicarrow
+package gabek.onebreath
 
 import com.artemis.World
 import com.badlogic.gdx.ApplicationAdapter
@@ -24,7 +24,7 @@ import gabek.engine.core.settings.Settings
 * @date 5/16/2017.
 */
 
-class MagicArrow(val settings: Settings): ApplicationAdapter() {
+class OneBreath(val settings: Settings): ApplicationAdapter() {
     lateinit var kodein: Kodein
     lateinit var screenManager: ScreenManager
 

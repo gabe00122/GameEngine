@@ -7,6 +7,8 @@ import gabek.engine.core.components.common.BoundCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.CameraCom
 import gabek.engine.core.input.PlayerInput
+import gabek.engine.core.util.InvertibleTransmuter
+import gabek.engine.core.util.InvertibleTransmuterFactory
 
 /**
  * @another Gabriel Keith
@@ -26,12 +28,12 @@ class CameraDirectControlSystem: BaseEntitySystem(
     private lateinit var inputMapper: ComponentMapper<InputCom>
     private lateinit var directionalInputMapper: ComponentMapper<DirectionalInputCom>
 
-    private lateinit var controlTrans: EntityTransmuter
+    private lateinit var controlTrans: InvertibleTransmuter
 
     override fun initialize() {
         super.initialize()
 
-        controlTrans = EntityTransmuterFactory(world)
+        controlTrans = InvertibleTransmuterFactory(world)
                 .add(InputCom::class.java)
                 .add(DirectionalInputCom::class.java)
                 .build()
@@ -55,9 +57,13 @@ class CameraDirectControlSystem: BaseEntitySystem(
     }
 
 
-    fun addInputController(cameraId: Int, playerInput: PlayerInput){
+    fun addDirectControl(cameraId: Int, playerInput: PlayerInput){
         controlTrans.transmute(cameraId)
         val input = inputMapper[cameraId]
         input.input = playerInput
+    }
+
+    fun removeDirectControl(cameraId: Int){
+        controlTrans.inverse(cameraId)
     }
 }

@@ -3,8 +3,8 @@ apply plugin: "artemis"
 apply plugin: "kotlin"
 
 sourceSets.main.resources.srcDirs += [project.file('assets').absolutePath]
-mainClassName = 'gabek.magicarrow.LauncherKt'
-eclipse.project.name = 'magicarrow'
+mainClassName = 'gabek.onebreath.LauncherKt'
+eclipse.project.name = 'onebreath'
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 version = "0.0.1"
