@@ -12,7 +12,7 @@ import gabek.engine.core.settings.Settings
 
 fun main(args: Array<String>){
     val config = Lwjgl3ApplicationConfiguration()
-    config.useOpenGL3(true, 3, 2)
+    //config.useOpenGL3(true, 3, 2)
 
     config.setWindowedMode(600, 600)
     config.useVsync(true)

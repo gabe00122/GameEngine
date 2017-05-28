@@ -2,11 +2,11 @@ package gabek.engine.core.world
 
 import com.artemis.World
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL30
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
-import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.graphics.Display
 import gabek.engine.core.systems.PassiveSystem
 import gabek.engine.core.systems.graphics.CameraSystem
@@ -20,11 +20,13 @@ class RenderManager(
     private lateinit var cameraSystem: CameraSystem
 
     var batchSystems: List<BatchSystem> = listOf()
-    var orthoSystems: List<OrthoRenderSystem> = listOf()
+    var directSystems: List<DirectRenderSystem> = listOf()
 
     //private val shader = kodein.instance<Assets>().resourceManager.get("shaders/hex.vert", ShaderProgram::class.java)
     private val culling = Rectangle()
     private val ortho = OrthographicCamera()
+
+    var clearColor = Color(1f, 1f, 1f, 1f)
 
     override fun initialize() {
         super.initialize()
@@ -36,10 +38,15 @@ class RenderManager(
         cameraSystem.updateProjection(ortho, buffer.cameraHandle, progress)
         updateCulling(ortho)
 
+        for (directSystem in directSystems) {
+            directSystem.prepare(buffer, ortho) //just for lighting
+        }
+
         batch.projectionMatrix = ortho.projection
         batch.transformMatrix = ortho.view
 
         buffer.beginPrimaryBuffer()
+        Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a)
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
         //batch.shader = shader
         batch.begin()
@@ -51,8 +58,8 @@ class RenderManager(
         batch.end()
         //batch.shader = null
 
-        for (orthoSystem in orthoSystems) {
-            orthoSystem.render(ortho, culling, progress)
+        for (directSystem in directSystems) {
+            directSystem.render(ortho, culling, progress)
         }
 
         buffer.endPrimaryBuffer()
@@ -68,7 +75,8 @@ class RenderManager(
         fun render(batch: SpriteBatch, culling: Rectangle, progress: Float)
     }
 
-    interface OrthoRenderSystem {
+    interface DirectRenderSystem {
+        fun prepare(display: Display, ortho: OrthographicCamera)
         fun render(ortho: OrthographicCamera, culling: Rectangle, progress: Float)
     }
 }

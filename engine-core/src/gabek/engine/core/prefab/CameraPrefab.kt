@@ -19,8 +19,8 @@ class CameraPrefab : Prefab() {
 
         add<CameraCom>()
         add<CameraTargetsCom> {
-            padWidth = width
-            padHeight = height
+            padWidth = width / 2f
+            padHeight = height / 2f
         }
         add<TranslationCom>()
         add<BoundCom>()

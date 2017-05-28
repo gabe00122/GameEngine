@@ -30,6 +30,8 @@ class CameraDirectControlSystem: BaseEntitySystem(
 
     private lateinit var controlTrans: InvertibleTransmuter
 
+    var speed = 3f
+
     override fun initialize() {
         super.initialize()
 
@@ -51,8 +53,8 @@ class CameraDirectControlSystem: BaseEntitySystem(
             val bound = boundMapper[entity]
             val dirInput = directionalInputMapper[entity]
 
-            trans.x += dirInput.panX * world.delta
-            trans.y += dirInput.panY * world.delta
+            trans.x += dirInput.panX * world.delta * speed
+            trans.y += dirInput.panY * world.delta * speed
         }
     }
 

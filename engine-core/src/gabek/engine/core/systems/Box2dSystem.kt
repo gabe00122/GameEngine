@@ -24,6 +24,8 @@ class Box2dSystem: BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationC
 
     val box2dWorld = World(Vector2(0f, -9.807f), true)
 
+    var onBodyInit: ((entityId: Int, body: Body) -> Unit)? = null //temp
+    var onBodyStore: ((entityId: Int, body: Body) -> Unit)? = null //temp
 
     override fun initialize() {
         box2dWorld.setContactListener(contactHandler)
@@ -61,12 +63,18 @@ class Box2dSystem: BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationC
                 val body = bodyMapper[entity].body
 
                 body.initialise(box2dWorld, entity)
+
+                onBodyInit?.invoke(entity, body.body!!)
             }
         }
 
         override fun removed(entities: IntBag) {
             for (i in 0 until entities.size()) {
-                val body = bodyMapper[entities[i]].body
+                val entityId = entities[i]
+
+                val body = bodyMapper[entityId].body
+                onBodyStore?.invoke(entityId, body.body!!)
+
                 body.store(box2dWorld)
             }
         }

@@ -1,7 +1,6 @@
 {
   "texturePacks": {
     "actors": "art/actors.atlas"
-    //"backgrounds": "art/backgrounds.atlas"
   },
   "shaders": {
   },

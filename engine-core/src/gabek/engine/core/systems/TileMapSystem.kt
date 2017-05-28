@@ -30,7 +30,7 @@ class TileMapSystem(
 
     val assets: Assets = kodein.instance()
 
-    val tileSize = 0.75f
+    val tileSize = 0.5f
     val definitions = TileDefinitions()
     private var backgroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
     private var foregroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
@@ -57,7 +57,6 @@ class TileMapSystem(
 
         for (y in y1 until y2) {
             for (x in x1 until x2) {
-                drawTile(batch, tiles, x, y)
                 drawTile(batch, tiles, x, y)
             }
         }

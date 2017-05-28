@@ -1,18 +1,23 @@
 package gabek.onebreath.screen
 
 import com.artemis.World
+import com.artemis.managers.TagManager
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.Container
+import com.badlogic.gdx.utils.JsonReader
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.graphics.Display
 import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.Screen
+import gabek.onebreath.system.OneBreathLevelLoader
+import gabek.engine.core.systems.InputSystem
 import gabek.engine.core.systems.common.PrefabManager
-import gabek.engine.core.systems.common.TranslationSystem
 import gabek.engine.core.systems.common.UpdateManager
 import gabek.engine.core.systems.graphics.CameraDirectControlSystem
 import gabek.engine.core.systems.graphics.CameraSystem
+import gabek.engine.core.systems.graphics.CameraTrackingSystem
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.RenderManager
 
@@ -47,17 +52,28 @@ class GameViewScreen(kodein: Kodein): Screen() {
         super.show()
 
         val prefabManager: PrefabManager = world.getSystem()
-        val transSystem: TranslationSystem = world.getSystem()
+        val tagManager: TagManager = world.getSystem()
+
         val cameraSystem: CameraSystem = world.getSystem()
         val cameraUtil: CameraDirectControlSystem = world.getSystem()
+        val cameraTracking: CameraTrackingSystem = world.getSystem()
 
-        prefabManager.create("attacker_basic", 2f, 2f)
+        val inputSystem: InputSystem = world.getSystem()
+
+        val loader: OneBreathLevelLoader = world.getSystem()
+
+        val mapJson = JsonReader().parse(Gdx.files.internal("assets/maps/test.json"))
+        loader.loadLevel(mapJson)
+
+        val player = tagManager.getEntityId("player")
+        inputSystem.setInput(player, input)
 
         val camera = prefabManager.create("camera")
-        cameraSystem.setView(camera, 0f, 0f, 10f, 10f)
-        cameraUtil.addDirectControl(camera, input)
+        cameraSystem.setView(camera, 5f, 5f, 5f, 5f)
+        cameraTracking.addTarget(camera, player)
 
         display.setHandle(camera, cameraSystem)
+        renderManager.clearColor.set(9/255f, 40/255f, 60/255f, 1f)
 
         val container = Container(display)
         container.fill()

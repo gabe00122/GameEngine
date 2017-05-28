@@ -12,19 +12,22 @@ class BiDirectionCom : RComponent<BiDirectionCom>() {
     }
 
     var direction: Direction = DEFAULT_DIRECTION
+    var invert: Boolean = false
     var timeInState = 0
 
     override fun set(other: BiDirectionCom) {
         direction = other.direction
+        invert = other.invert
         timeInState = other.timeInState
     }
 
     override fun reset() {
         direction = DEFAULT_DIRECTION
+        invert = false
         timeInState = 0
     }
 
-    override fun toString() = "BiDirectionCom: direction = $direction, timeInState = $timeInState"
+    override fun toString() = "BiDirectionCom: direction = $direction, invert = $invert, timeInState = $timeInState"
 
     enum class Direction {
         LEFT, RIGHT

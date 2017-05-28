@@ -10,7 +10,7 @@ import gabek.engine.core.physics.RFixture
 class MovementGroundContactCom : RComponent<MovementGroundContactCom>() {
     val contacts = mutableListOf<GroundContact>()
     val onGround get() = contacts.size > 0
-    var platformIndex: Int = -1
+    var platformIndex: Int = 0
     var platformMinAngle = 180f
     var platformMaxAngle = 360f
 

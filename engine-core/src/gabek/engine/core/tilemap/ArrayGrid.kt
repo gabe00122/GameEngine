@@ -10,7 +10,6 @@ class ArrayGrid<T>(
 ) : Grid<T> {
     private val tiles = ArrayList<T>(w * h)
 
-
     init {
         (0 until w * h).mapTo(tiles) { defaultValue(it % w, it / w) }
     }

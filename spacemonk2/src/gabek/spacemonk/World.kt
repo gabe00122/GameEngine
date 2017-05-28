@@ -68,7 +68,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(WanderingBrainSystem())
 
     //movement
-    config.setSystem(PlayerInputSystem())
+    config.setSystem(InputSystem())
     config.setSystem(GameModeManager())
     config.setSystem(CharacterControllerSystem())
     //config.setSystem(AbilityIndexSystem())
@@ -95,7 +95,7 @@ fun buildWorld(kodein: Kodein): World {
                 world.getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
                 //getSystem<HealthRenderSystem>()
         )
-        orthoSystems = listOf(
+        directSystems = listOf(
                 world.getSystem<Box2dDebugSystem>()
         )
     })

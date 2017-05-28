@@ -25,7 +25,7 @@ import gabek.engine.core.systems.graphics.ParallaxRenderSystem
 import gabek.engine.core.ui.MenuControl
 import gabek.engine.core.util.clear
 import gabek.engine.core.util.getSystem
-import gabek.engine.core.systems.PlayerInputSystem
+import gabek.engine.core.systems.InputSystem
 import gabek.engine.core.systems.common.UpdateManager
 import gabek.engine.core.world.RenderManager
 import gabek.engine.core.world.WorldConfig
@@ -104,7 +104,7 @@ class PlayingScreen(val kodein: Kodein): Screen() {
         val gameModeManager: GameModeManager = world.getSystem()
         val cameraTrackingSystem: CameraTrackingSystem = world.getSystem()
         val transSystem: TranslationSystem = world.getSystem()
-        val playerInputSystem: PlayerInputSystem = world.getSystem()
+        val inputSystem: InputSystem = world.getSystem()
 
         val worldConfig: WorldConfig = kodein.instance()
 
@@ -125,7 +125,7 @@ class PlayingScreen(val kodein: Kodein): Screen() {
             val playerSpawnLocation = playerSpawns[i].getComponent(TranslationCom::class.java)
 
             transSystem.teleport(player, playerSpawnLocation.x, playerSpawnLocation.y, 0f)
-            playerInputSystem.setInput(player, playerConfigs[i].input)
+            inputSystem.setInput(player, playerConfigs[i].input)
             cameraTrackingSystem.addTarget(cameraHandle, player)
         }
 

@@ -27,14 +27,22 @@ class BiDirectionSystem: BaseEntitySystem(Aspect.all(BiDirectionCom::class.java)
 
         transitionMap.addListener(LEFT, RIGHT) { entity, from, to ->
             if (spriteMapper.has(entity)) {
-                spriteMapper[entity].flipX = true
+                spriteMapper[entity].flipX = !biDirectionMapper[entity].invert
             }
         }
 
         transitionMap.addListener(RIGHT, LEFT) { entity, from, to ->
             if (spriteMapper.has(entity)) {
-                spriteMapper[entity].flipX = false
+                spriteMapper[entity].flipX = biDirectionMapper[entity].invert
             }
+        }
+    }
+
+    override fun inserted(entityId: Int) {
+        super.inserted(entityId)
+
+        if(biDirectionMapper[entityId].invert && spriteMapper.has(entityId)){
+            spriteMapper[entityId].flipX = true
         }
     }
 

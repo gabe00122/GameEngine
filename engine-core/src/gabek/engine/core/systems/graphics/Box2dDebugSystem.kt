@@ -3,6 +3,7 @@ package gabek.engine.core.systems.graphics
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import gabek.engine.core.graphics.Display
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.PassiveSystem
 import gabek.engine.core.world.RenderManager
@@ -10,7 +11,7 @@ import gabek.engine.core.world.RenderManager
 /**
  * @author Gabriel Keith
  */
-class Box2dDebugSystem : PassiveSystem(), RenderManager.OrthoRenderSystem {
+class Box2dDebugSystem : PassiveSystem(), RenderManager.DirectRenderSystem {
     private var render: Box2DDebugRenderer? = null
     private lateinit var b2dSystem: Box2dSystem
 
@@ -26,6 +27,7 @@ class Box2dDebugSystem : PassiveSystem(), RenderManager.OrthoRenderSystem {
         }
     }
 
+    override fun prepare(display: Display, ortho: OrthographicCamera) {}
     override fun processSystem() {}
 
     override fun dispose() {
