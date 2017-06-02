@@ -3,7 +3,7 @@ package gabek.engine.core.systems.graphics
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.engine.core.components.common.BoundCom
+import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.CameraCom
 import gabek.engine.core.components.graphics.CameraTargetsCom
@@ -14,11 +14,11 @@ import gabek.engine.core.components.graphics.CameraTargetsCom
 class CameraTrackingSystem: BaseEntitySystem(Aspect.all(
         CameraCom::class.java,
         TranslationCom::class.java,
-        BoundCom::class.java,
+        SizeCom::class.java,
         CameraTargetsCom::class.java)) {
 
     private lateinit var transMapper: ComponentMapper<TranslationCom>
-    private lateinit var boundMapper: ComponentMapper<BoundCom>
+    private lateinit var sizeMapper: ComponentMapper<SizeCom>
     private lateinit var cameraMapper: ComponentMapper<CameraCom>
     private lateinit var cameraTargetsMapper: ComponentMapper<CameraTargetsCom>
 
@@ -32,7 +32,7 @@ class CameraTrackingSystem: BaseEntitySystem(Aspect.all(
             if (!cameraTargets.targets.isEmpty) {
                 val camera = cameraMapper[entity]
                 val trans = transMapper[entity]
-                val bounds = boundMapper[entity]
+                val bounds = sizeMapper[entity]
 
                 val firstTarget = transMapper[cameraTargets.targets[0]]
 

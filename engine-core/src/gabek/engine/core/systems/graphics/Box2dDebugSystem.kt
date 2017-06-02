@@ -23,7 +23,7 @@ class Box2dDebugSystem : PassiveSystem(), RenderManager.DirectRenderSystem {
                 render = Box2DDebugRenderer(true, true, false, true, false, true)
             }
 
-            render?.render(b2dSystem.box2dWorld, ortho.combined)
+            render?.render(b2dSystem.rworld.world, ortho.combined)
         }
     }
 

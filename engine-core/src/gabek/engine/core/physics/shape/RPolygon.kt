@@ -1,6 +1,7 @@
 package gabek.engine.core.physics.shape
 
 import com.badlogic.gdx.physics.box2d.PolygonShape
+import com.badlogic.gdx.physics.box2d.Shape
 import gabek.engine.core.physics.shape.RShape
 
 
@@ -13,10 +14,10 @@ class RPolygon : RShape {
         setAsBox(w, h, x, y)
     }
 
-    override fun preInit() {
+    override fun generate(): Shape {
         val polyShape = PolygonShape()
         polyShape.set(vertices)
-        shape = polyShape
+        return polyShape
     }
 
     override fun clone(): RShape {

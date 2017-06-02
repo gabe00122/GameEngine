@@ -24,7 +24,6 @@ sourceSets {
 
 dependencies {
     compile project(':engine-core')
-    compile project(':engine-platformer')
 }
 
 jar {

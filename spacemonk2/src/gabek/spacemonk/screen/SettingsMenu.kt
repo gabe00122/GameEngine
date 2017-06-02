@@ -7,7 +7,7 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.Screen
-import gabek.engine.core.ui.MenuControl
+import gabek.spacemonk.ui.MenuControl
 import ktx.actors.onChange
 
 /**

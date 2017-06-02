@@ -4,7 +4,7 @@ apply plugin: "kotlin"
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = 'engine-core'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_6
 
 sourceSets {
     main.kotlin.srcDirs = ["src/"]
@@ -13,7 +13,7 @@ sourceSets {
 version = "0.0.1"
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
@@ -22,17 +22,16 @@ dependencies {
 
     compile "com.kotcrab.vis:vis-ui:$visUiVersion"
 
-    compile "com.github.czyzby:ktx-math:$ktxVersion"
-    compile "com.github.czyzby:ktx-log:$ktxVersion"
-    compile "com.github.czyzby:ktx-collections:$ktxVersion"
-    compile "com.github.czyzby:ktx-actors:$ktxVersion"
-    //compile "com.github.czyzby:ktx-assets:$ktxVersion"
-    compile "com.github.czyzby:ktx-vis:$ktxVersion"
-    compile "com.github.czyzby:ktx-i18n:$ktxVersion"
+    compile "io.github.libktx:ktx-math:$ktxVersion"
+    compile "io.github.libktx:ktx-log:$ktxVersion"
+    compile "io.github.libktx:ktx-collections:$ktxVersion"
+    compile "io.github.libktx:ktx-actors:$ktxVersion"
+    compile "io.github.libktx:ktx-vis:$ktxVersion"
+    compile "io.github.libktx:ktx-i18n:$ktxVersion"
 
     compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
 
-    compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
+    //compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
     //compile "net.onedaybeard.artemis:artemis-odb-serializer-json-libgdx:$artemisOdbVersion"
     //compile "com.esotericsoftware:serialisation:$kryoVersion"
 

@@ -1,4 +1,4 @@
-package gabek.engine.core.components.character
+package gabek.onebreath.component
 
 import gabek.engine.core.components.RComponent
 

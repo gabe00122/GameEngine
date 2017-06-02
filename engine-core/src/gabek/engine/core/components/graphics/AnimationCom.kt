@@ -1,13 +1,13 @@
 package gabek.engine.core.components.graphics
 
 import gabek.engine.core.components.RComponent
-import gabek.engine.core.graphics.AnimationDef
+import gabek.engine.core.graphics.AnimationRef
 
 /**
  * @author Gabriel Keith
  */
 class AnimationCom : RComponent<AnimationCom>() {
-    var currentAnimationDef: AnimationDef? = null
+    var currentAnimationRef: AnimationRef? = null
     var clock: Float = 0f
     var frame: Int = 0
     var isReverse = false
@@ -15,7 +15,7 @@ class AnimationCom : RComponent<AnimationCom>() {
     var isFinished = false
 
     override fun set(other: AnimationCom) {
-        currentAnimationDef = other.currentAnimationDef
+        currentAnimationRef = other.currentAnimationRef
         clock = other.clock
         frame = other.frame
         isReverse = other.isReverse
@@ -24,7 +24,7 @@ class AnimationCom : RComponent<AnimationCom>() {
     }
 
     override fun reset() {
-        currentAnimationDef = null
+        currentAnimationRef = null
         clock = 0f
         frame = 0
         isReverse = false
@@ -32,6 +32,6 @@ class AnimationCom : RComponent<AnimationCom>() {
         isFinished = false
     }
 
-    override fun toString() = "AnimationCom: currentAnimationDef = $currentAnimationDef, clock = $clock, frame = $frame, " +
+    override fun toString() = "AnimationCom: currentAnimationRef = $currentAnimationRef, clock = $clock, frame = $frame, " +
             "isReverse = $isReverse, isStart = $isStart, isFinished = $isFinished"
 }

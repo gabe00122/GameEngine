@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" nextobjectid="8">
+<map version="1.0.0" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" nextobjectid="8">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="5" columns="0">
   <tile id="0">
    <properties>
     <property name="type" value="water"/>
    </properties>
-   <image width="16" height="16" source="../raw/art/tiles/tile_0.png"/>
+   <image width="16" height="16" source="../raw/art/actors/tile_0.png"/>
   </tile>
   <tile id="2">
-   <image width="16" height="16" source="../raw/art/tiles/tile_2.png"/>
+   <image width="16" height="16" source="../raw/art/actors/tile_2.png"/>
   </tile>
   <tile id="3">
-   <image width="16" height="16" source="../raw/art/tiles/tile_3.png"/>
+   <image width="16" height="16" source="../raw/art/actors/tile_3.png"/>
   </tile>
   <tile id="4">
-   <image width="16" height="16" source="../raw/art/tiles/tile_4.png"/>
+   <image width="16" height="16" source="../raw/art/actors/tile_4.png"/>
   </tile>
   <tile id="5">
    <properties>
     <property name="type" value="stone"/>
    </properties>
-   <image width="16" height="16" source="../raw/art/tiles/tile_5.png"/>
+   <image width="16" height="16" source="../raw/art/actors/tile_5.png"/>
   </tile>
  </tileset>
  <tileset firstgid="7" name="actors" tilewidth="32" tileheight="32" tilecount="4" columns="0">
@@ -31,7 +31,7 @@
    <image width="32" height="32" source="../raw/art/actors/player_ideal.png"/>
   </tile>
   <tile id="2">
-   <image width="32" height="32" source="../raw/art/actors/rat_1.png"/>
+   <image width="32" height="32" source="../raw/art/actors/rat_0.png"/>
   </tile>
   <tile id="3">
    <image width="8" height="8" source="../raw/art/actors/box.png"/>
@@ -68,10 +68,10 @@
     <property name="tag" value="player"/>
    </properties>
   </object>
-  <object id="4" type="junk_1" gid="10" x="165.367" y="161.905" width="8" height="8"/>
-  <object id="5" type="junk_1" gid="10" x="165.432" y="152.795" width="8" height="8"/>
-  <object id="6" type="junk_1" gid="10" x="165.682" y="143.875" width="8" height="8"/>
-  <object id="7" type="junk_1" gid="10" x="165.682" y="135.148" width="8" height="8"/>
+  <object id="4" type="junk_1" gid="10" x="144.367" y="151.405" width="8" height="8"/>
+  <object id="5" type="junk_1" gid="10" x="144.182" y="159.795" width="8" height="8"/>
+  <object id="6" type="junk_1" gid="10" x="144.182" y="175.875" width="8" height="8"/>
+  <object id="7" type="junk_1" gid="10" x="144.182" y="167.898" width="8" height="8"/>
  </objectgroup>
  <layer name="foreground" width="30" height="20">
   <data encoding="csv">

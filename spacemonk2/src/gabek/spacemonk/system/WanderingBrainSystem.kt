@@ -4,7 +4,6 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.spacemonk.component.WanderingBrainCom
-import gabek.engine.core.components.character.CharacterControllerCom
 import gabek.engine.core.systems.common.UpdateManager
 import java.util.*
 

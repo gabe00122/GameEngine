@@ -11,12 +11,13 @@ import gabek.engine.core.assets.Assets
 import gabek.engine.core.prefab.CameraPrefab
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.InputSystem
+import gabek.engine.core.systems.JointSystem
 import gabek.onebreath.system.OneBreathLevelLoader
 import gabek.engine.core.systems.TileMapSystem
-import gabek.engine.core.systems.character.BiDirectionSystem
-import gabek.engine.core.systems.character.CharacterAnimatorSystem
-import gabek.engine.core.systems.character.CharacterControllerSystem
-import gabek.engine.core.systems.character.DamageSystem
+import gabek.onebreath.system.BiDirectionSystem
+import gabek.onebreath.system.CharacterAnimatorSystem
+import gabek.onebreath.system.CharacterControllerSystem
+import gabek.onebreath.system.DamageSystem
 import gabek.engine.core.systems.common.*
 import gabek.engine.core.systems.graphics.*
 import gabek.engine.core.tilemap.TileDefinitions
@@ -24,8 +25,8 @@ import gabek.engine.core.tilemap.TileType
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
 import gabek.engine.core.world.RenderManager
-import gabek.engine.quickbuoyancy.BuoyancySystem
-import gabek.engine.quicklights.LightingSystem
+import gabek.engine.quick.water.BuoyancySystem
+import gabek.engine.quick.light.LightingSystem
 import gabek.onebreath.prefab.BloodPrefab
 import gabek.onebreath.prefab.Junk1Prefab
 import gabek.onebreath.prefab.PlayerPrefab
@@ -90,6 +91,7 @@ fun buildWorld(kodein: Kodein): World {
 
     // <MOVE STUFF>
     wc.setSystem(Box2dSystem())
+    wc.setSystem(JointSystem())
     wc.setSystem(BuoyancySystem())
 
     wc.setSystem(ParentTackingSystem()) // follow the parent entities movement
@@ -126,6 +128,6 @@ fun tileDef(tileDefinitions: TileDefinitions, world: World, kodein: Kodein) {
 
     tileDefinitions.addType(TileType("empty"))
 
-    tileDefinitions.addType(TileType("stone", assets.findTexture("actors:tile:5"), true))
-    tileDefinitions.addType(TileType("water", assets.findTexture("actors:tile:0")))
+    tileDefinitions.addType(TileType("stone", assets.getTexture("actors:tile:5"), true))
+    tileDefinitions.addType(TileType("water", assets.getTexture("actors:tile:0")))
 }

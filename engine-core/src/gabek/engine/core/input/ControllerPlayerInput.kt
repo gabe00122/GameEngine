@@ -9,13 +9,13 @@ import com.badlogic.gdx.math.Vector3
  * @author Gabriel Keith
  */
 class ControllerPlayerInput : PlayerInput(), ControllerListener {
-    private val size = Actions.SIZE
+    //private val size = Actions.SIZE
 
     private val buttonBindings = mutableListOf<Int>()
     private val axisBindings = mutableListOf<AxisBinding?>()
 
-    private val currentState = BooleanArray(size)
-    private val currentAxisState = FloatArray(size)
+    private val currentState = BooleanArray(0)
+    private val currentAxisState = FloatArray(0)
 
     init {
         //bindButton(12, Actions.UP)
@@ -23,13 +23,13 @@ class ControllerPlayerInput : PlayerInput(), ControllerListener {
         //bindButton(15, Actions.LEFT)
         //bindButton(13, Actions.RIGHT)
 
-        bindAxis(1, true, 0.5f, Actions.UP)
-        bindAxis(1, false, 0.5f, Actions.DOWN)
-        bindAxis(0, true, 0.5f, Actions.LEFT)
-        bindAxis(0, false, 0.5f, Actions.RIGHT)
+        //bindAxis(1, true, 0.5f, Actions.UP)
+        //bindAxis(1, false, 0.5f, Actions.DOWN)
+        //bindAxis(0, true, 0.5f, Actions.LEFT)
+        //bindAxis(0, false, 0.5f, Actions.RIGHT)
 
-        bindButton(1, Actions.SELECT)
-        bindButton(9, Actions.ESCAPE)
+        //bindButton(1, Actions.SELECT)
+        //bindButton(9, Actions.ESCAPE)
     }
 
     override fun pollAction(actionId: Int): Boolean {

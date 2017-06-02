@@ -38,7 +38,7 @@ class MusicPlayer(val kodein: Kodein) {
     fun playSong(name: String) {
         currentSong?.stop()
 
-        currentSong = assets.fineMusic(name)
+        currentSong = assets.getMusic(name)
         currentSong?.volume = musicLevel.value
         currentSong?.isLooping = true
         currentSong?.play()

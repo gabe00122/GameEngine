@@ -6,7 +6,7 @@ import com.badlogic.gdx.Preferences
  * @author Gabriel Keith
  * @date 3/15/2017
  */
-class FloatSettingValue(default: Float) : SettingsValue() {
+class FloatSettingValue(default: Float) : SettingsValue {
     private val listeners = ArrayList<(oldValue: Float, newValue: Float) -> Unit>()
 
     var value: Float = default

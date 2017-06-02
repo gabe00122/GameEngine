@@ -14,7 +14,6 @@ import com.kotcrab.vis.ui.widget.VisTextButton
 import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.graphics.Display
-import gabek.engine.core.input.Actions
 import gabek.engine.core.screen.Screen
 import gabek.engine.core.systems.LevelTemplateLoader
 import gabek.engine.core.systems.common.PrefabManager
@@ -22,13 +21,12 @@ import gabek.engine.core.systems.common.TranslationSystem
 import gabek.engine.core.systems.gamemodes.GameModeManager
 import gabek.engine.core.systems.graphics.CameraTrackingSystem
 import gabek.engine.core.systems.graphics.ParallaxRenderSystem
-import gabek.engine.core.ui.MenuControl
+import gabek.spacemonk.ui.MenuControl
 import gabek.engine.core.util.clear
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.systems.InputSystem
 import gabek.engine.core.systems.common.UpdateManager
 import gabek.engine.core.world.RenderManager
-import gabek.engine.core.world.WorldConfig
 import ktx.actors.onChange
 
 /**

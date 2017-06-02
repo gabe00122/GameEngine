@@ -1,0 +1,33 @@
+apply plugin: "artemis"
+apply plugin: "kotlin"
+apply plugin: "java"
+
+eclipse.project.name = 'engine-quick'
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+version = "0.0.1"
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+sourceSets {
+    main.kotlin.srcDirs = ["src/"]
+    main.java.srcDirs = ["src/"]
+}
+
+dependencies {
+    compile project(':engine-core')
+}
+
+weave {
+    classesDir = sourceSets.main.output.classesDir
+    enableArtemisPlugin = true
+    enablePooledWeaving = true
+    generateLinkMutators = true
+    optimizeEntitySystems = true
+}
+
+classes.finalizedBy weave

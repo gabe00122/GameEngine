@@ -2,6 +2,8 @@ package gabek.spacemonk.prefab
 
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.physics.shape.RPolygon
+import gabek.spacemonk.CHARACTER
+import gabek.spacemonk.component.CharacterAnimatorCom
 
 /**
  * @author Gabriel Keith
@@ -18,9 +20,9 @@ class PlayerPrefab : gabek.engine.core.prefab.Prefab() {
         val height = 1f
         val bodyHeight = height - width / 2f
 
-        val runningAnim = assets.findAnimation("fred:running")
-        val stillAnim = assets.findAnimation("fred:still")
-        val jumpingAnim = assets.findAnimation("fred:jumping")
+        val runningAnim = assets.getAnimation("fred:running")
+        val stillAnim = assets.getAnimation("fred:still")
+        val jumpingAnim = assets.getAnimation("fred:jumping")
 
         //val legFactory = prefab { kodein, world ->
         //    com<ParentOfCom> { diesWithParent = true }
@@ -38,7 +40,7 @@ class PlayerPrefab : gabek.engine.core.prefab.Prefab() {
             //bodyShape.setAsBox(width, bodyHeight, 0f, 0f)
             //body.addFixture(bodyShape, density = 1f, categoryBits = filter(CHARACTER))
             val platformShape = RPolygon().withClippedCorners(width, height, 0f, 0f, width / 4, 0.25f)
-            body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = gabek.engine.core.world.filter(gabek.engine.core.world.CHARACTER))
+            body.addFixture(platformShape, density = 1f, restitution = 0f, friction = 1f, categoryBits = gabek.engine.core.world.filter(CHARACTER))
 
             body.bodyType = com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
             body.isFixedRotation = true
@@ -62,7 +64,7 @@ class PlayerPrefab : gabek.engine.core.prefab.Prefab() {
         //    wheelRef = legFactory.create()
         //    parentMapper[wheelRef].parent = entity
 
-        //    motor.isMoterEnabled = true
+        //    motor.isMotorEnabled = true
         //    motor.maxTorque = 5f
         //    motor.anchorAY = -bodyHeight / 2
 
@@ -83,10 +85,10 @@ class PlayerPrefab : gabek.engine.core.prefab.Prefab() {
             pad = 0.01f
         }
 
-        add<gabek.engine.core.components.character.CharacterAnimatorCom> {
-            runningAnimationDef = runningAnim
-            jumpingAnimationDef = jumpingAnim
-            stillAnimationDef = stillAnim
+        add<CharacterAnimatorCom> {
+            runningAnimationRef = runningAnim
+            jumpingAnimationRef = jumpingAnim
+            stillAnimationRef = stillAnim
         }
 
         //com<AbilityIndexCom>()

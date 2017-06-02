@@ -1,6 +1,7 @@
 package gabek.engine.core.physics
 
 import com.badlogic.gdx.physics.box2d.Body
+import com.badlogic.gdx.physics.box2d.Filter
 import com.badlogic.gdx.physics.box2d.Fixture
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import gabek.engine.core.physics.shape.RShape
@@ -18,6 +19,7 @@ class RFixture {
     var tileX: Int = 0
     var tileY: Int = 0
 
+    @Transient
     var callbackList = mutableListOf<RCollisionCallback>()
 
     constructor()
@@ -30,80 +32,52 @@ class RFixture {
         this.restitution = restitution
         this.isSensor = isSensor
 
-        this.categoryBits = categoryBits
-        this.maskBits = maskBits
-        this.groupIndex = groupIndex
+        filter.categoryBits = categoryBits
+        filter.maskBits = maskBits
+        filter.groupIndex = groupIndex
     }
 
     var density: Float = 0f
-        get() = fixture?.density ?: field
         set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.density = value
-            else
-                field = value
+            field = value
+            fixture?.density = value
         }
 
     var friction: Float = 0f
-        get() = fixture?.friction ?: field
         set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.friction = value
-            else
-                field = value
+            field = value
+            fixture?.friction = value
         }
 
     var restitution: Float = 0f
-        get() = fixture?.restitution ?: field
         set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.restitution = value
-            else
-                field = value
+            field = value
+            fixture?.restitution = value
         }
 
     var isSensor: Boolean = false
-        get() = fixture?.isSensor ?: field
         set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.isSensor = value
-            else
-                field = value
+            field = value
+            fixture?.isSensor = value
         }
 
-    var categoryBits: Short = 1
-        get() = fixture?.filterData?.categoryBits ?: field
-        set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.filterData.categoryBits = value
-            else
-                field = value
-        }
+    val filter = Filter()
 
-    var maskBits: Short = -1
-        get() = fixture?.filterData?.maskBits ?: field
-        set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.filterData.maskBits = value
-            else
-                field = value
-        }
+    fun setFilter(f: Filter){
+        filter.categoryBits = f.categoryBits
+        filter.maskBits = f.maskBits
+        filter.groupIndex = f.groupIndex
 
-    var groupIndex: Short = 0
-        get() = fixture?.filterData?.groupIndex ?: field
-        set(value) {
-            val fixture = fixture
-            if (fixture != null)
-                fixture.filterData.groupIndex = value
-            else
-                field = value
-        }
+        fixture?.filterData = filter
+    }
+
+    fun setFilter(categoryBits: Short, maskBits: Short, groupIndex: Short){
+        filter.categoryBits = categoryBits
+        filter.maskBits = maskBits
+        filter.groupIndex = groupIndex
+
+        fixture?.filterData = filter
+    }
 
     val isInitialised: Boolean
         get() = fixture != null
@@ -111,17 +85,21 @@ class RFixture {
     internal fun initialise(parent: Body) {
         val shape = shape ?: throw IllegalStateException("Shape can't be null.")
 
-        shape.preInit()
+        val shapeGen = shape.generate()
         val def = fixtureDef
-        def.shape = shape.shape!!
+        def.shape = shapeGen
 
-        fixture = parent.createFixture(def)
-        fixture!!.userData = this
-        shape.postInit()
+        val fixture = parent.createFixture(def)
+        fixture.userData = this
+        this.fixture = fixture
+
+        shapeGen.dispose()
     }
 
-    fun store(body: Body?) {
-        val fixture = this.fixture
+    fun store() {
+        val fixture = fixture
+        val body = body?.body
+
         this.fixture = null
         if (fixture != null && body != null) {
             body.destroyFixture(fixture)
@@ -136,9 +114,7 @@ class RFixture {
         out.friction = friction
         out.restitution = restitution
         out.isSensor = isSensor
-        out.categoryBits = categoryBits
-        out.maskBits = maskBits
-        out.groupIndex = groupIndex
+        out.setFilter(filter)
 
         return out
     }
@@ -150,9 +126,9 @@ class RFixture {
         fixtureDef.friction = friction
         fixtureDef.restitution = restitution
         fixtureDef.isSensor = isSensor
-        fixtureDef.filter.categoryBits = categoryBits
-        fixtureDef.filter.maskBits = maskBits
-        fixtureDef.filter.groupIndex = groupIndex
+        fixtureDef.filter.categoryBits = filter.categoryBits
+        fixtureDef.filter.maskBits = filter.maskBits
+        fixtureDef.filter.groupIndex = filter.groupIndex
 
         return fixtureDef
     }

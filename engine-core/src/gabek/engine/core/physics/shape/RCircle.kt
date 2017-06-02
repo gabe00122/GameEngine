@@ -2,6 +2,7 @@ package gabek.engine.core.physics.shape
 
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.CircleShape
+import com.badlogic.gdx.physics.box2d.Shape
 import gabek.engine.core.physics.shape.RShape
 
 /**
@@ -34,10 +35,10 @@ class RCircle : RShape {
         return out
     }
 
-    override fun preInit() {
+    override fun generate(): Shape {
         val circleShape = CircleShape()
         circleShape.radius = radius
         circleShape.position = Vector2(x, y)
-        shape = circleShape
+        return circleShape
     }
 }

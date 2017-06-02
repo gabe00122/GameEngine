@@ -14,8 +14,8 @@ import gabek.engine.core.prefab.*
 import gabek.engine.core.systems.*
 import gabek.spacemonk.system.WanderingBrainSystem
 import gabek.engine.core.systems.character.BiDirectionSystem
-import gabek.engine.core.systems.character.CharacterAnimatorSystem
-import gabek.engine.core.systems.character.CharacterControllerSystem
+import gabek.spacemonk.system.CharacterAnimatorSystem
+import gabek.spacemonk.system.CharacterControllerSystem
 import gabek.engine.core.systems.character.DamageSystem
 import gabek.engine.core.systems.common.*
 import gabek.engine.core.systems.gamemodes.GameModeManager
@@ -23,7 +23,7 @@ import gabek.engine.core.systems.graphics.*
 import gabek.engine.core.systems.pellet.PelletCollisionSystem
 import gabek.engine.core.tilemap.TileDefinitions
 import gabek.spacemonk.prefab.SpinnerPropPrefab
-import gabek.engine.core.systems.pellet.PelletMovmentSystem
+import gabek.engine.core.systems.pellet.PelletMovementSystem
 import gabek.engine.core.tilemap.TileType
 import gabek.spacemonk.tile.SpikeTile
 import gabek.engine.core.util.getSystem
@@ -53,7 +53,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(BoundSystem())
     //box2d
     config.setSystem(Box2dSystem())
-    config.setSystem(StaticJointSystem())
+    config.setSystem(JointSystem())
     config.setSystem(ParentSystem())
     config.setSystem(ParentTackingSystem())
 
@@ -62,7 +62,7 @@ fun buildWorld(kodein: Kodein): World {
     //config.setSystem(BleedingSystem())
     config.setSystem(LifeSpanSystem())
     config.setSystem(PelletCollisionSystem())
-    config.setSystem(PelletMovmentSystem())
+    config.setSystem(PelletMovementSystem())
 
     //brains
     config.setSystem(WanderingBrainSystem())
@@ -128,8 +128,8 @@ fun buildTileDefinitions(definitions: TileDefinitions, world: World, kodein: Kod
     val assets: Assets = kodein.instance()
 
     definitions.addType(TileType("none", null, false))
-    definitions.addType(TileType("background", assets.findTexture("tiles:back"), false))
-    definitions.addType(TileType("wall", assets.findTexture("tiles:wall"), true))
+    definitions.addType(TileType("background", assets.getTexture("tiles:back"), false))
+    definitions.addType(TileType("wall", assets.getTexture("tiles:wall"), true))
 
     definitions.addType(SpikeTile(world, kodein))
 }

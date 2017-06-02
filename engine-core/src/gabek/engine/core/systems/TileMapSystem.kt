@@ -15,8 +15,6 @@ import gabek.engine.core.tilemap.TileDefinitions
 import gabek.engine.core.physics.shape.REdge
 import gabek.engine.core.tilemap.TileReference
 import gabek.engine.core.world.RenderManager
-import gabek.engine.core.world.WALL
-import gabek.engine.core.world.filter
 
 /**
  * @author Gabriel Keith
@@ -98,11 +96,11 @@ class TileMapSystem(
             }
         }
 
-        body.initialise(box2dSystem.box2dWorld)
+        box2dSystem.rworld.addBody(body)
     }
 
     fun store() {
-        body.store(box2dSystem.box2dWorld)
+        box2dSystem.rworld.removeBody(body)
         for (y in 0 until backgroundTiles.h) {
             for (x in 0 until backgroundTiles.w) {
                 backgroundTiles.get(x, y).fixtures.clear()
@@ -115,7 +113,6 @@ class TileMapSystem(
     private fun RFixture.defaultSettings(x: Int, y: Int): RFixture {
         friction = 0.3f
         restitution = 0f
-        categoryBits = filter(WALL)
         return this
     }
 

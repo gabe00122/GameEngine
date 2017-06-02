@@ -6,15 +6,14 @@ import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.InputCom
 import gabek.engine.core.components.channel.DirectionalInputCom
-import gabek.engine.core.components.character.*
-import gabek.engine.core.components.common.BoundCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
-import gabek.engine.core.input.PlayerInput
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
-import gabek.engine.core.systems.character.BiDirectionSystem
-import gabek.engine.quickbuoyancy.BuoyantCom
+import gabek.onebreath.component.BiDirectionCom
+import gabek.onebreath.component.CharacterMovementStateCom
+import gabek.onebreath.component.MovementDefinitionCom
+import gabek.onebreath.component.MovementGroundContactCom
 
 /**
  * @another Gabriel Keith
@@ -27,7 +26,7 @@ class PlayerPrefab: Prefab() {
 
         val assets: Assets = kodein.instance()
 
-        val sprite = assets.findTexture("actors:player_ideal")
+        val sprite = assets.getTexture("actors:player_ideal")
         val radiusScale = 1f - 0.05f
         val w = 0.5f
         val h = 0.875f

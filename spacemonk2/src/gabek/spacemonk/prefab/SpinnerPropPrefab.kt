@@ -22,7 +22,7 @@ class SpinnerPropPrefab: Prefab() {
 
         val bodyMapper = world.getMapper<BodyCom>()
 
-        val sprite = kodein.instance<Assets>().findTexture("actors:junk")
+        val sprite = kodein.instance<Assets>().getTexture("actors:junk")
         val w = 1f
         val h = 1f
 
@@ -38,7 +38,7 @@ class SpinnerPropPrefab: Prefab() {
             height = h
         }
 
-        //add<StaticJointCom> { entity ->
+        //add<JointCom> { entity ->
         //    val body = bodyMapper[entity].body
 
         //    val moter = RRevoluteJoint()
@@ -47,7 +47,7 @@ class SpinnerPropPrefab: Prefab() {
         //    moter.bodyA = body
         //    moter.motorSpeed = 90f
         //    moter.maxTorque = 10f
-        //    moter.isMoterEnabled = true
+        //    moter.isMotorEnabled = true
         //}
     }
 }

@@ -11,7 +11,7 @@ import com.kotcrab.vis.ui.widget.VisWindow
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.Screen
-import gabek.engine.core.ui.MenuControl
+import gabek.spacemonk.ui.MenuControl
 import ktx.actors.onChange
 
 /**
@@ -27,7 +27,7 @@ class MainMenu(val kodein: Kodein) : Screen() {
         window.isMovable = false
         window.isResizable = false
 
-        val titleImage = kodein.instance<Assets>().findTexture("menus:title")
+        val titleImage = kodein.instance<Assets>().getTexture("menus:title")
         title = VisImage(titleImage.texture)
         title.setScale(2.5f)
         title.originX = title.width / 2f

@@ -37,7 +37,7 @@ class OneBreath(val settings: Settings): ApplicationAdapter() {
 
         kodein = Kodein {
             bind<ScreenManager>() with singleton { buildScreenManager(kodein) }
-            bind<Assets>() with singleton { Assets("assets/manifest.json") }
+            bind<Assets>() with singleton { Assets() }
             bind<Settings>() with singleton { settings }
             bind<MusicPlayer>() with singleton { MusicPlayer(this) }
             bind<InputManager>() with singleton { buildInputManager() }
@@ -59,7 +59,7 @@ class OneBreath(val settings: Settings): ApplicationAdapter() {
     }
 
     override fun render() {
-        Gdx.gl.glClearColor(69/255f, 40/255f, 60/255f, 1f)
+        //Gdx.gl.glClearColor(69/255f, 40/255f, 60/255f, 1f)
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
 
         screenManager.update(Gdx.graphics.deltaTime)

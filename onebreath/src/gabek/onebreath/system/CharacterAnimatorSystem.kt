@@ -1,15 +1,14 @@
-package gabek.engine.core.systems.character
+package gabek.onebreath.system
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.utils.BitVector
-import gabek.engine.core.components.character.CharacterAnimatorCom
-import gabek.engine.core.components.character.CharacterMovementStateCom
-import gabek.engine.core.components.character.CharacterMovementStateCom.State
-import gabek.engine.core.components.character.CharacterMovementStateCom.State.*
+import gabek.onebreath.component.CharacterAnimatorCom
+import gabek.onebreath.component.CharacterMovementStateCom.State
+import gabek.onebreath.component.CharacterMovementStateCom.State.*
 import gabek.engine.core.components.graphics.AnimationCom
-import gabek.engine.core.graphics.AnimationDef
+import gabek.engine.core.graphics.AnimationRef
 import gabek.engine.core.systems.graphics.AnimationSystem
 
 /**
@@ -29,22 +28,22 @@ class CharacterAnimatorSystem: BaseEntitySystem(Aspect.all(
     override fun initialize() {
         super.initialize()
 
-        setAnimationFor(LANDING) { stillAnimationDef }
-        setAnimationFor(STANDING) { stillAnimationDef }
-        setAnimationFor(RUNNING) { runningAnimationDef }
-        setAnimationFor(JUMPING) { jumpingAnimationDef }
+        setAnimationFor(LANDING) { stillAnimationRef }
+        setAnimationFor(STANDING) { stillAnimationRef }
+        setAnimationFor(RUNNING) { runningAnimationRef }
+        setAnimationFor(JUMPING) { jumpingAnimationRef }
 
         characterControllerSystem.transitionTable.addListener(RUNNING, IN_AIR) { entity, to, from ->
             if (isInterested(entity)) {
-                animationSystem.setAnimationDef(entity, characterAnimatorMapper[entity].stillAnimationDef!!)
+                animationSystem.setAnimationDef(entity, characterAnimatorMapper[entity].stillAnimationRef!!)
             }
         }
     }
 
-    private inline fun setAnimationFor(entering: State, crossinline animationDef: CharacterAnimatorCom.() -> AnimationDef?) {
+    private inline fun setAnimationFor(entering: State, crossinline animationRef: CharacterAnimatorCom.() -> AnimationRef?) {
         characterControllerSystem.transitionTable.addListenerEntering(entering) { entity, from, to ->
             if (isInterested(entity)) {
-                val def = animationDef(characterAnimatorMapper[entity])
+                val def = animationRef(characterAnimatorMapper[entity])
                 if (def != null) {
                     animationSystem.setAnimationDef(entity, def)
                 }
@@ -62,7 +61,7 @@ class CharacterAnimatorSystem: BaseEntitySystem(Aspect.all(
         super.inserted(entityId)
 
         members.set(entityId)
-        animationMapper[entityId].currentAnimationDef = characterAnimatorMapper[entityId].stillAnimationDef
+        animationMapper[entityId].currentAnimationRef = characterAnimatorMapper[entityId].stillAnimationRef
     }
 
     override fun removed(entityId: Int) {

@@ -52,7 +52,7 @@ class ParallaxRenderSystem(kodein: Kodein): BaseEntitySystem(Aspect.all(Parallax
         val entity = world.create()
         val par = parallaxMapper.create(entity)
 
-        par.sprite = assets.findTexture(spriteName)
+        par.sprite = assets.getTexture(spriteName)
         par.scrollFactorX = scrollX
         par.scrollFactorY = scrollY
     }

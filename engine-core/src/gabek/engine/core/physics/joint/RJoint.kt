@@ -1,14 +1,18 @@
 package gabek.engine.core.physics.joint
 
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Joint
-import com.badlogic.gdx.physics.box2d.World
 import gabek.engine.core.physics.RBody
+import gabek.engine.core.physics.RWorld
+import gabek.engine.core.util.Cloneable
 
 /**
  * @author Gabriel Keith
  */
-abstract class RJoint {
+abstract class RJoint: Cloneable<RJoint> {
     protected var joint: Joint? = null
+    internal var world: RWorld? = null
+
     var bodyA: RBody? = null
         set(value) {
             if (isInitialised) throw IllegalStateException("Joint can't be changed after creation")
@@ -27,47 +31,41 @@ abstract class RJoint {
             field = value
         }
 
-    var anchorAX: Float = 0f
-        set(value) {
-            if (joint == null) {
-                field = value
-            } else {
-                throw IllegalStateException("Joint can't be changed after creation")
-            }
-        }
+    val anchorA = Vector2()
+    val anchorB = Vector2()
 
-    var anchorAY: Float = 0f
-        set(value) {
-            if (joint == null) {
-                field = value
-            } else {
-                throw IllegalStateException("Joint can't be changed after creation")
-            }
-        }
+    fun setAnchorA(x: Float, y: Float){
+        anchorA.set(x, y)
 
-    var anchorBX: Float = 0f
-        set(value) {
-            if (joint == null) {
-                field = value
-            } else {
-                throw IllegalStateException("Joint can't be changed after creation")
-            }
-        }
+        if(isInitialised)
+            throw IllegalStateException("Joint can't be changed after creation")
+    }
 
-    var anchorBY: Float = 0f
-        set(value) {
-            if (joint == null) {
-                field = value
-            } else {
-                throw IllegalStateException("Joint can't be changed after creation")
-            }
-        }
+    fun setAnchorA(v: Vector2){
+        anchorA.set(v)
 
-    var collideConected: Boolean = false
+        if(isInitialised)
+            throw IllegalStateException("Joint can't be changed after creation")
+    }
+
+    fun setAnchorB(x: Float, y: Float){
+        anchorB.set(x, y)
+
+        if(isInitialised)
+            throw IllegalStateException("Joint can't be changed after creation")
+    }
+
+    fun setAnchorB(v: Vector2){
+        anchorB.set(v)
+
+        if(isInitialised)
+            throw IllegalStateException("Joint can't be changed after creation")
+    }
+
+    var collideConnected: Boolean = false
         set(value) {
+            field = value
             if (joint == null) {
-                field = value
-            } else {
                 throw IllegalStateException("Joint can't be changed after creation")
             }
         }
@@ -82,29 +80,26 @@ abstract class RJoint {
     val isInitialised: Boolean
         get() = joint != null
 
-    abstract fun initialise(box2dWorld: World)
+    internal abstract fun update()
+    internal abstract fun initialise(box2dWorld: RWorld)
+    internal abstract fun store()
 
-    fun attach(box2dWorld: World, bodyA: RBody, bodyB: RBody) {
+    fun attach(bodyA: RBody, bodyB: RBody) {
         this.bodyA = bodyA
         this.bodyB = bodyB
 
         if (canInit) {
-            initialise(box2dWorld)
+            world = bodyA.world!!
+            initialise(world!!)
         }
     }
 
-    fun detach(box2dWorld: World) {
-        if (isInitialised) {
-            store(box2dWorld)
+    fun detach() {
+        if (world != null) {
+            store()
         }
 
         bodyA = null
         bodyB = null
-    }
-
-    open fun store(box2dWorld: World) {
-        val joint = joint!!
-        box2dWorld.destroyJoint(joint)
-        this.joint = null
     }
 }

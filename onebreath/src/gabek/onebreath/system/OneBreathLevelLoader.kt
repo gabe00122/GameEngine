@@ -48,9 +48,7 @@ class OneBreathLevelLoader : PassiveSystem() {
             defLookup.put(prop.name.toInt(), definitions.getIdByName(prop.getString("type")))
         }
 
-
-        tileSystem.store()
-        tileSystem.resize(40, 40)
+        tileSystem.resize(width, height)
 
         loadLayer(layers, TileMapSystem.Layer.BACKGROUND, width, height, defLookup, gid)
         loadLayer(layers, TileMapSystem.Layer.FOREGROUND, width, height, defLookup, gid)
@@ -65,8 +63,8 @@ class OneBreathLevelLoader : PassiveSystem() {
         for (obj in objects.JsonIterator()) {
             val id = prefabManager.create(obj.getString("type"))
             transSystem.teleport(id,
-                    (obj.getInt("x") / tileWidth.toFloat()) * tileSystem.tileSize,
-                    (height - (obj.getInt("y") - obj.getInt("height")) / tileHeight.toFloat()) * tileSystem.tileSize,
+                    ((obj.getInt("x") + obj.getInt("width") / 2f) / tileWidth.toFloat()) * tileSystem.tileSize,
+                    (height - (obj.getInt("y") - obj.getInt("height") / 2f) / tileHeight.toFloat()) * tileSystem.tileSize,
                     0f)
 
             if (obj.has("properties")) {
@@ -83,7 +81,7 @@ class OneBreathLevelLoader : PassiveSystem() {
     private fun loadLayer(layers: JsonValue, layer: TileMapSystem.Layer, width: Int, height: Int, tileSets: IntIntMap, gid: Int) {
         for ((i, tile) in layers.first { it.getString("name") == layer.name.toLowerCase() }.get("data").withIndex()) {
             val x = i.rem(width)
-            val y = height - i / width
+            val y = height - (i / width) - 1
             val tileData = tile.asInt()
 
             if (tileData > 0) {

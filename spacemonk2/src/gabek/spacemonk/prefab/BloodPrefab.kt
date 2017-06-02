@@ -11,7 +11,7 @@ class BloodPrefab : gabek.engine.core.prefab.Prefab() {
     override fun define() {
         super.define()
 
-        val rect = kodein.instance<gabek.engine.core.assets.Assets>().findTexture("actors:rect")
+        val rect = kodein.instance<gabek.engine.core.assets.Assets>().getTexture("actors:rect")
         val color = com.badlogic.gdx.graphics.Color(172f / 255, 50f / 255, 50f / 255, 0.75f)
         val w = 0.2f
         val h = 0.2f

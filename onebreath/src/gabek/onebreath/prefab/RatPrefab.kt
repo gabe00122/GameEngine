@@ -8,7 +8,7 @@ import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
-import gabek.engine.quickbuoyancy.BuoyantCom
+import gabek.engine.quick.water.BuoyantCom
 
 /**
  * @another Gabriel Keith
@@ -20,7 +20,7 @@ class RatPrefab: Prefab(){
         super.define()
 
         val assets: Assets = kodein.instance()
-        val sprite = assets.findTexture("actors:rat:0")
+        val sprite = assets.getTexture("actors:rat:0")
 
         val radiusScale = 1f - 0.05f
         val w = 0.5f

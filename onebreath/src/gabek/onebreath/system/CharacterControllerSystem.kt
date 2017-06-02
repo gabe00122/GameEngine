@@ -1,10 +1,9 @@
-package gabek.engine.core.systems.character
+package gabek.onebreath.system
 
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.EntityTransmuterFactory
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
@@ -12,15 +11,15 @@ import com.badlogic.gdx.physics.box2d.Manifold
 import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.InputCom
 import gabek.engine.core.components.channel.DirectionalInputCom
-import gabek.engine.core.components.character.*
-import gabek.engine.core.components.character.CharacterMovementStateCom.State.*
-import gabek.engine.core.components.character.BiDirectionCom.Direction.*
+import gabek.onebreath.component.CharacterMovementStateCom.State.*
+import gabek.onebreath.component.BiDirectionCom.Direction.*
 import gabek.engine.core.physics.RCollisionCallback
 import gabek.engine.core.physics.RFixture
 import gabek.engine.core.prefab.Prefab
 import gabek.engine.core.systems.common.PrefabManager
 import gabek.engine.core.systems.common.UpdateManager
 import gabek.engine.core.util.FSMTransitionTable
+import gabek.onebreath.component.*
 
 /**
  * @author Gabriel Keith
@@ -71,7 +70,7 @@ class CharacterControllerSystem: BaseEntitySystem(
             val movDef = movementDefinitionMapper[entity]
 
             val force = movDef.jumpForce
-            body.applyLinearImpulse(0f, force, body.x, body.y)
+            body.applyLinearImpulse(0f, force, body.position.x, body.position.y)
 
             val forceOverSize = force / movContact.contacts.size
             for (contact in movContact.contacts) {
@@ -97,11 +96,11 @@ class CharacterControllerSystem: BaseEntitySystem(
                 val body = bodyMapper[entity].body
 
                 body.isFixedRotation = false
-                body.angularVelocity = if (body.linearVelocityX > 0) -10f else 10f
+                body.angularVelocity = if (body.linearVelocity.x > 0) -10f else 10f
                 body.fixutres[0].callbackList.clear()
 
                 for (i in 0 until 25) {
-                    bloodFactory.create(body.x, body.y)
+                    bloodFactory.create(body.position.x, body.position.y)
                 }
             }
         }
@@ -142,14 +141,15 @@ class CharacterControllerSystem: BaseEntitySystem(
                     body.body.isAwake = true
                 }
                 JUMPING, IN_AIR -> {
-                    val linearVelocityX = body.body.linearVelocityX
+                    val linearVelocityX = body.body.linearVelocity.x
                     if (input.panX < -threshold && linearVelocityX > -moveDef.airSpeed) {
                         body.body.applyForceToCenter(-5f, 0f)
                     } else if (input.panX > threshold && linearVelocityX < moveDef.airSpeed) {
                         body.body.applyForceToCenter(5f, 0f)
                     }
 
-                    val damp = -body.body.linearVelocityX * body.body.mass * moveDef.airDamping
+                    val damp = -body.body.linearVelocity.x * body.body.mass * moveDef.airDamping
+
                     body.body.applyForceToCenter(damp, 0f, false)
                 }
                 else -> {

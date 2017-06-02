@@ -6,7 +6,7 @@ import com.badlogic.gdx.Preferences
  * @author Gabriel Keith
  * @date 3/30/2017
  */
-class StringSettingsValue(default: String) : SettingsValue() {
+class StringSettingsValue(default: String) : SettingsValue {
     private val listeners = ArrayList<(oldValue: String, newValue: String) -> Unit>()
 
     var value: String = default

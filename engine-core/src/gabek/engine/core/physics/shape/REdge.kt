@@ -1,6 +1,7 @@
 package gabek.engine.core.physics.shape
 
 import com.badlogic.gdx.physics.box2d.EdgeShape
+import com.badlogic.gdx.physics.box2d.Shape
 import gabek.engine.core.physics.shape.RShape
 
 /**
@@ -42,13 +43,13 @@ class REdge : RShape {
         hasVertex3 = true
     }
 
-    override fun preInit() {
+    override fun generate(): Shape {
         val edgeShape = EdgeShape()
         edgeShape.setVertex0(vertices[0], vertices[1])
         edgeShape.set(vertices[2], vertices[3], vertices[4], vertices[5])
         edgeShape.setVertex3(vertices[6], vertices[7])
         edgeShape.setHasVertex0(hasVertex0)
         edgeShape.setHasVertex3(hasVertex3)
-        shape = edgeShape
+        return edgeShape
     }
 }

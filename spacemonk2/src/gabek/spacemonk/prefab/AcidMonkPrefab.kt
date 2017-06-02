@@ -7,12 +7,12 @@ import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.character.*
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.AnimationCom
-import gabek.engine.core.components.graphics.HealthDisplayCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
-import gabek.engine.core.world.CHARACTER
+import gabek.spacemonk.CHARACTER
 import gabek.engine.core.world.filter
+import gabek.spacemonk.component.CharacterAnimatorCom
 
 /**
  * @author Gabriel Keith
@@ -32,7 +32,7 @@ class AcidMonkPrefab : Prefab() {
         val bodyHeight = height - width / 2f
 
 
-        val stillAnim = assets.findAnimation("acid_monk:still")
+        val stillAnim = assets.getAnimation("acid_monk:still")
 
 
         add<TranslationCom>()
@@ -71,7 +71,7 @@ class AcidMonkPrefab : Prefab() {
         }
 
         add<CharacterAnimatorCom> {
-            stillAnimationDef = stillAnim
+            stillAnimationRef = stillAnim
         }
 
         //com<AbilityIndexCom>()

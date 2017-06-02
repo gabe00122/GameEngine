@@ -15,38 +15,30 @@ import gabek.engine.core.util.Mirrorable
 
 class RBody: Mirrorable<RBody> {
     @Transient internal var body: Body? = null
+    internal var world: RWorld? = null
+
     internal val joints = ArrayList<RJoint>()
+    internal var listIndex = -1
+
     private val _fixutres = ArrayList<RFixture>()
     val fixutres: List<RFixture> get() = _fixutres
 
-    var x: Float = 0f
-        get() = body?.position?.x ?: field
-        set(value) {
-            val body = body
-            if (body != null)
-                body.setTransform(value, body.position.y, body.angle)
-            else
-                field = value
-        }
+    val position = Vector2()
 
-    var y: Float = 0f
-        get() = body?.position?.y ?: field
-        set(value) {
-            val body = body
-            if (body != null)
-                body.setTransform(body.position.x, value, body.angle)
-            else
-                field = value
-        }
+    fun setPosition(x: Float, y: Float) {
+        position.set(x, y)
+        body?.setTransform(position, rotationRad)
+    }
+
+    fun setPosition(pos: Vector2) {
+        position.set(pos)
+        body?.setTransform(position, rotationRad)
+    }
 
     var rotationRad: Float = 0f
-        get() = body?.angle ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.setTransform(body.position, value)
-            else
-                field = value
+            field = value
+            body?.setTransform(position, value)
         }
 
     var rotation: Float
@@ -56,127 +48,79 @@ class RBody: Mirrorable<RBody> {
         }
 
     var angularDamping: Float = 0f
-        get() = body?.angularDamping ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.angularDamping = value
-            else
-                field = value
+            field = value
+            body?.angularDamping = value
         }
 
     var angularVelocity: Float = 0f
-        get() = body?.angularVelocity ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.angularVelocity = value
-            else
-                field = value
+            field = value
+            body?.angularVelocity = value
         }
 
     var linearDamping: Float = 0f
-        get() = body?.linearDamping ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.linearDamping = value
-            else
-                field = value
+            field = value
+            body?.linearDamping = value
         }
 
-    var linearVelocityX: Float = 0f
-        get() = body?.linearVelocity?.x ?: field
-        set(value) {
-            val body = body
-            if (body != null)
-                body.setLinearVelocity(value, body.linearVelocity.y)
-            else
-                field = value
-        }
+    val linearVelocity = Vector2()
 
-    var linearVelocityY: Float = 0f
-        get() = body?.linearVelocity?.y ?: field
-        set(value) {
-            val body = body
-            if (body != null)
-                body.setLinearVelocity(body.linearVelocity.x, value)
-            else
-                field = value
-        }
+    fun setLinearVelocity(vX: Float, vY: Float){
+        linearVelocity.set(vX, vY)
+        body?.linearVelocity = linearVelocity
+    }
+
+    fun setLinearVelocity(v: Vector2){
+        linearVelocity.set(v)
+        body?.linearVelocity = linearVelocity
+    }
 
     var gravityScale: Float = 1f
-        get() = body?.gravityScale ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.gravityScale = value
-            else
-                field = value
+            field = value
+            body?.gravityScale = value
         }
 
     var isActive: Boolean = true
-        get() = body?.isActive ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.isActive = value
-            else
-                field = value
+            field = value
+            body?.isActive = value
         }
 
     var isAwake: Boolean = true
-        get() = body?.isAwake ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.isAwake = value
-            else
-                field = value
+            field = value
+            body?.isAwake = value
         }
 
     var isSleepingAllowed: Boolean = true
-        get() = body?.isSleepingAllowed ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.isSleepingAllowed = value
-            else
-                field = value
+            field = value
+            body?.isSleepingAllowed = value
         }
 
     var isBullet: Boolean = false
-        get() = body?.isBullet ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.isBullet = value
-            else
-                field = value
+            field = value
+            body?.isBullet = value
         }
 
     var isFixedRotation: Boolean = false
-        get() = body?.isFixedRotation ?: field
         set(value) {
-            val body = body
-            if (body != null)
-                body.isFixedRotation = value
-            else
-                field = value
+            field = value
+            body?.isFixedRotation = value
         }
 
     var bodyType: BodyDef.BodyType = BodyDef.BodyType.StaticBody
-        get() = body?.type ?: field
         set(value) {
-            val body = body
-            if (body != null) {
-                body.type = value
-            } else {
-                field = value
-            }
+            field = value
+            body?.type = value
         }
 
-    val mass: Float get() = body?.mass ?: -1f
+    var mass: Float = 0f
+        private set
 
     fun applyForceToCenter(forceX: Float, forceY: Float, wakeBody: Boolean = true) {
         body?.applyForceToCenter(forceX, forceY, wakeBody)
@@ -184,16 +128,6 @@ class RBody: Mirrorable<RBody> {
 
     fun applyLinearImpulse(impulseX: Float, impulseY: Float, pointX: Float, pointY: Float, wake: Boolean = true) {
         body?.applyLinearImpulse(impulseX, impulseY, pointX, pointY, wake)
-    }
-
-    fun setPosition(x: Float, y: Float) {
-        val body = body
-        if (body != null) {
-            body.setTransform(x, y, body.angle)
-        } else {
-            this.x = x
-            this.y = y
-        }
     }
 
     val isInitialised: Boolean
@@ -224,12 +158,13 @@ class RBody: Mirrorable<RBody> {
         addFixture(RFixture(shape, density, friction, restitution, isSensor, categoryBits, maskBits, groupIndex))
     }
 
-    fun initialise(box2dWorld: World) {
+    internal fun initialise(box2dWorld: RWorld) {
+        world = box2dWorld
         val body = box2dWorld.createBody(bodyDef)
+        this.body = body
         for (fixture in _fixutres) {
             fixture.initialise(body)
         }
-        this.body = body
 
         for (joint in joints) {
             if (joint.canInit) {
@@ -238,30 +173,25 @@ class RBody: Mirrorable<RBody> {
         }
     }
 
-    fun initialise(box2dWorld: World, ownerId: Int) {
-        for (fixture in _fixutres) {
-            fixture.ownerId = ownerId
-        }
-
-        initialise(box2dWorld)
-    }
-
-    fun store(box2dWorld: World) {
+    fun store() {
         for (joint in joints) {
             if (joint.isInitialised) {
-                joint.store(box2dWorld)
+                joint.store()
+                joint.world = null
             }
         }
 
         val body = body
+        this.body = null
         if (body != null) {
-            box2dWorld.destroyBody(body)
-            this.body = null
+            world?.destroyBody(body)
         }
 
         for (fixture in fixutres) {
-            fixture.store(null)
+            fixture.store()
         }
+
+        world = null
     }
 
     private fun clearFixtures() {
@@ -269,27 +199,40 @@ class RBody: Mirrorable<RBody> {
 
         if (body != null) {
             for (fixture in _fixutres) {
-                fixture.store(body)
+                fixture.store()
             }
         }
 
         _fixutres.clear()
     }
 
+    internal fun update() {
+        val body = body
+        if(body != null) {
+            position.set(body.position)
+            rotationRad = body.angle
+
+            linearVelocity.set(body.linearVelocity)
+            angularVelocity = body.angularVelocity
+
+            isAwake = body.isAwake
+
+            mass = body.mass
+        }
+    }
+
     override fun set(other: RBody) {
         clearFixtures()
         other._fixutres.forEach { addFixture(it.clone()) }
 
-        x = other.x
-        y = other.y
+        setPosition(other.position)
         rotationRad = other.rotationRad
 
         angularDamping = other.angularDamping
         angularVelocity = other.angularVelocity
 
         linearDamping = other.linearDamping
-        linearVelocityX = other.linearVelocityX
-        linearVelocityY = other.linearVelocityY
+        setLinearVelocity(other.linearVelocity)
 
         gravityScale = other.gravityScale
 
@@ -304,16 +247,14 @@ class RBody: Mirrorable<RBody> {
     fun reset() {
         clearFixtures()
 
-        x = 0f
-        y = 0f
+        setPosition(0f, 0f)
         rotationRad = 0f
 
         angularDamping = 0f
         angularVelocity = 0f
 
         linearDamping = 0f
-        linearVelocityX = 0f
-        linearVelocityY = 0f
+        setLinearVelocity(0f, 0f)
 
         gravityScale = 1f
 
@@ -328,15 +269,14 @@ class RBody: Mirrorable<RBody> {
     private val bodyDef: BodyDef get() {
         val def = TEMP_BODY_DEF
 
-        def.position.x = x
-        def.position.y = y
+        def.position.set(position)
         def.angle = rotationRad
 
         def.angularDamping = angularDamping
         def.angularVelocity = angularVelocity
 
         def.linearDamping = linearDamping
-        def.linearVelocity.set(linearVelocityX, linearVelocityY)
+        def.linearVelocity.set(linearVelocity)
 
         def.gravityScale = gravityScale
 

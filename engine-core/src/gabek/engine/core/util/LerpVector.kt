@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.MathUtils
 /**
  * @author Gabriel Keith
  */
-class LerpVector(var x: Float = 0f, var y: Float = 0f) {
+class LerpVector(var x: Float = 0f, var y: Float = 0f): Mirrorable<LerpVector> {
     private var pX: Float = x
     private var pY: Float = y
 
@@ -14,15 +14,15 @@ class LerpVector(var x: Float = 0f, var y: Float = 0f) {
         this.y = y
     }
 
-    fun set(other: LerpVector) {
+    override fun set(other: LerpVector) {
         x = other.x
         y = other.y
         pX = other.pX
         pY = other.pY
     }
 
-    fun lerpX(progress: Float) = MathUtils.lerp(pX, x, progress)
-    fun lerpY(progress: Float) = MathUtils.lerp(pY, y, progress)
+    fun lerpX(progress: Float) = pX + (x - pX) * progress
+    fun lerpY(progress: Float) = pY + (y - pY) * progress
 
     fun flip() {
         pX = x

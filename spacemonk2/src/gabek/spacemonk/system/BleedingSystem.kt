@@ -3,7 +3,6 @@ package gabek.spacemonk.system
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import gabek.engine.core.components.character.CharacterControllerCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.prefab.Prefab
 import gabek.engine.core.systems.common.PrefabManager

@@ -1,9 +1,12 @@
 package gabek.engine.core.physics.joint
 
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
+import gabek.engine.core.physics.RWorld
+import gabek.engine.core.physics.TEMP_REVOLUTE_DEF
 
 /**
  * @author Gabriel Keith
@@ -11,53 +14,36 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef
 class RRevoluteJoint: RJoint() {
     private var revoluteJoint: RevoluteJoint? = null
 
-    var isMoterEnabled: Boolean = false
-        get() = revoluteJoint?.isMotorEnabled ?: field
+    var isMotorEnabled: Boolean = false
         set(value) {
-            val joint = revoluteJoint
-            if (joint != null) {
-                joint.enableMotor(value)
-            } else {
-                field = value
-            }
+            field = value
+            revoluteJoint?.enableMotor(value)
         }
 
     var isLimitEnabled: Boolean = false
-        get() = revoluteJoint?.isLimitEnabled ?: false
         set(value) {
-            val joint = revoluteJoint
+            field = value
+            revoluteJoint?.enableLimit(value)
+        }
+
+    var referenceAngleRad: Float = 0f
+        set(value) {
+            field = value
             if (joint != null) {
-                joint.enableLimit(value)
-            } else {
-                field = value
+                throw IllegalStateException("Can't change referenceAngle after joint creation.")
             }
         }
 
-    var angleRad: Float = 0f
-        get() = revoluteJoint?.jointAngle ?: field
+    var referenceAngle: Float
+        get() = referenceAngleRad * MathUtils.radiansToDegrees
         set(value) {
-            if (joint == null) {
-                field = value
-            } else {
-                throw IllegalStateException("Can't change angle after joint creation.")
-            }
-        }
-
-    var angle: Float
-        get() = angleRad * MathUtils.radiansToDegrees
-        set(value) {
-            angleRad = value * MathUtils.degreesToRadians
+            referenceAngleRad = value * MathUtils.degreesToRadians
         }
 
     var lowerLimitRad: Float = 0f
-        get() = revoluteJoint?.lowerLimit ?: field
         set(value) {
-            val joint = revoluteJoint
-            if (joint != null) {
-                joint.setLimits(value, joint.upperLimit)
-            } else {
-                field = value
-            }
+            field = value
+            revoluteJoint?.setLimits(field, upperLimitRad)
         }
 
     var lowerLimit: Float
@@ -67,14 +53,9 @@ class RRevoluteJoint: RJoint() {
         }
 
     var upperLimitRad: Float = 0f
-        get() = revoluteJoint?.upperLimit ?: field
         set(value) {
-            val joint = revoluteJoint
-            if (joint != null) {
-                joint.setLimits(joint.lowerLimit, value)
-            } else {
-                field = value
-            }
+            field = value
+            revoluteJoint?.setLimits(lowerLimitRad, value)
         }
 
     var upperLimit: Float
@@ -84,25 +65,15 @@ class RRevoluteJoint: RJoint() {
         }
 
     var maxTorque: Float = 0f
-        get() = revoluteJoint?.maxMotorTorque ?: field
         set(value) {
-            val joint = revoluteJoint
-            if (joint != null) {
-                joint.maxMotorTorque = value
-            } else {
-                field = value
-            }
+            field = value
+            revoluteJoint?.maxMotorTorque = value
         }
 
     var motorSpeedRad: Float = 0f
-        get() = revoluteJoint?.motorSpeed ?: field
         set(value) {
-            val joint = revoluteJoint
-            if (joint != null) {
-                joint.motorSpeed = value
-            } else {
-                field = value
-            }
+            field = value
+            revoluteJoint?.motorSpeed = value
         }
 
     var motorSpeed: Float
@@ -111,28 +82,46 @@ class RRevoluteJoint: RJoint() {
             motorSpeedRad = value * MathUtils.degreesToRadians
         }
 
-    override fun initialise(box2dWorld: World) {
+    val jointAngle: Float
+        get(){
+            val joint = revoluteJoint
+            if(joint != null){
+                return joint.jointAngle * MathUtils.radiansToDegrees
+            } else {
+                return 0f
+            }
+        }
+
+    override fun update() {}
+
+    override fun initialise(box2dWorld: RWorld) {
         joint = box2dWorld.createJoint(def)
         revoluteJoint = joint as RevoluteJoint
     }
 
-    override fun store(box2dWorld: World) {
-        super.store(box2dWorld)
+    override fun store() {
+        val joint = revoluteJoint
         revoluteJoint = null
+        this.joint = null
+
+        if(joint != null) {
+            world?.destroyJoint(joint)
+        }
+        world = null
     }
 
     private val def: RevoluteJointDef
         get() {
-            val def = RevoluteJointDef()
+            val def = TEMP_REVOLUTE_DEF
             def.bodyA = bodyA!!.body!!
             def.bodyB = bodyB!!.body!!
-            def.localAnchorA.set(anchorAX, anchorAY)
-            def.localAnchorB.set(anchorBX, anchorBY)
-            def.collideConnected = collideConected
+            def.localAnchorA.set(anchorA)
+            def.localAnchorB.set(anchorB)
+            def.collideConnected = collideConnected
 
-            def.enableMotor = isMoterEnabled
+            def.enableMotor = isMotorEnabled
             def.enableLimit = isLimitEnabled
-            def.referenceAngle = angleRad
+            def.referenceAngle = referenceAngleRad
             def.lowerAngle = lowerLimitRad
             def.upperAngle = upperLimitRad
             def.maxMotorTorque = maxTorque
@@ -140,4 +129,21 @@ class RRevoluteJoint: RJoint() {
 
             return def
         }
+
+    override fun clone(): RJoint {
+        val clonedJoint = RRevoluteJoint()
+
+        clonedJoint.setAnchorA(anchorA)
+        clonedJoint.setAnchorB(anchorB)
+
+        clonedJoint.isMotorEnabled = isMotorEnabled
+        clonedJoint.isLimitEnabled = isLimitEnabled
+        clonedJoint.referenceAngleRad = referenceAngleRad
+        clonedJoint.lowerLimitRad = lowerLimitRad
+        clonedJoint.upperLimitRad = upperLimitRad
+        clonedJoint.maxTorque = maxTorque
+        clonedJoint.motorSpeedRad = motorSpeedRad
+
+        return clonedJoint
+    }
 }

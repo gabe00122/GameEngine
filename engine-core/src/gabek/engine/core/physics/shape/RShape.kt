@@ -7,12 +7,7 @@ import gabek.engine.core.util.Cloneable
  * @author Gabriel Keith
  */
 abstract class RShape: Cloneable<RShape> {
-    var shape: Shape? = null
-        protected set
 
-    abstract fun preInit()
-    open fun postInit() {
-        shape?.dispose()
-        shape = null
-    }
+    internal abstract fun generate(): Shape
+
 }

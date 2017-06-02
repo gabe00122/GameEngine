@@ -2,6 +2,8 @@ package gabek.spacemonk.prefab
 
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.physics.shape.RPolygon
+import gabek.spacemonk.CHARACTER
+import gabek.spacemonk.component.CharacterAnimatorCom
 import gabek.spacemonk.component.WanderingBrainCom
 
 /**
@@ -14,8 +16,8 @@ class SnailPrefab : gabek.engine.core.prefab.Prefab() {
         super.define()
         val assets: gabek.engine.core.assets.Assets = kodein.instance()
 
-        val snailMoving = assets.findAnimation("baby_snail:moving")
-        val snailStill = assets.findAnimation("baby_snail:still")
+        val snailMoving = assets.getAnimation("baby_snail:moving")
+        val snailStill = assets.getAnimation("baby_snail:still")
 
         val width = 1f
         val height = 0.5f
@@ -27,9 +29,9 @@ class SnailPrefab : gabek.engine.core.prefab.Prefab() {
         }
         add<gabek.engine.core.components.graphics.AnimationCom>()
 
-        add<gabek.engine.core.components.character.CharacterAnimatorCom> {
-            runningAnimationDef = snailMoving
-            stillAnimationDef = snailStill
+        add<CharacterAnimatorCom> {
+            runningAnimationRef = snailMoving
+            stillAnimationRef = snailStill
         }
         add<gabek.engine.core.components.character.CharacterMovementStateCom>()
         add<gabek.engine.core.components.character.BiDirectionCom>()
@@ -48,7 +50,7 @@ class SnailPrefab : gabek.engine.core.prefab.Prefab() {
         add<gabek.engine.core.components.BodyCom> {
             body.bodyType = com.badlogic.gdx.physics.box2d.BodyDef.BodyType.DynamicBody
             val platform = RPolygon().withClippedCorners(width, height, 0f, 0f, 0.1f, height / 4f)
-            body.addFixture(platform, 1f, 0.75f, 0f, false, gabek.engine.core.world.filter(gabek.engine.core.world.CHARACTER))
+            body.addFixture(platform, 1f, 0.75f, 0f, false, gabek.engine.core.world.filter(CHARACTER))
             body.isFixedRotation = true
         }
         add<gabek.engine.core.components.character.HealthCom> {

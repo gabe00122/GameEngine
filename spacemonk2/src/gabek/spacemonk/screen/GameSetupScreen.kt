@@ -6,13 +6,10 @@ import com.github.salomonbrys.kodein.instance
 import com.kotcrab.vis.ui.widget.VisTable
 import com.kotcrab.vis.ui.widget.VisTextButton
 import gabek.engine.core.input.InputManager
-import gabek.engine.core.input.Actions
 import gabek.engine.core.input.PlayerInput
 import gabek.engine.core.screen.Screen
-import gabek.engine.core.ui.CurserControl
-import gabek.engine.core.ui.MenuControl
-import gabek.engine.core.world.PlayerInfo
-import gabek.engine.core.world.WorldConfig
+import gabek.spacemonk.ui.CurserControl
+import gabek.spacemonk.ui.MenuControl
 import ktx.actors.onChange
 
 /**

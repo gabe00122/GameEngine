@@ -5,7 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.engine.core.components.graphics.AnimationCom
 import gabek.engine.core.components.graphics.SpriteCom
-import gabek.engine.core.graphics.AnimationDef
+import gabek.engine.core.graphics.AnimationRef
 
 /**
  * @author Gabriel Keith
@@ -24,7 +24,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
             val sprite = spriteMapper[entity]
             val animation = animationMapper[entity]
 
-            val ref = animation.currentAnimationDef
+            val ref = animation.currentAnimationRef
 
             if (ref != null && ref.frames.isNotEmpty()) {
                 if (animation.isStart) {
@@ -38,7 +38,7 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
                         animation.clock -= ref.delay
 
                         //loop back to start
-                        if (ref.strategy != AnimationDef.Strategy.PINGPONG) {
+                        if (ref.strategy != AnimationRef.Strategy.PINGPONG) {
                             if (!animation.isReverse && animation.frame >= ref.frames.size - 1) {
                                 animation.frame = -1
                             }
@@ -53,11 +53,11 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
                         if (!animation.isReverse && animation.frame >= ref.frames.size - 1 ||
                                 animation.isReverse && animation.frame <= 0) {
                             //switch direction
-                            if (ref.strategy == AnimationDef.Strategy.PINGPONG) {
+                            if (ref.strategy == AnimationRef.Strategy.PINGPONG) {
                                 animation.isReverse = !animation.isReverse
                             }
                             //finish
-                            if (ref.strategy != AnimationDef.Strategy.PINGPONG) {
+                            if (ref.strategy != AnimationRef.Strategy.PINGPONG) {
                                 animation.isFinished = true
                             }
                         }
@@ -69,9 +69,9 @@ class AnimationSystem : BaseEntitySystem(Aspect.all(SpriteCom::class.java, Anima
         }
     }
 
-    fun setAnimationDef(entity: Int, animationDef: AnimationDef) {
+    fun setAnimationDef(entity: Int, animationRef: AnimationRef) {
         val def = animationMapper[entity]
-        def.currentAnimationDef = animationDef
+        def.currentAnimationRef = animationRef
 
         def.clock = 0f
         def.frame = 0
