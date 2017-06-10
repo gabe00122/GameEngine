@@ -26,7 +26,7 @@ import gabek.engine.core.util.clear
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.systems.InputSystem
 import gabek.engine.core.systems.common.UpdateManager
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 import ktx.actors.onChange
 
 /**

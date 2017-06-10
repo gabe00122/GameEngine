@@ -28,7 +28,7 @@ import gabek.engine.core.tilemap.TileType
 import gabek.spacemonk.tile.SpikeTile
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 import gabek.spacemonk.prefab.*
 
 /**
@@ -88,7 +88,7 @@ fun buildWorld(kodein: Kodein): World {
     config.setSystem(SpriteRenderSystem())
     //config.setSystem(HealthRenderSystem(kodein))
     config.setSystem(RenderManager { world ->
-        batchSystems = listOf(
+        renderSystems = listOf(
                 world.getSystem<ParallaxRenderSystem>(),
                 world.getSystem<TileMapSystem>().getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
                 EntityRenderManager(world.getSystem<SpriteRenderSystem>()),

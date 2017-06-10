@@ -3,19 +3,21 @@ package gabek.engine.core.world
 import com.artemis.utils.IntBag
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
+import gabek.engine.core.systems.common.RenderManager
 
 /**
  * @author Gabriel Keith
  * @date 4/7/2017
  */
 
-class EntityRenderManager(vararg val renderSystems: Renderer): RenderManager.BatchSystem {
+class EntityRenderManager(vararg val renderSystems: EntityRenderSystem): RenderManager.RenderSystem {
     val layerSize = 10
-    val layers = Array(layerSize) { Layer() }
+    private val layers = Array(layerSize) { Layer() }
+    private val schedule = RenderSchedule()
 
     override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
         for(rendererIndex in 0 until renderSystems.size){
-            renderSystems[rendererIndex].fill(layers, culling, progress)
+            renderSystems[rendererIndex].fill(schedule, culling, progress)
 
             for(layer in layers){
                 layer.pushRenderer(rendererIndex)
@@ -28,18 +30,20 @@ class EntityRenderManager(vararg val renderSystems: Renderer): RenderManager.Bat
         }
     }
 
-    interface Renderer {
-        fun fill(layers: Array<Layer>, culling: Rectangle, progress: Float)
+    interface EntityRenderSystem {
+        fun fill(schedule: RenderSchedule, culling: Rectangle, progress: Float)
         fun render(entity: Int, batch: SpriteBatch, progress: Float)
     }
 
-    inner class Layer {
-        private val indices = IntArray(renderSystems.size)
-        private val renderIds = IntBag()
-
-        fun pushIndex(id: Int){
-            renderIds.add(id)
+    inner class RenderSchedule {
+        fun pushId(renderId: Int, layerIndex: Int){
+            layers[layerIndex].renderIds.add(renderId)
         }
+    }
+
+    private inner class Layer {
+        val indices = IntArray(renderSystems.size)
+        val renderIds = IntBag()
 
         internal fun pushRenderer(rendererIndex: Int){
             indices[rendererIndex] = renderIds.size()

@@ -12,6 +12,12 @@ import gabek.engine.core.util.Cloneable
 abstract class RJoint: Cloneable<RJoint> {
     protected var joint: Joint? = null
     internal var world: RWorld? = null
+        set(value) {
+            field = value
+            if(canInit){
+                initialise()
+            }
+        }
 
     var bodyA: RBody? = null
         set(value) {
@@ -20,6 +26,10 @@ abstract class RJoint: Cloneable<RJoint> {
             field?.joints?.remove(this)
             value?.joints?.add(this)
             field = value
+
+            if(canInit){
+                initialise()
+            }
         }
 
     var bodyB: RBody? = null
@@ -29,6 +39,10 @@ abstract class RJoint: Cloneable<RJoint> {
             field?.joints?.remove(this)
             value?.joints?.add(this)
             field = value
+
+            if(canInit){
+                initialise()
+            }
         }
 
     val anchorA = Vector2()
@@ -65,7 +79,7 @@ abstract class RJoint: Cloneable<RJoint> {
     var collideConnected: Boolean = false
         set(value) {
             field = value
-            if (joint == null) {
+            if (isInitialised) {
                 throw IllegalStateException("Joint can't be changed after creation")
             }
         }
@@ -81,25 +95,6 @@ abstract class RJoint: Cloneable<RJoint> {
         get() = joint != null
 
     internal abstract fun update()
-    internal abstract fun initialise(box2dWorld: RWorld)
+    internal abstract fun initialise()
     internal abstract fun store()
-
-    fun attach(bodyA: RBody, bodyB: RBody) {
-        this.bodyA = bodyA
-        this.bodyB = bodyB
-
-        if (canInit) {
-            world = bodyA.world!!
-            initialise(world!!)
-        }
-    }
-
-    fun detach() {
-        if (world != null) {
-            store()
-        }
-
-        bodyA = null
-        bodyB = null
-    }
 }

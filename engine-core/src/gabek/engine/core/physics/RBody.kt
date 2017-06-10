@@ -122,6 +122,8 @@ class RBody: Mirrorable<RBody> {
     var mass: Float = 0f
         private set
 
+    private var massDirty = false
+
     fun applyForceToCenter(forceX: Float, forceY: Float, wakeBody: Boolean = true) {
         body?.applyForceToCenter(forceX, forceY, wakeBody)
     }
@@ -150,6 +152,7 @@ class RBody: Mirrorable<RBody> {
         val body = body
         if (body != null) {
             fixture.initialise(body)
+            massDirty = true
         }
     }
 
@@ -168,7 +171,7 @@ class RBody: Mirrorable<RBody> {
 
         for (joint in joints) {
             if (joint.canInit) {
-                joint.initialise(box2dWorld)
+                joint.initialise()
             }
         }
     }
@@ -209,15 +212,20 @@ class RBody: Mirrorable<RBody> {
     internal fun update() {
         val body = body
         if(body != null) {
+            isAwake = body.isAwake
+
             position.set(body.position)
             rotationRad = body.angle
 
-            linearVelocity.set(body.linearVelocity)
-            angularVelocity = body.angularVelocity
+            if(isAwake) {
+                linearVelocity.set(body.linearVelocity)
+                angularVelocity = body.angularVelocity
+            }
 
-            isAwake = body.isAwake
-
-            mass = body.mass
+            if(massDirty) {
+                massDirty = true
+                mass = body.mass
+            }
         }
     }
 

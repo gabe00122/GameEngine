@@ -2,11 +2,11 @@ package gabek.engine.core.physics.shape
 
 import com.badlogic.gdx.physics.box2d.PolygonShape
 import com.badlogic.gdx.physics.box2d.Shape
-import gabek.engine.core.physics.shape.RShape
-
 
 class RPolygon : RShape {
     var vertices: FloatArray = FloatArray(0)
+
+    private val peel = 0.02f
 
     constructor() : super()
 
@@ -27,8 +27,8 @@ class RPolygon : RShape {
     }
 
     fun setAsBox(w: Float, h: Float, x: Float, y: Float) {
-        val hw = w / 2
-        val hh = h / 2
+        val hw = (w - peel) / 2
+        val hh = (h - peel) / 2
 
         vertices = floatArrayOf(
                 -hw + x, hh + y,
@@ -36,20 +36,27 @@ class RPolygon : RShape {
                 hw + x, -hh + y,
                 hw + x, hh + y
         )
+
+        //deSkin(x, y)
     }
 
     fun withClippedCorners(w: Float, h: Float, x: Float, y: Float, clipW: Float, clipH: Float): RPolygon {
-        val hw = w / 2
-        val hh = h / 2
+        val hw = (w - peel) / 2
+        val hh = (h - peel) / 2
+
+        val clipWScaled = clipW * (w - peel)
+        val clipHScaled = clipH * (h - peel)
 
         vertices = floatArrayOf(
                 -hw + x, hh + y,
-                -hw + x, -hh + y + clipH,
-                -hw + x + clipW, -hh + y,
-                hw + x - clipW, -hh + y,
-                hw + x, -hh + y + clipH,
+                -hw + x, -hh + y + clipHScaled,
+                -hw + x + clipWScaled, -hh + y,
+                hw + x - clipWScaled, -hh + y,
+                hw + x, -hh + y + clipHScaled,
                 hw + x, hh + y
         )
+
+        //deSkin(x, y)
         return this
     }
 }

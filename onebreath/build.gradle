@@ -1,25 +1,12 @@
 apply plugin: "artemis"
 apply plugin: "kotlin"
 
-//sourceSets.main.resources.srcDirs += [project.file('assets').absolutePath]
 project.ext.mainClassName = 'gabek.onebreath.LauncherKt'
 eclipse.project.name = 'onebreath'
-sourceCompatibility = JavaVersion.VERSION_1_8
 
 version = "0.0.1"
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-    }
-}
-
-sourceSets {
-    main.kotlin.srcDirs = ["src/"]
-}
+sourceSets.main.kotlin.srcDirs = ["src/"]
 
 dependencies {
     compile project(':engine-core')
@@ -31,6 +18,10 @@ task run(dependsOn: classes, type: JavaExec){
     main = mainClassName
 
     workingDir = file("workingDir")
+}
+
+task runTools(type: GradleBuild) {
+    project
 }
 
 jar {

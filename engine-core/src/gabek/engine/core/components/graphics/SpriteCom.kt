@@ -10,8 +10,6 @@ import gabek.engine.core.graphics.TextureRef
 class SpriteCom: RComponent<SpriteCom>() {
     var textureRef: TextureRef? = null
 
-    var width = 0f
-    var height = 0f
     var flipX: Boolean = false
     var flipY: Boolean = false
     var offsetX: Float = 0f
@@ -22,15 +20,8 @@ class SpriteCom: RComponent<SpriteCom>() {
 
     var layer: Int = 4
 
-    fun setSize(width: Float, height: Float) {
-        this.width = width
-        this.height = height
-    }
-
     override fun set(other: SpriteCom) {
         textureRef = other.textureRef
-        width = other.width
-        height = other.height
         flipX = other.flipX
         flipY = other.flipY
         offsetX = other.offsetX
@@ -43,8 +34,6 @@ class SpriteCom: RComponent<SpriteCom>() {
 
     override fun reset() {
         textureRef = null
-        width = 0f
-        height = 0f
         flipX = false
         flipY = false
         offsetX = 0f

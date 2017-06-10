@@ -1,1 +1,1 @@
-include 'spacemonk2', 'onebreath', 'engine-core', 'engine-quick'
+include 'spacemonk2', 'onebreath', 'engine-core', 'engine-tools', 'engine-quick'

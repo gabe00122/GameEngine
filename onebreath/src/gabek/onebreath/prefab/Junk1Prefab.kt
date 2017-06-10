@@ -6,6 +6,7 @@ import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.JointCom
+import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.physics.joint.RRevoluteJoint
@@ -25,19 +26,21 @@ class Junk1Prefab: Prefab(){
         val assets: Assets = kodein.instance()
         val texture = assets.getTexture("actors:box")
 
-        val scale = 0.90f
-        val w = 0.25f
-        val h = 0.25f
+        val w = texture.texture.regionWidth * (0.75f/16f)
+        val h = texture.texture.regionHeight * (0.75f/16f)
 
         add<TranslationCom>()
         add<SpriteCom>{
             textureRef = texture
+        }
+
+        add<SizeCom> {
             width = w
             height = h
         }
 
         add<BodyCom> {
-            body.addFixture(RPolygon(w * scale, h * scale), 0.75f, 0.4f, 0.2f)
+            body.addFixture(RPolygon(w, h), 0.75f, 0.4f, 0.2f)
             body.bodyType = BodyDef.BodyType.DynamicBody
             //body.gravityScale = 0f
         }

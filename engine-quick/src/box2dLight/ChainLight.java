@@ -186,7 +186,7 @@ public class ChainLight extends Light {
 	 * 
 	 * @param body
 	 *            that will be automatically followed, note that the body
-	 *            rotation referenceAngle is taken into account for the light offset
+	 *            rotation referenceAngleRad is taken into account for the light offset
 	 *            and direction calculations
 	 * @param degrees
 	 *            directional relative offset in degrees 
@@ -291,7 +291,7 @@ public class ChainLight extends Light {
 		Vector2 vDirection = Pools.obtain(Vector2.class);
 		Vector2 vRayOffset = Pools.obtain(Vector2.class);
 		Spinor tmpAngle = Pools.obtain(Spinor.class);
-		// Spinors used to represent perpendicular referenceAngle of each segment
+		// Spinors used to represent perpendicular referenceAngleRad of each segment
 		Spinor previousAngle = Pools.obtain(Spinor.class);
 		Spinor currentAngle = Pools.obtain(Spinor.class);
 		Spinor nextAngle = Pools.obtain(Spinor.class);
@@ -350,7 +350,7 @@ public class ChainLight extends Light {
 			for (int j = 0; j < segmentRays; j++) {
 				float position = j * raySpacing;
 
-				// interpolate ray referenceAngle based on position within segment
+				// interpolate ray referenceAngleRad based on position within segment
 				rayAngle.set(startAngle).slerp(
 					endAngle, position / segmentLengths.items[i]);
 				float angle = rayAngle.angle();

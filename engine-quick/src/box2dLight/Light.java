@@ -108,7 +108,7 @@ public abstract class Light implements Disposable {
 	 * 
 	 * @param body
 	 *            that will be automatically followed, note that the body
-	 *            rotation referenceAngle is taken into account for the light offset
+	 *            rotation referenceAngleRad is taken into account for the light offset
 	 *            and direction calculations
 	 */
 	public abstract void attachToBody(Body body);

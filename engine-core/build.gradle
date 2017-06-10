@@ -4,8 +4,6 @@ apply plugin: "kotlin"
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = 'engine-core'
 
-sourceCompatibility = JavaVersion.VERSION_1_6
-
 sourceSets {
     main.kotlin.srcDirs = ["src/"]
 }

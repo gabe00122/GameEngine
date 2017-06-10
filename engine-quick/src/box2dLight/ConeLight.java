@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 
 /**
- * Light shaped as a circle's sector with given radius, direction and referenceAngle
+ * Light shaped as a circle's sector with given radius, direction and referenceAngleRad
  * 
  * <p>Extends {@link PositionalLight}
  * 
@@ -15,7 +15,7 @@ public class ConeLight extends PositionalLight {
 	float coneDegree;
 
 	/**
-	 * Creates light shaped as a circle's sector with given radius, direction and arc referenceAngle
+	 * Creates light shaped as a circle's sector with given radius, direction and arc referenceAngleRad
 	 * 
 	 * @param rayHandler
 	 *            not {@code null} instance of RayHandler
@@ -74,7 +74,7 @@ public class ConeLight extends PositionalLight {
 	/**
 	 * How big is the arc of cone
 	 * 
-	 * <p>Arc referenceAngle = coneDegree * 2, centered over direction referenceAngle
+	 * <p>Arc referenceAngleRad = coneDegree * 2, centered over direction referenceAngleRad
 	 * <p>Actual recalculations will be done only on {@link #update()} call
 	 * 
 	 */

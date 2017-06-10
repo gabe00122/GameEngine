@@ -12,26 +12,23 @@ import gabek.engine.core.prefab.CameraPrefab
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.InputSystem
 import gabek.engine.core.systems.JointSystem
-import gabek.onebreath.system.OneBreathLevelLoader
 import gabek.engine.core.systems.TileMapSystem
-import gabek.onebreath.system.BiDirectionSystem
-import gabek.onebreath.system.CharacterAnimatorSystem
-import gabek.onebreath.system.CharacterControllerSystem
-import gabek.onebreath.system.DamageSystem
 import gabek.engine.core.systems.common.*
 import gabek.engine.core.systems.graphics.*
 import gabek.engine.core.tilemap.TileDefinitions
 import gabek.engine.core.tilemap.TileType
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 import gabek.engine.quick.water.BuoyancySystem
 import gabek.engine.quick.light.LightingSystem
 import gabek.onebreath.prefab.BloodPrefab
 import gabek.onebreath.prefab.Junk1Prefab
 import gabek.onebreath.prefab.PlayerPrefab
 import gabek.onebreath.prefab.RatPrefab
-import gabek.onebreath.system.OneBreathInputSystem
+import gabek.onebreath.prefab.test.PrisJointTestPrefab
+import gabek.onebreath.prefab.test.RotJointTestPefab
+import gabek.onebreath.system.*
 
 /**
  * @another Gabriel Keith
@@ -49,10 +46,12 @@ fun buildWorld(kodein: Kodein): World {
     wc.setSystem(TagManager())
     wc.setSystem(GroupManager())
 
+    //wc.setSystem(WorldUnitSystem(0.75f/16f))
+
     wc.setSystem(CameraSystem())
     wc.setSystem(Box2dDebugSystem())
     wc.setSystem(RenderManager { world -> //define render order
-        batchSystems = listOf(
+        renderSystems = listOf(
                 world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
                 EntityRenderManager(world.getSystem<SpriteRenderSystem>()),
                 world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
@@ -93,6 +92,7 @@ fun buildWorld(kodein: Kodein): World {
     wc.setSystem(Box2dSystem())
     wc.setSystem(JointSystem())
     wc.setSystem(BuoyancySystem())
+    wc.setSystem(MotorOscillatorSystem())
 
     wc.setSystem(ParentTackingSystem()) // follow the parent entities movement
     wc.setSystem(CameraTrackingSystem()) // when the camera follows stuff
@@ -103,7 +103,8 @@ fun buildWorld(kodein: Kodein): World {
     wc.setSystem(TileMapSystem(kodein, ::tileDef))
     // </TILES>
 
-    wc.setSystem(SpriteRenderSystem())
+    wc.setSystem(CullingSystem())
+    wc.setSystem(SpriteRenderSystem(kodein))
     wc.setSystem(AnimationSystem())
 
     wc.setSystem(LightingSystem())
@@ -121,6 +122,11 @@ fun prefabs(builder: PrefabManager.Builder) = with(builder) {
 
     bind("junk_1", Junk1Prefab())
     bind("blood", BloodPrefab())
+
+    // <TESTS>
+    bind("rot", RotJointTestPefab())
+    bind("pris", PrisJointTestPrefab())
+    // </TESTS>
 }
 
 fun tileDef(tileDefinitions: TileDefinitions, world: World, kodein: Kodein) {

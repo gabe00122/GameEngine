@@ -14,7 +14,9 @@ import com.github.salomonbrys.kodein.singleton
 import com.kotcrab.vis.ui.VisUI
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.audio.MusicPlayer
+import gabek.engine.core.audio.SoundPlayer
 import gabek.engine.core.console.Console
+import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.ScreenManager
 import gabek.engine.core.settings.Settings
@@ -40,7 +42,10 @@ class OneBreath(val settings: Settings): ApplicationAdapter() {
             bind<Assets>() with singleton { Assets() }
             bind<Settings>() with singleton { settings }
             bind<MusicPlayer>() with singleton { MusicPlayer(this) }
+            bind<SoundPlayer>() with singleton { SoundPlayer() }
             bind<InputManager>() with singleton { buildInputManager() }
+
+            bind<PixelRatio>() with singleton { PixelRatio(0.75f/16f) }
             bind<World>() with singleton { buildWorld(this) }
 
             bind<Console>() with singleton { Console(this) }

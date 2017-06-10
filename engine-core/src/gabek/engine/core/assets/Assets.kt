@@ -58,10 +58,11 @@ class Assets: Disposable {
             val atlas = assetManager.get(fileName, com.badlogic.gdx.graphics.g2d.TextureAtlas::class.java)
 
             for (region in atlas.regions) {
-                val texture = region
                 val lookup = "$packName:${region.name}:${region.index}"
 
-                textureMap.put(lookup, TextureRef(texture, lookup))
+                textureMap.put(lookup, TextureRef(lookup, region,
+                        region.originalWidth/2f - (region.offsetX + region.packedWidth/2f),
+                        -region.originalHeight/2f + ((region.offsetY) + region.packedHeight/2f)))
             }
         }
 

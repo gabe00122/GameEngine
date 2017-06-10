@@ -14,7 +14,7 @@ import gabek.engine.core.physics.joint.RJoint
 class RWorld: Disposable {
     val world = World(Vector2(0f, -9.807f), true)
     private val bodyList = Array<RBody>()
-    private val jointList = Array<RJoint>()
+    //private val jointList = Array<RJoint>()
 
     var velocityIterations = 8
     var positionIterations = 3
@@ -50,6 +50,14 @@ class RWorld: Disposable {
         }
 
         bodyList[index] = replacement
+    }
+
+    fun addJoint(joint: RJoint){
+        joint.world = this
+    }
+
+    fun removeJoint(joint: RJoint){
+        joint.store()
     }
 
     internal fun createBody(bodyDef: BodyDef): Body {

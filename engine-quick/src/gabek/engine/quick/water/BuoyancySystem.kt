@@ -19,10 +19,16 @@ class BuoyancySystem: BaseEntitySystem(Aspect.all(BodyCom::class.java, BuoyantCo
             Vector2(0f, 1f),
             Vector2.Zero,
             Vector2(0f, -9.807f),
-            3.5f, 1f, 5f, 2.5f)
+            5.25f, 1f, 3f, 3f/2.5f)
     private lateinit var box2dSystem: Box2dSystem
     private lateinit var bodyMapper: ComponentMapper<BodyCom>
     private lateinit var buoyancyMapper: ComponentMapper<BuoyantCom>
+
+    var waterLevel: Float
+        get() = controller.mSurfaceHeight
+        set(value) {
+            controller.mSurfaceHeight = value
+        }
 
     override fun initialize() {
         super.initialize()

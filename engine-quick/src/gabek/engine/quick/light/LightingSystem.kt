@@ -7,11 +7,10 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.physics.box2d.World
 import gabek.engine.core.graphics.Display
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.PassiveSystem
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 
 /**
  * @another Gabriel Keith
@@ -32,8 +31,6 @@ class LightingSystem: PassiveSystem(), RenderManager.DirectRenderSystem {
         super.initialize()
 
         rayHandler = RayHandler(b2d.rworld.world, buffW, buffH) // yeah i know
-
-        testLight = PointLight(rayHandler, 120, Color(0f, 0f, 0f, 1f), 10f, 7f, 7f)
     }
 
     override fun prepare(display: Display, ortho: OrthographicCamera){

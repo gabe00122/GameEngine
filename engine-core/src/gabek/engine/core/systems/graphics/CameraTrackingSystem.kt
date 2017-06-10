@@ -80,6 +80,12 @@ class CameraTrackingSystem: BaseEntitySystem(Aspect.all(
         }
     }
 
+    fun setPadding(entity: Int, w: Float, h: Float){
+        val targets = cameraTargetsMapper[entity]
+        targets.padWidth = w
+        targets.padHeight = h
+    }
+
     fun addTarget(entity: Int, target: Int) {
         cameraTargetsMapper[entity].targets.add(target)
     }

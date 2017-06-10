@@ -50,11 +50,7 @@ class JointSystem : BaseEntitySystem(Aspect.all(JointCom::class.java, BodyCom::c
                 joint.bodyB = bodyMapper[jointCom.destId].body
             }
 
-
-            println("test")
-            if(joint.canInit) {
-                joint.initialise(box2dSystem.rworld)
-            }
+            box2dSystem.rworld.addJoint(joint)
         }
     }
 }

@@ -6,10 +6,12 @@ import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.InputCom
 import gabek.engine.core.components.channel.DirectionalInputCom
+import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
+import gabek.engine.quick.water.BuoyantCom
 import gabek.onebreath.component.BiDirectionCom
 import gabek.onebreath.component.CharacterMovementStateCom
 import gabek.onebreath.component.MovementDefinitionCom
@@ -27,28 +29,27 @@ class PlayerPrefab: Prefab() {
         val assets: Assets = kodein.instance()
 
         val sprite = assets.getTexture("actors:player_ideal")
-        val radiusScale = 1f - 0.05f
-        val w = 0.5f
-        val h = 0.875f
+        val w = sprite.texture.regionWidth * (0.75f/16f)
+        val h = sprite.texture.regionHeight * (0.75f/16f)
 
         add<TranslationCom>()
 
 
         add<SpriteCom> {
             textureRef = sprite
+        }
+        add<SizeCom> {
             width = w
             height = h
         }
 
         add<BodyCom> {
-            val shape = RPolygon().withClippedCorners(
-                    w * radiusScale,
-                    h * radiusScale,
+            val shape = RPolygon().withClippedCorners(w, h,
                     0f, 0f,
-                    0.15625f * radiusScale,
-                    0.25f * radiusScale)
+                    0.75f,
+                    0.25f)
 
-            body.addFixture(shape, 1.2f, 1f, 0f)
+            body.addFixture(shape, 1.1f, 1f, 0f)
             body.bodyType = BodyDef.BodyType.DynamicBody
             body.isFixedRotation = true
         }
@@ -58,12 +59,12 @@ class PlayerPrefab: Prefab() {
         add<MovementGroundContactCom>()
 
         add<MovementDefinitionCom> {
-            airSpeed = 2f
-            groundSpeed = 2f
+            airSpeed = 3f
+            groundSpeed = 3f
             airDamping = 0.1f
 
             jumpCooldown = 0.1f
-            jumpForce = 1.75f
+            jumpForce = 4f
         }
 
         add<InputCom>()
@@ -71,6 +72,6 @@ class PlayerPrefab: Prefab() {
             panX = -1f
         }
 
-        //add<BuoyantCom>()
+        add<BuoyantCom>()
     }
 }

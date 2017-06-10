@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import gabek.engine.core.graphics.Display
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.PassiveSystem
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 
 /**
  * @author Gabriel Keith

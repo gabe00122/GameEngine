@@ -106,7 +106,7 @@ public abstract class PositionalLight extends Light {
 	 * 
 	 * @param body
 	 *            that will be automatically followed, note that the body
-	 *            rotation referenceAngle is taken into account for the light offset
+	 *            rotation referenceAngleRad is taken into account for the light offset
 	 *            and direction calculations
 	 * @param offsetX
 	 *            horizontal relative offset in world coordinates
@@ -123,7 +123,7 @@ public abstract class PositionalLight extends Light {
 	 * 
 	 * @param body
 	 *            that will be automatically followed, note that the body
-	 *            rotation referenceAngle is taken into account for the light offset
+	 *            rotation referenceAngleRad is taken into account for the light offset
 	 *            and direction calculations
 	 * @param offsetX
 	 *            horizontal relative offset in world coordinates

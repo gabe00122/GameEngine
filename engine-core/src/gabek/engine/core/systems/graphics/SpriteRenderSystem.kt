@@ -4,75 +4,78 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
+import com.github.salomonbrys.kodein.Kodein
+import com.github.salomonbrys.kodein.instance
+import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
+import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.world.EntityRenderManager
 
 /**
  * @author Gabriel Keith
  */
-class SpriteRenderSystem: BaseEntitySystem(
+class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
         Aspect.all(
                 SpriteCom::class.java,
+                SizeCom::class.java,
                 TranslationCom::class.java
         )
-), EntityRenderManager.Renderer {
+), EntityRenderManager.EntityRenderSystem {
 
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
+    private lateinit var sizeMapper: ComponentMapper<SizeCom>
     private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
-    private val temp = Rectangle()
+    private lateinit var cullingSystem: CullingSystem
 
-    override fun fill(layers: Array<EntityRenderManager.Layer>, culling: Rectangle, progress: Float) {
+    private val pixelRatio: PixelRatio = kodein.instance<PixelRatio>()
+
+    override fun fill(schedule: EntityRenderManager.RenderSchedule, culling: Rectangle, progress: Float) {
         val entities = entityIds
         for (i in 0 until entities.size()) {
             val entity = entities[i]
-            val spriteComp = spriteMapper.get(entity)
-            val transComp = translationMapper.get(entity)
+            val spriteComp = spriteMapper[entity]
 
-            if (spriteComp.textureRef != null) {
-                val x = transComp.lerpX(progress) + spriteComp.offsetX
-                val y = transComp.lerpY(progress) + spriteComp.offsetY
-                val width = spriteComp.width
-                val height = spriteComp.height
-                val rotation = transComp.lerpRotation(progress) + spriteComp.offsetRotation
+            val ref = spriteComp.textureRef
+            if (ref != null) {
+                val transComp = translationMapper[entity]
 
-                val r = rotation + spriteComp.offsetRotation
-                val sin = MathUtils.sinDeg(r)
-                val asin = if (sin > 0) sin else -sin
-                val cos = MathUtils.cosDeg(r)
-                val acos = if (cos > 0) cos else -cos
+                val pixelToMeter = pixelRatio.pixelToMeters
 
-                temp.width = height * asin + width * acos
-                temp.height = width * asin + height * acos
-                temp.x = x - temp.width / 2f
-                temp.y = y - temp.height / 2f
-
-                if (culling.overlaps(temp)) {
-                    layers[spriteComp.layer].pushIndex(entity)
+                if(cullingSystem.cull(culling,
+                        x = transComp.lerpX(progress) + spriteComp.offsetX + (ref.offsetX * pixelToMeter),
+                        y = transComp.lerpY(progress) + spriteComp.offsetY + (ref.offsetY * pixelToMeter),
+                        rotation = transComp.lerpRotation(progress),
+                        width = ref.texture.regionWidth * pixelToMeter,
+                        height = ref.texture.regionHeight * pixelToMeter
+                )) {
+                    schedule.pushId(entity, spriteComp.layer)
                 }
             }
         }
     }
 
     override fun render(entity: Int, batch: SpriteBatch, progress: Float) {
-        val spriteComp = spriteMapper.get(entity)
-        val transComp = translationMapper.get(entity)
+        val spriteComp = spriteMapper[entity]
+        val sizeComp = sizeMapper[entity]
+        val transComp = translationMapper[entity]
 
         val ref = spriteComp.textureRef
 
         if (ref != null) {
+            val pixelToMeter = pixelRatio.pixelToMeters
+
             val region = ref.texture
 
-            val x = transComp.lerpX(progress) + spriteComp.offsetX
-            val y = transComp.lerpY(progress) + spriteComp.offsetY
-            val width = spriteComp.width
-            val height = spriteComp.height
+            val x = transComp.lerpX(progress) + spriteComp.offsetX + (ref.offsetX * pixelToMeter)
+            val y = transComp.lerpY(progress) + spriteComp.offsetY + (ref.offsetY * pixelToMeter)
+            val width = region.regionWidth * pixelToMeter
+            val height = region.regionHeight * pixelToMeter
             val halfWidth = width / 2f
             val halfHeight = height / 2f
-            val rotation = transComp.lerpRotation(progress) + spriteComp.offsetRotation
+            val rotation = transComp.lerpRotation(progress)// + spriteComp.offsetRotation
 
             val flipX = spriteComp.flipX
             val flipY = spriteComp.flipY
@@ -83,6 +86,7 @@ class SpriteRenderSystem: BaseEntitySystem(
             region.flip(flipX, flipY)
             batch.draw(region, x - halfWidth, y - halfHeight,
                     halfWidth, halfHeight, width, height, 1f, 1f, rotation)
+
             region.flip(flipX, flipY)
             batch.color = oldColor
         }

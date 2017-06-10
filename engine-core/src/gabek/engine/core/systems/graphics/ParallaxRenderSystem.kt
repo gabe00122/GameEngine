@@ -9,14 +9,14 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.graphics.ParallaxGraphicCom
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 
 /**
  * @author Gabriel Keith
  * @date 4/15/2017
  */
 class ParallaxRenderSystem(kodein: Kodein): BaseEntitySystem(Aspect.all(ParallaxGraphicCom::class.java)),
-        RenderManager.BatchSystem {
+        RenderManager.RenderSystem {
     private val assets: Assets = kodein.instance()
     private lateinit var parallaxMapper: ComponentMapper<ParallaxGraphicCom>
 

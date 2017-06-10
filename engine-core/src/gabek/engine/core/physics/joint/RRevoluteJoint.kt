@@ -11,10 +11,10 @@ import gabek.engine.core.physics.TEMP_REVOLUTE_DEF
 /**
  * @author Gabriel Keith
  */
-class RRevoluteJoint: RJoint() {
+class RRevoluteJoint: RJoint(), Motorized {
     private var revoluteJoint: RevoluteJoint? = null
 
-    var isMotorEnabled: Boolean = false
+    override var isMotorEnabled: Boolean = false
         set(value) {
             field = value
             revoluteJoint?.enableMotor(value)
@@ -30,7 +30,7 @@ class RRevoluteJoint: RJoint() {
         set(value) {
             field = value
             if (joint != null) {
-                throw IllegalStateException("Can't change referenceAngle after joint creation.")
+                throw IllegalStateException("Can't change referenceAngleRad after joint creation.")
             }
         }
 
@@ -76,7 +76,7 @@ class RRevoluteJoint: RJoint() {
             revoluteJoint?.motorSpeed = value
         }
 
-    var motorSpeed: Float
+    override var motorSpeed: Float
         get() = motorSpeedRad * MathUtils.radiansToDegrees
         set(value) {
             motorSpeedRad = value * MathUtils.degreesToRadians
@@ -94,8 +94,8 @@ class RRevoluteJoint: RJoint() {
 
     override fun update() {}
 
-    override fun initialise(box2dWorld: RWorld) {
-        joint = box2dWorld.createJoint(def)
+    override fun initialise() {
+        joint = world!!.createJoint(def)
         revoluteJoint = joint as RevoluteJoint
     }
 
@@ -133,8 +133,10 @@ class RRevoluteJoint: RJoint() {
     override fun clone(): RJoint {
         val clonedJoint = RRevoluteJoint()
 
-        clonedJoint.setAnchorA(anchorA)
-        clonedJoint.setAnchorB(anchorB)
+        //clonedJoint.setAnchorA(anchorA)
+        //clonedJoint.setAnchorB(anchorB)
+        clonedJoint.collideConnected = collideConnected
+
 
         clonedJoint.isMotorEnabled = isMotorEnabled
         clonedJoint.isLimitEnabled = isLimitEnabled

@@ -14,7 +14,7 @@ import gabek.engine.core.tilemap.Grid
 import gabek.engine.core.tilemap.TileDefinitions
 import gabek.engine.core.physics.shape.REdge
 import gabek.engine.core.tilemap.TileReference
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 
 /**
  * @author Gabriel Keith
@@ -28,7 +28,7 @@ class TileMapSystem(
 
     val assets: Assets = kodein.instance()
 
-    val tileSize = 0.5f
+    val tileSize = 0.75f
     val definitions = TileDefinitions()
     private var backgroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
     private var foregroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
@@ -60,8 +60,8 @@ class TileMapSystem(
         }
     }
 
-    fun getRendererForLayer(layer: Layer): RenderManager.BatchSystem {
-        return object : RenderManager.BatchSystem {
+    fun getRendererForLayer(layer: Layer): RenderManager.RenderSystem {
+        return object : RenderManager.RenderSystem {
             override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
                 this@TileMapSystem.render(batch, culling, layer)
             }

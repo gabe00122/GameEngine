@@ -19,7 +19,7 @@ import gabek.engine.core.systems.graphics.CameraDirectControlSystem
 import gabek.engine.core.systems.graphics.CameraSystem
 import gabek.engine.core.systems.graphics.CameraTrackingSystem
 import gabek.engine.core.util.getSystem
-import gabek.engine.core.world.RenderManager
+import gabek.engine.core.systems.common.RenderManager
 
 
 /**
@@ -69,11 +69,11 @@ class GameViewScreen(kodein: Kodein): Screen() {
         inputSystem.setInput(player, input)
 
         val camera = prefabManager.create("camera")
-        cameraSystem.setView(camera, 5f, 5f, 5f, 5f)
+        cameraTracking.setPadding(camera, 3.75f, 3.75f)
         cameraTracking.addTarget(camera, player)
 
+        renderManager.clearColor.set(91/255f, 110/255f, 225/255f, 1f)
         display.setHandle(camera, cameraSystem)
-        renderManager.clearColor.set(9/255f, 40/255f, 60/255f, 1f)
 
         val container = Container(display)
         container.fill()

@@ -60,7 +60,7 @@ class ConsoleGuiOverlay(kodein: Kodein) : Screen(), Console.ConsoleListener {
 
         root.addActor(splitPane)
         root.touchable = Touchable.childrenOnly
-        root.setColor(1f, 1f, 1f, 0.9f)
+        //root.setColor(1f, 1f, 1f, 0.9f)
         root.isVisible = false
     }
 

@@ -9,7 +9,7 @@ import com.badlogic.gdx.audio.Sound
 
 class SoundRef(val sound: Sound, val soundName: String) {
 
-    fun play() {
-        sound.play()
+    internal fun play(volume: Float): Long {
+        return sound.play()
     }
 }

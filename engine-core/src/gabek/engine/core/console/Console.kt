@@ -89,6 +89,7 @@ class Console(val kodein: Kodein): ApplicationLogger {
             addCommand(DeleteCommand(this))
 
             addCommand(Box2dOverlayCommand(this))
+            addCommand(TeleportCommand(this))
         }
     }
 

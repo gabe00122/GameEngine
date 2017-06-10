@@ -30,9 +30,12 @@ class UpdateManager : BaseSystem() {
     }
 
     override fun processSystem() {
-        currentFrame++
+        currentTime = ++currentFrame * world.delta
     }
 
     fun getElapsedFrames(otherFrame: Int): Int = currentFrame - otherFrame
     fun getElapsedTime(otherFrame: Int): Float = (currentFrame - otherFrame) * world.delta
+
+    var currentTime: Float = 0f
+        private set
 }

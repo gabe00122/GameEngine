@@ -1,4 +1,4 @@
-package gabek.engine.core.world
+package gabek.engine.core.systems.common
 
 import com.artemis.World
 import com.badlogic.gdx.Gdx
@@ -19,14 +19,14 @@ class RenderManager(
 ): PassiveSystem() {
     private lateinit var cameraSystem: CameraSystem
 
-    var batchSystems: List<BatchSystem> = listOf()
+    var renderSystems: List<RenderSystem> = listOf()
     var directSystems: List<DirectRenderSystem> = listOf()
 
     //private val shader = kodein.instance<Assets>().resourceManager.get("shaders/hex.vert", ShaderProgram::class.java)
     private val culling = Rectangle()
     private val ortho = OrthographicCamera()
 
-    var clearColor = Color(1f, 1f, 1f, 1f)
+    var clearColor = Color(0f, 0f, 0f, 1f)
 
     override fun initialize() {
         super.initialize()
@@ -51,7 +51,7 @@ class RenderManager(
         //batch.shader = shader
         batch.begin()
 
-        for (batchSystem in batchSystems) {
+        for (batchSystem in renderSystems) {
             batchSystem.render(batch, culling, progress)
         }
 
@@ -71,7 +71,7 @@ class RenderManager(
                 ortho.viewportWidth, ortho.viewportHeight)
     }
 
-    interface BatchSystem {
+    interface RenderSystem {
         fun render(batch: SpriteBatch, culling: Rectangle, progress: Float)
     }
 
