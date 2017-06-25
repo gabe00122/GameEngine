@@ -1,7 +1,7 @@
 info face="Droid Sans" size=13 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=0 aa=1 padding=0,0,0,0 spacing=1,1 outline=0
 common lineHeight=13 base=10 scaleW=256 scaleH=256 pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
 page id=0 file="droid-sans-13.png"
-chars count=286
+chars time=286
 char id=32   x=250   y=60    width=0     height=1     xoffset=0     yoffset=12    xadvance=3     page=0  chnl=15
 char id=33   x=201   y=50    width=1     height=8     xoffset=1     yoffset=2     xadvance=3     page=0  chnl=15
 char id=34   x=110   y=62    width=3     height=3     xoffset=1     yoffset=2     xadvance=5     page=0  chnl=15

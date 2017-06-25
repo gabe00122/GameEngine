@@ -13,17 +13,12 @@ buildscript {
     }
 }
 
-sourceSets {
-    main.kotlin.srcDirs = ["src/"]
-    main.java.srcDirs = ["src/"]
-}
-
 dependencies {
     compile project(':engine-core')
 }
 
 weave {
-    classesDir = sourceSets.main.output.classesDir
+    classesDir = sourceSets.main.java.outputDir
     enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true

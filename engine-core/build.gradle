@@ -4,10 +4,6 @@ apply plugin: "kotlin"
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = 'engine-core'
 
-sourceSets {
-    main.kotlin.srcDirs = ["src/"]
-}
-
 version = "0.0.1"
 
 dependencies {
@@ -39,10 +35,12 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     compile "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+
+    compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
 }
 
 weave {
-    classesDir = sourceSets.main.output.classesDir
+    classesDir = sourceSets.main.java.outputDir
     enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true

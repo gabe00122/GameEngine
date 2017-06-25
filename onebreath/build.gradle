@@ -6,8 +6,6 @@ eclipse.project.name = 'onebreath'
 
 version = "0.0.1"
 
-sourceSets.main.kotlin.srcDirs = ["src/"]
-
 dependencies {
     compile project(':engine-core')
     compile project(':engine-quick')
@@ -17,11 +15,7 @@ task run(dependsOn: classes, type: JavaExec){
     classpath = sourceSets.main.runtimeClasspath
     main = mainClassName
 
-    workingDir = file("workingDir")
-}
-
-task runTools(type: GradleBuild) {
-    project
+    workingDir = file("dist")
 }
 
 jar {
@@ -32,8 +26,17 @@ jar {
     }
 }
 
+task copyJar(dependsOn: jar) {
+    doLast {
+        copy {
+            from "build/libs/SewageThing-${version}.jar"
+            into "dist"
+        }
+    }
+}
+
 weave {
-    classesDir = sourceSets.main.output.classesDir
+    classesDir = sourceSets.main.java.outputDir
     enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true
@@ -41,38 +44,3 @@ weave {
 }
 
 classes.finalizedBy weave
-
-import com.badlogic.gdx.tools.texturepacker.TexturePacker
-import com.kotcrab.vis.usl.Main
-
-task pack {
-    doLast {
-        // Note that if you need multiple atlases, you can duplicate the
-        // TexturePacker.process invocation and change paths to generate
-        // additional atlases with this task.
-        TexturePacker.process(
-                'raw/ui/x1',        // Raw assets path.
-                'workingDir/assets/ui',        // Output directory.
-                'skin'              // Name of the generated atlas (without extension).
-        )
-
-        TexturePacker.process(
-                'raw/art/actors',
-                'workingDir/assets/texture',
-                'actors'
-        )
-    }
-}
-// Run `gradle compileSkin` task to generate skin.json at assets/ui.
-task compileSkin {
-    doLast{
-        // Convert USL skin file into JSON
-        String[] uslArgs = [
-                projectDir.path + '/raw/ui/skin.usl',     // Input USL file
-                projectDir.path + '/workingDir/assets/ui/skin.json'  // Output JSON file
-        ]
-        Main.main(uslArgs)
-    }
-}
-// Run `gradle packAndCompileSkin` to generate skin atlas and compile USL into JSON
-task packAndCompileSkin(dependsOn: [pack, compileSkin])
