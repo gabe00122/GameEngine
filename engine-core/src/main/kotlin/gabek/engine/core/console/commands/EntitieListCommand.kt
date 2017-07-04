@@ -14,6 +14,7 @@ import gabek.engine.core.util.getMapper
  * @date 4/18/2017
  */
 
+/*
 class EntitieListCommand(console: Console) : Command(console, "list") {
     val world: World = console.kodein.instance()
     val prefabMapper: ComponentMapper<PrefabCom> = world.getMapper()
@@ -34,3 +35,4 @@ class EntitieListCommand(console: Console) : Command(console, "list") {
 
     }
 }
+*/

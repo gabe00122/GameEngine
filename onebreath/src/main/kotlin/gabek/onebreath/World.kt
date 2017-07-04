@@ -19,7 +19,7 @@ import gabek.engine.core.tilemap.TileDefinitions
 import gabek.engine.core.tilemap.TileType
 import gabek.engine.core.util.getSystem
 import gabek.engine.core.world.EntityRenderManager
-import gabek.engine.core.systems.common.RenderManager
+import gabek.engine.core.systems.graphics.RenderManager
 import gabek.engine.quick.water.BuoyancySystem
 import gabek.engine.quick.light.LightingSystem
 import gabek.onebreath.prefab.BloodPrefab
@@ -50,10 +50,11 @@ fun buildWorld(kodein: Kodein): World {
 
     wc.setSystem(CameraSystem())
     wc.setSystem(Box2dDebugSystem())
-    wc.setSystem(RenderManager { world -> //define render order
+    wc.setSystem(RenderManager(kodein, kodein.instance<Assets>().getShader("snap")) { world ->
+        //define render order
         renderSystems = listOf(
-                world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
                 EntityRenderManager(world.getSystem<SpriteRenderSystem>()),
+                world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
                 world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
         )
         directSystems = listOf(

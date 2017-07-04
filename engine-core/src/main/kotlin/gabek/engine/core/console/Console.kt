@@ -1,6 +1,8 @@
 package gabek.engine.core.console
 
 import com.badlogic.gdx.ApplicationLogger
+import com.beust.jcommander.JCommander
+import com.beust.jcommander.ParameterException
 import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.console.commands.*
 
@@ -19,7 +21,7 @@ class Console(val kodein: Kodein): ApplicationLogger {
     private val commands = HashMap<String, Command>()
     private var isInitialized = false
 
-    private var outputBuffer = StringBuilder()
+    private val outputBuffer = StringBuilder()
 
     override fun error(tag: String, message: String) {
         handleOutput(tag, message)
@@ -59,21 +61,24 @@ class Console(val kodein: Kodein): ApplicationLogger {
 
     private fun flush(){
         val out = outputProcessor
-        if(out != null) {
+        if(out != null && outputBuffer.isNotEmpty()) {
             out.write(outputBuffer.toString())
-            outputBuffer = StringBuilder()
+            outputBuffer.setLength(0)
         }
     }
 
     fun processInput(text: String) {
-        val list = text.split(' ', limit = 2)
-        if (list.size == 1) {
-            writeln(text)
-            commands[list[0]]?.command("")
-            flush()
-        } else if (list.size == 2) {
-            writeln(text)
-            commands[list[0]]?.command(list[1])
+        val split = text.split(" ")
+
+        if(split.isNotEmpty()) {
+            val main = split.first()
+            val args = Array(split.size-1, {i -> split[i+1]})
+
+            try {
+                commands[main]!!.process(args, this, kodein)
+            } catch (e: Exception) {
+                error("PARSE", "Failed to understand the command.")
+            }
             flush()
         }
     }
@@ -82,19 +87,21 @@ class Console(val kodein: Kodein): ApplicationLogger {
         if (!isInitialized) {
             isInitialized = true
 
-            addCommand(EchoCommand(this))
-            addCommand(EntitieListCommand(this))
-            addCommand(InspectCommand(this))
-            addCommand(CreateCommand(this))
-            addCommand(DeleteCommand(this))
+            addCommand("echo", EchoCommand())
 
-            addCommand(Box2dOverlayCommand(this))
-            addCommand(TeleportCommand(this))
+            //addCommand(EchoCommand(this))
+            //addCommand(EntitieListCommand(this))
+            //addCommand(InspectCommand(this))
+            //addCommand(CreateCommand(this))
+            //addCommand(DeleteCommand(this))
+
+            //addCommand(Box2dOverlayCommand(this))
+            //addCommand(TeleportCommand(this))
         }
     }
 
-    private fun addCommand(command: Command) {
-        commands.put(command.name, command)
+    private fun addCommand(name: String, command: Command) {
+        commands.put(name, command)
     }
 
     interface ConsoleListener {

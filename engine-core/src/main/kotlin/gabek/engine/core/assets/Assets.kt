@@ -1,6 +1,5 @@
 package gabek.engine.core.assets
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.MusicLoader
@@ -9,21 +8,12 @@ import com.badlogic.gdx.assets.loaders.SoundLoader
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.PixmapIO
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.PixmapPacker
-import com.badlogic.gdx.graphics.g2d.PixmapPackerIO
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
-import com.badlogic.gdx.tools.imagepacker.ImagePacker
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import com.badlogic.gdx.utils.*
-import com.badlogic.gdx.utils.Array
 import gabek.engine.core.audio.SoundRef
 import gabek.engine.core.graphics.AnimationRef
-import gabek.engine.core.graphics.TextureRef
 
 /**
  * @author Gabriel Keith
@@ -36,9 +26,6 @@ class Assets: Disposable {
     private val animationMap = ObjectMap<String, AnimationRef>()
     private val musicMap = ObjectMap<String, Music>()
     private val soundMap = ObjectMap<String, SoundRef>()
-
-    //TEST
-    private var atlas: TextureAtlas? = null
 
     constructor(root: String = "assets", configOnly: Boolean = true) {
         initLoaders()
@@ -71,7 +58,12 @@ class Assets: Disposable {
     fun loadTexturePack(packName: String, fileName: String) {
         val cacheName = "cache"
         val atlasName = "./$cacheName/$packName.atlas"
-        TexturePacker.processIfModified(fileName, "./$cacheName", packName)
+
+        val settings = TexturePacker.Settings()
+        settings.stripWhitespaceX = true
+        settings.stripWhitespaceY = true
+        //settings.duplicatePadding = true
+        TexturePacker.processIfModified(settings, fileName, "./$cacheName", packName)
 
 
         val parameter = TextureAtlasLoader.TextureAtlasParameter()
@@ -82,8 +74,8 @@ class Assets: Disposable {
                 val lookup = "$packName:${region.name}:${region.index}"
 
                 textureMap.put(lookup, TextureRef(lookup, region,
-                        region.originalWidth/2f - (region.offsetX + region.packedWidth/2f),
-                        -region.originalHeight/2f + ((region.offsetY) + region.packedHeight/2f)))
+                        region.originalWidth / 2f - (region.offsetX + region.packedWidth / 2f),
+                        -region.originalHeight / 2f + ((region.offsetY) + region.packedHeight / 2f)))
             }
         }
 

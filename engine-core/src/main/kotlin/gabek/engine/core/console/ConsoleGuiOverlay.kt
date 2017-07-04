@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup
 import com.badlogic.gdx.utils.Align
 import com.github.salomonbrys.kodein.Kodein
@@ -20,7 +21,7 @@ import ktx.actors.onKeyDown
 class ConsoleGuiOverlay(kodein: Kodein) : Screen(), Console.ConsoleListener {
     val console: Console = kodein.instance()
 
-    val outputGroup = VerticalGroup()
+    val outputGroup = VisLabel()
     val outputScroll = VisScrollPane(outputGroup)
     val inputField = VisTextField()
     val splitPane: VisSplitPane
@@ -31,8 +32,8 @@ class ConsoleGuiOverlay(kodein: Kodein) : Screen(), Console.ConsoleListener {
         console.outputProcessor = this
         console.initializeCommands()
 
-        outputGroup.align(Align.bottomLeft)
-        outputGroup.grow()
+        outputGroup.setWrap(true)
+        outputGroup.setAlignment(Align.topLeft)
 
         outputScroll.setScrollingDisabled(true, false)
         outputScroll.setScrollbarsOnTop(true)
@@ -65,9 +66,10 @@ class ConsoleGuiOverlay(kodein: Kodein) : Screen(), Console.ConsoleListener {
     }
 
     override fun write(message: String) {
-        val label = VisLabel(message)
-        label.setAlignment(Align.left)
-        outputGroup.addActor(label)
+        //val label = VisLabel(message)
+        //label.setAlignment(Align.left)
+        outputGroup.text.append(message)
+        outputGroup.invalidateHierarchy()
 
         if (outputScroll.scrollPercentY == 1f || outputScroll.scrollPercentY == Float.NaN) {
             outputScroll.layout()

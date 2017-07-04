@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import gabek.engine.core.graphics.Display
+import gabek.engine.core.graphics.RenderContext
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.PassiveSystem
-import gabek.engine.core.systems.common.RenderManager
 
 /**
  * @author Gabriel Keith
@@ -17,7 +17,7 @@ class Box2dDebugSystem : PassiveSystem(), RenderManager.DirectRenderSystem {
 
     var active: Boolean = false
 
-    override fun render(ortho: OrthographicCamera, culling: Rectangle, progress: Float) {
+    override fun render(ortho: OrthographicCamera, context: RenderContext) {
         if(active) {
             if (render == null) {
                 render = Box2DDebugRenderer(true, true, false, true, false, true)

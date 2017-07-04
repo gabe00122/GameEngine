@@ -9,6 +9,8 @@ import gabek.engine.core.console.Console
  * @author Gabriel Keith
  * @date 4/19/2017
  */
+
+/*
 class InspectCommand(console: Console): Command(console, "inspect") {
     val world: com.artemis.World = console.kodein.instance()
 
@@ -21,3 +23,4 @@ class InspectCommand(console: Console): Command(console, "inspect") {
         }
     }
 }
+*/

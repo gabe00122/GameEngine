@@ -72,7 +72,7 @@ class ScanningAssetDirector(val root: FileHandle){
 
         if(dir.exists()) {
             for(file in dir.list(".vert")) {
-                val fragFile = dir.child(dir.nameWithoutExtension() + ".frag")
+                val fragFile = dir.child(file.nameWithoutExtension() + ".frag")
 
                 if(!fragFile.exists())
                     throw IllegalStateException("Vertex file ${file.name()} dose not have a corresponding fragment.")

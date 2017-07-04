@@ -27,6 +27,16 @@ class ScreenManager(val kodein: Kodein) : Disposable {
         private set
 
     var overlay: Screen? = null
+        set(value) {
+            val oldValue = field
+            field = value
+
+            if(value != null){
+                stage.root.addActor(value.root)
+            } else if(oldValue != null){
+                stage.root.removeActor(oldValue.root)
+            }
+        }
 
     private val fpsContainer: Container<VisLabel>
     private val fpsLabel: VisLabel = VisLabel("")

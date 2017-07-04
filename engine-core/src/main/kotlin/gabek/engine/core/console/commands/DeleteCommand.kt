@@ -10,6 +10,7 @@ import gabek.engine.core.console.Console
  * @date 4/20/2017
  */
 
+/*
 class DeleteCommand(console: Console) : Command(console, "delete") {
     val world = console.kodein.instance<World>()
 
@@ -18,3 +19,4 @@ class DeleteCommand(console: Console) : Command(console, "delete") {
         world.delete(id)
     }
 }
+*/

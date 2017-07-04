@@ -1,6 +1,6 @@
 package gabek.engine.core.tilemap
 
-import gabek.engine.core.graphics.TextureRef
+import gabek.engine.core.assets.TextureRef
 
 /**
  * @author Gabriel Keith

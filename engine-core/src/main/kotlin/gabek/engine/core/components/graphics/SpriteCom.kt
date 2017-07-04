@@ -2,7 +2,7 @@ package gabek.engine.core.components.graphics
 
 import com.badlogic.gdx.graphics.Color
 import gabek.engine.core.components.RComponent
-import gabek.engine.core.graphics.TextureRef
+import gabek.engine.core.assets.TextureRef
 
 /**
  * @author Gabriel Keith

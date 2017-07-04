@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Shape
 class RPolygon : RShape {
     var vertices: FloatArray = FloatArray(0)
 
-    private val peel = 0.02f
+    private val peel = 0.03f
 
     constructor() : super()
 
@@ -17,6 +17,8 @@ class RPolygon : RShape {
     override fun generate(): Shape {
         val polyShape = PolygonShape()
         polyShape.set(vertices)
+        //polyShape.radius = 0f
+
         return polyShape
     }
 

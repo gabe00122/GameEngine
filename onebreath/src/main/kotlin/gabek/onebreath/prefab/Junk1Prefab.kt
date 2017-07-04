@@ -9,6 +9,7 @@ import gabek.engine.core.components.JointCom
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
+import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.physics.joint.RRevoluteJoint
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
@@ -24,10 +25,12 @@ class Junk1Prefab: Prefab(){
         super.define()
 
         val assets: Assets = kodein.instance()
+        val pixelRatio: PixelRatio = kodein.instance()
+
         val texture = assets.getTexture("actors:box")
 
-        val w = texture.texture.regionWidth * (0.75f/16f)
-        val h = texture.texture.regionHeight * (0.75f/16f)
+        val w = texture.texture.regionWidth * pixelRatio.pixelToMeters
+        val h = texture.texture.regionHeight * pixelRatio.pixelToMeters
 
         add<TranslationCom>()
         add<SpriteCom>{
@@ -42,6 +45,7 @@ class Junk1Prefab: Prefab(){
         add<BodyCom> {
             body.addFixture(RPolygon(w, h), 0.75f, 0.4f, 0.2f)
             body.bodyType = BodyDef.BodyType.DynamicBody
+            //body.isFixedRotation = true
             //body.gravityScale = 0f
         }
 

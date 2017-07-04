@@ -1,6 +1,7 @@
 package gabek.engine.core.graphics
 
 import gabek.engine.core.assets.Assets
+import gabek.engine.core.assets.TextureRef
 
 /**
  * @author Gabriel Keith

@@ -14,9 +14,12 @@ fun main(args: Array<String>){
     val config = Lwjgl3ApplicationConfiguration()
     //config.useOpenGL3(true, 3, 2)
 
+    config.setTitle("OneBreath")
+
     config.setWindowedMode(800, 800)
     config.useVsync(true)
-    //config.setDecorated(false)
+
+    //config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode())
 
     Lwjgl3Application(OneBreath(), config)
 }

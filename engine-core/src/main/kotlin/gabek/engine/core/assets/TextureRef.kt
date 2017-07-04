@@ -1,4 +1,4 @@
-package gabek.engine.core.graphics
+package gabek.engine.core.assets
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 

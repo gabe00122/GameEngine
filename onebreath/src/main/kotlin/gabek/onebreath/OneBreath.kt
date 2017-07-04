@@ -69,13 +69,6 @@ class OneBreath: ApplicationAdapter() {
 
         screenManager.update(Gdx.graphics.deltaTime)
         screenManager.render()
-
-        if(loading && assets.update()) {
-            loading = false
-            //kodein.instance<Settings>().load()
-
-            //screenManager.show("GameViewScreen")
-        }
     }
 
     override fun dispose() {

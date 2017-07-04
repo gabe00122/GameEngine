@@ -23,37 +23,26 @@ class CameraSystem: BaseEntitySystem(
 
     override fun processSystem() {}
 
-    fun updateProjection(ortho: OrthographicCamera, cameraHandle: Int, progress: Float) {
-        val camera = cameraMapper.get(cameraHandle)
+    fun prepareOrtho(ortho: OrthographicCamera, aspectRatio: Double, cameraHandle: Int, progress: Float) {
         val trans = transMapper[cameraHandle]
         val bound = sizeMapper[cameraHandle]
 
         ortho.position.set(trans.lerpX(progress), trans.lerpY(progress), 0f)
-        ortho.viewportWidth = bound.lerpWidth(progress)
-        ortho.viewportHeight = bound.lerpHeight(progress)
+        ortho.viewportWidth = bound.width
+        ortho.viewportHeight = bound.height
 
         //expand viewport.
-        val adjustment = camera.aspectRatio / (ortho.viewportWidth / ortho.viewportHeight)
+        val adjustment = aspectRatio / (ortho.viewportWidth.toDouble() / ortho.viewportHeight.toDouble())
 
 
         if (1f < adjustment) {
-            ortho.viewportWidth *= adjustment
+            ortho.viewportWidth *= adjustment.toFloat()
         } else {
-            ortho.viewportHeight /= adjustment
+            ortho.viewportHeight /= adjustment.toFloat()
         }
-
-        ortho.update(false)
-    }
-
-    fun setAspectRatio(cameraHandle: Int, aspectRatio: Float) {
-        cameraMapper[cameraHandle].aspectRatio = aspectRatio
     }
 
     fun setView(entityId: Int, x: Float, y: Float, width: Float, height: Float){
-        assert(transMapper.has(entityId))
-        assert(sizeMapper.has(entityId))
-        assert(cameraMapper.has(entityId))
-
         val trans = transMapper[entityId]
         val bounds = sizeMapper[entityId]
 

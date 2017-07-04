@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonReader
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.graphics.Display
+import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.Screen
 import gabek.onebreath.system.OneBreathLevelLoader
@@ -19,7 +20,7 @@ import gabek.engine.core.systems.graphics.CameraDirectControlSystem
 import gabek.engine.core.systems.graphics.CameraSystem
 import gabek.engine.core.systems.graphics.CameraTrackingSystem
 import gabek.engine.core.util.getSystem
-import gabek.engine.core.systems.common.RenderManager
+import gabek.engine.core.systems.graphics.RenderManager
 
 
 /**
@@ -35,6 +36,8 @@ class GameViewScreen(kodein: Kodein): Screen() {
     val renderManager: RenderManager = world.getSystem()
 
     val input = kodein.instance<InputManager>().getPlayerInput(0)
+
+    val pixelRatio: PixelRatio = kodein.instance()
 
     override fun update(delta: Float) {
         super.update(delta)
@@ -69,11 +72,14 @@ class GameViewScreen(kodein: Kodein): Screen() {
         inputSystem.setInput(player, input)
 
         val camera = prefabManager.create("camera")
-        cameraTracking.setPadding(camera, 3.75f, 3.75f)
+        val number = 2.5f
+        cameraSystem.setView(camera, 0f, 0f , number * 2f, number * 2f)
+        //cameraUtil.addDirectControl(camera, input)
+        //cameraTracking.setPadding(camera, number, number)
         cameraTracking.addTarget(camera, player)
 
         renderManager.clearColor.set(91/255f, 110/255f, 225/255f, 1f)
-        display.setHandle(camera, cameraSystem)
+        display.cameraHandle = camera
 
         val container = Container(display)
         container.fill()

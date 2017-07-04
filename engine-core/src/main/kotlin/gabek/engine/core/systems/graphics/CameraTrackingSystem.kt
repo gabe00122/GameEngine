@@ -69,13 +69,13 @@ class CameraTrackingSystem: BaseEntitySystem(Aspect.all(
                 //trans.x = (x1 + x2) / 2
                 //trans.y = (y1 + y2) / 2
 
-                val lagW = cameraTargets.padWidth * (5f / 8f)
-                val lagH = cameraTargets.padHeight * (5f / 8f)
+                //val lagW = cameraTargets.padWidth * (5f / 8f)
+                //val lagH = cameraTargets.padHeight * (5f / 8f)
 
                 trans.x = (x1 + x2) / 2f // = MathUtils.clamp(camera.bottomLeft.x, x1, x1 + lagW)
                 trans.y = (y1 + y2) / 2f // = MathUtils.clamp(camera.bottomLeft.y, y1, y1 + lagH)
-                bounds.width = x2 - x1 // = MathUtils.clamp(camera.topRight.x, x2 - lagW, x2)
-                bounds.height = y2 - y1 // = MathUtils.clamp(camera.topRight.y, y2 - lagH, y2)
+                //bounds.width = x2 - x1 // = MathUtils.clamp(camera.topRight.x, x2 - lagW, x2)
+                //bounds.height = y2 - y1 // = MathUtils.clamp(camera.topRight.y, y2 - lagH, y2)
             }
         }
     }

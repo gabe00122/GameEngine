@@ -10,6 +10,8 @@ import gabek.engine.core.util.getSystem
  * @author Gabriel Keith
  * @date 6/4/2017
  */
+
+/*
 class TeleportCommand(console: Console): Command(console, "teleport"){
     val world: com.artemis.World = console.kodein.instance()
     val transSystem: TranslationSystem = world.getSystem()
@@ -28,3 +30,5 @@ class TeleportCommand(console: Console): Command(console, "teleport"){
     }
 
 }
+
+*/

@@ -8,9 +8,10 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.Rectangle
 import gabek.engine.core.graphics.Display
+import gabek.engine.core.graphics.RenderContext
 import gabek.engine.core.systems.Box2dSystem
 import gabek.engine.core.systems.PassiveSystem
-import gabek.engine.core.systems.common.RenderManager
+import gabek.engine.core.systems.graphics.RenderManager
 
 /**
  * @another Gabriel Keith
@@ -23,7 +24,7 @@ class LightingSystem: PassiveSystem(), RenderManager.DirectRenderSystem {
 
     private var buffW = 1
     private var buffH = 1
-    private var scale = 0.5f
+    private var scale = 0.25f
 
     private lateinit var testLight: PointLight
 
@@ -31,29 +32,31 @@ class LightingSystem: PassiveSystem(), RenderManager.DirectRenderSystem {
         super.initialize()
 
         rayHandler = RayHandler(b2d.rworld.world, buffW, buffH) // yeah i know
+
+        testLight = PointLight(rayHandler, 200, Color(0f, 0f, 0f, 1f), 10f, 10f, 10f)
     }
 
     override fun prepare(display: Display, ortho: OrthographicCamera){
-        val newBuffW = (display.width * scale).toInt()
-        val newBuffH = (display.height * scale).toInt()
+        val newBuffW = (display.pixWidth * scale).toInt()
+        val newBuffH = (display.pixHeight * scale).toInt()
 
         if(newBuffW != buffW || newBuffH != buffH){
             buffW = newBuffW; buffH = newBuffH
             rayHandler.resizeFBO(buffW, buffH)
         }
 
-        //Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         rayHandler.setAmbientLight(0f, 0f, 0f, 0.5f)
         //game.getLightingHandler().setShadows(true);
         //game.getLightingHandler().setBlur(true);
         rayHandler.setCombinedMatrix(ortho)
         rayHandler.update()
         rayHandler.prepareRender()
-        Gdx.gl20.glDisable(GL20.GL_BLEND)
+        Gdx.gl.glDisable(GL20.GL_BLEND)
     }
 
-    override fun render(ortho: OrthographicCamera, culling: Rectangle, progress: Float) {
-        Gdx.gl20.glEnable(GL20.GL_BLEND)
+    override fun render(ortho: OrthographicCamera, context: RenderContext) {
+        Gdx.gl.glEnable(GL20.GL_BLEND)
         rayHandler.renderOnly()
     }
 

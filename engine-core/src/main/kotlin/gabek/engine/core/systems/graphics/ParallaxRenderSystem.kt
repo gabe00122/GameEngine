@@ -4,12 +4,11 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.graphics.ParallaxGraphicCom
-import gabek.engine.core.systems.common.RenderManager
+import gabek.engine.core.graphics.RenderContext
 
 /**
  * @author Gabriel Keith
@@ -23,7 +22,8 @@ class ParallaxRenderSystem(kodein: Kodein): BaseEntitySystem(Aspect.all(Parallax
 
     override fun processSystem() {}
 
-    override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
+    override fun render(batch: SpriteBatch, context: RenderContext) {
+        val culling = context.culling
         val centerX = culling.x - culling.width / 2f
         val centerY = culling.y - culling.height / 2f
 

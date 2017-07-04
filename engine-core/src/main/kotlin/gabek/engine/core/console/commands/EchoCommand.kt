@@ -1,5 +1,6 @@
 package gabek.engine.core.console.commands
 
+import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.console.Command
 import gabek.engine.core.console.Console
 
@@ -8,10 +9,8 @@ import gabek.engine.core.console.Console
  * @date 4/18/2017
  */
 
-class EchoCommand(console: Console) : Command(console, "echo") {
-
-
-    override fun command(arguments: String) {
-        console.writeln(arguments)
+class EchoCommand: Command() {
+    override fun process(args: Array<String>, console: Console, kodein: Kodein) {
+        console.writeln(args.joinToString())
     }
 }

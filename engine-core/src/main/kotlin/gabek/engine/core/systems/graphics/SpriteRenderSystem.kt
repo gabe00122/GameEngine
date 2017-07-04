@@ -4,13 +4,13 @@ import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.graphics.PixelRatio
+import gabek.engine.core.graphics.RenderContext
 import gabek.engine.core.world.EntityRenderManager
 
 /**
@@ -32,7 +32,7 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
 
     private val pixelRatio: PixelRatio = kodein.instance<PixelRatio>()
 
-    override fun fill(schedule: EntityRenderManager.RenderSchedule, culling: Rectangle, progress: Float) {
+    override fun fill(schedule: EntityRenderManager.RenderSchedule, context: RenderContext) {
         val entities = entityIds
         for (i in 0 until entities.size()) {
             val entity = entities[i]
@@ -44,7 +44,8 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
 
                 val pixelToMeter = pixelRatio.pixelToMeters
 
-                if(cullingSystem.cull(culling,
+                val progress = context.progress
+                if(cullingSystem.cull(context.culling,
                         x = transComp.lerpX(progress) + spriteComp.offsetX + (ref.offsetX * pixelToMeter),
                         y = transComp.lerpY(progress) + spriteComp.offsetY + (ref.offsetY * pixelToMeter),
                         rotation = transComp.lerpRotation(progress),
@@ -57,7 +58,7 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
         }
     }
 
-    override fun render(entity: Int, batch: SpriteBatch, progress: Float) {
+    override fun render(entity: Int, batch: SpriteBatch, context: RenderContext) {
         val spriteComp = spriteMapper[entity]
         val sizeComp = sizeMapper[entity]
         val transComp = translationMapper[entity]
@@ -68,6 +69,8 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
             val pixelToMeter = pixelRatio.pixelToMeters
 
             val region = ref.texture
+
+            val progress = context.progress
 
             val x = transComp.lerpX(progress) + spriteComp.offsetX + (ref.offsetX * pixelToMeter)
             val y = transComp.lerpY(progress) + spriteComp.offsetY + (ref.offsetY * pixelToMeter)

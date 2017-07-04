@@ -5,4 +5,6 @@ package gabek.engine.core.graphics
  * @date 6/9/2017
  */
 
-class PixelRatio(val pixelToMeters: Float)
+class PixelRatio(val pixelToMeters: Float) {
+    fun toMeters(pixelUnits: Float) = pixelUnits * pixelToMeters
+}

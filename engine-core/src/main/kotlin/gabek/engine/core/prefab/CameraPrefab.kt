@@ -2,6 +2,7 @@ package gabek.engine.core.prefab
 
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
+import gabek.engine.core.components.common.VelocityCom
 import gabek.engine.core.components.graphics.CameraCom
 import gabek.engine.core.components.graphics.CameraTargetsCom
 
@@ -23,6 +24,7 @@ class CameraPrefab : Prefab() {
             padHeight = height / 2f
         }
         add<TranslationCom>()
+        add<VelocityCom>()
         add<SizeCom>()
     }
 }

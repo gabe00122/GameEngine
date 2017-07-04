@@ -7,6 +7,7 @@ import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
+import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
 import gabek.engine.quick.water.BuoyantCom
@@ -21,10 +22,12 @@ class RatPrefab: Prefab(){
         super.define()
 
         val assets: Assets = kodein.instance()
+        val pixelRatio: PixelRatio = kodein.instance()
+
         val sprite = assets.getTexture("actors:rat_ideal")
 
-        val w = sprite.texture.regionWidth * (0.75f/16f)
-        val h = sprite.texture.regionHeight * (0.75f/16f)
+        val w = sprite.texture.regionWidth * pixelRatio.pixelToMeters
+        val h = sprite.texture.regionHeight * pixelRatio.pixelToMeters
 
         add<TranslationCom>()
         add<SpriteCom> {

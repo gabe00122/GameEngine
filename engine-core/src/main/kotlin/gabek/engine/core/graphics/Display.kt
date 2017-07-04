@@ -1,5 +1,6 @@
 package gabek.engine.core.graphics
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Batch
@@ -19,11 +20,12 @@ class Display(kodein: Kodein): Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
 
     var cameraHandle: Int = -1
+    var aspectRatio: Double = 0.0
         private set
-    var cameraSystem: CameraSystem? = null
+    var pixWidth: Int = 0
         private set
-    private var pixWidth: Int = 0
-    private var pixHeight: Int = 0
+    var pixHeight: Int = 0
+        private set
 
     private val uiScale = kodein.instance<Settings>().getFloat("ui_scale")
 
@@ -34,36 +36,45 @@ class Display(kodein: Kodein): Widget(), Disposable {
 
     private fun rebuildBuffers() {
         val oldBuffer = primaryBuffer
+        val s = 1f
 
-        if (oldBuffer == null || Math.abs(oldBuffer.width - width) > 10.0 || Math.abs(oldBuffer.height - height) > 10.0) {
+        val newWidth = Gdx.graphics.width
+        val newHeight = Gdx.graphics.height
+
+        if (oldBuffer == null || Math.abs(newWidth - pixWidth) != 0 || Math.abs(newHeight - pixHeight) != 0) {
             primaryBuffer?.dispose()
 
-            val w = MathUtils.ceil(width * uiScale.value)
-            val h = MathUtils.ceil(height * uiScale.value)
+            pixWidth = newWidth
+            pixHeight = newHeight
 
-            if (w >= 1 && h >= 1) {
-                primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, w, h, false)
-                primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
+            //pixWidth = Gdx.graphics.width
+            //pixHeight = Gdx.graphics.height
+
+            if (pixWidth >= 1 && pixHeight >= 1) {
+                primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, pixWidth, pixHeight, false)
+                primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             }
-            pixWidth = w
-            pixHeight = h
-            sendRatio()
-        }
-    }
 
-    private fun sendRatio() {
-        val cameraSystem = cameraSystem
-        if (cameraSystem != null && cameraHandle != -1) {
-            cameraSystem.setAspectRatio(cameraHandle, pixWidth / pixHeight.toFloat())
+            aspectRatio = pixWidth.toDouble() / pixHeight.toDouble()
         }
     }
 
     fun beginPrimaryBuffer() {
-        primaryBuffer?.begin()
+        primaryBuffer!!.begin()
     }
 
     fun endPrimaryBuffer() {
-        primaryBuffer?.end()
+        primaryBuffer!!.end()
+    }
+
+    val hasBuffer get() = primaryBuffer != null
+
+    inline fun render(renderBlock: () -> Unit){
+        if(hasBuffer){
+            beginPrimaryBuffer()
+            renderBlock()
+            endPrimaryBuffer()
+        }
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -75,11 +86,5 @@ class Display(kodein: Kodein): Widget(), Disposable {
     override fun dispose() {
         primaryBuffer?.dispose()
         primaryBuffer = null
-    }
-
-    fun setHandle(cameraHandle: Int, cameraSystem: CameraSystem) {
-        this.cameraHandle = cameraHandle
-        this.cameraSystem = cameraSystem
-        sendRatio()
     }
 }

@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
+import gabek.engine.core.graphics.PixelRatio
+import gabek.engine.core.graphics.RenderContext
 import gabek.engine.core.physics.RBody
 import gabek.engine.core.physics.RFixture
 import gabek.engine.core.tilemap.ArrayGrid
@@ -14,7 +16,7 @@ import gabek.engine.core.tilemap.Grid
 import gabek.engine.core.tilemap.TileDefinitions
 import gabek.engine.core.physics.shape.REdge
 import gabek.engine.core.tilemap.TileReference
-import gabek.engine.core.systems.common.RenderManager
+import gabek.engine.core.systems.graphics.RenderManager
 
 /**
  * @author Gabriel Keith
@@ -28,7 +30,8 @@ class TileMapSystem(
 
     val assets: Assets = kodein.instance()
 
-    val tileSize = 0.75f
+    val pixelToMeters = kodein.instance<PixelRatio>().pixelToMeters
+    val tileSize = pixelToMeters * 16f
     val definitions = TileDefinitions()
     private var backgroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
     private var foregroundTiles: Grid<TileReference> = ArrayGrid(0, 0) { _, _ -> TileReference(0) }
@@ -41,11 +44,12 @@ class TileMapSystem(
         definitionsInit(definitions, world, kodein)
     }
 
-    fun render(batch: SpriteBatch, culling: Rectangle, layer: Layer) {
+    fun render(batch: SpriteBatch, context: RenderContext, layer: Layer) {
         val tiles = when (layer) {
             Layer.FOREGROUND -> foregroundTiles
             Layer.BACKGROUND -> backgroundTiles
         }
+        val culling = context.culling
 
         val x1 = MathUtils.clamp(MathUtils.floor(culling.x / tileSize), 0, tiles.w)
         val x2 = MathUtils.clamp(MathUtils.ceil((culling.x + culling.width) / tileSize), 0, tiles.w)
@@ -55,24 +59,30 @@ class TileMapSystem(
 
         for (y in y1 until y2) {
             for (x in x1 until x2) {
-                drawTile(batch, tiles, x, y)
+                drawTile(batch, context, tiles, x, y)
             }
         }
     }
 
     fun getRendererForLayer(layer: Layer): RenderManager.RenderSystem {
         return object : RenderManager.RenderSystem {
-            override fun render(batch: SpriteBatch, culling: Rectangle, progress: Float) {
-                this@TileMapSystem.render(batch, culling, layer)
+            override fun render(batch: SpriteBatch, context: RenderContext) {
+                this@TileMapSystem.render(batch, context, layer)
             }
         }
     }
 
-    private fun drawTile(batch: SpriteBatch, grid: Grid<TileReference>, x: Int, y: Int) {
+    private fun drawTile(batch: SpriteBatch, context: RenderContext, grid: Grid<TileReference>, x: Int, y: Int) {
         val tile = grid.get(x, y)
         val ref = definitions[tile.typeId].texture
         if (ref != null) {
-            batch.draw(ref.texture, x * tileSize, y * tileSize, tileSize, tileSize)
+            val refW = pixelToMeters * ref.texture.regionWidth
+            val refH = pixelToMeters * ref.texture.regionHeight
+
+            val worldX = (x * tileSize + tileSize / 2f + ref.offsetX * pixelToMeters) - refW / 2f
+            val worldY = (y * tileSize + tileSize / 2f + ref.offsetY * pixelToMeters) - refH / 2f
+
+            batch.draw(ref.texture, worldX, worldY, refW, refH)
         }
     }
 
@@ -125,10 +135,10 @@ class TileMapSystem(
         val w = checkSolid(x - 1, y)
 
         if (!n || !s || !e || !w) {
-            val x1 = tileSize * x
-            val y1 = tileSize * y
-            val x2 = x1 + tileSize
-            val y2 = y1 + tileSize
+            val x1 = tileSize * x// + 0.01f
+            val y1 = tileSize * y// + 0.01f
+            val x2 = x1 + tileSize// - 0.02f
+            val y2 = y1 + tileSize// - 0.02f
 
             if (!n) {
                 val edge = REdge()
