@@ -47,11 +47,11 @@ class RenderManager(
     fun render(buffer: Display, batch: SpriteBatch, progress: Float) {
         cameraSystem.prepareOrtho(ortho, buffer.aspectRatio, buffer.cameraHandle, progress)
 
-        val bufferMeterW = buffer.pixWidth.toDouble() * pixToMeters.toDouble()
-        val bufferMeterH = buffer.pixHeight.toDouble() * pixToMeters.toDouble()
+        val bufferMeterW = buffer.pixWidth * pixToMeters
+        val bufferMeterH = buffer.pixHeight * pixToMeters
 
-        ortho.viewportWidth = (bufferMeterW / Math.floor(bufferMeterW / ortho.viewportWidth)).toFloat()
-        ortho.viewportHeight = (bufferMeterH / Math.floor(bufferMeterH / ortho.viewportHeight)).toFloat()
+        ortho.viewportWidth = bufferMeterW / MathUtils.floor(bufferMeterW / ortho.viewportWidth)
+        ortho.viewportHeight = bufferMeterH / MathUtils.floor(bufferMeterH / ortho.viewportHeight)
 
         ortho.update(false)
 

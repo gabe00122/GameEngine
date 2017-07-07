@@ -52,7 +52,7 @@ class Display(kodein: Kodein): Widget(), Disposable {
 
             if (pixWidth >= 1 && pixHeight >= 1) {
                 primaryBuffer = FrameBuffer(Pixmap.Format.RGBA8888, pixWidth, pixHeight, false)
-                primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+                primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
             }
 
             aspectRatio = pixWidth.toDouble() / pixHeight.toDouble()
@@ -60,11 +60,11 @@ class Display(kodein: Kodein): Widget(), Disposable {
     }
 
     fun beginPrimaryBuffer() {
-        primaryBuffer!!.begin()
+        //primaryBuffer!!.begin()
     }
 
     fun endPrimaryBuffer() {
-        primaryBuffer!!.end()
+        //primaryBuffer!!.end()
     }
 
     val hasBuffer get() = primaryBuffer != null
@@ -78,9 +78,9 @@ class Display(kodein: Kodein): Widget(), Disposable {
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        primaryBuffer?.let {
-            batch.draw(it.colorBufferTexture, x, y, width, height, 0, 0, it.width, it.height, false, true)
-        }
+        //primaryBuffer?.let {
+        //    batch.draw(it.colorBufferTexture, x, y, width, height, 0, 0, it.width, it.height, false, true)
+        //}
     }
 
     override fun dispose() {

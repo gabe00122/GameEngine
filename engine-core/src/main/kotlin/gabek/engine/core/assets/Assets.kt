@@ -14,11 +14,16 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import com.badlogic.gdx.utils.*
 import gabek.engine.core.audio.SoundRef
 import gabek.engine.core.graphics.AnimationRef
+import ktx.log.logger
 
 /**
  * @author Gabriel Keith
  */
 class Assets: Disposable {
+    companion object {
+        private val log = logger<Assets>()
+    }
+
     private val resourceManager = AssetManager()
 
     private val textureMap = ObjectMap<String, TextureRef>()
@@ -128,6 +133,10 @@ class Assets: Disposable {
 
         parameter.loadedCallback = AssetLoaderParameters.LoadedCallback { assetManager, fileName, type ->
             val shaderProgram = assetManager.get(fileName, ShaderProgram::class.java)
+            if(!shaderProgram.isCompiled){
+                log.error { "Failed to compile shader\n" }
+            }
+            log.debug { shaderProgram.log }
             shaderMap.put(shaderName, shaderProgram)
         }
 

@@ -4,6 +4,7 @@ import com.artemis.World
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.GL30
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.physics.box2d.Box2D
@@ -17,6 +18,11 @@ import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.input.InputManager
 import gabek.engine.core.screen.ScreenManager
 import gabek.engine.core.settings.Settings
+import ktx.log.Logger
+import org.lwjgl.opengl.GL43
+import org.lwjgl.opengl.GL11
+
+
 
 /**
 * @another Gabriel Keith
@@ -28,14 +34,23 @@ class OneBreath: ApplicationAdapter() {
     lateinit var screenManager: ScreenManager
     lateinit var assets: Assets
 
-    var loading = true
-
     override fun create() {
         Box2D.init()
         VisUI.load("assets/ui/skin.json")
 
-        ShaderProgram.prependFragmentCode = "#version 100\n"
-        ShaderProgram.prependVertexCode = "#version 100\n"
+        //ShaderProgram.prependFragmentCode = "#version 100\n"
+        //ShaderProgram.prependVertexCode = "#version 100\n"
+
+        //Gdx.app.log("INFO", "Open GL Version: ${Gdx.graphics.glVersion.debugVersionString}")
+        //val supportedExtensions: Array<String?>
+
+
+
+        //} else {
+        //    val extensionsAsString = GL11.glGetString(GL11.GL_EXTENSIONS)
+        //    supportedExtensions = extensionsAsString.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        //}
+
 
         kodein = Kodein {
             bind<ScreenManager>() with singleton { buildScreenManager(kodein) }

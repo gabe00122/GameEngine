@@ -58,7 +58,7 @@ fun buildWorld(kodein: Kodein): World {
                 world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
         )
         directSystems = listOf(
-                world.getSystem(LightingSystem::class.java),
+                //world.getSystem(LightingSystem::class.java),
                 world.getSystem(Box2dDebugSystem::class.java)
         )
     })

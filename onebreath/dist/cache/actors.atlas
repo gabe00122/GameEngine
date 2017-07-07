@@ -1,0 +1,69 @@
+
+actors.png
+size: 128,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+box
+  rotate: false
+  xy: 98, 22
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+human_ideal
+  rotate: false
+  xy: 2, 2
+  size: 14, 28
+  orig: 32, 32
+  offset: 9, 2
+  index: -1
+player_ideal
+  rotate: false
+  xy: 18, 2
+  size: 14, 28
+  orig: 32, 32
+  offset: 9, 2
+  index: -1
+rat_ideal
+  rotate: false
+  xy: 34, 4
+  size: 15, 8
+  orig: 32, 32
+  offset: 9, 12
+  index: -1
+tile
+  rotate: false
+  xy: 34, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 0
+tile
+  rotate: false
+  xy: 52, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 2
+tile
+  rotate: false
+  xy: 70, 14
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: 5
+tile
+  rotate: false
+  xy: 88, 14
+  size: 8, 16
+  orig: 16, 16
+  offset: 4, 0
+  index: 3
+tile
+  rotate: false
+  xy: 51, 5
+  size: 8, 7
+  orig: 16, 16
+  offset: 4, 9
+  index: 4
