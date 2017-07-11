@@ -90,13 +90,14 @@ class Console(val kodein: Kodein): ApplicationLogger {
             addCommand("echo", EchoCommand())
 
             //addCommand(EchoCommand(this))
-            //addCommand(EntitieListCommand(this))
-            //addCommand(InspectCommand(this))
-            //addCommand(CreateCommand(this))
-            //addCommand(DeleteCommand(this))
+            addCommand("ents", EntitieListCommand())
+            addCommand("inspect", InspectCommand())
+            addCommand("create", CreateCommand())
+            addCommand("delete", DeleteCommand())
+            addCommand("b2d", Box2dOverlayCommand())
+            addCommand("teleport", TeleportCommand())
 
-            //addCommand(Box2dOverlayCommand(this))
-            //addCommand(TeleportCommand(this))
+            addCommand("quit", QuitCommand())
         }
     }
 

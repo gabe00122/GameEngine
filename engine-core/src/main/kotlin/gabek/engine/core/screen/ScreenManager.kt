@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
-import com.kotcrab.vis.ui.widget.VisLabel
-import gabek.engine.core.console.ConsoleGuiOverlay
+import gabek.engine.core.graphics.Profiler
+import gabek.engine.core.graphics.ProfilerOverlay
 import gabek.engine.core.settings.Settings
 
 /**
@@ -38,8 +36,8 @@ class ScreenManager(val kodein: Kodein) : Disposable {
             }
         }
 
-    private val fpsContainer: Container<VisLabel>
-    private val fpsLabel: VisLabel = VisLabel("")
+    private val profiler = Profiler
+    private val profilerOverlay = ProfilerOverlay(profiler)
 
     init {
         val uiScale = kodein.instance<Settings>().getFloat("ui_scale")
@@ -55,18 +53,14 @@ class ScreenManager(val kodein: Kodein) : Disposable {
 
         //fps tracking
 
-        fpsContainer = Container(fpsLabel)
-        fpsContainer.setFillParent(true)
-        fpsContainer.align(Align.topRight)
-
         //val cgo = ConsoleGuiOverlay(kodein)
         //overlay = cgo
         //stage.root.addActor(cgo.root)
-        stage.root.addActor(fpsContainer)
+        stage.root.addActor(profilerOverlay)
     }
 
     fun update(delta: Float) {
-        fpsLabel.setText("FPS: ${Gdx.graphics.framesPerSecond}")
+        profiler.update(delta)
 
         currentScreen?.update(delta)
         overlay?.update(delta)

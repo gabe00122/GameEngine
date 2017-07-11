@@ -20,7 +20,7 @@ class Display(kodein: Kodein): Widget(), Disposable {
     private var primaryBuffer: FrameBuffer? = null
 
     var cameraHandle: Int = -1
-    var aspectRatio: Double = 0.0
+    var aspectRatio: Float = 0f
         private set
     var pixWidth: Int = 0
         private set
@@ -36,7 +36,6 @@ class Display(kodein: Kodein): Widget(), Disposable {
 
     private fun rebuildBuffers() {
         val oldBuffer = primaryBuffer
-        val s = 1f
 
         val newWidth = Gdx.graphics.width
         val newHeight = Gdx.graphics.height
@@ -55,16 +54,16 @@ class Display(kodein: Kodein): Widget(), Disposable {
                 primaryBuffer!!.colorBufferTexture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest)
             }
 
-            aspectRatio = pixWidth.toDouble() / pixHeight.toDouble()
+            aspectRatio = pixWidth.toFloat() / pixHeight.toFloat()
         }
     }
 
     fun beginPrimaryBuffer() {
-        //primaryBuffer!!.begin()
+        primaryBuffer!!.begin()
     }
 
     fun endPrimaryBuffer() {
-        //primaryBuffer!!.end()
+        primaryBuffer!!.end()
     }
 
     val hasBuffer get() = primaryBuffer != null
@@ -78,9 +77,9 @@ class Display(kodein: Kodein): Widget(), Disposable {
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
-        //primaryBuffer?.let {
-        //    batch.draw(it.colorBufferTexture, x, y, width, height, 0, 0, it.width, it.height, false, true)
-        //}
+        primaryBuffer?.let {
+            batch.draw(it.colorBufferTexture, x, y, width, height, 0, 0, it.width, it.height, false, true)
+        }
     }
 
     override fun dispose() {

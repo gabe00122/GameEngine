@@ -59,7 +59,7 @@ class RenderManager(
         context.progress = progress
 
         for (directSystem in directSystems) {
-            directSystem.prepare(buffer, ortho) //just for lighting
+            //directSystem.prepare(buffer, ortho) //just for lighting
         }
 
         batch.projectionMatrix = ortho.projection
@@ -69,21 +69,23 @@ class RenderManager(
             Gdx.gl.glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a)
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-            batch.shader = shader
+            //batch.shader = shader
             batch.begin()
-            shader.setUniformf("rounding", 1f / buffer.pixWidth, 1f / buffer.pixHeight)
+            //shader.setUniformf("rounding", 1f / buffer.pixWidth, 1f / buffer.pixHeight)
 
             for (batchSystem in renderSystems) {
                 batchSystem.render(batch, context)
             }
 
             batch.end()
-            batch.shader = null
+            //batch.shader = null
 
             for (directSystem in directSystems) {
                 directSystem.render(ortho, context)
             }
         }
+
+        //Gdx.gl.glFlush()
     }
 
     private fun updateCulling(ortho: OrthographicCamera, culling: Rectangle) {

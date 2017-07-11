@@ -1,6 +1,8 @@
 package gabek.engine.core.console.commands
 
 import com.artemis.Component
+import com.artemis.World
+import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.console.Command
 import gabek.engine.core.console.Console
@@ -10,17 +12,16 @@ import gabek.engine.core.console.Console
  * @date 4/19/2017
  */
 
-/*
-class InspectCommand(console: Console): Command(console, "inspect") {
-    val world: com.artemis.World = console.kodein.instance()
 
-    override fun command(arguments: String) {
+class InspectCommand: Command() {
+    override fun process(args: Array<String>, console: Console, kodein: Kodein) {
+        val world: World = kodein.instance()
+
         val bag = com.artemis.utils.Bag<Component>()
-        world.componentManager.getComponentsFor(arguments.toInt(), bag)
+        world.componentManager.getComponentsFor(args[0].toInt(), bag)
 
         for (i in 0 until bag.size()) {
             console.writeln(bag[i].toString())
         }
     }
 }
-*/

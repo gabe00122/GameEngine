@@ -9,13 +9,9 @@ import com.badlogic.gdx.math.Rectangle
 
 class RenderContext {
     var culling: Rectangle = Rectangle()
-    var roundingByX: Float = 0f
-    var roundingByY: Float = 0f
     var progress: Float = 0f
 
-    fun set(roundingByX: Float, roundingByY: Float, progress: Float){
-        this.roundingByX = roundingByX
-        this.roundingByY = roundingByY
+    fun set(progress: Float){
         this.progress = progress
     }
 }

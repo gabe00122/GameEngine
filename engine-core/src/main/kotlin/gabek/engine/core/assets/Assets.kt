@@ -67,7 +67,7 @@ class Assets: Disposable {
         val settings = TexturePacker.Settings()
         settings.stripWhitespaceX = true
         settings.stripWhitespaceY = true
-        //settings.duplicatePadding = true
+        settings.duplicatePadding = true
         TexturePacker.processIfModified(settings, fileName, "./$cacheName", packName)
 
 

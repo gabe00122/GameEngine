@@ -23,7 +23,7 @@ class CameraSystem: BaseEntitySystem(
 
     override fun processSystem() {}
 
-    fun prepareOrtho(ortho: OrthographicCamera, aspectRatio: Double, cameraHandle: Int, progress: Float) {
+    fun prepareOrtho(ortho: OrthographicCamera, aspectRatio: Float, cameraHandle: Int, progress: Float) {
         val trans = transMapper[cameraHandle]
         val bound = sizeMapper[cameraHandle]
 
@@ -32,13 +32,13 @@ class CameraSystem: BaseEntitySystem(
         ortho.viewportHeight = bound.height
 
         //expand viewport.
-        val adjustment = aspectRatio / (ortho.viewportWidth.toDouble() / ortho.viewportHeight.toDouble())
+        val adjustment = aspectRatio / (ortho.viewportWidth / ortho.viewportHeight)
 
 
         if (1f < adjustment) {
-            ortho.viewportWidth *= adjustment.toFloat()
+            ortho.viewportWidth *= adjustment
         } else {
-            ortho.viewportHeight /= adjustment.toFloat()
+            ortho.viewportHeight /= adjustment
         }
     }
 

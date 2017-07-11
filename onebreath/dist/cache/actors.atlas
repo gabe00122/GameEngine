@@ -6,64 +6,64 @@ filter: Nearest,Nearest
 repeat: none
 box
   rotate: false
-  xy: 98, 22
+  xy: 103, 23
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 human_ideal
   rotate: false
-  xy: 2, 2
-  size: 14, 28
+  xy: 1, 1
+  size: 16, 30
   orig: 32, 32
-  offset: 9, 2
+  offset: 8, 1
   index: -1
 player_ideal
   rotate: false
-  xy: 18, 2
-  size: 14, 28
+  xy: 19, 1
+  size: 16, 30
   orig: 32, 32
-  offset: 9, 2
+  offset: 8, 1
   index: -1
 rat_ideal
   rotate: false
-  xy: 34, 4
-  size: 15, 8
+  xy: 37, 3
+  size: 17, 10
   orig: 32, 32
-  offset: 9, 12
+  offset: 8, 11
   index: -1
 tile
   rotate: false
-  xy: 34, 14
+  xy: 37, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 0
 tile
   rotate: false
-  xy: 52, 14
+  xy: 55, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 tile
   rotate: false
-  xy: 70, 14
+  xy: 73, 15
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
 tile
   rotate: false
-  xy: 88, 14
-  size: 8, 16
+  xy: 91, 15
+  size: 10, 16
   orig: 16, 16
-  offset: 4, 0
+  offset: 3, 0
   index: 3
 tile
   rotate: false
-  xy: 51, 5
-  size: 8, 7
+  xy: 56, 5
+  size: 10, 8
   orig: 16, 16
-  offset: 4, 9
+  offset: 3, 8
   index: 4

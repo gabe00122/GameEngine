@@ -81,7 +81,6 @@ class OneBreath: ApplicationAdapter() {
     override fun render() {
         //Gdx.gl.glClearColor(69/255f, 40/255f, 60/255f, 1f)
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT)
-
         screenManager.update(Gdx.graphics.deltaTime)
         screenManager.render()
     }

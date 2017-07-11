@@ -69,14 +69,14 @@ class GameViewScreen(kodein: Kodein): Screen() {
         loader.loadLevel(mapJson)
 
         val player = tagManager.getEntityId("player")
-        inputSystem.setInput(player, input)
+        //inputSystem.setInput(player, input)
 
         val camera = prefabManager.create("camera")
         val number = 2.5f
         cameraSystem.setView(camera, 0f, 0f , number * 2f, number * 2f)
-        //cameraUtil.addDirectControl(camera, input)
+        cameraUtil.addDirectControl(camera, input)
         //cameraTracking.setPadding(camera, number, number)
-        cameraTracking.addTarget(camera, player)
+        //cameraTracking.addTarget(camera, player)
 
         renderManager.clearColor.set(91/255f, 110/255f, 225/255f, 1f)
         display.cameraHandle = camera
