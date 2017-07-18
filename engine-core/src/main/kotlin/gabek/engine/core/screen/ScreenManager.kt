@@ -2,12 +2,13 @@ package gabek.engine.core.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
+import gabek.engine.core.console.ConsoleGuiOverlay
 import gabek.engine.core.graphics.Profiler
 import gabek.engine.core.graphics.ProfilerOverlay
 import gabek.engine.core.settings.Settings
@@ -16,7 +17,7 @@ import gabek.engine.core.settings.Settings
  * @author Gabriel Keith
  */
 class ScreenManager(val kodein: Kodein) : Disposable {
-    val batch: SpriteBatch = SpriteBatch()
+    val batch: Batch = kodein.instance()
     val stage: Stage
     val inputProcessor: InputProcessor get() = stage
 
@@ -36,7 +37,7 @@ class ScreenManager(val kodein: Kodein) : Disposable {
             }
         }
 
-    private val profiler = Profiler
+    private val profiler = Profiler()
     private val profilerOverlay = ProfilerOverlay(profiler)
 
     init {
@@ -53,9 +54,8 @@ class ScreenManager(val kodein: Kodein) : Disposable {
 
         //fps tracking
 
-        //val cgo = ConsoleGuiOverlay(kodein)
-        //overlay = cgo
-        //stage.root.addActor(cgo.root)
+        overlay = ConsoleGuiOverlay(kodein)
+
         stage.root.addActor(profilerOverlay)
     }
 

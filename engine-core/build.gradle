@@ -12,7 +12,6 @@ dependencies {
 
     compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 
     compile "com.kotcrab.vis:vis-ui:$visUiVersion"
@@ -25,8 +24,6 @@ dependencies {
     compile "io.github.libktx:ktx-i18n:$ktxVersion"
 
     compile "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
-
-    compile "com.beust:jcommander:$jcommanderVersion"
 
     //compile "net.onedaybeard.artemis:artemis-odb-serializer-kryo:$artemisOdbVersion"
     //compile "net.onedaybeard.artemis:artemis-odb-serializer-json-libgdx:$artemisOdbVersion"

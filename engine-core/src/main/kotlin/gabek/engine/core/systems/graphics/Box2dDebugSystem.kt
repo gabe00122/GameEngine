@@ -1,7 +1,6 @@
 package gabek.engine.core.systems.graphics
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import gabek.engine.core.graphics.Display
 import gabek.engine.core.graphics.RenderContext

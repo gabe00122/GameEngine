@@ -1,9 +1,8 @@
 package gabek.engine.core.systems
 
 import com.artemis.World
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Rectangle
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
@@ -44,7 +43,7 @@ class TileMapSystem(
         definitionsInit(definitions, world, kodein)
     }
 
-    fun render(batch: SpriteBatch, context: RenderContext, layer: Layer) {
+    fun render(batch: Batch, context: RenderContext, layer: Layer) {
         val tiles = when (layer) {
             Layer.FOREGROUND -> foregroundTiles
             Layer.BACKGROUND -> backgroundTiles
@@ -66,13 +65,13 @@ class TileMapSystem(
 
     fun getRendererForLayer(layer: Layer): RenderManager.RenderSystem {
         return object : RenderManager.RenderSystem {
-            override fun render(batch: SpriteBatch, context: RenderContext) {
+            override fun render(batch: Batch, context: RenderContext) {
                 this@TileMapSystem.render(batch, context, layer)
             }
         }
     }
 
-    private fun drawTile(batch: SpriteBatch, context: RenderContext, grid: Grid<TileReference>, x: Int, y: Int) {
+    private fun drawTile(batch: Batch, context: RenderContext, grid: Grid<TileReference>, x: Int, y: Int) {
         val tile = grid.get(x, y)
         val ref = definitions[tile.typeId].texture
         if (ref != null) {

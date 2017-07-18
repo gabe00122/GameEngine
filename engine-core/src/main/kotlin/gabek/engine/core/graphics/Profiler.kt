@@ -4,8 +4,10 @@ package gabek.engine.core.graphics
  * @author Gabriel Keith
  * @date 6/10/2017
  */
-object Profiler {
-    private const val RESET_AT = 1f
+class Profiler {
+    companion object {
+        private const val RESET_AT = 1f
+    }
 
     var min: Float = 0f
     var max: Float = 0f

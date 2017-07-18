@@ -3,11 +3,12 @@ package gabek.onebreath.screen
 import com.artemis.World
 import com.artemis.managers.TagManager
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.utils.JsonReader
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
+import gabek.engine.core.graphics.DirectDisplay
 import gabek.engine.core.graphics.Display
 import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.input.InputManager
@@ -29,7 +30,7 @@ import gabek.engine.core.systems.graphics.RenderManager
  */
 
 class GameViewScreen(kodein: Kodein): Screen() {
-    val display = Display(kodein)
+    val display: Display = DirectDisplay()
     val world: World = kodein.instance()
 
     val updateManager: UpdateManager = world.getSystem()
@@ -45,7 +46,7 @@ class GameViewScreen(kodein: Kodein): Screen() {
         updateManager.update(delta)
     }
 
-    override fun render(batch: SpriteBatch) {
+    override fun render(batch: Batch) {
         super.render(batch)
 
         renderManager.render(display, batch, updateManager.progress)

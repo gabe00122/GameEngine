@@ -1,15 +1,11 @@
 package gabek.engine.core.util
 
-import sun.misc.SharedSecrets
-import kotlin.reflect.KClass
-
 /**
  * @author Gabriel Keith
  */
-class FSMTransitionTable<T : Enum<T>>(clazz: KClass<T>,
-                                      private val saveState: (entity: Int, newState: T) -> Unit) {
+class FSMTransitionTable<T : Enum<T>>(enumSize: Int, private val saveState: (entity: Int, newState: T) -> Unit) {
 
-    private val size: Int = SharedSecrets.getJavaLangAccess().getEnumConstantsShared(clazz.java).size
+    private val size: Int = enumSize
     private val matrix: Array<Array<MutableList<(entity: Int, from: T, to: T) -> Unit>>>
 
     init {

@@ -13,7 +13,7 @@ import gabek.engine.core.settings.Settings
 fun main(args: Array<String>){
     val config = Lwjgl3ApplicationConfiguration()
     //config.enableGLDebugOutput(true, System.err)
-    config.useOpenGL3(true, 4, 2)
+    config.useOpenGL3(true, 3, 2)
 
     config.setTitle("OneBreath")
 
@@ -21,9 +21,7 @@ fun main(args: Array<String>){
     config.setBackBufferConfig(8, 8, 8, 0, 0, 0, 0)
 
     //config.setWindowedMode(800, 800)
-    config.useVsync(false)
-
-    //config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode())
+    config.useVsync(true)
 
     Lwjgl3Application(OneBreath(), config)
 }

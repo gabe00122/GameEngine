@@ -49,7 +49,7 @@ class CharacterControllerSystem: BaseEntitySystem(
 
     private val threshold = 0.2f
 
-    val transitionTable = FSMTransitionTable(CharacterMovementStateCom.State::class) { entity, state ->
+    val transitionTable = FSMTransitionTable<CharacterMovementStateCom.State>(CharacterMovementStateCom.State.values().size) { entity, state ->
         //println("${movementStateMapper[entity].state} $state ${updateManager.currentFrame}")
         movementStateMapper[entity].state = state
         checkTransitions(entity)

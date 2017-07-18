@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.CameraCom
+import gabek.engine.core.graphics.Display
 
 /**
  * @author Gabriel Keith
@@ -23,7 +24,8 @@ class CameraSystem: BaseEntitySystem(
 
     override fun processSystem() {}
 
-    fun prepareOrtho(ortho: OrthographicCamera, aspectRatio: Float, cameraHandle: Int, progress: Float) {
+    fun prepareOrtho(ortho: OrthographicCamera, display: Display, progress: Float) {
+        val cameraHandle = display.cameraHandle
         val trans = transMapper[cameraHandle]
         val bound = sizeMapper[cameraHandle]
 
@@ -32,7 +34,8 @@ class CameraSystem: BaseEntitySystem(
         ortho.viewportHeight = bound.height
 
         //expand viewport.
-        val adjustment = aspectRatio / (ortho.viewportWidth / ortho.viewportHeight)
+        val adjustment = (display.pixWidth.toFloat() / display.pixHeight.toFloat()) /
+                (ortho.viewportWidth / ortho.viewportHeight)
 
 
         if (1f < adjustment) {

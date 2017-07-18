@@ -1,6 +1,6 @@
 package gabek.engine.core.screen
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.utils.Disposable
 
@@ -18,7 +18,7 @@ abstract class Screen: Disposable {
     }
 
     open fun update(delta: Float) {}
-    open fun render(batch: SpriteBatch) {}
+    open fun render(batch: Batch) {}
     open fun resize(width: Int, height: Int) {}
     open fun show() {}
     open fun hide() {}

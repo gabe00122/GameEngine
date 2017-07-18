@@ -1,8 +1,6 @@
 package gabek.engine.core.console
 
 import com.badlogic.gdx.ApplicationLogger
-import com.beust.jcommander.JCommander
-import com.beust.jcommander.ParameterException
 import com.github.salomonbrys.kodein.Kodein
 import gabek.engine.core.console.commands.*
 

@@ -1,8 +1,7 @@
 package gabek.engine.core.world
 
 import com.artemis.utils.IntBag
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.graphics.g2d.Batch
 import gabek.engine.core.graphics.RenderContext
 import gabek.engine.core.systems.graphics.RenderManager
 
@@ -16,7 +15,7 @@ class EntityRenderManager(vararg val renderSystems: EntityRenderSystem): RenderM
     private val layers = Array(layerSize) { Layer() }
     private val schedule = RenderSchedule()
 
-    override fun render(batch: SpriteBatch, context: RenderContext) {
+    override fun render(batch: Batch, context: RenderContext) {
         for(rendererIndex in 0 until renderSystems.size){
             renderSystems[rendererIndex].fill(schedule, context)
 
@@ -33,7 +32,7 @@ class EntityRenderManager(vararg val renderSystems: EntityRenderSystem): RenderM
 
     interface EntityRenderSystem {
         fun fill(schedule: RenderSchedule, context: RenderContext)
-        fun render(entity: Int, batch: SpriteBatch, context: RenderContext)
+        fun render(entity: Int, batch: Batch, context: RenderContext)
     }
 
     inner class RenderSchedule {
@@ -50,7 +49,7 @@ class EntityRenderManager(vararg val renderSystems: EntityRenderSystem): RenderM
             indices[rendererIndex] = renderIds.size()
         }
 
-        internal fun render(batch: SpriteBatch, context: RenderContext) {
+        internal fun render(batch: Batch, context: RenderContext) {
             var i = 0
 
             for(rendererIndex in 0 until indices.size){

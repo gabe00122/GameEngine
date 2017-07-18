@@ -15,7 +15,7 @@ class BiDirectionSystem: BaseEntitySystem(Aspect.all(BiDirectionCom::class.java)
     private lateinit var biDirectionMapper: ComponentMapper<BiDirectionCom>
     private lateinit var spriteMapper: ComponentMapper<SpriteCom>
 
-    private val transitionMap = FSMTransitionTable(BiDirectionCom.Direction::class)
+    private val transitionMap = FSMTransitionTable<BiDirectionCom.Direction>(BiDirectionCom.Direction.values().size)
     { entity, state ->
         val biDirection = biDirectionMapper[entity]
         biDirection.direction = state

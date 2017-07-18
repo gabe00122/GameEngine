@@ -3,7 +3,7 @@ package gabek.engine.core.systems.graphics
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.components.common.SizeCom
@@ -58,7 +58,7 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
         }
     }
 
-    override fun render(entity: Int, batch: SpriteBatch, context: RenderContext) {
+    override fun render(entity: Int, batch: Batch, context: RenderContext) {
         val spriteComp = spriteMapper[entity]
         val sizeComp = sizeMapper[entity]
         val transComp = translationMapper[entity]

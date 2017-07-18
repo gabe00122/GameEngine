@@ -50,7 +50,7 @@ fun buildWorld(kodein: Kodein): World {
 
     wc.setSystem(CameraSystem())
     wc.setSystem(Box2dDebugSystem())
-    wc.setSystem(RenderManager(kodein, kodein.instance<Assets>().getShader("snap")) { world ->
+    wc.setSystem(RenderManager(kodein, { world ->
         //define render order
         renderSystems = listOf(
                 EntityRenderManager(world.getSystem<SpriteRenderSystem>()),
@@ -61,7 +61,7 @@ fun buildWorld(kodein: Kodein): World {
                 //world.getSystem(LightingSystem::class.java),
                 world.getSystem(Box2dDebugSystem::class.java)
         )
-    })
+    }))
 
     wc.setSystem(PrefabManager.build(kodein, ::prefabs))
     wc.setSystem(ParentSystem())
