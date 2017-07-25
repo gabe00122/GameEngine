@@ -13,7 +13,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import com.badlogic.gdx.utils.*
 import gabek.engine.core.audio.SoundRef
-import gabek.engine.core.graphics.AnimationRef
+import gabek.engine.core.graphics.Animation
+import gabek.engine.core.graphics.Sprite
 import ktx.log.logger
 
 /**
@@ -26,9 +27,9 @@ class Assets: Disposable {
 
     private val resourceManager = AssetManager()
 
-    private val textureMap = ObjectMap<String, TextureRef>()
+    private val textureMap = ObjectMap<String, Sprite>()
     private val shaderMap = ObjectMap<String, ShaderProgram>()
-    private val animationMap = ObjectMap<String, AnimationRef>()
+    private val animationMap = ObjectMap<String, Animation>()
     private val musicMap = ObjectMap<String, Music>()
     private val soundMap = ObjectMap<String, SoundRef>()
 
@@ -78,7 +79,7 @@ class Assets: Disposable {
             for (region in atlas.regions) {
                 val lookup = "$packName:${region.name}:${region.index}"
 
-                textureMap.put(lookup, TextureRef(lookup, region,
+                textureMap.put(lookup, Sprite(lookup, region,
                         region.originalWidth / 2f - (region.offsetX + region.packedWidth / 2f),
                         -region.originalHeight / 2f + ((region.offsetY) + region.packedHeight / 2f)))
             }
@@ -119,7 +120,7 @@ class Assets: Disposable {
         for (region in atlas.regions) {
             val lookup = "$packName:${region.name}:${region.index}"
 
-            textureMap.put(lookup, TextureRef(lookup, region,
+            textureMap.put(lookup, Sprite(lookup, region,
                     region.originalWidth/2f - (region.offsetX + region.packedWidth/2f),
                     -region.originalHeight/2f + (region.offsetY + region.packedHeight/2f)))
         }
@@ -176,17 +177,17 @@ class Assets: Disposable {
         resourceManager.load(file, AnimationMap::class.java, param)
     }
 
-    fun getTexture(lookup: String): TextureRef {
+    fun getTexture(lookup: String): Sprite {
         return textureMap[defaultIndex(lookup)]!!
     }
 
-    fun getTextures(lookup: String, range: IntRange): List<TextureRef> {
+    fun getTextures(lookup: String, range: IntRange): List<Sprite> {
         return range.map { getTexture("$lookup:$it") }
     }
 
-    fun getTextures(lookup: String): List<TextureRef> {
+    fun getTextures(lookup: String): List<Sprite> {
         val base = lookup.replace(":*", "")
-        val out = mutableListOf<TextureRef>()
+        val out = mutableListOf<Sprite>()
 
         var index = 0
         var current = textureMap["$base:${index++}"]
@@ -207,7 +208,7 @@ class Assets: Disposable {
         }
     }
 
-    fun getAnimation(lookup: String): AnimationRef {
+    fun getAnimation(lookup: String): Animation {
         return animationMap[lookup]!!
     }
 

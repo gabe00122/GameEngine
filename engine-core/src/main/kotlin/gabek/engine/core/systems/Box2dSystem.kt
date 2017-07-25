@@ -31,12 +31,34 @@ class Box2dSystem: BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationC
         world.aspectSubscriptionManager.get(Aspect.all(BodyCom::class.java)).
                 addSubscriptionListener(bodyInitHandler)
 
-        transSystem.addTeleportListener(teleportHandler)
+        //transSystem.addTeleportListener(teleportHandler)
     }
 
     override fun processSystem() {
+        transToBodySync()
         rworld.update(world.delta)
+        bodyToTransSync()
+    }
 
+    private fun transToBodySync(){
+        val entities = entityIds
+        for (i in 0 until entities.size()) {
+            val entity = entities[i]
+            val bodyCom = bodyMapper.get(entity)
+            val transCom = transMapper.get(entity)
+
+            val body = bodyCom.body
+            if(transCom.x != body.position.x || transCom.y != body.position.y){
+                body.setPosition(transCom.x, transCom.y)
+            }
+            if(transCom.rotation != body.rotation) {
+                println("test")
+                body.rotation = transCom.rotation
+            }
+        }
+    }
+
+    private fun bodyToTransSync(){
         val entities = entityIds
         for (i in 0 until entities.size()) {
             val entity = entities[i]

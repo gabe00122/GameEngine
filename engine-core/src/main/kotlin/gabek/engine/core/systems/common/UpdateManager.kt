@@ -1,9 +1,6 @@
 package gabek.engine.core.systems.common
 
 import com.artemis.BaseSystem
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import gabek.engine.core.graphics.Profiler
 
 /**
  * @author Gabriel Keith

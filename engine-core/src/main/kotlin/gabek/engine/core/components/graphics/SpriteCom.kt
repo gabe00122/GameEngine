@@ -2,13 +2,13 @@ package gabek.engine.core.components.graphics
 
 import com.badlogic.gdx.graphics.Color
 import gabek.engine.core.components.RComponent
-import gabek.engine.core.assets.TextureRef
+import gabek.engine.core.graphics.Sprite
 
 /**
  * @author Gabriel Keith
  */
 class SpriteCom: RComponent<SpriteCom>() {
-    var textureRef: TextureRef? = null
+    var sprite: Sprite? = null
 
     var flipX: Boolean = false
     var flipY: Boolean = false
@@ -21,7 +21,7 @@ class SpriteCom: RComponent<SpriteCom>() {
     var layer: Int = 4
 
     override fun set(other: SpriteCom) {
-        textureRef = other.textureRef
+        sprite = other.sprite
         flipX = other.flipX
         flipY = other.flipY
         offsetX = other.offsetX
@@ -33,7 +33,7 @@ class SpriteCom: RComponent<SpriteCom>() {
     }
 
     override fun reset() {
-        textureRef = null
+        sprite = null
         flipX = false
         flipY = false
         offsetX = 0f

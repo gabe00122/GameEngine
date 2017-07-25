@@ -26,7 +26,7 @@ jar {
     }
 }
 
-task copyJar(dependsOn: jar) {
+task prepareDist(dependsOn: jar) {
     doLast {
         copy {
             from "build/libs/SewageThing-${version}.jar"

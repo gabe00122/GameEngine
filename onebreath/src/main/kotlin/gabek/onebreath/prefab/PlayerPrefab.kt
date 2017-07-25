@@ -31,14 +31,14 @@ class PlayerPrefab: Prefab() {
         val pixelRatio: PixelRatio = kodein.instance()
 
         val sprite = assets.getTexture("actors:player_ideal")
-        val w = sprite.texture.regionWidth * pixelRatio.pixelToMeters
-        val h = sprite.texture.regionHeight * pixelRatio.pixelToMeters
+        val w = 14 * pixelRatio.pixelToMeters
+        val h = 28 * pixelRatio.pixelToMeters
 
         add<TranslationCom>()
 
 
         add<SpriteCom> {
-            textureRef = sprite
+            this.sprite = sprite
         }
         add<SizeCom> {
             width = w

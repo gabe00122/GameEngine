@@ -8,7 +8,7 @@ import gabek.onebreath.component.CharacterAnimatorCom
 import gabek.onebreath.component.CharacterMovementStateCom.State
 import gabek.onebreath.component.CharacterMovementStateCom.State.*
 import gabek.engine.core.components.graphics.AnimationCom
-import gabek.engine.core.graphics.AnimationRef
+import gabek.engine.core.graphics.Animation
 import gabek.engine.core.systems.graphics.AnimationSystem
 
 /**
@@ -28,24 +28,24 @@ class CharacterAnimatorSystem: BaseEntitySystem(Aspect.all(
     override fun initialize() {
         super.initialize()
 
-        setAnimationFor(LANDING) { stillAnimationRef }
-        setAnimationFor(STANDING) { stillAnimationRef }
-        setAnimationFor(RUNNING) { runningAnimationRef }
-        setAnimationFor(JUMPING) { jumpingAnimationRef }
+        setAnimationFor(LANDING) { stillAnimation }
+        setAnimationFor(STANDING) { stillAnimation }
+        setAnimationFor(RUNNING) { runningAnimation }
+        setAnimationFor(JUMPING) { jumpingAnimation }
 
         characterControllerSystem.transitionTable.addListener(RUNNING, IN_AIR) { entity, to, from ->
             if (isInterested(entity)) {
-                animationSystem.setAnimationDef(entity, characterAnimatorMapper[entity].stillAnimationRef!!)
+                animationSystem.beginAnimation(entity, characterAnimatorMapper[entity].stillAnimation!!)
             }
         }
     }
 
-    private inline fun setAnimationFor(entering: State, crossinline animationRef: CharacterAnimatorCom.() -> AnimationRef?) {
+    private inline fun setAnimationFor(entering: State, crossinline animation: CharacterAnimatorCom.() -> Animation?) {
         characterControllerSystem.transitionTable.addListenerEntering(entering) { entity, from, to ->
             if (isInterested(entity)) {
-                val def = animationRef(characterAnimatorMapper[entity])
+                val def = animation(characterAnimatorMapper[entity])
                 if (def != null) {
-                    animationSystem.setAnimationDef(entity, def)
+                    animationSystem.beginAnimation(entity, def)
                 }
             }
         }
@@ -61,7 +61,7 @@ class CharacterAnimatorSystem: BaseEntitySystem(Aspect.all(
         super.inserted(entityId)
 
         members.set(entityId)
-        animationMapper[entityId].currentAnimationRef = characterAnimatorMapper[entityId].stillAnimationRef
+        animationSystem.beginAnimation(entityId, characterAnimatorMapper[entityId].stillAnimation!!)
     }
 
     override fun removed(entityId: Int) {

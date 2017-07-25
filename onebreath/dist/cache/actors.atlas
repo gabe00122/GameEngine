@@ -1,69 +1,104 @@
 
 actors.png
-size: 128,32
+size: 256,64
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+anim_test
+  rotate: false
+  xy: 1, 29
+  size: 34, 34
+  orig: 64, 64
+  offset: 15, 15
+  index: 0
+anim_test
+  rotate: false
+  xy: 37, 29
+  size: 34, 34
+  orig: 64, 64
+  offset: 15, 15
+  index: 1
+anim_test
+  rotate: false
+  xy: 73, 29
+  size: 34, 34
+  orig: 64, 64
+  offset: 15, 15
+  index: 2
+anim_test
+  rotate: false
+  xy: 109, 29
+  size: 34, 34
+  orig: 64, 64
+  offset: 15, 15
+  index: 3
 box
   rotate: false
-  xy: 103, 23
+  xy: 13, 1
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 human_ideal
   rotate: false
-  xy: 1, 1
+  xy: 145, 33
   size: 16, 30
   orig: 32, 32
   offset: 8, 1
   index: -1
+joint_test
+  rotate: false
+  xy: 1, 11
+  size: 32, 16
+  orig: 32, 16
+  offset: 0, 0
+  index: -1
 player_ideal
   rotate: false
-  xy: 19, 1
+  xy: 163, 33
   size: 16, 30
   orig: 32, 32
   offset: 8, 1
   index: -1
 rat_ideal
   rotate: false
-  xy: 37, 3
+  xy: 199, 53
   size: 17, 10
   orig: 32, 32
   offset: 8, 11
   index: -1
 tile
   rotate: false
-  xy: 37, 15
+  xy: 35, 11
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 0
 tile
   rotate: false
-  xy: 55, 15
+  xy: 181, 47
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 2
 tile
   rotate: false
-  xy: 73, 15
+  xy: 53, 11
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: 5
 tile
   rotate: false
-  xy: 91, 15
-  size: 10, 16
-  orig: 16, 16
-  offset: 3, 0
-  index: 3
-tile
-  rotate: false
-  xy: 56, 5
+  xy: 1, 1
   size: 10, 8
   orig: 16, 16
   offset: 3, 8
   index: 4
+tile
+  rotate: false
+  xy: 71, 11
+  size: 10, 16
+  orig: 16, 16
+  offset: 3, 0
+  index: 3

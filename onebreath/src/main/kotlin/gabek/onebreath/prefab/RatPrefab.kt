@@ -26,12 +26,12 @@ class RatPrefab: Prefab(){
 
         val sprite = assets.getTexture("actors:rat_ideal")
 
-        val w = sprite.texture.regionWidth * pixelRatio.pixelToMeters
-        val h = sprite.texture.regionHeight * pixelRatio.pixelToMeters
+        val w = 15 * pixelRatio.pixelToMeters
+        val h = 8 * pixelRatio.pixelToMeters
 
         add<TranslationCom>()
         add<SpriteCom> {
-            textureRef = sprite
+            this.sprite = sprite
         }
         add<SizeCom> {
             width = w

@@ -18,7 +18,7 @@ import gabek.engine.core.systems.graphics.*
 import gabek.engine.core.tilemap.TileDefinitions
 import gabek.engine.core.tilemap.TileType
 import gabek.engine.core.util.getSystem
-import gabek.engine.core.world.EntityRenderManager
+import gabek.engine.core.systems.graphics.EntityRenderManager
 import gabek.engine.core.systems.graphics.RenderManager
 import gabek.engine.quick.water.BuoyancySystem
 import gabek.engine.quick.light.LightingSystem
@@ -26,6 +26,7 @@ import gabek.onebreath.prefab.BloodPrefab
 import gabek.onebreath.prefab.Junk1Prefab
 import gabek.onebreath.prefab.PlayerPrefab
 import gabek.onebreath.prefab.RatPrefab
+import gabek.onebreath.prefab.test.AnimTestPrefab
 import gabek.onebreath.prefab.test.PrisJointTestPrefab
 import gabek.onebreath.prefab.test.RotJointTestPefab
 import gabek.onebreath.system.*
@@ -53,7 +54,7 @@ fun buildWorld(kodein: Kodein): World {
     wc.setSystem(RenderManager(kodein, { world ->
         //define render order
         renderSystems = listOf(
-                EntityRenderManager(world.getSystem<SpriteRenderSystem>()),
+                EntityRenderManager(world.getSystem<SpriteRenderSystem>(), world.getSystem<AnimationSystem>()),
                 world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.BACKGROUND),
                 world.getSystem(TileMapSystem::class.java).getRendererForLayer(TileMapSystem.Layer.FOREGROUND)
         )
@@ -106,7 +107,7 @@ fun buildWorld(kodein: Kodein): World {
 
     wc.setSystem(CullingSystem())
     wc.setSystem(SpriteRenderSystem(kodein))
-    wc.setSystem(AnimationSystem())
+    wc.setSystem(AnimationSystem(kodein))
 
     wc.setSystem(LightingSystem())
 
@@ -127,6 +128,7 @@ fun prefabs(builder: PrefabManager.Builder) = with(builder) {
     // <TESTS>
     bind("rot", RotJointTestPefab())
     bind("pris", PrisJointTestPrefab())
+    bind("anim", AnimTestPrefab())
     // </TESTS>
 }
 

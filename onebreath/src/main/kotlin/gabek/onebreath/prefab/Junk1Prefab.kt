@@ -1,16 +1,13 @@
 package gabek.onebreath.prefab
 
 import com.badlogic.gdx.physics.box2d.BodyDef
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.BodyCom
-import gabek.engine.core.components.JointCom
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.graphics.PixelRatio
-import gabek.engine.core.physics.joint.RRevoluteJoint
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
 import gabek.engine.quick.water.BuoyantCom
@@ -29,12 +26,12 @@ class Junk1Prefab: Prefab(){
 
         val texture = assets.getTexture("actors:box")
 
-        val w = texture.texture.regionWidth * pixelRatio.pixelToMeters
-        val h = texture.texture.regionHeight * pixelRatio.pixelToMeters
+        val w = 8 * pixelRatio.pixelToMeters
+        val h = 8 * pixelRatio.pixelToMeters
 
         add<TranslationCom>()
         add<SpriteCom>{
-            textureRef = texture
+            sprite = texture
         }
 
         add<SizeCom> {

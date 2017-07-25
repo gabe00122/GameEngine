@@ -1,14 +1,14 @@
 package gabek.engine.core.components.graphics
 
 import gabek.engine.core.components.RComponent
-import gabek.engine.core.assets.TextureRef
+import gabek.engine.core.graphics.Sprite
 
 /**
  * @author Gabriel Keith
  * @date 4/15/2017
  */
 class ParallaxGraphicCom : RComponent<ParallaxGraphicCom>() {
-    var sprite: TextureRef? = null
+    var sprite: Sprite? = null
 
     var scrollFactorX: Float = 0f
     var scrollFactorY: Float = 0f

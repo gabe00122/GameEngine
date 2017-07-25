@@ -47,7 +47,7 @@ abstract class RGame: ApplicationListener {
     }
 
     abstract fun kodeinSetup(builder: Kodein.Builder)
-    abstract fun setup()
+    open fun setup(){}
 
     open fun finishedLoading() {
         screenManager = kodein.instance()

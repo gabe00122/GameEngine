@@ -32,8 +32,6 @@ class RenderManager(
 
     var clearColor = Color(0f, 0f, 0f, 1f)
 
-    val pixToMeters = kodein.instance<PixelRatio>().pixelToMeters
-
     override fun initialize() {
         super.initialize()
 
@@ -42,14 +40,6 @@ class RenderManager(
 
     fun render(display: Display, batch: Batch, progress: Float) {
         cameraSystem.prepareOrtho(ortho, display, progress)
-
-        val bufferMeterW = display.pixWidth * pixToMeters
-        val bufferMeterH = display.pixHeight * pixToMeters
-
-        ortho.viewportWidth = bufferMeterW / MathUtils.floor(bufferMeterW / ortho.viewportWidth)
-        ortho.viewportHeight = bufferMeterH / MathUtils.floor(bufferMeterH / ortho.viewportHeight)
-
-        ortho.update(false)
 
         updateCulling(ortho, context.culling)
         context.progress = progress

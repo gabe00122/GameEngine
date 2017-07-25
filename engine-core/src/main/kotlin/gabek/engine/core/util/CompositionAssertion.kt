@@ -14,7 +14,8 @@ class CompositionAssertion{
     fun check(entityId: Int){
         for(h in hasList){
             if(!h.has(entityId)){
-                println("Composition check failed for ${h.type.type.name}")
+                println("Composition check failed for entity: $entityId")
+                break
             }
         }
     }

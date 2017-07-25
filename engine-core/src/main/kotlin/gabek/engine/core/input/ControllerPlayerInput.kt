@@ -17,21 +17,6 @@ class ControllerPlayerInput : PlayerInput(), ControllerListener {
     private val currentState = BooleanArray(0)
     private val currentAxisState = FloatArray(0)
 
-    init {
-        //bindButton(12, Actions.UP)
-        //bindButton(14, Actions.DOWN)
-        //bindButton(15, Actions.LEFT)
-        //bindButton(13, Actions.RIGHT)
-
-        //bindAxis(1, true, 0.5f, Actions.UP)
-        //bindAxis(1, false, 0.5f, Actions.DOWN)
-        //bindAxis(0, true, 0.5f, Actions.LEFT)
-        //bindAxis(0, false, 0.5f, Actions.RIGHT)
-
-        //bindButton(1, Actions.SELECT)
-        //bindButton(9, Actions.ESCAPE)
-    }
-
     override fun pollAction(actionId: Int): Boolean {
         return currentState[actionId]
     }

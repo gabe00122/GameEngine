@@ -51,18 +51,6 @@ class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java
         }
     }
 
-    fun teleportRelative(entity: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false) {
-        val trans = translationMapper[entity]
-        teleport(entity, x + trans.x, y + trans.y, rotation + trans.rotation, smooth)
-    }
-
-    fun teleportChild(parent: Int, child: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false) {
-        if (child != -1) {
-            val trans = translationMapper[parent]
-            teleportRelative(child, x - trans.x, y - trans.y, rotation - trans.rotation, smooth)
-        }
-    }
-
     fun getTranslation(entity: Int): TranslationCom {
         return translationMapper[entity]
     }

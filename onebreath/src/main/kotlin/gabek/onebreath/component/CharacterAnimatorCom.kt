@@ -1,26 +1,26 @@
 package gabek.onebreath.component
 
 import gabek.engine.core.components.RComponent
-import gabek.engine.core.graphics.AnimationRef
+import gabek.engine.core.graphics.Animation
 
 /**
  * @author Gabriel Keith
  */
 class CharacterAnimatorCom : RComponent<CharacterAnimatorCom>() {
-    var runningAnimationRef: AnimationRef? = null
-    var stillAnimationRef: AnimationRef? = null
-    var jumpingAnimationRef: AnimationRef? = null
+    var runningAnimation: Animation? = null
+    var stillAnimation: Animation? = null
+    var jumpingAnimation: Animation? = null
 
     override fun set(other: CharacterAnimatorCom) {
-        runningAnimationRef = other.runningAnimationRef
-        stillAnimationRef = other.stillAnimationRef
-        jumpingAnimationRef = other.jumpingAnimationRef
+        runningAnimation = other.runningAnimation
+        stillAnimation = other.stillAnimation
+        jumpingAnimation = other.jumpingAnimation
     }
 
     override fun reset() {
-        runningAnimationRef = null
-        stillAnimationRef = null
-        jumpingAnimationRef = null
+        runningAnimation = null
+        stillAnimation = null
+        jumpingAnimation = null
     }
 
     override fun toString() = "CharacterAnimatorCom"

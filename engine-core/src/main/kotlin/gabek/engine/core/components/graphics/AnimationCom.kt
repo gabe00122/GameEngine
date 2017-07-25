@@ -1,37 +1,22 @@
 package gabek.engine.core.components.graphics
 
 import gabek.engine.core.components.RComponent
-import gabek.engine.core.graphics.AnimationRef
+import gabek.engine.core.graphics.Animation
 
 /**
  * @author Gabriel Keith
  */
 class AnimationCom : RComponent<AnimationCom>() {
-    var currentAnimationRef: AnimationRef? = null
-    var clock: Float = 0f
-    var frame: Int = 0
-    var isReverse = false
-    var isStart = true
-    var isFinished = false
+    var animation: Animation? = null
+    var startFrame: Int = 0
 
     override fun set(other: AnimationCom) {
-        currentAnimationRef = other.currentAnimationRef
-        clock = other.clock
-        frame = other.frame
-        isReverse = other.isReverse
-        isStart = other.isStart
-        isFinished = other.isFinished
+        animation = other.animation
+        startFrame = other.startFrame
     }
 
     override fun reset() {
-        currentAnimationRef = null
-        clock = 0f
-        frame = 0
-        isReverse = false
-        isStart = true
-        isFinished = false
+        animation = null
+        startFrame = 0
     }
-
-    override fun toString() = "AnimationCom: currentAnimationRef = $currentAnimationRef, clock = $clock, frame = $frame, " +
-            "isReverse = $isReverse, isStart = $isStart, isFinished = $isFinished"
 }

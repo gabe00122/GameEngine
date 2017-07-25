@@ -8,8 +8,8 @@ import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.JsonReader
-import gabek.engine.core.graphics.AnimationRef
-import gabek.engine.core.graphics.AnimationRef.Companion.builder
+import gabek.engine.core.graphics.Animation
+import gabek.engine.core.graphics.Animation.Companion.builder
 
 /**
  * @author Gabriel Keith
@@ -32,7 +32,7 @@ class AnimationLoader(val assets: Assets, fileHandleResolver: FileHandleResolver
 
         val builder = builder(assets)
         for (animationDescription in root.JsonIterator()) {
-            builder.strategy = AnimationRef.Strategy.valueOf(animationDescription.getString("strategy"))
+            builder.strategy = Animation.Strategy.valueOf(animationDescription.getString("strategy"))
             builder.delay = animationDescription.getFloat("delay", -1f)
             builder.addFrame(animationDescription.getString("frames"))
 

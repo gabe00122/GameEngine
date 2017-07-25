@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.console.ConsoleGuiOverlay
-import gabek.engine.core.graphics.Profiler
-import gabek.engine.core.graphics.ProfilerOverlay
+import gabek.engine.core.profiling.Profiler
+import gabek.engine.core.profiling.ProfilerOverlay
 import gabek.engine.core.settings.Settings
 
 /**

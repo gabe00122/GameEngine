@@ -11,7 +11,6 @@ import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
 import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.graphics.RenderContext
-import gabek.engine.core.world.EntityRenderManager
 
 /**
  * @author Gabriel Keith
@@ -38,7 +37,7 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
             val entity = entities[i]
             val spriteComp = spriteMapper[entity]
 
-            val ref = spriteComp.textureRef
+            val ref = spriteComp.sprite
             if (ref != null) {
                 val transComp = translationMapper[entity]
 
@@ -63,7 +62,7 @@ class SpriteRenderSystem(kodein: Kodein): BaseEntitySystem(
         val sizeComp = sizeMapper[entity]
         val transComp = translationMapper[entity]
 
-        val ref = spriteComp.textureRef
+        val ref = spriteComp.sprite
 
         if (ref != null) {
             val pixelToMeter = pixelRatio.pixelToMeters

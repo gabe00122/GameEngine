@@ -27,66 +27,20 @@ class CameraTrackingSystem: BaseEntitySystem(Aspect.all(
 
         for (i in 0 until entities.size()) {
             val entity = entities[i]
+            val trans = transMapper[entity]
+            val target = cameraTargetsMapper[entity].target
 
-            val cameraTargets = cameraTargetsMapper[entity]
-            if (!cameraTargets.targets.isEmpty) {
-                val camera = cameraMapper[entity]
-                val trans = transMapper[entity]
-                val bounds = sizeMapper[entity]
+            if(target != -1 && transMapper.has(target)){
+                val targetTrans = transMapper[target]
 
-                val firstTarget = transMapper[cameraTargets.targets[0]]
-
-                var x1 = firstTarget.x
-                var y1 = firstTarget.y
-                var x2 = firstTarget.x
-                var y2 = firstTarget.y
-
-                for (j in 1 until cameraTargets.targets.size()) {
-                    val target = transMapper[cameraTargets.targets[j]]
-
-                    if (target.x < x1) {
-                        x1 = target.x
-                    }
-                    if (target.y < y1) {
-                        y1 = target.y
-                    }
-                    if (target.x > x2) {
-                        x2 = target.x
-                    }
-                    if (target.y > y2) {
-                        y2 = target.y
-                    }
-                }
-
-                //cameraTargets.padWidth = (x2 - x1) * 0.25f
-                //cameraTargets.padHeight = (y2 - y1) * 0.25f
-
-                x1 -= cameraTargets.padWidth
-                x2 += cameraTargets.padWidth
-                y1 -= cameraTargets.padHeight
-                y2 += cameraTargets.padHeight
-
-                //trans.x = (x1 + x2) / 2
-                //trans.y = (y1 + y2) / 2
-
-                //val lagW = cameraTargets.padWidth * (5f / 8f)
-                //val lagH = cameraTargets.padHeight * (5f / 8f)
-
-                trans.x = (x1 + x2) / 2f // = MathUtils.clamp(camera.bottomLeft.x, x1, x1 + lagW)
-                trans.y = (y1 + y2) / 2f // = MathUtils.clamp(camera.bottomLeft.y, y1, y1 + lagH)
-                //bounds.width = x2 - x1 // = MathUtils.clamp(camera.topRight.x, x2 - lagW, x2)
-                //bounds.height = y2 - y1 // = MathUtils.clamp(camera.topRight.y, y2 - lagH, y2)
+                trans.x = targetTrans.x
+                trans.y = targetTrans.y
             }
+
         }
     }
 
-    fun setPadding(entity: Int, w: Float, h: Float){
-        val targets = cameraTargetsMapper[entity]
-        targets.padWidth = w
-        targets.padHeight = h
-    }
-
-    fun addTarget(entity: Int, target: Int) {
-        cameraTargetsMapper[entity].targets.add(target)
+    fun setTarget(entity: Int, target: Int) {
+        cameraTargetsMapper[entity].target = target
     }
 }

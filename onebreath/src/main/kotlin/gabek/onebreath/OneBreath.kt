@@ -26,10 +26,6 @@ import gabek.engine.core.screen.splash.GenaricSplashScreen
 */
 
 class OneBreath: RGame() {
-    override fun setup() {
-
-    }
-
     override fun kodeinSetup(builder: Kodein.Builder) = with(builder) {
         bind<Batch>() with singleton { SpriteBatch() }
         bind<Screen>("splash") with singleton { GenaricSplashScreen() }

@@ -4,14 +4,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.assets.Assets
 import gabek.engine.core.components.BodyCom
-import gabek.engine.core.components.JointCom
 import gabek.engine.core.components.common.SizeCom
 import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.graphics.SpriteCom
-import gabek.engine.core.physics.joint.RRevoluteJoint
+import gabek.engine.core.graphics.PixelRatio
 import gabek.engine.core.physics.shape.RPolygon
 import gabek.engine.core.prefab.Prefab
-import gabek.onebreath.component.MotorOscillatorCom
 
 /**
  * @author Gabriel Keith
@@ -22,10 +20,11 @@ open class JointTestPrefab: Prefab(){
         super.define()
         val assets: Assets = kodein.instance()
 
-        val sprite = assets.getTexture("actors:box")
+        val pixelToMeter = kodein.instance<PixelRatio>().pixelToMeters
+        val sprite = assets.getTexture("actors:joint_test")
 
-        val w = 0.75f
-        val h = 0.25f
+        val w = 32 * pixelToMeter
+        val h = 16 * pixelToMeter
 
         add<TranslationCom>()
         add<BodyCom> {
@@ -34,7 +33,7 @@ open class JointTestPrefab: Prefab(){
         }
 
         add<SpriteCom> {
-            textureRef = sprite
+            this.sprite = sprite
         }
 
         add<SizeCom> {

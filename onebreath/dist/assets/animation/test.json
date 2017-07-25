@@ -1,0 +1,7 @@
+{
+  "test": {
+    "strategy": "PINGPONG",
+    "delay": 0.2,
+    "frames": "actors:anim_test:*"
+  }
+}

@@ -6,7 +6,7 @@ package gabek.engine.core.input
  */
 class KeyboardPlayerInput internal constructor(
         private val inputManager: InputManager ,
-        private val inputId: Int
+        val id: Int
 ) : PlayerInput() {
 
     private val currentState = ArrayList<Boolean>()
