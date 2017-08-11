@@ -5,12 +5,10 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import com.artemis.EntitySubscription
 import com.artemis.utils.IntBag
-import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.*
+import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.utils.Disposable
 import gabek.engine.core.components.BodyCom
 import gabek.engine.core.components.common.TranslationCom
-import gabek.engine.core.physics.RFixture
 import gabek.engine.core.physics.RWorld
 import gabek.engine.core.systems.common.TranslationSystem
 
@@ -47,13 +45,19 @@ class Box2dSystem: BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationC
             val bodyCom = bodyMapper.get(entity)
             val transCom = transMapper.get(entity)
 
+            var wake = false
             val body = bodyCom.body
             if(transCom.x != body.position.x || transCom.y != body.position.y){
                 body.setPosition(transCom.x, transCom.y)
+                wake = true
             }
             if(transCom.rotation != body.rotation) {
-                println("test")
                 body.rotation = transCom.rotation
+                wake = true
+            }
+
+            if(wake){
+                body.isAwake = true
             }
         }
     }
@@ -99,16 +103,6 @@ class Box2dSystem: BaseEntitySystem(Aspect.all(BodyCom::class.java, TranslationC
                 onBodyStore?.invoke(entityId, body.body!!)
 
                 rworld.removeBody(body)
-            }
-        }
-    }
-
-    private val teleportHandler = object: TranslationSystem.TeleportListener {
-        override fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean) {
-            if (bodyMapper.has(id)) {
-                val body = bodyMapper[id].body
-                body.setPosition(x, y)
-                body.rotation = rotation
             }
         }
     }

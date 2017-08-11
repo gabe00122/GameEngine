@@ -73,13 +73,12 @@ class GameViewScreen(kodein: Kodein): Screen() {
         inputSystem.setInput(player, input)
 
         val camera = prefabManager.create("camera")
+        tagManager.register("camera", camera)
+
         cameraSystem.setView(camera, 0f, 0f , 5f, 5f)
-        //cameraUtil.addDirectControl(camera, input)
-        //cameraTracking.setPadding(camera, number, number)
         cameraTracking.setTarget(camera, player)
 
         renderManager.clearColor.set(91/255f, 110/255f, 225/255f, 1f)
-        display.cameraHandle = camera
 
         val container = Container(display)
         container.fill()

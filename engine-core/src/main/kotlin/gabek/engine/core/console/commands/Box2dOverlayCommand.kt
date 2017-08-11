@@ -5,6 +5,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.console.Command
 import gabek.engine.core.console.Console
+import gabek.engine.core.console.HelpLevel
 import gabek.engine.core.systems.graphics.Box2dDebugSystem
 import gabek.engine.core.util.getSystem
 
@@ -15,15 +16,24 @@ import gabek.engine.core.util.getSystem
 
 
 class Box2dOverlayCommand: Command() {
-    //val debugSystem: Box2dDebugSystem = kodein.instance<World>().getSystem()
+    private lateinit var world: World
+    private lateinit var debugSystem: Box2dDebugSystem
 
-    override fun process(args: Array<String>, console: Console, kodein: Kodein) {
-        val debugSystem: Box2dDebugSystem = kodein.instance<World>().getSystem()
+    override fun setup(kodein: Kodein) {
+        world = kodein.instance()
+        debugSystem = world.getSystem()
+    }
 
+    override fun process(args: Array<String>) {
         if(args[0] == "on"){
             debugSystem.active = true
         } else if(args[0] == "off"){
             debugSystem.active = false
         }
+    }
+
+
+    override fun help(level: HelpLevel) {
+
     }
 }

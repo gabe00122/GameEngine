@@ -23,8 +23,9 @@ internal constructor(
             }
             Strategy.PINGPONG -> {
                 val raw = (time / delay).toInt()
-                val even = (raw / frames.size).rem(2) == 0
-                return if(even) frames[raw.rem(frames.size)] else frames[frames.size - raw.rem(frames.size) - 1]
+                val window = frames.size - 1
+                val even = (raw / window).rem(2) == 0
+                return if(even) frames[raw.rem(window)] else frames[window - raw.rem(window)]
             }
         }
     }

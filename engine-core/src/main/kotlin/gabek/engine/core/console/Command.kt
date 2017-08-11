@@ -8,5 +8,21 @@ import com.github.salomonbrys.kodein.Kodein
  */
 
 abstract class Command {
-    abstract fun process(args: Array<String>,console: Console, kodein: Kodein)
+    internal lateinit var console: Console
+    var active: Boolean = false
+
+    abstract fun setup(kodein: Kodein)
+
+    fun commandSetup(kodein: Kodein, console: Console){
+        this.console = console
+        try{
+            setup(kodein)
+            active = true
+        } catch (e: Exception){
+            active = false
+        }
+    }
+
+    abstract fun process(args: Array<String>)
+    abstract fun help(level: HelpLevel)
 }

@@ -10,8 +10,8 @@ import gabek.engine.core.components.common.TranslationCom
 import gabek.engine.core.components.common.VelocityCom
 import gabek.engine.core.components.graphics.CameraCom
 import gabek.engine.core.input.PlayerInput
-import gabek.engine.core.util.InvertibleTransmuter
-import gabek.engine.core.util.InvertibleTransmuterFactory
+import gabek.engine.core.util.entity.InvertibleTransmuter
+import gabek.engine.core.util.entity.InvertibleTransmuterFactory
 
 /**
  * @another Gabriel Keith

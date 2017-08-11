@@ -27,11 +27,11 @@ class Assets: Disposable {
 
     private val resourceManager = AssetManager()
 
-    private val textureMap = ObjectMap<String, Sprite>()
-    private val shaderMap = ObjectMap<String, ShaderProgram>()
-    private val animationMap = ObjectMap<String, Animation>()
-    private val musicMap = ObjectMap<String, Music>()
-    private val soundMap = ObjectMap<String, SoundRef>()
+    private val textureMap = HashMap<String, Sprite>()
+    private val shaderMap = HashMap<String, ShaderProgram>()
+    private val animationMap = HashMap<String, Animation>()
+    private val musicMap = HashMap<String, Music>()
+    private val soundMap = HashMap<String, SoundRef>()
 
     constructor(root: String = "assets", configOnly: Boolean = true) {
         initLoaders()

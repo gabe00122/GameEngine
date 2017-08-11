@@ -5,6 +5,7 @@ import com.github.salomonbrys.kodein.Kodein
 import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.console.Command
 import gabek.engine.core.console.Console
+import gabek.engine.core.console.HelpLevel
 import gabek.engine.core.systems.common.TranslationSystem
 import gabek.engine.core.util.getSystem
 
@@ -15,18 +16,24 @@ import gabek.engine.core.util.getSystem
 
 
 class TeleportCommand: Command(){
-    override fun process(args: Array<String>, console: Console, kodein: Kodein) {
-        val world: World = kodein.instance()
-        val transSystem: TranslationSystem = world.getSystem()
+    private lateinit var world: World
+    private lateinit var transSystem: TranslationSystem
 
-        //f(arguments.length == 3){
+    override fun setup(kodein: Kodein) {
+        world = kodein.instance()
+        transSystem = world.getSystem()
+    }
 
-            val ent = args[0].toInt()
-            val x = args[1].toFloat()
-            val y = args[2].toFloat()
+    override fun process(args: Array<String>) {
+        val ent = args[0].toInt()
+        val x = args[1].toFloat()
+        val y = args[2].toFloat()
 
-            transSystem.teleport(ent, x, y, 0f)
-        //}
+        transSystem.setPosition(ent, x, y)
+    }
+
+    override fun help(level: HelpLevel) {
+
     }
 
 }

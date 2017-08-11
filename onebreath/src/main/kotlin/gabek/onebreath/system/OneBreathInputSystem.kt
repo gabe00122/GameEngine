@@ -5,7 +5,7 @@ import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
 import gabek.engine.core.components.InputCom
 import gabek.engine.core.components.channel.DirectionalInputCom
-import gabek.onebreath.ActionCodes
+import gabek.onebreath.def.ActionCodes
 
 /**
  * @another Gabriel Keith

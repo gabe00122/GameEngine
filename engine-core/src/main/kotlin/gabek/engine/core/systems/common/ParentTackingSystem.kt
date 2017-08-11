@@ -17,7 +17,6 @@ class ParentTackingSystem : BaseEntitySystem(
                 ParentOffsetCom::class.java
         )) {
 
-    private lateinit var transSystem: TranslationSystem
     private lateinit var transMapper: ComponentMapper<TranslationCom>
     private lateinit var parentMapper: ComponentMapper<ParentOfCom>
     private lateinit var offsetMapper: ComponentMapper<ParentOffsetCom>
@@ -34,10 +33,9 @@ class ParentTackingSystem : BaseEntitySystem(
 
             if (transMapper.has(parent)) {
                 val parentTrans = transMapper[parent]
-                transSystem.teleport(entity,
-                        parentTrans.x + offset.x,
-                        parentTrans.y + offset.y,
-                        trans.rotation, smooth = true)
+                trans.x = parentTrans.x + offset.x
+                trans.y = parentTrans.y + offset.y
+                trans.rotation = parentTrans.rotation
             }
         }
     }

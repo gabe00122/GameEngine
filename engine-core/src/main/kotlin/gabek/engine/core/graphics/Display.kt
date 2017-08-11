@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Disposable
  */
 
 abstract class Display: Widget(), Disposable{
-    var cameraHandle: Int = -1
+    var cameraTag: String = "camera"
 
     var pixWidth: Int = 0
         protected set

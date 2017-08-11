@@ -16,7 +16,7 @@ class Console(val kodein: Kodein): ApplicationLogger {
             flush()
         }
 
-    private val commands = HashMap<String, Command>()
+    private val commandMap = LinkedHashMap<String, Command>()
     private var isInitialized = false
 
     private val outputBuffer = StringBuilder()
@@ -57,6 +57,10 @@ class Console(val kodein: Kodein): ApplicationLogger {
         outputBuffer.append("$message\n")
     }
 
+    fun writeln(){
+        outputBuffer.append("\n")
+    }
+
     private fun flush(){
         val out = outputProcessor
         if(out != null && outputBuffer.isNotEmpty()) {
@@ -72,11 +76,24 @@ class Console(val kodein: Kodein): ApplicationLogger {
             val main = split.first()
             val args = Array(split.size-1, {i -> split[i+1]})
 
-            try {
-                commands[main]!!.process(args, this, kodein)
-            } catch (e: Exception) {
-                error("PARSE", "Failed to understand the command.")
+            writeln(text)
+            val command = commandMap[main]
+
+            if(command == null){
+                writeln("Can't fined command: \"$main\"")
+            } else {
+                if(command.active){
+                    try {
+                        command.process(args)
+                    } catch (e: Exception){
+                        writeln("Error running command: \"$main\"\n${e.message}")
+                    }
+                } else {
+                    writeln("Dependencies not meet for command: \"$main\"")
+                }
             }
+
+            writeln()
             flush()
         }
     }
@@ -100,7 +117,8 @@ class Console(val kodein: Kodein): ApplicationLogger {
     }
 
     private fun addCommand(name: String, command: Command) {
-        commands.put(name, command)
+        command.commandSetup(kodein, this)
+        commandMap.put(name, command)
     }
 
     interface ConsoleListener {

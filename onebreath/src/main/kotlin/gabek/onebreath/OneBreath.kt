@@ -18,6 +18,10 @@ import gabek.engine.core.screen.Screen
 import gabek.engine.core.screen.ScreenManager
 import gabek.engine.core.settings.Settings
 import gabek.engine.core.screen.splash.GenaricSplashScreen
+import gabek.engine.core.util.symbol.SymbolManager
+import gabek.onebreath.def.buildInputManager
+import gabek.onebreath.def.buildScreenManager
+import gabek.onebreath.def.buildWorld
 
 
 /**
@@ -29,6 +33,8 @@ class OneBreath: RGame() {
     override fun kodeinSetup(builder: Kodein.Builder) = with(builder) {
         bind<Batch>() with singleton { SpriteBatch() }
         bind<Screen>("splash") with singleton { GenaricSplashScreen() }
+
+        bind<SymbolManager>() with singleton { SymbolManager() }
 
         bind<ScreenManager>() with singleton { buildScreenManager(kodein) }
         bind<Assets>() with singleton { Assets() }

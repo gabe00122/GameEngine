@@ -8,7 +8,8 @@ import gabek.engine.core.systems.PassiveSystem
 import gabek.engine.core.systems.TileMapSystem
 import gabek.engine.core.systems.common.PrefabManager
 import gabek.engine.core.systems.common.TranslationSystem
-import gabek.engine.core.tilemap.TileReference
+import gabek.engine.core.tilemap.TileInstance
+import gabek.engine.core.tilemap.TileMapLayer
 import gabek.engine.core.util.clear
 import ktx.collections.get
 
@@ -28,8 +29,9 @@ class OneBreathLevelLoader : PassiveSystem() {
     fun loadLevel(root: JsonValue) {
         world.clear()
 
-
         val layers = root.get("layers")
+        val foregroundJson = layers.first { it["name"].asString() == "foreground" }
+        val backgroundJson = layers.first { it["name"].asString() == "background" }
 
         val width = root.getInt("width")
         val height = root.getInt("height")
@@ -48,12 +50,12 @@ class OneBreathLevelLoader : PassiveSystem() {
             defLookup.put(prop.name.toInt(), definitions.getIdByName(prop.getString("type")))
         }
 
-        tileSystem.resize(width, height)
 
-        loadLayer(layers, TileMapSystem.Layer.BACKGROUND, width, height, defLookup, gid)
-        loadLayer(layers, TileMapSystem.Layer.FOREGROUND, width, height, defLookup, gid)
 
-        tileSystem.initPhysics()
+        loadLayer(backgroundJson, tileSystem.getLayer("background"), width, height, defLookup, gid)
+        loadLayer(foregroundJson, tileSystem.getLayer("foreground"), width, height, defLookup, gid)
+
+        //tileSystem.initPhysics()
 
 
         val objects = layers
@@ -62,10 +64,9 @@ class OneBreathLevelLoader : PassiveSystem() {
 
         for (obj in objects.JsonIterator()) {
             val id = prefabManager.create(obj.getString("type"))
-            transSystem.teleport(id,
+            transSystem.setPosition(id,
                     ((obj.getInt("x") + obj.getInt("width") / 2f) / tileWidth.toFloat()) * tileSystem.tileSize,
-                    (height - (obj.getInt("y") - obj.getInt("height") / 2f) / tileHeight.toFloat()) * tileSystem.tileSize,
-                    0f)
+                    (height - (obj.getInt("y") - obj.getInt("height") / 2f) / tileHeight.toFloat()) * tileSystem.tileSize)
 
             if (obj.has("properties")) {
                 val properties = obj.get("properties")
@@ -78,16 +79,15 @@ class OneBreathLevelLoader : PassiveSystem() {
         world.process()
     }
 
-    private fun loadLayer(layers: JsonValue, layer: TileMapSystem.Layer, width: Int, height: Int, tileSets: IntIntMap, gid: Int) {
-        for ((i, tile) in layers.first { it.getString("name") == layer.name.toLowerCase() }.get("data").withIndex()) {
+    private fun loadLayer(json: JsonValue, layer: TileMapLayer, width: Int, height: Int, tileSets: IntIntMap, gid: Int) {
+        layer.resize(0, 0, width, height)
+        for ((i, tile) in json.get("data").withIndex()) {
             val x = i.rem(width)
             val y = height - (i / width) - 1
             val tileData = tile.asInt()
 
             if (tileData > 0) {
-                tileSystem.setTile(x, y,
-                        layer,
-                        TileReference(tileSets[tileData - gid]))
+                layer.set(x, y, TileInstance(tileSets[tileData - gid]))
             }
         }
     }

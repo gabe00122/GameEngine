@@ -5,19 +5,19 @@ package gabek.engine.core.tilemap
  */
 class TileDefinitions {
     private val nameToId = mutableMapOf<String, Int>()
-    private val tileTypes = mutableListOf<TileType>()
+    private val tileTypes = mutableListOf<TileDef>()
 
-    operator fun get(typeId: Int): TileType {
+    operator fun get(typeId: Int): TileDef {
         return tileTypes[typeId]
     }
 
-    operator fun get(tileReference: TileReference): TileType {
-        return tileTypes[tileReference.typeId]
+    operator fun get(tileInstance: TileInstance): TileDef {
+        return tileTypes[tileInstance.typeId]
     }
 
     fun getIdByName(name: String): Int = nameToId[name]!!
 
-    fun addType(type: TileType) {
+    fun addType(type: TileDef) {
         nameToId.put(type.name, tileTypes.size)
         tileTypes.add(type)
     }

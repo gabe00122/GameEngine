@@ -4,22 +4,49 @@ package gabek.engine.core.tilemap
  * @author Gabriel Keith
  */
 class ArrayGrid<T>(
-        override val w: Int,
-        override val h: Int,
-        defaultValue: (x: Int, y: Int) -> T
+        private val defaultValue: (x: Int, y: Int) -> T
 ) : Grid<T> {
-    private val tiles = ArrayList<T>(w * h)
 
-    init {
-        (0 until w * h).mapTo(tiles) { defaultValue(it % w, it / w) }
+    override var offsetX = 0
+        private set
+    override var offsetY = 0
+        private set
+
+    override var width = 0
+        private set
+    override var height = 0
+        private set
+
+    private var tiles = ArrayList<T>()
+
+    override fun resize(newOffsetX: Int, newOffsetY: Int, newWidth: Int, newHeight: Int){
+        val newTiles = ArrayList<T>(newWidth*newHeight)
+
+        for(y in newOffsetY until (newWidth + newOffsetY)){
+            for(x in newOffsetX until (newHeight + newOffsetX)){
+                newTiles.add(get(x, y))
+            }
+        }
+
+        tiles = newTiles
+        offsetX = newOffsetX
+        offsetY = newOffsetY
+        width = newWidth
+        height = newHeight
     }
 
-    override fun get(x: Int, y: Int): T = tiles[y * w + x]
+    override fun inBounds(x: Int, y: Int) = x >= offsetX && y >= offsetY && x - offsetX < width && y - offsetY < height
+    override fun get(x: Int, y: Int): T {
+        if(!inBounds(x, y)){
+            return defaultValue(x, y)
+        } else {
+            return tiles[(y - offsetY) * width + (x - offsetX)]
+        }
+    }
     override fun set(x: Int, y: Int, value: T) {
-        tiles[y * w + x] = value
+        tiles[(y - offsetY) * width + (x - offsetX)] = value
     }
 
-    override fun has(x: Int, y: Int): Boolean = x in 0..(w - 1) && 0 <= y && y < h
 
     override fun iterator(): Iterator<T> = tiles.iterator()
 }

@@ -11,8 +11,6 @@ import gabek.engine.core.components.common.TranslationCom
 class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java)) {
     private lateinit var translationMapper: ComponentMapper<TranslationCom>
 
-    private var teleportListeners = mutableListOf<TeleportListener>()
-
     override fun processSystem() {
         val entities = entityIds
 
@@ -25,37 +23,13 @@ class TranslationSystem : BaseEntitySystem(Aspect.all(TranslationCom::class.java
         }
     }
 
-    fun addTeleportListener(teleportListener: TeleportListener) {
-        teleportListeners.add(teleportListener)
-    }
-
-    /**
-     * Moves entities translation somewhere as well as any other components dependent on location
-     */
-    fun teleport(entity: Int, x: Float, y: Float, rotation: Float, smooth: Boolean = false) {
-        assert(translationMapper.has(entity))
-        for (listener in teleportListeners) {
-            listener.onTeleport(entity, x, y, rotation, smooth)
-        }
-
-
+    fun setPosition(entity: Int, x: Float, y: Float){
         val trans = translationMapper[entity]
         trans.x = x
         trans.y = y
-        trans.rotation = rotation
-
-        if (!smooth) {
-            trans.pX = x
-            trans.pY = y
-            trans.pRotation = rotation
-        }
     }
 
     fun getTranslation(entity: Int): TranslationCom {
         return translationMapper[entity]
-    }
-
-    interface TeleportListener {
-        fun onTeleport(id: Int, x: Float, y: Float, rotation: Float, smooth: Boolean)
     }
 }

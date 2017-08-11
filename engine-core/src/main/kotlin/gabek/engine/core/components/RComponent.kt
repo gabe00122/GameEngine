@@ -1,7 +1,7 @@
 package gabek.engine.core.components
 
 import com.artemis.PooledComponent
-import gabek.engine.core.util.Mirrorable
+import gabek.engine.core.util.entity.Mirrorable
 
 
 /**

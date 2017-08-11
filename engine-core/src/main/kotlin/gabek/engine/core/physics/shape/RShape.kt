@@ -1,7 +1,7 @@
 package gabek.engine.core.physics.shape
 
 import com.badlogic.gdx.physics.box2d.Shape
-import gabek.engine.core.util.Cloneable
+import gabek.engine.core.util.entity.Cloneable
 
 /**
  * @author Gabriel Keith

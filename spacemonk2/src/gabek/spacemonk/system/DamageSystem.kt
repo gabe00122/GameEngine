@@ -10,6 +10,7 @@ import gabek.engine.core.systems.common.ParentSystem
  */
 class DamageSystem : PassiveSystem() {
     private val deathListeners = ArrayList<DeathListener>()
+
     private lateinit var parentSystem: ParentSystem
     private lateinit var healthMapper: ComponentMapper<HealthCom>
 

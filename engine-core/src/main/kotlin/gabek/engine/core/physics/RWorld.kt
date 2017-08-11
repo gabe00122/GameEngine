@@ -38,18 +38,16 @@ class RWorld: Disposable {
     }
 
     fun removeBody(body: RBody){
-        body.store()
-        val index = body.listIndex
+        if(body.isInitialised) {
+            body.store()
+            val index = body.listIndex
 
-        val replacement: RBody?
-        if(index < bodyList.size - 1){
-            replacement = bodyList.pop()
-            replacement.listIndex = index
-        } else {
-            replacement = null
+            val replacement = bodyList.pop()
+            if (index < bodyList.size) {
+                replacement.listIndex = index
+                bodyList[index] = replacement
+            }
         }
-
-        bodyList[index] = replacement
     }
 
     fun addJoint(joint: RJoint){

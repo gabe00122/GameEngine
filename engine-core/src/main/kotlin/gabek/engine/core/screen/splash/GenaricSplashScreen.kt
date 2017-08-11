@@ -11,7 +11,7 @@ import gabek.engine.core.screen.Screen
 class GenaricSplashScreen : Screen() {
     private val loadingText = "Loading"
 
-    private val dotRate = 0.5f
+    private val dotRate = 0.1f
     private val maxDot = 3
 
     private val label = VisLabel("")

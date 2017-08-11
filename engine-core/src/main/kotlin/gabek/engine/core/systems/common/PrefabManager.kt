@@ -8,7 +8,7 @@ import gabek.engine.core.systems.PassiveSystem
  * @author Gabriel Keith
  */
 class PrefabManager(val kodein: Kodein, builder: Builder): PassiveSystem() {
-    private val prefabMap = builder.factoryMap
+    private val prefabMap = builder.prefabMap
 
     override fun processSystem() {}
 
@@ -45,10 +45,10 @@ class PrefabManager(val kodein: Kodein, builder: Builder): PassiveSystem() {
     }
 
     class Builder {
-        internal val factoryMap = LinkedHashMap<String, Prefab>()
+        internal val prefabMap = LinkedHashMap<String, Prefab>()
 
         fun bind(name: String, prefab: Prefab) {
-            factoryMap.put(name, prefab)
+            prefabMap.put(name, prefab)
             prefab.name = name
         }
     }

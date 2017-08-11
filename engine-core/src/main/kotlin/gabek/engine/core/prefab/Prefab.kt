@@ -54,8 +54,8 @@ open class Prefab: Disposable {
     fun create(): Int {
         val id = world.create(archetype)
 
-        for (part in quickList) {
-            part.use(id)
+        for (i in 0 until quickList.size) {
+            quickList[i].use(id)
         }
 
         return id
@@ -63,7 +63,7 @@ open class Prefab: Disposable {
 
     fun create(x: Float, y: Float): Int {
         val id = create()
-        transSystem.teleport(id, x, y, 0f)
+        transSystem.setPosition(id, x, y)
 
         return id
     }

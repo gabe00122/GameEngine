@@ -49,7 +49,7 @@ class AnimationSystem(kodein: Kodein) : BaseEntitySystem(Aspect.all(AnimationCom
     private fun getSprite(animationCom: AnimationCom, progress: Float): Sprite?{
         val animation = animationCom.animation ?: return null
 
-        return animation.getSprite(updateManager.getElapsedTime(animationCom.startFrame))
+        return animation.getSprite(updateManager.getElapsedTime(animationCom.startFrame) + progress * world.delta)
     }
 
     override fun fill(schedule: EntityRenderManager.RenderSchedule, context: RenderContext) {

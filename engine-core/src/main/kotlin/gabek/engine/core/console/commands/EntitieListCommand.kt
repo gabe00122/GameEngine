@@ -8,6 +8,7 @@ import com.github.salomonbrys.kodein.instance
 import gabek.engine.core.components.meta.PrefabCom
 import gabek.engine.core.console.Command
 import gabek.engine.core.console.Console
+import gabek.engine.core.console.HelpLevel
 import gabek.engine.core.util.getMapper
 
 /**
@@ -17,11 +18,15 @@ import gabek.engine.core.util.getMapper
 
 
 class EntitieListCommand : Command() {
+    private lateinit var world: World
+    private lateinit var prefabMapper: ComponentMapper<PrefabCom>
 
-    override fun process(args: Array<String>, console: Console, kodein: Kodein) {
-        val world: World = kodein.instance()
-        val prefabMapper: ComponentMapper<PrefabCom> = world.getMapper()
+    override fun setup(kodein: Kodein) {
+        world = kodein.instance()
+        prefabMapper = world.getMapper()
+    }
 
+    override fun process(args: Array<String>) {
         val bag = world.aspectSubscriptionManager.get(Aspect.all()).entities
 
         for (i in 0 until bag.size()) {
@@ -34,5 +39,9 @@ class EntitieListCommand : Command() {
 
             console.write("\n")
         }
+    }
+
+    override fun help(level: HelpLevel) {
+
     }
 }
